@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useGlobalContext } from "lib/store/context";
+import { GetStaticProps } from "next";
 
 const Title = styled.h1`
   font-size: 50px;
@@ -20,3 +21,13 @@ const Home = () => {
 };
 
 export default Home;
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {
+      title: "Top",
+      description: "This is description",
+      layout: "Base",
+    },
+  };
+};
