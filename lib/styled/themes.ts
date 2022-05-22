@@ -33,6 +33,5 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
   body {
     background-color: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
-    transition: all 0.5s;
   }
 `;
