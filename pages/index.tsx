@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { useContext } from "react";
-import Context from "lib/store/context";
+import { useGlobalContext } from "lib/store/context";
 
 const Title = styled.h1`
   font-size: 50px;
@@ -8,7 +7,7 @@ const Title = styled.h1`
 `;
 
 const Home = () => {
-  const { dispatch } = useContext(Context);
+  const { dispatch } = useGlobalContext();
 
   return (
     <>
