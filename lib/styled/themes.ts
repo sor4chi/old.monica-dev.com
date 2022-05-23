@@ -1,9 +1,14 @@
 import { createGlobalStyle } from "styled-components";
 import { ThemeType } from "./types";
 
+const commonVariables = {
+  headerHeight: "80px",
+};
+
 export const lightTheme: ThemeType = {
+  variables: commonVariables,
   colors: {
-    text: "#000",
+    text: "#555555",
     background: "#EDF2F7",
     subBackground: "#fafafa",
     primary: "#4DA8FF",
@@ -11,6 +16,7 @@ export const lightTheme: ThemeType = {
 };
 
 export const darkTheme: ThemeType = {
+  variables: commonVariables,
   colors: {
     text: "#DDDDDD",
     background: "#292C3E",
@@ -24,6 +30,8 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: robot,helvetica neue,helvetica,arial,hiragino sans,-apple-system,BlinkMacSystemFont,hiragino kaku gothic pron,noto sans jp,noto sans cjk jp,meiryo,メイリオ,segoe ui,sans-serif;
+    transition: all 0.2s;
   }
   
   html, body, #__next {
@@ -33,5 +41,10 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
   body {
     background-color: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
+  }
+
+  a {
+    color: ${({ theme }) => theme.colors.primary};
+    text-decoration: none;
   }
 `;
