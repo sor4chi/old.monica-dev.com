@@ -2,7 +2,7 @@ import { createGlobalStyle } from "styled-components";
 import { ThemeType } from "./types";
 
 const commonVariables = {
-  headerHeight: "80px",
+  headerHeight: "6rem",
 };
 
 export const lightTheme: ThemeType = {

@@ -3,7 +3,7 @@ import { useGlobalContext } from "lib/store/context";
 import { GetStaticProps } from "next";
 
 const Title = styled.h1`
-  font-size: 50px;
+  font-size: 5rem;
   color: ${({ theme }) => theme.colors.primary};
 `;
 

@@ -2,13 +2,14 @@ import Link from "next/link";
 import styled from "styled-components";
 import LogoSVG from "./svgs/Logo";
 import { useRouter } from "next/router";
+import ThemeToggleButton from "./buttons/ThemeToggle";
 
 const HeaderContainer = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 10vw;
-  height: 80px;
+  height: ${({ theme }) => theme.headerHeight};
 
   svg {
     fill: ${({ theme }) => theme.colors.text};
@@ -19,8 +20,8 @@ const HeaderContainer = styled.header`
 
 const LogoContainer = styled.div`
   width: 10rem;
-  height: calc(100% - 20px);
-  margin: 10px 0;
+  height: calc(100% - 1.6rem);
+  margin: 0.8rem 0;
 `;
 
 const Navigation = styled.nav`
@@ -28,14 +29,14 @@ const Navigation = styled.nav`
   align-items: center;
   justify-content: space-between;
 
-  gap: 20px;
+  gap: 3rem;
 `;
 
 const NavigationItem = styled.a<{
   isActive: boolean;
 }>`
   color: ${({ theme }) => theme.colors.text};
-  border-bottom: ${({ isActive }) => (isActive ? `2px solid` : "none")};
+  border-bottom: ${({ isActive }) => (isActive ? `.2rem solid` : "none")};
   font-size: 1.4rem;
   cursor: pointer;
   border-color: ${({ theme }) => theme.colors.text};
@@ -87,6 +88,7 @@ const Header = () => {
             </NavigationItem>
           </Link>
         ))}
+        <ThemeToggleButton />
       </Navigation>
     </HeaderContainer>
   );
