@@ -64,10 +64,22 @@ model TagOnBlog {
   @@id([blogId, tagId])
 }
 
+model TimelineCategory {
+  id         Int        @id
+  slug       String     @unique
+  name       String
+  Timeline   Timeline[]
+  timelineId Int
+  createdAt  DateTime
+  updatedAt  DateTime
+}
+
 model Timeline {
-  id        Int      @id
-  title     String
-  content   String
-  createdAt DateTime
-  updatedAt DateTime
+  id         Int              @id
+  title      String
+  content    String
+  category   TimelineCategory @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  createdAt  DateTime
+  updatedAt  DateTime
 }
