@@ -9,6 +9,9 @@
     "lint": "next lint",
     "prepare": "husky install"
   },
+  "prisma": {
+    "seed": "ts-node --compilerOptions {\"module\":\"CommonJS\"} prisma/seeds/index.ts"
+  },
   "dependencies": {
     "@prisma/client": "^3.14.0",
     "babel-plugin-styled-components": "^2.0.7",
@@ -31,6 +34,7 @@
     "lint-staged": "^12.4.1",
     "prettier": "^2.6.2",
     "prisma": "^3.14.0",
+    "ts-node": "^10.8.0",
     "typescript": "4.6.4"
   }
 }

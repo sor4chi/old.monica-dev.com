@@ -13,45 +13,45 @@ datasource db {
 }
 
 model Work {
-  id         Int            @id
+  id         Int            @id @default(autoincrement())
   slug       String         @unique
   title      String
   content    String
   category   WorksCategory? @relation(fields: [categoryId], references: [id])
   categoryId Int?
-  createdAt  DateTime
-  updatedAt  DateTime
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
 }
 
 model WorksCategory {
-  id        Int      @id
+  id        Int      @id @default(autoincrement())
   slug      String   @unique
   name      String
   works     Work[]
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model BlogsTag {
-  id        Int         @id
+  id        Int         @id @default(autoincrement())
   slug      String      @unique
   name      String
   blogs     TagOnBlog[]
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
   blogId    Int
 }
 
 model Blog {
-  id        Int         @id
+  id        Int         @id @default(autoincrement())
   slug      String      @unique
   title     String
   content   String
   qiitaUrl  String?
   zennUrl   String?
   tags      TagOnBlog[]
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 }
 
 model TagOnBlog {
@@ -65,21 +65,21 @@ model TagOnBlog {
 }
 
 model TimelineCategory {
-  id         Int        @id
-  slug       String     @unique
-  name       String
-  Timeline   Timeline[]
-  timelineId Int
-  createdAt  DateTime
-  updatedAt  DateTime
+  id        Int        @id @default(autoincrement())
+  slug      String     @unique
+  name      String
+  Timeline  Timeline[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model Timeline {
-  id         Int              @id
+  id         Int              @id @default(autoincrement())
   title      String
   content    String
   category   TimelineCategory @relation(fields: [categoryId], references: [id])
   categoryId Int
-  createdAt  DateTime
-  updatedAt  DateTime
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  happenedAt DateTime
 }
