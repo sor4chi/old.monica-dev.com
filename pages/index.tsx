@@ -3,7 +3,7 @@ import { GetStaticProps } from "next";
 import Link from "next/link";
 import ArrowSVG from "components/svgs/Arrow";
 
-const SectionContainer = styled.main`
+const Section = styled.main`
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -23,20 +23,14 @@ const MainTitle = styled.h1`
   margin: 0;
   transition: 0.3s ease;
   position: relative;
-
-  &::after {
-    content: "";
-    position: absolute;
-    display: block;
-    bottom: -1rem;
-    left: 5%;
-    width: 10%;
-    height: 0.5rem;
-    background: ${({ theme }) => theme.colors.primary};
-  }
+  background: linear-gradient(105.41deg, #b0dbe9 0%, #ffabe7 100%);
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 `;
 
-const NavigationWrapper = styled.nav`
+const Navigation = styled.nav`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -98,7 +92,7 @@ const NavigateContents = [
 
 const Home = () => {
   return (
-    <SectionContainer>
+    <Section>
       <MainTitleContainer>
         <MainTitle>
           Monica&apos;s
@@ -106,7 +100,7 @@ const Home = () => {
           Portfolio
         </MainTitle>
       </MainTitleContainer>
-      <NavigationWrapper>
+      <Navigation>
         {NavigateContents.map((navigateContent) => (
           <Link href={navigateContent.href} key={navigateContent.label}>
             <NavigationItem>
@@ -120,8 +114,8 @@ const Home = () => {
             </NavigationItem>
           </Link>
         ))}
-      </NavigationWrapper>
-    </SectionContainer>
+      </Navigation>
+    </Section>
   );
 };
 

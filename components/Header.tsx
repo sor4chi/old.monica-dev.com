@@ -33,9 +33,11 @@ const Navigation = styled.nav`
   gap: 3rem;
 `;
 
-const NavigationItem = styled.a<{
+interface NavigationItemProps {
   isActive: boolean;
-}>`
+}
+
+const NavigationItem = styled.a<NavigationItemProps>`
   color: ${({ theme }) => theme.colors.text};
   border-bottom: 0.2rem solid;
   font-size: 1.4rem;

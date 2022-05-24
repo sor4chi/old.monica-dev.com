@@ -12,9 +12,11 @@ const ThemeToggleButtonContainer = styled.div`
   cursor: pointer;
 `;
 
-const ThemeToggleButtonInner = styled.div<{
+interface ThemeToggleButtonInnerProps {
   isDarkMode: boolean;
-}>`
+}
+
+const ThemeToggleButtonInner = styled.div<ThemeToggleButtonInnerProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
