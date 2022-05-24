@@ -2,18 +2,15 @@ import styled from "styled-components";
 import { GetStaticProps } from "next";
 import Link from "next/link";
 import ArrowSVG from "components/svgs/Arrow";
+import { useState, useEffect } from "react";
 
 const Section = styled.main`
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   user-select: none;
-  margin: 10rem 0;
-`;
-
-const MainTitleContainer = styled.div`
-  display: flex;
-  align-items: baseline;
+  height: calc(100vh - ${({ theme }) => theme.variables.headerHeight} * 2);
+  transition: 0.5s ease;
 `;
 
 const MainTitle = styled.h1`
@@ -30,11 +27,20 @@ const MainTitle = styled.h1`
   background-clip: text;
 `;
 
-const Navigation = styled.nav`
+interface NavigationProps {
+  isAnimationStart: boolean;
+}
+
+const Navigation = styled.nav<NavigationProps>`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
+  padding-left: 5rem;
   gap: 1rem;
+  width: ${({ isAnimationStart }) => (isAnimationStart ? "350px" : "0")};
+  overflow: hidden;
+  transition: 0.5s ease-in-out;
+  white-space: nowrap;
 `;
 
 const NavigationItem = styled.a`
@@ -91,16 +97,22 @@ const NavigateContents = [
 ];
 
 const Home = () => {
+  const [isAnimationStart, setIsAnimationStart] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsAnimationStart(true);
+    }, 1000);
+  }, []);
+
   return (
     <Section>
-      <MainTitleContainer>
-        <MainTitle>
-          Monica&apos;s
-          <br />
-          Portfolio
-        </MainTitle>
-      </MainTitleContainer>
-      <Navigation>
+      <MainTitle>
+        Monica&apos;s
+        <br />
+        Portfolio
+      </MainTitle>
+      <Navigation isAnimationStart={isAnimationStart}>
         {NavigateContents.map((navigateContent) => (
           <Link href={navigateContent.href} key={navigateContent.label}>
             <NavigationItem>
