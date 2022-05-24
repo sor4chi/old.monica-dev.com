@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { Main } from "./Main";
 
 interface LayoutProps {
   children: ReactNode;
@@ -7,7 +8,7 @@ interface LayoutProps {
 const Layout = ({ children, ...props }: LayoutProps) => {
   return (
     <>
-      <main {...props}>{children}</main>
+      <Main {...props}>{children}</Main>
     </>
   );
 };

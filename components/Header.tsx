@@ -9,6 +9,7 @@ const HeaderContainer = styled.header`
   align-items: center;
   justify-content: space-between;
   padding: 0 10vw;
+  user-select: none;
   height: ${({ theme }) => theme.variables.headerHeight};
 
   svg {
@@ -36,13 +37,25 @@ const NavigationItem = styled.a<{
   isActive: boolean;
 }>`
   color: ${({ theme }) => theme.colors.text};
-  border-bottom: ${({ isActive }) => (isActive ? `.2rem solid` : "none")};
+  border-bottom: 0.2rem solid;
   font-size: 1.4rem;
   cursor: pointer;
-  border-color: ${({ theme }) => theme.colors.text};
+  border-color: ${({ isActive, theme }) => {
+    if (isActive) {
+      return theme.colors.text;
+    } else {
+      return theme.colors.background;
+    }
+  }};
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
-    border-color: ${({ theme }) => theme.colors.primary};
+    border-color: ${({ isActive, theme }) => {
+      if (isActive) {
+        return theme.colors.primary;
+      } else {
+        return theme.colors.background;
+      }
+    }};
   }
 `;
 

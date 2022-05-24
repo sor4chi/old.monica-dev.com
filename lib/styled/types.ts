@@ -4,6 +4,7 @@ export interface ThemeType {
   };
   colors: {
     text: string;
+    subText: string;
     background: string;
     subBackground: string;
     primary: string;

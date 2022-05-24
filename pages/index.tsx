@@ -1,60 +1,126 @@
 import styled from "styled-components";
 import { GetStaticProps } from "next";
-import { useState } from "react";
+import Link from "next/link";
 import ArrowSVG from "components/svgs/Arrow";
 
-const MainTitleContainer = styled.div<{ isAboutOpen: boolean }>`
+const SectionContainer = styled.main`
   display: flex;
-  flex-direction: ${(props) => (props.isAboutOpen ? "column" : "row")};
+  justify-content: space-around;
   align-items: center;
-  justify-content: center;
-  color: ${({ theme }) => theme.colors.text};
-  transition: 1s ease;
+  user-select: none;
+  margin: 10rem 0;
 `;
 
-const MainTitle = styled.h1<{ isAboutOpen: boolean }>`
-  font-size: ${(props) => (props.isAboutOpen ? "5rem" : "1.5rem")};
+const MainTitleContainer = styled.div`
+  display: flex;
+  align-items: baseline;
+`;
+
+const MainTitle = styled.h1`
   font-weight: bold;
+  font-size: 4.5rem;
   letter-spacing: 1rem;
   margin: 0;
-  transition: 1s ease;
-`;
+  transition: 0.3s ease;
+  position: relative;
 
-const AboutOpener = styled.span<{ isAboutOpen: boolean }>`
-  font-size: 1.4rem;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transition: 1s ease;
-
-  svg {
-    fill: ${({ theme }) => theme.colors.text};
-    transform: ${(props) =>
-      props.isAboutOpen ? "rotate(90deg)" : "rotate(-90deg)"};
+  &::after {
+    content: "";
+    position: absolute;
+    display: block;
+    bottom: -1rem;
+    left: 5%;
+    width: 10%;
+    height: 0.5rem;
+    background: ${({ theme }) => theme.colors.primary};
   }
 `;
 
-const Home = () => {
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
+const NavigationWrapper = styled.nav`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 1rem;
+`;
 
+const NavigationItem = styled.a`
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.text};
+  transition: all 0.3s ease;
+
+  svg {
+    fill: ${({ theme }) => theme.colors.text};
+    transition: all 0.3s ease;
+  }
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+    svg {
+      fill: ${({ theme }) => theme.colors.primary};
+    }
+  }
+`;
+
+const NavigationItemLabel = styled.span`
+  display: flex;
+  align-items: center;
+  font-size: 1.6rem;
+`;
+
+const NavigationItemSubLabel = styled.span`
+  color: ${({ theme }) => theme.colors.subText};
+  font-size: 1rem;
+`;
+
+const NavigateContents = [
+  {
+    label: "Timeline",
+    href: "/timeline",
+    subLabel: "My History As Engineer.",
+  },
+  {
+    label: "Works",
+    href: "/works",
+    subLabel: "My Works.",
+  },
+  {
+    label: "Blog",
+    href: "/blog",
+    subLabel: "My Tech Blog.",
+  },
+  {
+    label: "Contact",
+    href: "/contact",
+    subLabel: "Please contact me.",
+  },
+];
+
+const Home = () => {
   return (
-    <>
-      <MainTitleContainer isAboutOpen={isAboutOpen}>
-        <MainTitle isAboutOpen={isAboutOpen}>
+    <SectionContainer>
+      <MainTitleContainer>
+        <MainTitle>
           Monica&apos;s
           <br />
           Portfolio
         </MainTitle>
-        <AboutOpener
-          onClick={() => setIsAboutOpen(!isAboutOpen)}
-          isAboutOpen={isAboutOpen}
-        >
-          About
-          <ArrowSVG />
-        </AboutOpener>
       </MainTitleContainer>
-    </>
+      <NavigationWrapper>
+        {NavigateContents.map((navigateContent) => (
+          <Link href={navigateContent.href} key={navigateContent.label}>
+            <NavigationItem>
+              <NavigationItemLabel>
+                {navigateContent.label}
+                <ArrowSVG />
+              </NavigationItemLabel>
+              <NavigationItemSubLabel>
+                {navigateContent.subLabel}
+              </NavigationItemSubLabel>
+            </NavigationItem>
+          </Link>
+        ))}
+      </NavigationWrapper>
+    </SectionContainer>
   );
 };
 
