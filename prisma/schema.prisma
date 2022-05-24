@@ -12,3 +12,62 @@ datasource db {
   referentialIntegrity = "prisma"
 }
 
+model Work {
+  id         Int            @id
+  slug       String         @unique
+  title      String
+  content    String
+  category   WorksCategory? @relation(fields: [categoryId], references: [id])
+  categoryId Int?
+  createdAt  DateTime
+  updatedAt  DateTime
+}
+
+model WorksCategory {
+  id        Int      @id
+  slug      String   @unique
+  name      String
+  works     Work[]
+  createdAt DateTime
+  updatedAt DateTime
+}
+
+model BlogsTag {
+  id        Int         @id
+  slug      String      @unique
+  name      String
+  blogs     TagOnBlog[]
+  createdAt DateTime
+  updatedAt DateTime
+  blogId    Int
+}
+
+model Blog {
+  id        Int         @id
+  slug      String      @unique
+  title     String
+  content   String
+  qiitaUrl  String?
+  zennUrl   String?
+  tags      TagOnBlog[]
+  createdAt DateTime
+  updatedAt DateTime
+}
+
+model TagOnBlog {
+  tag        BlogsTag @relation(fields: [tagId], references: [id])
+  tagId      Int
+  blog       Blog     @relation(fields: [blogId], references: [id])
+  blogId     Int
+  assignedAt DateTime @default(now())
+
+  @@id([blogId, tagId])
+}
+
+model Timeline {
+  id        Int      @id
+  title     String
+  content   String
+  createdAt DateTime
+  updatedAt DateTime
+}
