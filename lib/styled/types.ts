@@ -1,7 +1,7 @@
+import { commonVariables } from "./themes";
+
 export interface ThemeType {
-  variables: {
-    headerHeight: string;
-  };
+  variables: typeof commonVariables;
   colors: {
     text: string;
     subText: string;

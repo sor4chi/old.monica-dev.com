@@ -1,8 +1,12 @@
 import { createGlobalStyle } from "styled-components";
 import { ThemeType } from "./types";
 
-const commonVariables = {
+export const commonVariables = {
   headerHeight: "6rem",
+  timelineBarMargin: "3rem",
+  timelineBarWidth: "2px",
+  timelineIconSize: "0.5rem",
+  timelineIconPositionTop: "0.5rem",
 };
 
 export const lightTheme: ThemeType = {
@@ -32,8 +36,7 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Roboto Mono,helvetica neue,helvetica,arial,hiragino sans,-apple-system,BlinkMacSystemFont,hiragino kaku gothic pron,noto sans jp,noto sans cjk jp,meiryo,メイリオ,segoe ui,sans-serif;
-    /* transition: all 0.2s; */
+    font-family: 'Roboto Mono', monospace, 'BIZ UDPGothic', sans-serif;;
   }
   
   html, body, #__next {

@@ -96,7 +96,7 @@ const NavigateContents = [
   },
 ];
 
-const Home = () => {
+const HomePage = () => {
   const [isAnimationStart, setIsAnimationStart] = useState(false);
 
   useEffect(() => {
@@ -131,7 +131,7 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;
 
 export const getStaticProps: GetStaticProps = async () => {
   return {

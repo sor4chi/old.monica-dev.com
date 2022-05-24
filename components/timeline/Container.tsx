@@ -1,0 +1,52 @@
+import { ReactNode, useEffect, useState } from "react";
+import styled from "styled-components";
+
+interface TimelineContainerProps {
+  children: ReactNode;
+}
+
+const Container = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+interface TimelineBarProps {
+  timelineBarHeight: number;
+}
+
+const TimelineBar = styled.div<TimelineBarProps>`
+  position: absolute;
+  left: calc(
+    (
+        ${({ theme }) => theme.variables.timelineBarMargin} -
+          ${({ theme }) => theme.variables.timelineBarWidth}
+      ) / 2
+  );
+  width: 2px;
+  top: ${({ theme }) => theme.variables.timelineIconPositionTop};
+  height: ${({ timelineBarHeight }) => timelineBarHeight}px;
+  background-color: ${({ theme }) => theme.colors.text};
+`;
+
+const TimelineContainer = ({ children }: TimelineContainerProps) => {
+  const [timelineBarHeight, setTimelineBarHeight] = useState(0);
+
+  useEffect(() => {
+    const timeline = document.getElementById("timeline");
+    if (!timeline) {
+      return;
+    }
+    const firstItemTop = (timeline.firstElementChild as HTMLElement).offsetTop;
+    const lastItemTop = (timeline.lastElementChild as HTMLElement).offsetTop;
+    setTimelineBarHeight(lastItemTop - firstItemTop);
+  }, []);
+
+  return (
+    <Container>
+      <TimelineBar timelineBarHeight={timelineBarHeight} />
+      <div id="timeline">{children}</div>
+    </Container>
+  );
+};
+
+export default TimelineContainer;
