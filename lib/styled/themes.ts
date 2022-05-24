@@ -31,7 +31,7 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
     padding: 0;
     box-sizing: border-box;
     font-family: robot,helvetica neue,helvetica,arial,hiragino sans,-apple-system,BlinkMacSystemFont,hiragino kaku gothic pron,noto sans jp,noto sans cjk jp,meiryo,メイリオ,segoe ui,sans-serif;
-    transition: all 0.2s;
+    /* transition: all 0.2s; */
   }
   
   html, body, #__next {
