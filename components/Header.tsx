@@ -9,7 +9,7 @@ const HeaderContainer = styled.header`
   align-items: center;
   justify-content: space-between;
   padding: 0 10vw;
-  height: ${({ theme }) => theme.headerHeight};
+  height: ${({ theme }) => theme.variables.headerHeight};
 
   svg {
     fill: ${({ theme }) => theme.colors.text};
