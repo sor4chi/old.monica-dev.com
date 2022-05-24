@@ -2,7 +2,6 @@ import LightSVG from "components/svgs/Light";
 import DarkSVG from "components/svgs/Dark";
 import { useGlobalContext } from "lib/store/context";
 import styled from "styled-components";
-import { useCallback } from "react";
 
 const ThemeToggleButtonContainer = styled.div`
   display: flex;
