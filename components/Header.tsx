@@ -71,6 +71,11 @@ const NavigationItems = [
     activePaths: ["/timeline"],
   },
   {
+    href: "/works",
+    label: "Works",
+    activePaths: ["/works", "/works/[workId]"],
+  },
+  {
     href: "/blog",
     label: "Blog",
     activePaths: ["/blog", "/blog/[slug]"],

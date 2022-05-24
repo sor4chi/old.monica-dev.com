@@ -65,6 +65,7 @@ const NavigationItemLabel = styled.span`
   display: flex;
   align-items: center;
   font-size: 1.6rem;
+  gap: 0.5rem;
 `;
 
 const NavigationItemSubLabel = styled.span`
@@ -76,17 +77,17 @@ const NavigateContents = [
   {
     label: "Timeline",
     href: "/timeline",
-    subLabel: "My History As Engineer.",
+    subLabel: "My history as an engineer.",
   },
   {
     label: "Works",
     href: "/works",
-    subLabel: "My Works.",
+    subLabel: "My works.",
   },
   {
     label: "Blog",
     href: "/blog",
-    subLabel: "My Tech Blog.",
+    subLabel: "My tech blog.",
   },
   {
     label: "Contact",
