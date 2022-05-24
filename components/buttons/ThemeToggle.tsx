@@ -9,6 +9,7 @@ const ThemeToggleButtonContainer = styled.div`
   border-radius: 0.3rem;
   background: ${({ theme }) => theme.colors.subBackground};
   overflow: hidden;
+  cursor: pointer;
 `;
 
 const ThemeToggleButtonInner = styled.div<{
@@ -25,6 +26,9 @@ const ThemeToggleButtonInner = styled.div<{
     width: 100%;
     height: 100%;
     padding: 0.3rem;
+    &:hover {
+      fill: ${({ theme }) => theme.colors.primary};
+    }
   }
 `;
 
