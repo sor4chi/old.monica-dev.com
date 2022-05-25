@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Timeline, TimelineCategory } from "@prisma/client";
 import SchoolSVG from "components/svgs/School";
+import CertificationSVG from "components/svgs/Certification";
 
 interface TimelineItemProps {
   timelineItem: Timeline & {
@@ -9,25 +10,45 @@ interface TimelineItemProps {
 }
 
 const Container = styled.div`
-  margin-left: ${({ theme }) => theme.variables.timelineBarMargin};
+  margin-left: ${({ theme }) => theme.variables.timelineIconContainerSize};
   position: relative;
+  cursor: pointer;
 `;
 
 const Inner = styled.div`
+  margin-left: 1rem;
   margin-bottom: 2rem;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  height: 3rem;
+`;
+
+const SubContainer = styled.div`
+  font-size: 1rem;
+  color: ${({ theme }) => theme.colors.subText};
 `;
 
 const Point = styled.div`
   position: absolute;
   left: calc(
     -1 * (
-        ${({ theme }) => theme.variables.timelineBarMargin} +
-          ${({ theme }) => theme.variables.timelineIconSize}
+        ${({ theme }) => theme.variables.timelineIconContainerSize} +
+          ${({ theme }) => theme.variables.timelineNormalIconSize}
       ) / 2
   );
-  top: ${({ theme }) => theme.variables.timelineIconPositionTop};
-  width: ${({ theme }) => theme.variables.timelineIconSize};
-  height: ${({ theme }) => theme.variables.timelineIconSize};
+  top: calc(
+    (
+        ${({ theme }) => theme.variables.timelineIconContainerSize} -
+          ${({ theme }) => theme.variables.timelineNormalIconSize}
+      ) / 2
+  );
+
+  width: ${({ theme }) => theme.variables.timelineNormalIconSize};
+  height: ${({ theme }) => theme.variables.timelineNormalIconSize};
   outline: 5px solid ${({ theme }) => theme.colors.background};
   border-radius: 50%;
   background-color: ${({ theme }) => theme.colors.text};
@@ -36,15 +57,30 @@ const Point = styled.div`
 const PointSVG = styled.div`
   position: absolute;
   left: calc(
-    -1 * (${({ theme }) => theme.variables.timelineBarMargin} + 24px) / 2
+    -1 * (
+        ${({ theme }) => theme.variables.timelineIconContainerSize} +
+          ${({ theme }) => theme.variables.timelineSVGIconSize}
+      ) / 2
   );
-  top: ${({ theme }) => theme.variables.timelineIconPositionTop};
+  top: calc(
+    (
+        ${({ theme }) => theme.variables.timelineIconContainerSize} -
+          ${({ theme }) => theme.variables.timelineSVGIconSize}
+      ) / 2
+  );
   outline: 5px solid ${({ theme }) => theme.colors.background};
-  width: 24px;
-  height: 24px;
-  background-color: ${({ theme }) => theme.colors.background};
+  width: ${({ theme }) => theme.variables.timelineSVGIconSize};
+  height: ${({ theme }) => theme.variables.timelineSVGIconSize};
+  background-color: ${({ theme }) => theme.colors.subBackground};
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   svg {
     fill: ${({ theme }) => theme.colors.text};
+    width: 24px;
+    height: 24px;
   }
 `;
 
@@ -57,11 +93,18 @@ const TimelineIcons = [
     ),
     key: "school",
   },
+  {
+    svg: (
+      <PointSVG>
+        <CertificationSVG />
+      </PointSVG>
+    ),
+    key: "certification",
+  },
 ];
 
 const getIcon = (key: string) => {
   const icon = TimelineIcons.find((item) => item.key === key);
-  console.log(icon);
   return icon ? icon.svg : <Point />;
 };
 
@@ -70,8 +113,8 @@ const TimelineItem = ({ timelineItem }: TimelineItemProps) => {
     <Container>
       <Inner>
         {getIcon(timelineItem.category.slug)}
-        <h3>{timelineItem.title}</h3>
-        <p>{timelineItem.content}</p>
+        <TitleContainer>{timelineItem.title}</TitleContainer>
+        <SubContainer>{timelineItem.content}</SubContainer>
       </Inner>
     </Container>
   );

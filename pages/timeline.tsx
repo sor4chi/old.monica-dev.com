@@ -15,6 +15,9 @@ export const getStaticProps = async () => {
   return {
     props: {
       timeline,
+      title: "Timeline",
+      description: "This is my history as an engineer",
+      layout: "Base",
     },
   };
 };

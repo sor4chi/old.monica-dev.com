@@ -20,7 +20,6 @@ export default function App({ Component, pageProps }: AppProps) {
     setIsMounted(true);
     const localStorageIsDarkMode =
       localStorage.getItem("isDarkMode") === "true";
-    console.log("localStorageIsDarkMode", localStorageIsDarkMode);
     dispatch({ type: "SET_DARK_MODE", isDarkMode: localStorageIsDarkMode });
   }, []);
 

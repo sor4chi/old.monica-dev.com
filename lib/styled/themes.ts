@@ -3,10 +3,11 @@ import { ThemeType } from "./types";
 
 export const commonVariables = {
   headerHeight: "6rem",
-  timelineBarMargin: "3rem",
+  timelineIconContainerSize: "3rem",
   timelineBarWidth: "2px",
-  timelineIconSize: "0.5rem",
-  timelineIconPositionTop: "0.5rem",
+  timelineNormalIconSize: "0.5rem",
+  timelineSVGIconSize: "3rem",
+  timelineIconPositionTop: "0",
 };
 
 export const lightTheme: ThemeType = {

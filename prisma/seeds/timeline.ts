@@ -53,6 +53,23 @@ const timelineData: Prisma.TimelineCreateInput[] = [
     },
     happenedAt: new Date("2021-04-10"),
   },
+  {
+    title: "I started to study at the University of Saitama",
+    content:
+      "I started to study at the University of Saitama. I was a member of the university's math club.",
+    category: {
+      connectOrCreate: {
+        where: {
+          slug: "certification",
+        },
+        create: {
+          slug: "certification",
+          name: "Certification",
+        },
+      },
+    },
+    happenedAt: new Date("2017-04-10"),
+  },
 ];
 
 export const timelineTransfer = async () => {
