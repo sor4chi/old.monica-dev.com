@@ -16,6 +16,8 @@ export default function Meta({ title, description = "" }: MetaProps) {
       <meta property="og:description" content={description} />
       <meta property="og:image" content={`ogp_large.png`} />
       <meta name="twitter:card" content="summary_large_image" />
+
+      <link rel="apple-touch-icon" sizes="180x180" href="/icon.png" />
     </Head>
   );
 }

@@ -24,12 +24,19 @@ const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   font-size: 1.2rem;
-  height: 3rem;
+  height: ${({ theme }) => theme.variables.timelineIconContainerSize};
+  line-height: ${({ theme }) => theme.variables.timelineIconContainerSize};
 `;
 
 const SubContainer = styled.div`
   font-size: 1rem;
   color: ${({ theme }) => theme.colors.subText};
+  background-color: ${({ theme }) => theme.colors.subBackground};
+  padding: 1rem;
+  border-radius: 0.2rem;
+  border: 0.1rem solid
+    ${({ theme }) =>
+      theme.utils.changeIntensity(theme.colors.subBackground, 0.2)};
 `;
 
 const Point = styled.div`

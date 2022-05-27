@@ -6,6 +6,7 @@ import { AppProps } from "next/app";
 import BaseLayout from "components/layouts/Base";
 import VanillaLayout from "components/layouts/Vanilla";
 import Meta from "components/Meta";
+import Head from "next/head";
 
 import { lightTheme, darkTheme, GlobalStyle } from "lib/styled/themes";
 
@@ -39,6 +40,16 @@ export default function App({ Component, pageProps }: AppProps) {
   const body = (
     <>
       <Meta title={pageProps.title} description={pageProps.description} />
+      <Head>
+        <meta
+          name="theme-color"
+          content={
+            state.isDarkMode
+              ? darkTheme.colors.background
+              : lightTheme.colors.background
+          }
+        />
+      </Head>
       <Context.Provider value={{ state, dispatch }}>
         <ThemeProvider theme={state.isDarkMode ? darkTheme : lightTheme}>
           <GlobalStyle />

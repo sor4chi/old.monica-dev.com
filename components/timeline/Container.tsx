@@ -26,7 +26,7 @@ const TimelineBar = styled.div<TimelineBarProps>`
   width: 2px;
   top: ${({ theme }) => theme.variables.timelineIconContainerSize};
   height: ${({ timelineBarHeight }) => timelineBarHeight}px;
-  background-color: ${({ theme }) => theme.colors.text};
+  background-color: ${({ theme }) => theme.colors.subBackground};
 `;
 
 const TimelineContainer = ({ children }: TimelineContainerProps) => {
