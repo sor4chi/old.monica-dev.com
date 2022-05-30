@@ -5,7 +5,7 @@ export const common = {
   variables: {
     headerHeight: "6rem",
     timelineIconContainerSize: "3rem",
-    timelineBarWidth: "2px",
+    timelineBarWidth: "0.1rem",
     timelineNormalIconSize: "0.5rem",
     timelineSVGIconSize: "3rem",
     timelineIconPositionTop: "0",

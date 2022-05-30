@@ -58,7 +58,7 @@ const Point = styled.div`
   height: ${({ theme }) => theme.variables.timelineNormalIconSize};
   outline: 5px solid ${({ theme }) => theme.colors.background};
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.text};
+  background-color: ${({ theme }) => theme.colors.subText};
 `;
 
 const PointSVG = styled.div`

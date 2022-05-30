@@ -23,10 +23,10 @@ const TimelineBar = styled.div<TimelineBarProps>`
           ${({ theme }) => theme.variables.timelineBarWidth}
       ) / 2
   );
-  width: 2px;
+  width: ${({ theme }) => theme.variables.timelineBarWidth};
   top: ${({ theme }) => theme.variables.timelineIconContainerSize};
   height: ${({ timelineBarHeight }) => timelineBarHeight}px;
-  background-color: ${({ theme }) => theme.colors.subBackground};
+  background-color: ${({ theme }) => theme.colors.subText};
 `;
 
 const TimelineContainer = ({ children }: TimelineContainerProps) => {
