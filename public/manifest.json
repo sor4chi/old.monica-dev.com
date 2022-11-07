@@ -1,0 +1,22 @@
+{
+  "name": "Monica&apos;s Portfolio",
+  "short_name": "Monica",
+  "description": "Monicaのポートフォリオサイトです。自身の経歴やスキル、制作物、アウトプット記事などをまとめています。",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ffffff",
+  "theme_color": "#60a5fa",
+  "icons": [
+    {
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
