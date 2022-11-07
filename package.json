@@ -1,0 +1,50 @@
+{
+  "name": "app-playground",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write \"**/*.{js,ts,tsx,md}\""
+  },
+  "dependencies": {
+    "@types/xml2js": "^0.4.11",
+    "fast-xml-parser": "^4.0.11",
+    "highlight.js": "^11.6.0",
+    "katex": "^0.16.3",
+    "next": "^13.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.6.0",
+    "rehype-highlight": "^5.0.2",
+    "rehype-katex": "^6.0.2",
+    "rehype-parse": "^8.0.4",
+    "rehype-react": "^7.1.1",
+    "rehype-stringify": "^9.0.3",
+    "remark-directive": "^2.0.1",
+    "remark-gfm": "^3.0.1",
+    "remark-math": "^5.1.1",
+    "remark-parse": "^10.0.1",
+    "remark-rehype": "^10.1.0",
+    "remark-slug": "^7.0.1",
+    "unified": "^10.1.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.8",
+    "@types/node": "18.11.9",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.8",
+    "autoprefixer": "^10.4.13",
+    "clsx": "^1.2.1",
+    "eslint-config-next": "^13.0.2",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-tailwindcss": "^3.6.2",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "flowbite-typography": "^1.0.3",
+    "postcss": "^8.4.18",
+    "prettier": "^2.7.1",
+    "tailwindcss": "^3.2.2"
+  }
+}
