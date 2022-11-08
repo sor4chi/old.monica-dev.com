@@ -29,9 +29,9 @@ export const BlogCard = ({ blog }: Props) => {
       onMouseOver={() => setOnHover(true)}
       onMouseOut={() => setOnHover(false)}
       className={clsx(
-        'border-[1.5px] rounded-lg flex space-y-2 p-4',
-        'text-neutral-800 bg-slate-50 border-white',
-        'dark:text-slate-200 dark:bg-neutral-800 dark:border-neutral-700',
+        'border-[1.5px] rounded-lg flex space-y-2 p-4 transition-colors duration-300 ease-in-out',
+        'text-neutral-800 bg-slate-50 border-white hover:border-orange-500',
+        'dark:text-slate-200 dark:bg-neutral-800 dark:border-neutral-700 dark:hover:border-orange-500',
       )}
     >
       <div
@@ -46,7 +46,7 @@ export const BlogCard = ({ blog }: Props) => {
         </div>
         <div
           className={clsx(
-            'w-full h-full left-0 top-0 flex justify-center items-center absolute backdrop-blur-sm',
+            'w-full h-full left-0 top-0 flex justify-center items-center absolute backdrop-blur-sm  transition-opacity duration-300 ease-in-out',
             onHover ? 'opacity-100' : 'opacity-0',
           )}
         >
