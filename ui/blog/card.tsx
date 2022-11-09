@@ -8,6 +8,8 @@ import { IoMdArrowForward, IoMdOpen } from 'react-icons/io';
 import { Blog } from '#/types/blog';
 import { dateToPassedTimeByNow } from '#/utils/date';
 
+import { Card } from '../commons/card';
+
 import { BlogTagList } from './tag-list';
 
 interface Props {
@@ -28,39 +30,36 @@ export const BlogCard = ({ blog }: Props) => {
       href={blog.url || `blogs/${blog.slug}` || ''}
       onMouseOver={() => setOnHover(true)}
       onMouseOut={() => setOnHover(false)}
-      className={clsx(
-        'border-[1.5px] rounded-lg flex p-4 transition-[border] duration-300 ease-in-out',
-        'text-neutral-800 bg-slate-50 border-white hover:border-orange-500',
-        'dark:text-slate-200 dark:bg-neutral-800 dark:border-neutral-700 dark:hover:border-orange-500',
-      )}
     >
-      <div
-        className={clsx(
-          'w-max h-max mr-4 rounded-lg float-left border-[1.5px] relative overflow-hidden',
-          'bg-slate-100 border-white',
-          'dark:bg-neutral-900 dark:border-neutral-700',
-        )}
-      >
-        <div className="p-4">
-          <Image src={iconUrl} alt="icon" width={24} height={24} />
-        </div>
+      <Card>
         <div
           className={clsx(
-            'w-full h-full left-0 top-0 flex justify-center items-center absolute backdrop-blur-sm  transition-opacity duration-300 ease-in-out',
-            onHover ? 'opacity-100' : 'opacity-0',
+            'w-max h-max mr-4 rounded-lg float-left border-[1.5px] relative overflow-hidden',
+            'bg-slate-100 border-white',
+            'dark:bg-neutral-900 dark:border-neutral-700',
           )}
         >
-          {blog.type !== 'original' ? <IoMdOpen /> : <IoMdArrowForward />}
+          <div className="p-4">
+            <Image src={iconUrl} alt="icon" width={24} height={24} />
+          </div>
+          <div
+            className={clsx(
+              'w-full h-full left-0 top-0 flex justify-center items-center absolute backdrop-blur-sm  transition-opacity duration-300 ease-in-out',
+              onHover ? 'opacity-100' : 'opacity-0',
+            )}
+          >
+            {blog.type !== 'original' ? <IoMdOpen /> : <IoMdArrowForward />}
+          </div>
         </div>
-      </div>
-      <div className="flex-1">
-        <div className="h-[calc(100%_-_1.25rem)] float-right"></div>
-        <div className="float-right clear-both text-sm text-neutral-400 dark:text-neutral-600">
-          {dateToPassedTimeByNow(blog.date)}
+        <div className="flex-1">
+          <div className="h-[calc(100%_-_1.25rem)] float-right"></div>
+          <div className="float-right clear-both text-sm text-neutral-400 dark:text-neutral-600">
+            {dateToPassedTimeByNow(blog.date)}
+          </div>
+          <h1 className="text-xl font-bold">{blog.title}</h1>
+          <BlogTagList tags={blog.tags} />
         </div>
-        <h1 className="text-xl font-bold">{blog.title}</h1>
-        <BlogTagList tags={blog.tags} />
-      </div>
+      </Card>
     </Link>
   );
 };
