@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
-import { IoIosFastforward, IoMdArrowForward, IoMdOpen } from 'react-icons/io';
+import { IoMdArrowForward, IoMdOpen } from 'react-icons/io';
 
 import { Blog } from '#/types/blog';
 import { dateToPassedTimeByNow } from '#/utils/date';
@@ -29,7 +29,7 @@ export const BlogCard = ({ blog }: Props) => {
       onMouseOver={() => setOnHover(true)}
       onMouseOut={() => setOnHover(false)}
       className={clsx(
-        'border-[1.5px] rounded-lg flex space-y-2 p-4 transition-colors duration-300 ease-in-out',
+        'border-[1.5px] rounded-lg flex p-4 transition-[border] duration-300 ease-in-out',
         'text-neutral-800 bg-slate-50 border-white hover:border-orange-500',
         'dark:text-slate-200 dark:bg-neutral-800 dark:border-neutral-700 dark:hover:border-orange-500',
       )}
@@ -53,11 +53,11 @@ export const BlogCard = ({ blog }: Props) => {
           {blog.type !== 'original' ? <IoMdOpen /> : <IoMdArrowForward />}
         </div>
       </div>
-      <div className="flex-1 space-y-2">
+      <div className="justify-between flex flex-col flex-1">
         <div className="text-xl font-bold">{blog.title}</div>
         <div className="flex justify-between items-center">
           <BlogTagList tags={blog.tags} />
-          <div className="text-sm text-neutral-400 dark:text-neutral-500">
+          <div className="text-sm text-neutral-400 dark:text-neutral-600">
             {dateToPassedTimeByNow(blog.date)}
           </div>
         </div>
