@@ -53,14 +53,13 @@ export const BlogCard = ({ blog }: Props) => {
           {blog.type !== 'original' ? <IoMdOpen /> : <IoMdArrowForward />}
         </div>
       </div>
-      <div className="justify-between flex flex-col flex-1">
-        <div className="text-xl font-bold">{blog.title}</div>
-        <div className="flex justify-between items-center">
-          <BlogTagList tags={blog.tags} />
-          <div className="text-sm text-neutral-400 dark:text-neutral-600">
-            {dateToPassedTimeByNow(blog.date)}
-          </div>
+      <div className="flex-1">
+        <div className="h-[calc(100%_-_1.25rem)] float-right"></div>
+        <div className="float-right clear-both text-sm text-neutral-400 dark:text-neutral-600">
+          {dateToPassedTimeByNow(blog.date)}
         </div>
+        <h1 className="text-xl font-bold">{blog.title}</h1>
+        <BlogTagList tags={blog.tags} />
       </div>
     </Link>
   );

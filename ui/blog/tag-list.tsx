@@ -6,7 +6,7 @@ interface Props {
 
 export const BlogTagList = ({ tags }: Props) => {
   return (
-    <div className="gap-2 flex">
+    <div className="gap-2 flex mt-1">
       {(tags || []).map((tag) => (
         <BlogTag key={tag} tag={tag} />
       ))}
