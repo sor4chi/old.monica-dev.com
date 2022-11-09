@@ -5,12 +5,13 @@ import { useEffect, useState } from 'react';
 import { IoIosSunny, IoIosMoon } from 'react-icons/io';
 
 export const ThemeSwitch = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsDarkMode(localStorage.getItem('theme') === 'dark');
-    setTimeout(() => setIsLoading(false), 1000);
+    setIsDarkMode(
+      localStorage.getItem('theme') === 'dark' ||
+        document.documentElement.classList.contains('dark'),
+    );
   }, []);
 
   const toggleDarkMode = () => {
