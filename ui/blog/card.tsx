@@ -2,7 +2,7 @@
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { IoMdArrowForward, IoMdOpen } from 'react-icons/io';
 
 import { Blog } from '#/types/blog';
@@ -17,11 +17,11 @@ interface Props {
 }
 
 export const BlogCard = ({ blog }: Props) => {
-  const iconUrl = useMemo(() => {
+  const iconUrl = (() => {
     if (blog.type === 'zenn') return '/zenn.svg';
     if (blog.type === 'qiita') return '/qiita.png';
     return '/original.svg';
-  }, [blog.type]);
+  })();
 
   const [onHover, setOnHover] = useState(false);
 
