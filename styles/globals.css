@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .main-gradient {
+    @apply bg-gradient-to-r from-orange-400 to-orange-500;
+  }
+
+  .main-gradient-hover {
+    @apply bg-gradient-to-r from-orange-500 to-orange-600;
+  }
+
+  .main-gradient-active {
+    @apply bg-gradient-to-r from-orange-600 to-orange-500;
+  }
+
+  .common-card {
+    @apply border-[1.5px] rounded-lg transition-[border] ease-in-out text-neutral-800 bg-slate-50 border-white dark:text-slate-200 dark:bg-neutral-800 dark:border-neutral-700;
+  }
+}

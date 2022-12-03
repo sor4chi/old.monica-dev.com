@@ -56,7 +56,7 @@ export const Navigation = () => {
       ))}
       <span
         className={clsx(
-          'bg-gradient-to-r from-orange-400 to-orange-500',
+          'main-gradient',
           'transition-all duration-300 ease-in-out',
           'h-1 rounded-full absolute -bottom-2 !m-0',
         )}

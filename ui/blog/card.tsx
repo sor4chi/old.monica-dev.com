@@ -59,12 +59,13 @@ export const BlogCard = ({ blog }: Props) => {
           </div>
         </div>
         <div className="flex-1">
-          <div className="h-[calc(100%_-_1.25rem)] float-right"></div>
-          <div className="float-right clear-both text-sm text-neutral-400 dark:text-neutral-600">
-            {dateToPassedTimeByNow(blog.date)}
-          </div>
           <h1 className="text-xl font-bold">{blog.title}</h1>
-          <BlogTagList tags={blog.tags} />
+          <div className="flex flex-wrap items-end justify-between mt-2">
+            <BlogTagList tags={blog.tags} />
+            <div className="float-right clear-both text-sm text-neutral-400 dark:text-neutral-600">
+              {dateToPassedTimeByNow(blog.date)}
+            </div>
+          </div>
         </div>
       </Card>
     </Link>
