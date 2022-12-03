@@ -25,9 +25,16 @@ export const BlogCard = ({ blog }: Props) => {
 
   const [onHover, setOnHover] = useState(false);
 
+  const isUrlExternal = (() => {
+    if (blog.type === 'zenn') return true;
+    if (blog.type === 'qiita') return true;
+    return false;
+  })();
+
   return (
     <Link
       href={blog.url || `blogs/${blog.slug}` || ''}
+      target={isUrlExternal ? '_blank' : undefined}
       onMouseOver={() => setOnHover(true)}
       onMouseOut={() => setOnHover(false)}
     >
