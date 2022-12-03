@@ -56,7 +56,9 @@ export const Navigation = () => {
       ))}
       <span
         className={clsx(
-          'h-1 rounded-full bg-neutral-800 dark:bg-neutral-100 absolute -bottom-2 !m-0 transition-all duration-300 ease-in-out',
+          'main-gradient',
+          'transition-all duration-300 ease-in-out',
+          'h-1 rounded-full absolute -bottom-2 !m-0',
         )}
         ref={activeBarRef}
       />

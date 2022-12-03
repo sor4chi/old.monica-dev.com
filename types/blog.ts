@@ -16,7 +16,7 @@ export interface ZennFeed {
         title: string;
         link: string;
         pubDate: string;
-        category: string[];
+        category?: string[];
         description: string;
       }[];
     };

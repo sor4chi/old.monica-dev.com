@@ -33,7 +33,7 @@ export const getBlogByZenn = async (): Promise<Blog[]> => {
       title: item.title,
       url: item.link,
       date: item.pubDate,
-      tags: item.category,
+      tags: item.category || [],
       description: item.description,
       published: true,
     };
