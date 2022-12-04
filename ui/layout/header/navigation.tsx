@@ -46,7 +46,7 @@ export const Navigation = () => {
 
   return (
     <nav
-      className="relative space-x-4 text-neutral-800 dark:text-neutral-100 flex"
+      className="relative space-x-4 text-neutral-800 dark:text-neutral-100 flex transition-colors duration-300"
       ref={navRef}
     >
       {NAVIGATION_ITEMS.map((item) => (

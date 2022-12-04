@@ -44,6 +44,7 @@ export const BlogCard = ({ blog }: Props) => {
             'w-max h-max mr-4 rounded-lg float-left border-[1.5px] relative overflow-hidden',
             'bg-slate-100 border-white',
             'dark:bg-neutral-900 dark:border-neutral-700',
+            'transition-colors duration-300',
           )}
         >
           <div className="p-4">
