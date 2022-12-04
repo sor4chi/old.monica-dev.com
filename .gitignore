@@ -2,3 +2,8 @@ node_modules
 .next
 .vscode
 .env
+
+# tailwind
+.turbo
+.vscode
+styles/dist.css

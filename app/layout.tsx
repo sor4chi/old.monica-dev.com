@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-sync-scripts */
 import { Header } from '#/ui/layout/header';
+import '#/styles/dist.css';
 
-import '#/styles/globals.css';
 export default function RootLayout({
   children,
 }: {
