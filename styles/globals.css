@@ -16,6 +16,6 @@
   }
 
   .common-card {
-    @apply border-[1.5px] rounded-lg transition-[border] ease-in-out text-neutral-800 bg-slate-50 border-white dark:text-slate-200 dark:bg-neutral-800 dark:border-neutral-700;
+    @apply border-[1.5px] rounded-lg text-neutral-800 bg-slate-50 border-white dark:text-slate-200 dark:bg-neutral-800 dark:border-neutral-700;
   }
 }

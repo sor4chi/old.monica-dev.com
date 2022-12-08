@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-sync-scripts */
 import { Header } from '#/ui/layout/header';
+import '#/styles/dist.css';
 
-import '#/styles/globals.css';
 export default function RootLayout({
   children,
 }: {
@@ -26,7 +26,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <script src="/fouc.js" />
       </head>
-      <body className="bg-slate-100 dark:bg-neutral-900">
+      <body className="bg-slate-100 dark:bg-neutral-900 transition-colors duration-300 ease-in-out">
         <Header />
         <div className="pt-16">{children}</div>
       </body>
