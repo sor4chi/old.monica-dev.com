@@ -72,50 +72,51 @@ model VerificationToken {
 
 // Timeline Models
 model Timeline {
-  id             String          @id @default(cuid())
-  title          String
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  contentType    String
-  contentString  contentString?
-  contentWithUrl contentWithUrl?
-  contentWithImg contentWithImg?
-  contentTweet   contentTweet?
+  id           String        @id @default(cuid())
+  title        String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  contentType  String
+  contentText  ContentText?
+  contentLink  ContentLink?
+  contentImg   ContentImg?
+  contentTweet ContentTweet?
 }
 
-model contentString {
+model ContentText {
   id         String   @id @default(cuid())
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  content    String
+  content    String   @db.Text
   timelineId String   @unique
   timeline   Timeline @relation(fields: [timelineId], references: [id], onDelete: Cascade)
 }
 
-model contentWithUrl {
+model ContentLink {
   id         String   @id @default(cuid())
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  content    String
-  url        String
+  content    String?  @db.Text
+  link       String
   timelineId String   @unique
   timeline   Timeline @relation(fields: [timelineId], references: [id], onDelete: Cascade)
 }
 
-model contentWithImg {
+model ContentImg {
   id         String   @id @default(cuid())
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  content    String
+  content    String?  @db.Text
   img        String
   timelineId String   @unique
   timeline   Timeline @relation(fields: [timelineId], references: [id], onDelete: Cascade)
 }
 
-model contentTweet {
+model ContentTweet {
   id         String   @id @default(cuid())
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  content    String?  @db.Text
   tweet      String
   timelineId String   @unique
   timeline   Timeline @relation(fields: [timelineId], references: [id], onDelete: Cascade)
@@ -130,32 +131,43 @@ model Blog {
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
   title      String
-  content    String
+  content    String?       @db.Text
   published  Boolean       @default(false)
-  tags       BlogTag[]
+  tags       BlogOnTags[]
   author     User          @relation(fields: [authorId], references: [id])
   authorId   String
   provider   BlogProvider? @relation(fields: [providerId], references: [id])
   providerId Int?
+  link       String?
 
   @@index([authorId])
   @@index([providerId])
 }
 
-model BlogProvider {
-  id      Int    @id @default(autoincrement())
-  name    String
-  favicon String
-  Blog    Blog[]
+model BlogOnTags {
+  id     String  @id @default(cuid())
+  blog   Blog    @relation(fields: [blogId], references: [id])
+  blogId String
+  tag    BlogTag @relation(fields: [tagId], references: [id])
+  tagId  String
+
+  @@index([blogId])
+  @@index([tagId])
 }
 
 model BlogTag {
-  id     String @id @default(cuid())
-  name   String
-  blog   Blog   @relation(fields: [blogId], references: [id])
-  blogId String
+  id         String       @id @default(cuid())
+  slug       String       @unique
+  name       String
+  BlogOnTags BlogOnTags[]
+}
 
-  @@index([blogId])
+model BlogProvider {
+  id      Int    @id @default(autoincrement())
+  slug    String @unique
+  name    String
+  favicon String
+  Blog    Blog[]
 }
 
 // End Blog Models

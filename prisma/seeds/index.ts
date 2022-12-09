@@ -1,25 +1,19 @@
 import { PrismaClient } from '@prisma/client';
 
 import { generateBlogs } from './blog';
-import { generateRoles } from './role';
-import { generateUsers } from './user';
+import { generateTimeline } from './timeline';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 const main = async () => {
-  await Promise.all([
-    generateRoles(),
-    generateUsers(),
-  ])
-  const users = await prisma.user.findMany()
-  await generateBlogs(users)
-}
+  await Promise.all([generateTimeline(prisma), generateBlogs(prisma)]);
+};
 
 main()
   .catch((e) => {
-    console.error(e)
-    process.exit(1)
+    console.error(e);
+    process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect()
-  })
+    await prisma.$disconnect();
+  });
