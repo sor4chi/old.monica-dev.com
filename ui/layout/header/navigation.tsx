@@ -13,9 +13,9 @@ const NAVIGATION_ITEMS = [
     active: /^\/$/,
   },
   {
-    label: 'Projects',
-    href: '/projects',
-    active: /^\/projects(\/.*)?$/,
+    label: 'Timeline',
+    href: '/timeline',
+    active: /^\/timeline(\/.*)?$/,
   },
   {
     label: 'Blogs',

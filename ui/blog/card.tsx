@@ -8,8 +8,6 @@ import { IoMdArrowForward, IoMdOpen } from 'react-icons/io';
 import { Blog } from '#/types/blog';
 import { dateToPassedTimeByNow } from '#/utils/date';
 
-import { Card } from '../commons/card';
-
 import { BlogTagList } from './tag-list';
 
 interface Props {
@@ -38,7 +36,12 @@ export const BlogCard = ({ blog }: Props) => {
       onMouseOver={() => setOnHover(true)}
       onMouseOut={() => setOnHover(false)}
     >
-      <Card>
+      <div
+        className={clsx(
+          'common-card',
+          'flex p-4 hover:border-orange-500 dark:hover:border-orange-500',
+        )}
+      >
         <div
           className={clsx(
             'w-max h-max mr-4 rounded-lg float-left border-[1.5px] relative overflow-hidden',
@@ -68,7 +71,7 @@ export const BlogCard = ({ blog }: Props) => {
             </div>
           </div>
         </div>
-      </Card>
+      </div>
     </Link>
   );
 };
