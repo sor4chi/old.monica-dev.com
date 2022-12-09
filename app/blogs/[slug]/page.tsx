@@ -31,8 +31,8 @@ export default function Page({ params }: { params?: any }) {
   const blog = use(getData(params));
 
   return (
-    <div className="m-auto max-w-3xl space-y-6 p-4">
-      <article className="prose prose-neutral prose-cyan max-w-full flex-1 dark:prose-invert">
+    <div className="max-w-3xl p-4 space-y-6 m-auto">
+      <article className="use-markdown flex-1 max-w-full">
         {blog.md.content ? (
           parseHTMLToReactJSX(blog.md.content)
         ) : (
