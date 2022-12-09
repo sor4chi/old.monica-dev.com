@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 // Next Auth Models
@@ -25,6 +26,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -33,21 +35,29 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model User {
-  id             String           @id @default(cuid())
-  name           String?
-  email          String?          @unique
-  emailVerified  DateTime?
-  image          String?
-  accounts       Account[]
-  sessions       Session[]
-  contentString  contentString[]
-  contentWithUrl contentWithUrl[]
-  contentWithImg contentWithImg[]
-  contentTweet   contentTweet[]
-  Blog           Blog[]
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  roleId        Int
+  role          UserRole  @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  accounts      Account[]
+  sessions      Session[]
+  Blog          Blog[]
+
+  @@index([roleId])
+}
+
+model UserRole {
+  id   Int    @id @default(autoincrement())
+  role String
+  User User[]
 }
 
 model VerificationToken {
@@ -80,9 +90,6 @@ model contentString {
   content    String
   timelineId String   @unique
   timeline   Timeline @relation(fields: [timelineId], references: [id], onDelete: Cascade)
-
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
 }
 
 model contentWithUrl {
@@ -93,9 +100,6 @@ model contentWithUrl {
   url        String
   timelineId String   @unique
   timeline   Timeline @relation(fields: [timelineId], references: [id], onDelete: Cascade)
-
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
 }
 
 model contentWithImg {
@@ -106,9 +110,6 @@ model contentWithImg {
   img        String
   timelineId String   @unique
   timeline   Timeline @relation(fields: [timelineId], references: [id], onDelete: Cascade)
-
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
 }
 
 model contentTweet {
@@ -118,9 +119,6 @@ model contentTweet {
   tweet      String
   timelineId String   @unique
   timeline   Timeline @relation(fields: [timelineId], references: [id], onDelete: Cascade)
-
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
 }
 
 // End Timeline Models
@@ -136,6 +134,8 @@ model Blog {
   tags      BlogTag[]
   author    User      @relation(fields: [authorId], references: [id])
   authorId  String
+
+  @@index([authorId])
 }
 
 model BlogTag {
@@ -143,6 +143,8 @@ model BlogTag {
   name   String
   blog   Blog   @relation(fields: [blogId], references: [id])
   blogId String
+
+  @@index([blogId])
 }
 
 // End Blog Models
