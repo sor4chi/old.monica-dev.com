@@ -9,6 +9,7 @@ export const generateBlogs = async (users: User[]) => {
   const blogData: Prisma.BlogCreateManyInput[] = [];
   for (let i = 0; i < BLOG_LENGTH; i++) {
     blogData.push({
+      slug: faker.lorem.slug(),
       title: faker.lorem.words(),
       content: faker.lorem.sentence(),
       published: faker.datatype.boolean(),

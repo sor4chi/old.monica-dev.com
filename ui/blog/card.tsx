@@ -1,11 +1,12 @@
 'use client';
+import { Blog, BlogProvider, BlogTag } from '@prisma/client';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { IoMdArrowForward, IoMdOpen } from 'react-icons/io';
 
-import { Blog } from '#/types/blog';
+import { StringDate } from '#/types/utility';
 import { dateToPassedTimeByNow } from '#/utils/date';
 
 import { Card } from '../commons/card';
@@ -13,57 +14,53 @@ import { Card } from '../commons/card';
 import { BlogTagList } from './tag-list';
 
 interface Props {
-  blog: Blog;
+  blog: StringDate<Blog> & {
+    provider: BlogProvider | null;
+    tags: BlogTag[];
+  };
 }
 
 export const BlogCard = ({ blog }: Props) => {
-  const iconUrl = (() => {
-    if (blog.type === 'zenn') return '/zenn.svg';
-    if (blog.type === 'qiita') return '/qiita.png';
-    return '/original.svg';
-  })();
-
   const [onHover, setOnHover] = useState(false);
-
-  const isUrlExternal = (() => {
-    if (blog.type === 'zenn') return true;
-    if (blog.type === 'qiita') return true;
-    return false;
-  })();
 
   return (
     <Link
-      href={blog.url || `blogs/${blog.slug}` || ''}
-      target={isUrlExternal ? '_blank' : undefined}
+      href={blog.providerId ? blog.content : `/blogs/${blog.slug}`}
+      target={blog.providerId ? '_blank' : undefined}
       onMouseOver={() => setOnHover(true)}
       onMouseOut={() => setOnHover(false)}
     >
       <Card>
         <div
           className={clsx(
-            'w-max h-max mr-4 rounded-lg float-left border-[1.5px] relative overflow-hidden',
-            'bg-slate-100 border-white',
-            'dark:bg-neutral-900 dark:border-neutral-700',
+            'relative float-left mr-4 h-max w-max overflow-hidden rounded-lg border-[1.5px]',
+            'border-white bg-slate-100',
+            'dark:border-neutral-700 dark:bg-neutral-900',
           )}
         >
           <div className="p-4">
-            <Image src={iconUrl} alt="icon" width={24} height={24} />
+            <Image
+              src={blog.provider?.favicon || '/original.svg'}
+              alt="icon"
+              width={24}
+              height={24}
+            />
           </div>
           <div
             className={clsx(
-              'w-full h-full left-0 top-0 flex justify-center items-center absolute backdrop-blur-sm  transition-opacity duration-300 ease-in-out',
+              'absolute left-0 top-0 flex h-full w-full items-center justify-center backdrop-blur-sm  transition-opacity duration-300 ease-in-out',
               onHover ? 'opacity-100' : 'opacity-0',
             )}
           >
-            {blog.type !== 'original' ? <IoMdOpen /> : <IoMdArrowForward />}
+            {blog.providerId ? <IoMdOpen /> : <IoMdArrowForward />}
           </div>
         </div>
         <div className="flex-1">
           <h1 className="text-xl font-bold">{blog.title}</h1>
-          <div className="flex flex-wrap items-end justify-between mt-2">
+          <div className="mt-2 flex flex-wrap items-end justify-between">
             <BlogTagList tags={blog.tags} />
             <div className="float-right clear-both text-sm text-neutral-400 dark:text-neutral-600">
-              {dateToPassedTimeByNow(blog.date)}
+              {dateToPassedTimeByNow(blog.updatedAt)}
             </div>
           </div>
         </div>
