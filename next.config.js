@@ -6,6 +6,9 @@ const nextConfig = {
     // Required:
     appDir: true,
   },
+  images: {
+    domains: ['zenn.dev', 'cdn.qiita.com', 'note.com'],
+  },
 };
 
 module.exports = nextConfig;

@@ -6,11 +6,17 @@ import { BlogCardList } from '#/ui/blog/card-list';
 async function getData() {
   const blogs = await prisma.blog.findMany({
     where: { published: true },
-    include: { tags: true, provider: true },
+    include: {
+      tags: {
+        include: { tag: true },
+      },
+      provider: true,
+    },
     orderBy: { updatedAt: 'desc' },
   });
   return blogs.map((blog) => ({
     ...blog,
+    tags: blog.tags.map((tag) => tag.tag),
     createdAt: blog.createdAt.toISOString(),
     updatedAt: blog.updatedAt.toISOString(),
   }));

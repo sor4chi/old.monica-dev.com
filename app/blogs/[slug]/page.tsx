@@ -16,10 +16,20 @@ export async function generateStaticParams() {
 async function getData(params: { slug: string }) {
   const res = await prisma.blog.findUnique({
     where: { slug: params.slug },
-    include: { tags: true, provider: true },
+    include: {
+      tags: {
+        include: { tag: true },
+      },
+      provider: true,
+    },
   });
 
   if (!res) return notFound();
+  if (!res.published) return notFound();
+  if (res.link) return notFound();
+
+  // if link is not null, content must be not null. But, just in case.
+  if (!res.content) return notFound();
 
   return {
     ...res,

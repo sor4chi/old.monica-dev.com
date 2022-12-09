@@ -23,8 +23,8 @@ export const BlogCard = ({ blog }: Props) => {
 
   return (
     <Link
-      href={blog.providerId ? blog.content : `/blogs/${blog.slug}`}
-      target={blog.providerId ? '_blank' : undefined}
+      href={blog.link ? blog.link : `/blogs/${blog.slug}`}
+      target={blog.link ? '_blank' : undefined}
       onMouseOver={() => setOnHover(true)}
       onMouseOut={() => setOnHover(false)}
     >

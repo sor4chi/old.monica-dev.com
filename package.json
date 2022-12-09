@@ -10,7 +10,7 @@
     "db:reset--danger": "prisma db push --accept-data-loss --schema=./prisma/reset.prisma; prisma db push --accept-data-loss"
   },
   "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"}  prisma/seeds/index.ts"
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seeds/index.ts"
   },
   "dependencies": {
     "@prisma/client": "^4.7.1",
