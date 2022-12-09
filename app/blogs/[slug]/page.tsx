@@ -25,7 +25,7 @@ export default function Page({ params }: { params?: any }) {
 
   return (
     <div className="max-w-3xl p-4 space-y-6 m-auto">
-      <article className="flex-1 dark:prose-invert prose prose-cyan prose-neutral max-w-full">
+      <article className="use-markdown flex-1 max-w-full">
         {blog.md.content ? (
           parseHTMLToReactJSX(blog.md.content)
         ) : (

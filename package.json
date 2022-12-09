@@ -2,14 +2,11 @@
   "name": "app-playground",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
-    "dev:tailwind": "concurrently \"next dev --turbo\" \"npm run tailwind -- --watch\"",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "tailwind": "tailwindcss -i styles/globals.css -o styles/dist.css",
-    "format": "prettier --write \"**/*.{js,ts,tsx,md}\"",
-    "postinstall": "npm run tailwind"
+    "format": "prettier --write \"**/*.{js,ts,tsx,md}\""
   },
   "dependencies": {
     "@types/xml2js": "^0.4.11",
@@ -42,8 +39,7 @@
     "@types/react-dom": "^18.0.9",
     "autoprefixer": "^10.4.13",
     "clsx": "^1.2.1",
-    "concurrently": "^7.6.0",
-    "eslint-config-next": "^13.0.6",
+    "eslint-config-next": "^13.0.2",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-tailwindcss": "^3.7.1",
