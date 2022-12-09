@@ -6,14 +6,20 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write \"**/*.{js,ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{js,ts,tsx,md}\"",
+    "db:reset--danger": "prisma db push --accept-data-loss --schema=./prisma/reset.prisma; prisma db push --accept-data-loss"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"}  prisma/seeds/index.ts"
   },
   "dependencies": {
+    "@prisma/client": "^4.7.1",
     "@types/xml2js": "^0.4.11",
     "fast-xml-parser": "^4.0.12",
     "highlight.js": "^11.7.0",
     "katex": "^0.16.4",
     "next": "^13.0.6",
+    "next-auth": "^4.18.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
@@ -32,6 +38,7 @@
     "zod": "^3.19.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@tailwindcss/typography": "^0.5.8",
     "@types/mdast": "^3.0.10",
     "@types/node": "18.11.11",
@@ -52,6 +59,7 @@
     "prisma": "^4.7.1",
     "remark": "^14.0.2",
     "tailwindcss": "^3.2.4",
+    "ts-node": "^10.9.1",
     "unist-util-visit": "^4.1.1"
   }
 }
