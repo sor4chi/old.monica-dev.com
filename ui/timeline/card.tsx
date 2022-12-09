@@ -29,8 +29,8 @@ export const TimelineCard = ({ timeline, last }: Props) => {
       {last || (
         <span
           className={clsx(
-            `w-[theme(sizes.timelineBarWidth)] h-[calc(100%_+_theme(sizes.timelineCardGap))]`,
-            'bg-gray-400 block',
+            `h-[calc(100%_+_theme(sizes.timelineCardGap))] w-[theme(sizes.timelineBarWidth)]`,
+            'block bg-gray-400',
             `left-[calc(-1_*_(theme(sizes.timelineBarAreaWidth)_/_2_+_theme(sizes.timelineBarWidth)_/_2))]`,
             'top-[calc(theme(lineHeights.timelineLabel)_/_2)]',
             'absolute',
@@ -39,8 +39,8 @@ export const TimelineCard = ({ timeline, last }: Props) => {
       )}
       <span
         className={clsx(
-          `w-[theme(sizes.timelinePoint)] h-[theme(sizes.timelinePoint)]`,
-          'bg-gray-400 block rounded-full',
+          `h-[theme(sizes.timelinePoint)] w-[theme(sizes.timelinePoint)]`,
+          'block rounded-full bg-gray-400',
           `left-[calc(-1_*_(theme(sizes.timelineBarAreaWidth)_/_2_+_theme(sizes.timelinePoint)_/_2))]`,
           'top-[calc(theme(lineHeights.timelineLabel)_/_2_-_theme(sizes.timelinePoint)_/_2)]',
           'absolute',

@@ -21,7 +21,7 @@ export default function Page() {
   return (
     <div
       className={clsx(
-        'max-w-3xl p-4 m-auto',
+        'm-auto max-w-3xl p-4',
         'space-y-[theme(sizes.timelineCardGap)]',
       )}
     >
