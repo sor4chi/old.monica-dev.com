@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { use } from 'react';
 
 import { prisma } from '#/lib/prisma';
-import { TimelineCard } from '#/ui/timeline/card';
+import { TimelineItem } from '#/ui/timeline/container';
 
 async function getData() {
   const timelines = await prisma.timeline.findMany({
@@ -32,7 +32,7 @@ export default function Page() {
       )}
     >
       {timelines.map((timeline, i) => (
-        <TimelineCard
+        <TimelineItem
           key={i}
           timeline={timeline}
           last={i === timelines.length - 1}
