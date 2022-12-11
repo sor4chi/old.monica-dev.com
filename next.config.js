@@ -7,7 +7,10 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    domains: ['zenn.dev', 'cdn.qiita.com', 'note.com'],
+    domains:
+      process.env.NODE_ENV === 'development'
+        ? ['zenn.dev', 'cdn.qiita.com', 'note.com', 'loremflickr.com']
+        : undefined,
   },
 };
 
