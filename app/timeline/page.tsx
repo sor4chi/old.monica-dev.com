@@ -1,19 +1,25 @@
 import clsx from 'clsx';
 import { use } from 'react';
 
-import { parseMarkdownToHTML } from '#/lib/markdown';
-import { getTimelines } from '#/lib/timeline';
+import { prisma } from '#/lib/prisma';
 import { TimelineCard } from '#/ui/timeline/card';
 
 async function getData() {
-  const res = await Promise.all([getTimelines()]);
-  const timelines = res.flat();
-  return timelines
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .map((timeline) => ({
-      ...timeline,
-      md: parseMarkdownToHTML(timeline.content),
-    }));
+  const timelines = await prisma.timeline.findMany({
+    include: {
+      contentImg: true,
+      contentText: true,
+      contentTweet: true,
+      contentLink: true,
+    },
+    orderBy: { date: 'desc' },
+  });
+  return timelines.map((timeline) => ({
+    ...timeline,
+    createdAt: timeline.date.toISOString(),
+    updatedAt: timeline.date.toISOString(),
+    date: timeline.date.toISOString(),
+  }));
 }
 
 export default function Page() {

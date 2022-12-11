@@ -64,6 +64,7 @@ export const generateTimeline = async (prisma: PrismaClient) => {
       ];
     const timelineQuery: Prisma.TimelineCreateInput = {
       title: faker.lorem.words(),
+      date: faker.date.past(),
       contentType: timelineContentType,
     };
     const timelineContent = generateTimelineContent(timelineContentType);
