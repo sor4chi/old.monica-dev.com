@@ -12,13 +12,14 @@ interface Props {
 }
 
 export const TimelineItem = ({ timeline, last }: Props) => {
+  if (timeline.content === undefined) return null;
   return (
     <div className={clsx(`ml-[theme(sizes.timelineBarAreaWidth)]`, 'relative')}>
       {last || <TimelineLine />}
-      <TimelinePoint />
+      <TimelinePoint content={timeline.content} />
       <div className="flex flex-col">
         <TimelineHeader timeline={timeline} />
-        <TimelineCard timeline={timeline} />
+        <TimelineCard title={timeline.title} content={timeline.content} />
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-export interface Timeline {
-  date: string;
-  content: string;
-}
+import { ContentImg } from '@prisma/client';
+
+export type TTimeline = ContentImg

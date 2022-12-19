@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { use } from 'react';
 
+import { TIMELINE_KINDS } from '#/constants/timeline';
 import { prisma } from '#/lib/prisma';
 import { TimelineItem } from '#/ui/timeline/container';
 
@@ -14,12 +15,47 @@ async function getData() {
     },
     orderBy: { date: 'desc' },
   });
-  return timelines.map((timeline) => ({
-    ...timeline,
-    createdAt: timeline.date.toISOString(),
-    updatedAt: timeline.date.toISOString(),
-    date: timeline.date.toISOString(),
-  }));
+
+  const formattedTimelines = timelines.map(
+    ({ contentImg, contentText, contentTweet, contentLink, ...timeline }) => {
+      const content = (() => {
+        if (contentImg) {
+          return {
+            type: TIMELINE_KINDS.IMAGE,
+            ...contentImg,
+          };
+        }
+        if (contentTweet) {
+          return {
+            type: TIMELINE_KINDS.TWEET,
+            ...contentTweet,
+          };
+        }
+        if (contentLink) {
+          return {
+            type: TIMELINE_KINDS.LINK,
+            ...contentLink,
+          };
+        }
+        if (contentText) {
+          return {
+            type: TIMELINE_KINDS.TEXT,
+            ...contentText,
+          };
+        }
+      })();
+
+      return {
+        ...timeline,
+        content,
+        createdAt: timeline.date.toISOString(),
+        updatedAt: timeline.date.toISOString(),
+        date: timeline.date.toISOString(),
+      };
+    },
+  );
+
+  return formattedTimelines;
 }
 
 export default function Page() {

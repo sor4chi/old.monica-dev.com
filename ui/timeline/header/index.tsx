@@ -18,9 +18,9 @@ export const TimelineHeader = ({ timeline }: Props) => {
       )}
     >
       <span className="font-medium">
-        {timeline.contentType === 'TWEET' && 'New Tweet posted by'}
+        {timeline.content?.type === 'TWEET' && 'New Tweet posted by'}
       </span>
-      {timeline.contentType === 'TWEET' && (
+      {timeline.content?.type === 'TWEET' && (
         <Link
           className="font-bold text-neutral-700 transition-colors hover:text-neutral-900 dark:text-gray-200 dark:hover:text-gray-100"
           href={`https://twitter.com/${TWITTER_ACCOUNT_NAME}`}
