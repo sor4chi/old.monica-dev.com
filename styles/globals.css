@@ -20,7 +20,7 @@
   }
 
   .common-card {
-    @apply border-[2px] rounded-lg text-neutral-800 bg-slate-50 border-white dark:text-slate-200 dark:bg-neutral-800 dark:border-neutral-700 transition-colors duration-300;
+    @apply border-[1px] rounded-lg text-neutral-800 bg-slate-50 border-white dark:text-slate-200 dark:bg-neutral-800 dark:border-neutral-700 transition-colors duration-300;
   }
 
   .use-markdown {
