@@ -6,6 +6,12 @@ const nextConfig = {
     // Required:
     appDir: true,
   },
+  images: {
+    domains:
+      process.env.NODE_ENV === 'development'
+        ? ['zenn.dev', 'cdn.qiita.com', 'note.com', 'loremflickr.com']
+        : undefined,
+  },
 };
 
 module.exports = nextConfig;

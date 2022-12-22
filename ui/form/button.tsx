@@ -14,9 +14,9 @@ export const Button = ({ label, onClick, loading, disabled }: Props) => {
       onClick={onClick}
       disabled={loading || disabled}
       className={clsx(
-        'main-gradient hover:main-gradient-hover active:main-gradient-active justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white',
-        loading && 'opacity-50 cursor-not-allowed',
-        disabled && 'opacity-50 cursor-not-allowed',
+        'main-gradient hover:main-gradient-hover active:main-gradient-active justify-center rounded-md border border-transparent py-2 px-4 text-sm font-medium text-white shadow-sm',
+        loading && 'cursor-not-allowed opacity-50',
+        disabled && 'cursor-not-allowed opacity-50',
       )}
     >
       {loading ? '🚀 Loading...' : label}

@@ -26,7 +26,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <script src="/fouc.js" />
       </head>
-      <body className="bg-slate-100 dark:bg-neutral-900 transition-colors duration-300 ease-in-out">
+      <body className="bg-slate-100 transition-colors duration-300 ease-in-out dark:bg-neutral-900">
         <Header />
         <div className="pt-16">{children}</div>
       </body>

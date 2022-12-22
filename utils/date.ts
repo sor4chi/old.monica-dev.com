@@ -1,4 +1,4 @@
-export const dateToYMD = (date: string) => {
+export const dateToYMD = (date: string | Date) => {
   const d = new Date(date);
   const year = d.getFullYear();
   const month = ('0' + (d.getMonth() + 1)).slice(-2);
@@ -6,7 +6,7 @@ export const dateToYMD = (date: string) => {
   return `${year}-${month}-${day}`;
 };
 
-export const dateToPassedTimeByNow = (date: string) => {
+export const dateToPassedTimeByNow = (date: string | Date) => {
   const d = new Date(date);
   const now = new Date();
   const diff = now.getTime() - d.getTime();

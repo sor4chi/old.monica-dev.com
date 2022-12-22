@@ -30,7 +30,7 @@ export const ThemeSwitch = () => {
       <div
         onClick={() => toggleDarkMode()}
         className={clsx(
-          'flex w-fit flex-col items-center duration-500 ease-in-out transition-transform',
+          'flex w-fit flex-col items-center transition-transform duration-500 ease-in-out',
           isDarkMode || '-translate-y-1/2',
         )}
       >
