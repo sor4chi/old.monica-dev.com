@@ -9,8 +9,14 @@ const nextConfig = {
   images: {
     domains:
       process.env.NODE_ENV === 'development'
-        ? ['zenn.dev', 'cdn.qiita.com', 'note.com', 'loremflickr.com']
-        : undefined,
+        ? [
+            'zenn.dev',
+            'cdn.qiita.com',
+            'note.com',
+            'loremflickr.com',
+            'pbs.twimg.com',
+          ]
+        : ['pbs.twimg.com'],
   },
 };
 
