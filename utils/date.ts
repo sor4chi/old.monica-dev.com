@@ -19,3 +19,22 @@ export const dateToPassedTimeByNow = (date: string | Date) => {
   if (diffMonth < 12) return `${diffMonth} months ago`;
   return `${diffYear} years ago`;
 };
+
+/**
+ * 日付をリッチな表示にして返す
+ * @param date
+ *
+ * ex)
+ * ```typescript
+ * const date = new Date(2023, 0, 1, 2, 3, 4);
+ *
+ * const richText = dateToRichDisplay(date);
+ * console.log(richText); // Jan 1, 2023
+ */
+export const dateToRichDisplay = (date: string | Date) => {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = d.toLocaleString('en-US', { month: 'short' });
+  const day = d.getDate();
+  return `${month} ${day}, ${year}`;
+};

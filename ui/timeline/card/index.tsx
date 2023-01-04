@@ -3,12 +3,23 @@ import Image from 'next/image';
 
 import { TimelineContent } from '../types';
 
+import { TwitterEmbed } from './tweet';
+
 interface Props {
   title?: string;
   content: TimelineContent;
 }
 
+const getTweetIdFromUrl = (url: string) => {
+  const regex = /https:\/\/twitter.com\/\w+\/status\/(\d+)/;
+  const match = url.match(regex);
+  return match ? match[1] : null;
+};
+
 export const TimelineCard = ({ title, content }: Props) => {
+  const tweetId =
+    content?.type === 'TWEET' ? getTweetIdFromUrl(content.tweet) : null;
+
   return (
     <div className={clsx('common-card', 'flex flex-col gap-4 p-4')}>
       <h3 className="text-xl font-bold">{title}</h3>
@@ -25,6 +36,8 @@ export const TimelineCard = ({ title, content }: Props) => {
           />
         </div>
       )}
+      {tweetId && <p>asadadsadas</p>}
+      {tweetId && <TwitterEmbed id={tweetId} />}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import Link from 'next/link';
 
-import { TWITTER_ACCOUNT_NAME } from '#/constants/site';
+import { PostHeader } from '#/ui/timeline/header/post';
+import { TweetHeader } from '#/ui/timeline/header/tweet';
 import { TimelineProps } from '#/ui/timeline/types';
 import { dateToPassedTimeByNow } from '#/utils/date';
 
@@ -17,19 +17,8 @@ export const TimelineHeader = ({ timeline }: Props) => {
         'text-sm leading-[theme(lineHeights.timelineLabel)] text-neutral-400',
       )}
     >
-      <span className="font-medium">
-        {timeline.content?.type === 'TWEET' && 'New Tweet posted by'}
-      </span>
-      {timeline.content?.type === 'TWEET' && (
-        <Link
-          className="font-bold text-neutral-700 transition-colors hover:text-neutral-900 dark:text-gray-200 dark:hover:text-gray-100"
-          href={`https://twitter.com/${TWITTER_ACCOUNT_NAME}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          @{TWITTER_ACCOUNT_NAME}
-        </Link>
-      )}
+      {timeline.content?.type === 'TWEET' && <TweetHeader />}
+      {timeline.content?.type !== 'TWEET' && <PostHeader />}
       <span className="font-medium">
         {dateToPassedTimeByNow(timeline.date)}
       </span>
