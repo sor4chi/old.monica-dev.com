@@ -21,9 +21,9 @@ export const fetchTweet = async ({ id }: Partial<GetTweetOptions>) => {
     headers: {
       Authorization: `Bearer ${process.env.TWITTER_BEARER_TOKEN}`,
     },
+    cache: 'force-cache',
   });
   const json: GetTweetResponse = await res.json();
-  console.log(reqUrl, json);
   return json;
 };
 
@@ -43,6 +43,7 @@ export const fetchProfile = async ({ id }: Partial<GetProfileOptions>) => {
       headers: {
         Authorization: `Bearer ${process.env.TWITTER_BEARER_TOKEN}`,
       },
+      cache: 'force-cache',
     },
   );
   const json: GetProfileResponse = await res.json();

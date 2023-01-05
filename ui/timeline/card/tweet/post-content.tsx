@@ -1,15 +1,9 @@
-'use client';
 import Link from 'next/link';
 
 import { TwitterEmbed } from '#/ui/timeline/card/tweet';
 
 const UrlLink = (url: string, text?: string) => (
-  <Link
-    href={url}
-    passHref
-    onClick={(e) => e.stopPropagation()}
-    className="main-gradient-text"
-  >
+  <Link key={url} href={url} passHref className="main-gradient-text">
     {text || url}
   </Link>
 );
@@ -30,9 +24,9 @@ interface Props {
   quote_id?: string;
 }
 
-export const Content = ({ text, quote_id }: Props) => (
+export const PostContent = ({ text, quote_id }: Props) => (
   <>
     <span className="whitespace-pre-wrap">{replaceUrl(text)}</span>
-    {quote_id && <TwitterEmbed id={quote_id} />}
+    {quote_id && <TwitterEmbed id={quote_id} quote />}
   </>
 );

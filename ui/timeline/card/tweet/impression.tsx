@@ -9,7 +9,7 @@ const ImpressionWithIcon = ({
   children: ReactElement;
   count: number;
 }) => (
-  <span className="flex items-center gap-2 text-lg text-neutral-400">
+  <span className="flex items-center gap-2 text-sm text-neutral-400">
     {children}
     {count}
   </span>

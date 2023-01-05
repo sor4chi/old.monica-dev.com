@@ -1,13 +1,9 @@
-import { use } from 'react';
+import clsx from 'clsx';
+import { ReactNode, use } from 'react';
 
 import { fetchProfile, fetchTweet } from '#/lib/twitter';
-import { Profile, Tweet } from '#/types/tweet';
 
-import { AccountHeader } from './account-header';
-import { AccountIcon } from './account-icon';
-import { Container } from './container';
-import { Content } from './content';
-import { Impressions } from './impression';
+import { TweetCard } from './card';
 
 const fetchTweetFromId = async (id: string) => {
   const res = await fetchTweet({ id });
@@ -21,53 +17,40 @@ const fetchProfileFromId = async (id: string) => {
   return res;
 };
 
-interface TweetCardProps {
-  profile: Profile;
-  tweet: Tweet;
+interface TwitterEmbedWrapperProps {
+  children: ReactNode;
 }
 
-export const TweetCard = ({ profile, tweet }: TweetCardProps) => (
-  <>
-    <AccountIcon
-      username={profile.username}
-      profile_image_url={profile.profile_image_url}
-    />
-    <div className="flex flex-col items-start gap-1">
-      <AccountHeader
-        name={profile.name}
-        username={profile.username}
-        created_at={tweet.created_at}
-      />
-      <Content
-        text={tweet.text}
-        quote_id={
-          tweet.referenced_tweets?.length
-            ? tweet.referenced_tweets[0].id
-            : undefined
-        }
-      />
-      <Impressions
-        replyCount={tweet.public_metrics.reply_count}
-        retweetCount={
-          tweet.public_metrics.retweet_count + tweet.public_metrics.quote_count
-        }
-        likeCount={tweet.public_metrics.like_count}
-      />
-    </div>
-  </>
+const Wrapper = ({ children }: TwitterEmbedWrapperProps) => (
+  <div
+    className={clsx(
+      'flex w-full items-center justify-center rounded-md',
+      'bg-slate-100 dark:bg-neutral-900',
+      'transition-colors duration-300',
+    )}
+  >
+    {children}
+  </div>
 );
 
 interface TwitterEmbedProps {
   id: string;
+  quote?: boolean;
 }
 
-export const TwitterEmbed = ({ id }: TwitterEmbedProps) => {
+export const TwitterEmbed = ({ id, quote }: TwitterEmbedProps) => {
   const { data: tweet } = use(fetchTweetFromId(id));
   const { data: profile } = use(fetchProfileFromId(tweet.author_id));
 
-  return (
-    <Container id={id}>
-      {tweet && profile && <TweetCard profile={profile} tweet={tweet} />}
-    </Container>
+  const Card = (
+    <div className="common-card my-4 flex w-full max-w-lg cursor-pointer items-start gap-2 p-4">
+      {tweet && profile && (
+        <TweetCard profile={profile} tweet={tweet} quote={quote} />
+      )}
+    </div>
   );
+
+  if (quote) return Card;
+
+  return <Wrapper>{Card}</Wrapper>;
 };
