@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { TwitterEmbed } from '#/ui/timeline/card/tweet';
+import { TweetEmbed } from '.';
 
 const UrlLink = (url: string, text?: string) => (
   <Link key={url} href={url} passHref className="main-gradient-text">
@@ -27,6 +27,6 @@ interface Props {
 export const PostContent = ({ text, quote_id }: Props) => (
   <>
     <span className="whitespace-pre-wrap">{replaceUrl(text)}</span>
-    {quote_id && <TwitterEmbed id={quote_id} quote />}
+    {quote_id && <TweetEmbed id={quote_id} quote />}
   </>
 );
