@@ -1,19 +1,6 @@
-import { fetchProfile, fetchTweet } from '#/lib/twitter';
 import { useEmbedTweet } from '#/ui/embed/tweet/use-embed-tweet';
 
 import { TweetCard } from './card';
-
-const fetchTweetFromId = async (id: string) => {
-  const res = await fetchTweet({ id });
-  if (!res) throw new Error(`Failed to fetch tweet from id:${id}`);
-  return res;
-};
-
-const fetchProfileFromId = async (id: string) => {
-  const res = await fetchProfile({ id });
-  if (!res) throw new Error(`Failed to fetch profile from id:${id}`);
-  return res;
-};
 
 interface Props {
   id: string;
