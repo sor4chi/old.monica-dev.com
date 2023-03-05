@@ -13,11 +13,19 @@
     "@types/node": "18.14.6",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "@vanilla-extract/css": "^1.9.5",
+    "@vanilla-extract/next-plugin": "^2.1.1",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
     "next": "13.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "typescript": "4.9.5"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@vanilla-extract/next-plugin@2.1.1": "patches/@vanilla-extract__next-plugin@2.1.1.patch",
+      "next@13.2.3": "patches/next@13.2.3.patch"
+    }
   }
 }

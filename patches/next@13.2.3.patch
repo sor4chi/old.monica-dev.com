@@ -1,0 +1,26 @@
+diff --git a/dist/build/webpack/loaders/utils.js b/dist/build/webpack/loaders/utils.js
+index 9d21ac8ed925ca3357eca5972ac290e0e5eac8d4..4f79b8e5754aa0ad0327b2def2235bc5417eb7e2 100644
+--- a/dist/build/webpack/loaders/utils.js
++++ b/dist/build/webpack/loaders/utils.js
+@@ -21,7 +21,7 @@ function isClientComponentModule(mod) {
+     const hasClientDirective = ((ref = mod.buildInfo.rsc) == null ? void 0 : ref.type) === _constants.RSC_MODULE_TYPES.client;
+     return hasClientDirective || imageRegex.test(mod.resource);
+ }
+-const regexCSS = /\.(css|scss|sass)(\?.*)?$/;
++const regexCSS = /\.(css|scss|sass|css\.ts)(\?.*)?$/;
+ exports.regexCSS = regexCSS;
+ function getActions(mod) {
+     var ref;
+diff --git a/dist/server/app-render.js b/dist/server/app-render.js
+index 54afbed2880020f9f01674279badb08329eaa09a..50cc939d5af8146ed82d3a2d1c64e612cec259b5 100644
+--- a/dist/server/app-render.js
++++ b/dist/server/app-render.js
+@@ -361,7 +361,7 @@ exports.ReadonlyRequestCookies = ReadonlyRequestCookies;
+             // to inject it again.
+             if (!injectedCSS.has(mod)) {
+                 const modData = serverComponentManifest[mod];
+-                if (modData) {
++                if (modData && modData.default) {
+                     for (const chunk of modData.default.chunks){
+                         // If the current entry in the final tree-shaked bundle has that CSS
+                         // chunk, it means that it's actually used. We should include it.
