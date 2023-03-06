@@ -3,6 +3,7 @@ module.exports = {
     'next/core-web-vitals',
     'plugin:import/recommended',
     'plugin:sort/recommended',
+    'plugin:redos/recommended',
     'plugin:@typescript-eslint/recommended',
     'prettier',
   ],

@@ -22,6 +22,7 @@ specifiers:
   eslint-config-next: 13.2.3
   eslint-config-prettier: ^8.7.0
   eslint-plugin-import: ^2.27.5
+  eslint-plugin-redos: 4.5.0-beta.2
   eslint-plugin-sort: ^2.4.0
   eslint-plugin-unused-imports: ^2.0.0
   next: 13.2.3
@@ -54,6 +55,7 @@ devDependencies:
   eslint-config-next: 13.2.3_ycpbpc6yetojsgtrx3mwntkhsu
   eslint-config-prettier: 8.7.0_eslint@8.35.0
   eslint-plugin-import: 2.27.5_uyiasnnzcqrxqkfvjklwnmwcha
+  eslint-plugin-redos: 4.5.0-beta.2_eslint@8.35.0
   eslint-plugin-sort: 2.4.0_ycpbpc6yetojsgtrx3mwntkhsu
   eslint-plugin-unused-imports: 2.0.0_vkrezerrv4xnu4uoc4gpfx7tv4
   prettier: 2.8.4
@@ -1752,6 +1754,16 @@ packages:
       string.prototype.matchall: 4.0.8
     dev: true
 
+  /eslint-plugin-redos/4.5.0-beta.2_eslint@8.35.0:
+    resolution: {integrity: sha512-XlfaCrQ66O3vZ+1z3H+glkPzn3Qii4h5+M2Vw8C4lXliBQeplp1//mDD0bPoAh29y3NCFYtygCuy3zLdCEhutQ==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      eslint: '>= 3'
+    dependencies:
+      eslint: 8.35.0
+      recheck: 4.5.0-beta.2
+    dev: true
+
   /eslint-plugin-sort/2.4.0_ycpbpc6yetojsgtrx3mwntkhsu:
     resolution: {integrity: sha512-4q7K2q4FofeQKCdnjE60hcWHe3beQnQai5uZqcfp5RvoThsa9LFqhbYF5EDC5cDZLfgvChNbBSnz+Cxf/ki0mQ==}
     peerDependencies:
@@ -2861,6 +2873,46 @@ packages:
     dependencies:
       loose-envify: 1.4.0
     dev: false
+
+  /recheck-jar/4.5.0-beta.2:
+    resolution: {integrity: sha512-N9LpoGd8Andzfb5mtpFR94Vvdm5tIWA9B78Rw2VhZV0ixrIZORhbXOYtcp7OZOxj0pU7hIi8/z/PErVmqSeUzA==}
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /recheck-linux-x64/4.5.0-beta.2:
+    resolution: {integrity: sha512-E8nQSJuyDP7ZCWAzM3H2o1wS3hWfODsyv4DkkKSiVQ5L7w5VH7K2FDarT8fCTn7vdl1pmtcFVZH9DeKJ+AnBfw==}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /recheck-macos-x64/4.5.0-beta.2:
+    resolution: {integrity: sha512-w3rjfNxmDEcXWoMwKZ7aLk9FJL5pyHmAhmfycl+o7vX7laOgLc+ys42mHj9Duc3y+1QhCuUHha7ERx0WYTy6bw==}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /recheck-windows-x64/4.5.0-beta.2:
+    resolution: {integrity: sha512-uZkTQO8GhqGja8spqq6VJWLsrHybeNmxTN44ErhvoGKEB+8fXf7hjoCkx0SxC2oMVzNapOKKiYH48rThDh7IPQ==}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /recheck/4.5.0-beta.2:
+    resolution: {integrity: sha512-rM1UX0Uzefd5emuzhA29T51PzE+c6A0BzcXZ501vs0mPyobNmJCtVcXQpZZuRutLVf6ibNn09zHa9bPYp2m+3w==}
+    engines: {node: '>=14'}
+    optionalDependencies:
+      recheck-jar: 4.5.0-beta.2
+      recheck-linux-x64: 4.5.0-beta.2
+      recheck-macos-x64: 4.5.0-beta.2
+      recheck-windows-x64: 4.5.0-beta.2
+    dev: true
 
   /regenerator-runtime/0.13.11:
     resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}
