@@ -26,6 +26,11 @@ export const Header = () => {
                 Blog
               </Link>
             </li>
+            <li className={styles.navigationListItem}>
+              <Link href="/contact" passHref className={styles.navigationLink}>
+                Contact
+              </Link>
+            </li>
           </ul>
         </nav>
         <ThemeSwitch />
