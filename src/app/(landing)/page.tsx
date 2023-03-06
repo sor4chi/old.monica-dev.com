@@ -38,12 +38,24 @@ export default function Home() {
         <p className={styles.subtitle}>Web App Developer</p>
         <ul className={styles.social}>
           <li className={styles.socialItem}>
-            <Link href="https://twitter.com/monica18_pr" target="_blank" className={styles.socialLink} passHref>
+            <Link
+              href="https://twitter.com/monica18_pr"
+              target="_blank"
+              className={styles.socialLink}
+              passHref
+              aria-label="twitter @monica18_pr"
+            >
               <FaTwitter size="2rem" />
             </Link>
           </li>
           <li className={styles.socialItem}>
-            <Link href="https://github.com/sor4chi" target="_blank" className={styles.socialLink} passHref>
+            <Link
+              href="https://github.com/sor4chi"
+              target="_blank"
+              className={styles.socialLink}
+              passHref
+              aria-label="github sor4chi"
+            >
               <FaGithub size="2rem" />
             </Link>
           </li>

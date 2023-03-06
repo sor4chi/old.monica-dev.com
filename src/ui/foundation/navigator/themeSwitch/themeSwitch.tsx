@@ -34,7 +34,7 @@ export const ThemeSwitch = () => {
       className={styles.themeSwitch}
       onClick={switchTheme}
       id="theme-switch-button"
-      area-label="theme switch button"
+      aria-label="theme switch button"
     >
       <FaMoon className={styles.moon} />
       <FaSun className={styles.sun} />
