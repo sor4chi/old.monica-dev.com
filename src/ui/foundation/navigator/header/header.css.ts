@@ -33,19 +33,6 @@ export const divider = style({
   width: '100vw',
 });
 
-export const logo = style({
-  selectors: {
-    '.dark &': {
-      rotate: '0deg',
-    },
-    '.light &': {
-      rotate: '180deg',
-    },
-  },
-
-  transition: 'rotate .5s ease-out',
-});
-
 export const spacer = style({
   flex: 1,
 });
