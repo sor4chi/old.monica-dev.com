@@ -1,21 +1,26 @@
-import { vars } from "@/app/constants/theme.css";
+import { vars } from "@/app/style/theme.css";
 import { style } from "@vanilla-extract/css";
 
 export const container = style({
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
   width: "100vw",
-  padding: "1rem",
   boxSizing: "border-box",
-  borderTop: `1px solid ${vars.color.text.secondary}`,
   background: "transparent",
 });
 
+export const divider = style({
+  height: 1,
+  width: "100vw",
+  background: vars.color.text.secondary,
+  border: "none",
+  opacity: 0.2,
+  margin: 0,
+});
+
 export const copywrite = style({
-  color: "white",
+  color: vars.color.text.secondary,
   fontSize: "1rem",
   fontWeight: 400,
   margin: 0,
-  padding: 0,
+  padding: "1rem",
+  textAlign: "center",
 });
