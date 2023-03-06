@@ -192,22 +192,12 @@ export const navLink = style({
   borderRadius: '0.25rem',
   transition: 'background .5s ease-out',
 
-  selectors: {
-    '.dark &:hover': {
-      background: `linear-gradient(${[
-        '60deg',
-        `rgba(${vars.color.blue.secondaryRGB}, 1) 0%`,
-        `rgba(${vars.color.blue.secondaryRGB}, 0.5) 30%`,
-        `rgba(${vars.color.blue.secondaryRGB}, 0) 100%`,
-      ].join(',')})`,
-    },
-    '.light &:hover': {
-      background: `linear-gradient(${[
-        '-60deg',
-        `rgba(${vars.color.blue.secondaryRGB}, 1) 0%`,
-        `rgba(${vars.color.blue.secondaryRGB}, 0.5) 30%`,
-        `rgba(${vars.color.blue.secondaryRGB}, 0) 100%`,
-      ].join(',')})`,
-    },
+  ':hover': {
+    background: `linear-gradient(${[
+      '60deg',
+      `rgba(${vars.color.accent.secondaryRGB}, 1) 0%`,
+      `rgba(${vars.color.accent.secondaryRGB}, 0.5) 30%`,
+      `rgba(${vars.color.accent.secondaryRGB}, 0) 100%`,
+    ].join(',')})`,
   },
 });

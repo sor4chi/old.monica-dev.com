@@ -28,11 +28,11 @@ createGlobalTheme('.light', colorVars, {
     primary: '#1F262D',
     secondary: '#2F3A45',
   },
-  blue: {
-    primary: '#84a0c6',
-    primaryRGB: '132, 160, 198',
-    secondary: '#90abd0',
-    secondaryRGB: '145, 172, 209',
+  accent: {
+    primary: '#a093c7',
+    primaryRGB: '160, 147, 199',
+    secondary: '#ada0d3',
+    secondaryRGB: '173, 160, 211',
   },
 });
 
@@ -45,10 +45,10 @@ createGlobalTheme('.dark', colorVars, {
     primary: '#EDF2F7',
     secondary: '#c9d2e1',
   },
-  blue: {
+  accent: {
     primary: '#84a0c6',
     primaryRGB: '132, 160, 198',
-    secondary: '#91acd1',
+    secondary: '#90abd0',
     secondaryRGB: '145, 172, 209',
   },
 });

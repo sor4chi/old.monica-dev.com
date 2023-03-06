@@ -9,7 +9,7 @@ export const colorVars = createThemeContract({
     primary: '',
     secondary: '',
   },
-  blue: {
+  accent: {
     primary: '',
     primaryRGB: '',
     secondary: '',
