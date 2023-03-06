@@ -1,6 +1,6 @@
-import { Footer } from "@/ui/foundation/navigator/footer";
-import { Header } from "@/ui/foundation/navigator/header";
-import * as styles from "./full.css";
+import { Footer } from '@/ui/foundation/navigator/footer';
+import { Header } from '@/ui/foundation/navigator/header';
+import * as styles from './full.css';
 
 interface Props {
   children: React.ReactNode;

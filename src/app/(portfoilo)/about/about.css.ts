@@ -1,15 +1,15 @@
-import { vars } from "@/style/theme.css";
-import { style } from "@vanilla-extract/css";
+import { vars } from '@/style/theme.css';
+import { style } from '@vanilla-extract/css';
 
 export const container = style({
-  maxWidth: "1024px",
-  margin: "0 auto",
+  maxWidth: '1024px',
+  margin: '0 auto',
 });
 
 export const title = style({
-  fontSize: "2rem",
+  fontSize: '2rem',
   fontWeight: 700,
-  textAlign: "center",
+  textAlign: 'center',
   color: vars.color.text.primary,
-  margin: "2rem 0",
+  margin: '2rem 0',
 });

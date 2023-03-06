@@ -1,2 +1,2 @@
-"use client";
-export * from "./themeSwitch";
+'use client';
+export * from './themeSwitch';

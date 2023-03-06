@@ -1,4 +1,4 @@
-import * as styles from "./about.css";
+import * as styles from './about.css';
 
 export default function About() {
   return (

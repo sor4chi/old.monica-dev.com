@@ -1,12 +1,12 @@
-import { createTheme, createThemeContract } from "@vanilla-extract/css";
+import { createTheme, createThemeContract } from '@vanilla-extract/css';
 
 export const colorVars = createThemeContract({
   text: {
-    primary: "",
-    secondary: "",
+    primary: '',
+    secondary: '',
   },
   bg: {
-    primary: "",
-    secondary: "",
+    primary: '',
+    secondary: '',
   },
 });

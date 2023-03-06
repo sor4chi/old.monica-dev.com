@@ -1,4 +1,4 @@
-import * as styles from "./blog.css";
+import * as styles from './blog.css';
 
 export default function Blog() {
   return (

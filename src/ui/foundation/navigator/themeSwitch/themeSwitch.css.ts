@@ -1,42 +1,42 @@
-import { vars } from "@/style/theme.css";
-import { style } from "@vanilla-extract/css";
+import { vars } from '@/style/theme.css';
+import { style } from '@vanilla-extract/css';
 
 export const themeSwitch = style({
-  width: "2rem",
-  height: "2rem",
-  borderRadius: "50%",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+  width: '2rem',
+  height: '2rem',
+  borderRadius: '50%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 
-  border: "none",
-  cursor: "pointer",
+  border: 'none',
+  cursor: 'pointer',
 
   background: vars.color.bg.secondary,
 
-  ":hover": {
+  ':hover': {
     opacity: 0.8,
   },
 });
 
 export const sun = style({
   color: vars.color.text.primary,
-  display: "none",
+  display: 'none',
 
   selectors: {
-    ".dark &": {
-      display: "block",
+    '.dark &': {
+      display: 'block',
     },
   },
 });
 
 export const moon = style({
   color: vars.color.text.primary,
-  display: "none",
+  display: 'none',
 
   selectors: {
-    ".light &": {
-      display: "block",
+    '.light &': {
+      display: 'block',
     },
   },
 });
