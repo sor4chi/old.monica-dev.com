@@ -4,6 +4,7 @@ import { FaGithub, FaTwitter } from 'react-icons/fa';
 
 import * as styles from './index.css';
 
+import { Logo } from '@/ui/foundation/navigator/logo';
 import { ThemeSwitch } from '@/ui/foundation/navigator/themeSwitch';
 
 export default function Home() {
@@ -14,6 +15,12 @@ export default function Home() {
       </div>
       <Image src="/icon.webp" alt="Monica / Sor4chi" width={240} height={240} className={styles.icon} />
       <h1 className={styles.title}>
+        <div className={styles.logoContainer}>
+          <span className={styles.shadow} />
+          <span className={styles.logo}>
+            <Logo />
+          </span>
+        </div>
         <span className={styles.titleToggle}>
           <span>Sor4chi</span>
           <span>Monica</span>

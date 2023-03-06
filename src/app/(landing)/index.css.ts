@@ -23,6 +23,50 @@ export const icon = style({
   boxShadow: `0 0 1rem 0 ${vars.color.bg.secondary}`,
 });
 
+export const logoContainer = style({
+  position: 'relative',
+});
+
+const floatAnimation = keyframes({
+  '0%': { transform: 'translateY(0)' },
+  '50%': { transform: 'translateY(-0.2rem)' },
+  '100%': { transform: 'translateY(0)' },
+});
+
+const shadowScaleAnimation = keyframes({
+  '0%': { transform: 'scale(1)' },
+  '50%': { transform: 'scale(1.5)' },
+  '100%': { transform: 'scale(1)' },
+});
+
+export const logo = style({
+  animationDuration: '2s',
+  animationIterationCount: 'infinite',
+  animationName: floatAnimation,
+  animationTimingFunction: 'ease-in-out',
+  display: 'block',
+});
+
+export const shadow = style({
+  background: vars.color.text.primary,
+  opacity: 0.2,
+
+  height: '0.25rem',
+  width: '1rem',
+  borderRadius: '100%',
+
+  position: 'absolute',
+  bottom: '0.25rem',
+  left: 0,
+  right: 0,
+  margin: 'auto',
+
+  animationDuration: '2s',
+  animationIterationCount: 'infinite',
+  animationName: shadowScaleAnimation,
+  animationTimingFunction: 'ease-in-out',
+});
+
 const titleLineHeight = '3.5rem';
 const titleFontSize = '3rem';
 
@@ -67,12 +111,12 @@ export const titleToggle = style({
   animationDuration: `${total}s`,
   animationIterationCount: 'infinite',
   animationName: toggleAnimation,
-
   animationTimingFunction: 'ease-in-out',
+
   display: 'inline-flex',
   flexDirection: 'column',
   height: titleLineHeight,
-  marginRight: '1rem',
+  margin: '0 1rem',
 });
 
 export const subtitle = style({
