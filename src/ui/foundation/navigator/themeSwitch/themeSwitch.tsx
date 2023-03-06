@@ -1,5 +1,6 @@
-import * as styles from './themeSwitch.css';
 import { FaMoon, FaSun } from 'react-icons/fa';
+
+import * as styles from './themeSwitch.css';
 
 type Theme = 'light' | 'dark';
 

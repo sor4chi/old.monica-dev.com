@@ -1,7 +1,9 @@
-import * as styles from './index.css';
-import { FaGithub, FaTwitter } from 'react-icons/fa';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
+import { FaGithub, FaTwitter } from 'react-icons/fa';
+
+import * as styles from './index.css';
+
 import { ThemeSwitch } from '@/ui/foundation/navigator/themeSwitch';
 
 export default function Home() {

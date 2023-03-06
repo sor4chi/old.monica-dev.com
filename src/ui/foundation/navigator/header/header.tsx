@@ -1,7 +1,9 @@
-import { ThemeSwitch } from '@/ui/foundation/navigator/themeSwitch';
 import Image from 'next/image';
 import Link from 'next/link';
+
 import * as styles from './header.css';
+
+import { ThemeSwitch } from '@/ui/foundation/navigator/themeSwitch';
 
 export const Header = () => {
   return (

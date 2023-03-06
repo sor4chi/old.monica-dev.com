@@ -1,4 +1,5 @@
-import { createTheme, createGlobalTheme } from '@vanilla-extract/css';
+import { createGlobalTheme, createTheme } from '@vanilla-extract/css';
+
 import { colorVars } from './contract.css';
 
 // Black: "#1F262D",
@@ -19,31 +20,31 @@ import { colorVars } from './contract.css';
 // BrightWhite: "#d2d4df",
 
 createGlobalTheme('.light', colorVars, {
-  text: {
-    primary: '#1F262D',
-    secondary: '#2F3A45',
-  },
   bg: {
     primary: '#EDF2F7',
     secondary: '#c9d2e1',
+  },
+  text: {
+    primary: '#1F262D',
+    secondary: '#2F3A45',
   },
 });
 
 createGlobalTheme('.dark', colorVars, {
-  text: {
-    primary: '#EDF2F7',
-    secondary: '#c9d2e1',
-  },
   bg: {
     primary: '#1F262D',
     secondary: '#2F3A45',
+  },
+  text: {
+    primary: '#EDF2F7',
+    secondary: '#c9d2e1',
   },
 });
 
 const [commonThemeClass, commonVars] = createTheme({
   size: {
-    headerHeight: '4rem',
     containerMaxWidth: '64rem',
+    headerHeight: '4rem',
   },
 });
 

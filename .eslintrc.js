@@ -6,6 +6,14 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'prettier',
   ],
+  overrides: [
+    {
+      files: ['next.config.js'],
+      rules: {
+        '@typescript-eslint/no-var-requires': ['off'],
+      },
+    },
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2022,

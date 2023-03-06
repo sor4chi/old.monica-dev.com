@@ -2,8 +2,8 @@ import { style } from '@vanilla-extract/css';
 
 export const container = style({
   display: 'grid',
-  gridTemplateRows: '1fr auto',
   gridTemplateColumns: '100%',
+  gridTemplateRows: '1fr auto',
   minHeight: '100svh',
 });
 

@@ -1,19 +1,20 @@
-import { vars } from '@/style/theme.css';
 import { style } from '@vanilla-extract/css';
 
+import { vars } from '@/style/theme.css';
+
 export const container = style({
-  width: '100vw',
-  boxSizing: 'border-box',
   background: 'transparent',
+  boxSizing: 'border-box',
+  width: '100vw',
 });
 
 export const divider = style({
-  height: 1,
-  width: '100vw',
   background: vars.color.text.secondary,
   border: 'none',
-  opacity: 0.2,
+  height: 1,
   margin: 0,
+  opacity: 0.2,
+  width: '100vw',
 });
 
 export const copywrite = style({

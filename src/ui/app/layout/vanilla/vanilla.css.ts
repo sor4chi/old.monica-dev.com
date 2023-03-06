@@ -1,15 +1,15 @@
 import { style } from '@vanilla-extract/css';
 
 export const container = style({
-  width: '100vw',
   minHeight: '100svh',
+  width: '100vw',
 });
 
 export const main = style({
+  alignItems: 'center',
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
+  height: '100vh',
   justifyContent: 'center',
   width: '100vw',
-  height: '100vh',
 });

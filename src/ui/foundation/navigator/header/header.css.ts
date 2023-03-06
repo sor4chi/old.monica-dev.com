@@ -1,40 +1,39 @@
-import { vars } from '@/style/theme.css';
 import { style } from '@vanilla-extract/css';
 
+import { vars } from '@/style/theme.css';
+
 export const header = style({
+  left: 0,
   position: 'fixed',
   top: 0,
-  left: 0,
   zIndex: 1,
 });
 
 export const container = style({
-  width: '100%',
-  maxWidth: vars.size.containerMaxWidth,
-  height: vars.size.headerHeight,
-  display: 'flex',
-  justifyContent: 'space-between',
   alignItems: 'center',
-  gap: '1rem',
-  padding: '0 1rem',
-  margin: '0 auto',
-  boxSizing: 'border-box',
-  background: 'transparent',
   backdropFilter: 'blur(.5rem)',
+  background: 'transparent',
+  boxSizing: 'border-box',
+  display: 'flex',
+  gap: '1rem',
+  height: vars.size.headerHeight,
+  justifyContent: 'space-between',
+  margin: '0 auto',
+  maxWidth: vars.size.containerMaxWidth,
+  padding: '0 1rem',
+  width: '100%',
 });
 
 export const divider = style({
-  width: '100vw',
-  height: '1px',
   background: vars.color.text.secondary,
-  opacity: 0.2,
-  margin: 0,
   border: 'none',
+  height: '1px',
+  margin: 0,
+  opacity: 0.2,
+  width: '100vw',
 });
 
 export const logo = style({
-  transition: 'rotate .5s ease-out',
-
   selectors: {
     '.dark &': {
       rotate: '0deg',
@@ -43,6 +42,8 @@ export const logo = style({
       rotate: '180deg',
     },
   },
+
+  transition: 'rotate .5s ease-out',
 });
 
 export const spacer = style({
@@ -50,14 +51,14 @@ export const spacer = style({
 });
 
 export const navigationList = style({
-  listStyleType: 'none',
-  padding: 0,
-  margin: 0,
-  display: 'flex',
-  justifyContent: 'space-between',
   alignItems: 'center',
+  display: 'flex',
   gap: 20,
   height: '100%',
+  justifyContent: 'space-between',
+  listStyleType: 'none',
+  margin: 0,
+  padding: 0,
 });
 
 export const navigationListItem = style({
@@ -65,12 +66,12 @@ export const navigationListItem = style({
 });
 
 export const navigationLink = style({
+  ':hover': {
+    color: vars.color.text.secondary,
+  },
   color: vars.color.text.primary,
   fontSize: '1rem',
   fontWeight: 400,
   textDecoration: 'none',
   transition: 'color .2s ease-in-out',
-  ':hover': {
-    color: vars.color.text.secondary,
-  },
 });

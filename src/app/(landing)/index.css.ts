@@ -1,20 +1,21 @@
-import { vars } from '@/style/theme.css';
 import { keyframes, style } from '@vanilla-extract/css';
 
+import { vars } from '@/style/theme.css';
+
 export const container = style({
-  position: 'relative',
-  width: '100%',
-  height: '100%',
+  alignItems: 'center',
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
+  height: '100%',
   justifyContent: 'center',
+  position: 'relative',
+  width: '100%',
 });
 
 export const themeSwitchContainer = style({
   position: 'absolute',
-  top: '1rem',
   right: '1rem',
+  top: '1rem',
 });
 
 export const icon = style({
@@ -26,16 +27,16 @@ const titleLineHeight = '3.5rem';
 const titleFontSize = '3rem';
 
 export const title = style({
-  fontSize: titleFontSize,
-  lineHeight: titleLineHeight,
-  fontWeight: 700,
-  textAlign: 'center',
+  alignItems: 'center',
   color: vars.color.text.primary,
   display: 'inline-flex',
-  alignItems: 'center',
-  overflow: 'hidden',
+  fontSize: titleFontSize,
+  fontWeight: 700,
+  lineHeight: titleLineHeight,
   margin: 0,
   marginTop: '2rem',
+  overflow: 'hidden',
+  textAlign: 'center',
 });
 
 const stopTime = 10;
@@ -62,37 +63,37 @@ const toggleAnimation = keyframes({
 });
 
 export const titleToggle = style({
+  animationDelay: `${stopTime / 2}s`,
+  animationDuration: `${total}s`,
+  animationIterationCount: 'infinite',
+  animationName: toggleAnimation,
+
+  animationTimingFunction: 'ease-in-out',
   display: 'inline-flex',
   flexDirection: 'column',
   height: titleLineHeight,
   marginRight: '1rem',
-
-  animationName: toggleAnimation,
-  animationDelay: `${stopTime / 2}s`,
-  animationDuration: `${total}s`,
-  animationIterationCount: 'infinite',
-  animationTimingFunction: 'ease-in-out',
 });
 
 export const subtitle = style({
-  fontSize: '1.5rem',
-  lineHeight: '2rem',
-  fontWeight: 400,
-  textAlign: 'center',
   color: vars.color.text.secondary,
+  fontSize: '1.5rem',
+  fontWeight: 400,
+  lineHeight: '2rem',
   margin: 0,
   marginTop: '1rem',
+  textAlign: 'center',
 });
 
 export const social = style({
+  alignItems: 'center',
   display: 'flex',
   flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
   gap: '1rem',
-  padding: 0,
+  justifyContent: 'center',
   margin: 0,
   marginTop: '1rem',
+  padding: 0,
 });
 
 export const socialItem = style({
@@ -100,9 +101,9 @@ export const socialItem = style({
 });
 
 export const socialLink = style({
-  color: vars.color.text.secondary,
-
   ':hover': {
     opacity: 0.8,
   },
+
+  color: vars.color.text.secondary,
 });
