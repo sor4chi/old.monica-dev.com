@@ -7,7 +7,7 @@ export const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <Link href="/" passHref>
+        <Link href="/" passHref aria-label="jump to top page">
           <Image
             src="/logo.svg"
             alt="logo"
@@ -20,12 +20,12 @@ export const Header = () => {
         <nav>
           <ul className={styles.navigationList}>
             <li className={styles.navigationListItem}>
-              <Link href="/" passHref className={styles.navigationLink}>
+              <Link href="/about" passHref className={styles.navigationLink}>
                 About
               </Link>
             </li>
             <li className={styles.navigationListItem}>
-              <Link href="/about" passHref className={styles.navigationLink}>
+              <Link href="/blog" passHref className={styles.navigationLink}>
                 Blog
               </Link>
             </li>
