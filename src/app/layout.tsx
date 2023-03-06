@@ -1,6 +1,6 @@
-import { themeClass } from "@/app/constants/theme.css";
 import { FullLayout } from "@/app/ui/app/layout/full";
-import "./globals.css";
+import { themeClass } from "./style/theme.css";
+import "./style/globals.css";
 
 export const metadata = {
   title: "Create Next App",
@@ -12,11 +12,18 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // observe body class, if it is changed, then change theme
   return (
-    <html lang="ja">
-      <body className={themeClass}>
-        <FullLayout>{children}</FullLayout>
-      </body>
-    </html>
+    <>
+      <head>
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script src="/theme.js" />
+      </head>
+      <html lang="ja">
+        <body className={themeClass}>
+          <FullLayout>{children}</FullLayout>
+        </body>
+      </html>
+    </>
   );
 }
