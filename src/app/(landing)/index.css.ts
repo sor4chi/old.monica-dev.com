@@ -67,6 +67,8 @@ export const shadow = style({
   right: 0,
   margin: 'auto',
 
+  filter: 'blur(0.04rem)',
+
   animationDuration: '2s',
   animationIterationCount: 'infinite',
   animationName: shadowScaleAnimation,
@@ -139,7 +141,6 @@ export const social = style({
   alignItems: 'center',
   display: 'flex',
   flexDirection: 'row',
-  gap: '1rem',
   justifyContent: 'center',
   margin: 0,
   marginTop: '1rem',
@@ -152,6 +153,8 @@ export const socialItem = style({
 
 export const socialLink = style({
   color: vars.color.text.secondary,
+  display: 'block',
+  padding: '0.5rem',
 
   ':hover': {
     opacity: 0.8,

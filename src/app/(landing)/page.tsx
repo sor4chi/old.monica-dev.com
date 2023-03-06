@@ -14,7 +14,14 @@ export default function Home() {
         <ThemeSwitch />
       </div>
       <div className={styles.profile}>
-        <Image src="/icon.webp" alt="Monica / Sor4chi" width={240} height={240} className={styles.icon} />
+        <Image
+          src="/icon.webp"
+          alt="Monica / Sor4chi"
+          width={240}
+          height={240}
+          className={styles.icon}
+          loading="eager"
+        />
         <h1 className={styles.title}>
           <div className={styles.logoContainer}>
             <span className={styles.shadow} />
