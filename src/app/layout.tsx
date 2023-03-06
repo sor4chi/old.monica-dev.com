@@ -1,4 +1,4 @@
-import { FullLayout } from "@/app/ui/app/layout/full";
+import { FullLayout } from "@/ui/app/layout/full";
 import { themeClass } from "@/style/theme.css";
 import "@/style/globals.css";
 

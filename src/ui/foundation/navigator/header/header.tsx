@@ -1,4 +1,4 @@
-import { ThemeSwitch } from "@/app/ui/foundation/navigator/themeSwitch";
+import { ThemeSwitch } from "@/ui/foundation/navigator/themeSwitch";
 import Image from "next/image";
 import Link from "next/link";
 import * as styles from "./header.css";
@@ -8,7 +8,13 @@ export const Header = () => {
     <header className={styles.header}>
       <div className={styles.container}>
         <Link href="/" passHref>
-          <Image src="/logo.svg" alt="logo" width={32} height={32} className={styles.logo} />
+          <Image
+            src="/logo.svg"
+            alt="logo"
+            width={32}
+            height={32}
+            className={styles.logo}
+          />
         </Link>
         <div className={styles.spacer} />
         <nav>

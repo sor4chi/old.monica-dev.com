@@ -1,5 +1,5 @@
-import { Footer } from "@/app/ui/foundation/navigator/footer";
-import { Header } from "@/app/ui/foundation/navigator/header";
+import { Footer } from "@/ui/foundation/navigator/footer";
+import { Header } from "@/ui/foundation/navigator/header";
 import * as styles from "./full.css";
 
 interface Props {
