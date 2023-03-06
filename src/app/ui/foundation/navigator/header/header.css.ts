@@ -37,10 +37,10 @@ export const logo = style({
 
   selectors: {
     ".dark &": {
-      transform: "rotate(180deg)",
+      transform: "rotate(deg)",
     },
     ".light &": {
-      transform: "rotate(0deg)",
+      transform: "rotate(180deg)",
     },
   },
 });
