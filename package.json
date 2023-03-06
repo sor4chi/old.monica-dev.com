@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "next dev",
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,json}'",
+    "format:check": "prettier --check ./**/*.{js,jsx,ts,tsx,json}",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "start": "next start"
   },
   "dependencies": {
     "@prisma/client": "^4.11.0",
@@ -19,17 +22,26 @@
     "react-icons": "^4.8.0",
     "typescript": "4.9.5"
   },
+  "devDependencies": {
+    "@types/node": "18.14.6",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.54.1",
+    "@typescript-eslint/parser": "^5.54.1",
+    "eslint": "8.35.0",
+    "eslint-config-next": "13.2.3",
+    "eslint-config-prettier": "^8.7.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-sort": "^2.4.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "prettier": "^2.8.4",
+    "prettier-plugin-packagejson": "^2.4.3",
+    "prettier-plugin-sort-json": "^1.0.0"
+  },
   "pnpm": {
     "patchedDependencies": {
       "@vanilla-extract/next-plugin@2.1.1": "patches/@vanilla-extract__next-plugin@2.1.1.patch",
       "next@13.2.3": "patches/next@13.2.3.patch"
     }
-  },
-  "devDependencies": {
-    "@types/node": "18.14.6",
-    "@types/react": "18.0.28",
-    "@types/react-dom": "18.0.11",
-    "eslint": "8.35.0",
-    "eslint-config-next": "13.2.3"
   }
 }
