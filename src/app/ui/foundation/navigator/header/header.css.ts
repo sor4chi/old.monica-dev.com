@@ -33,14 +33,14 @@ export const divider = style({
 });
 
 export const logo = style({
-  transition: "transform .2s ease-in-out",
+  transition: "rotate .5s ease-out",
 
   selectors: {
     ".dark &": {
-      transform: "rotate(deg)",
+      rotate: "0deg",
     },
     ".light &": {
-      transform: "rotate(180deg)",
+      rotate: "180deg",
     },
   },
 });
