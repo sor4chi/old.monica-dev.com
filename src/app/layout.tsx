@@ -20,9 +20,7 @@ export default function RootLayout({
         <script src="/theme.js" />
       </head>
       <html lang="ja">
-        <body className={themeClass}>
-          <FullLayout>{children}</FullLayout>
-        </body>
+        <body className={themeClass}>{children}</body>
       </html>
     </>
   );
