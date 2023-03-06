@@ -3,7 +3,7 @@ import * as styles from './full.css';
 import { Footer } from '@/ui/foundation/navigator/footer';
 import { Header } from '@/ui/foundation/navigator/header';
 
-type Props = {
+interface Props {
   children: React.ReactNode;
 }
 

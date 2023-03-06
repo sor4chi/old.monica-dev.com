@@ -1,6 +1,6 @@
 import * as styles from './vanilla.css';
 
-type Props = {
+interface Props {
   children: React.ReactNode;
 }
 
