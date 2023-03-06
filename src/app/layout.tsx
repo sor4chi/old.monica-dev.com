@@ -1,6 +1,6 @@
 import { FullLayout } from "@/app/ui/app/layout/full";
-import { themeClass } from "./style/theme.css";
-import "./style/globals.css";
+import { themeClass } from "@/style/theme.css";
+import "@/style/globals.css";
 
 export const metadata = {
   title: "Create Next App",

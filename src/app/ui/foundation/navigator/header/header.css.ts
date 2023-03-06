@@ -1,4 +1,4 @@
-import { vars } from "@/app/style/theme.css";
+import { vars } from "@/style/theme.css";
 import { style } from "@vanilla-extract/css";
 
 export const header = style({
