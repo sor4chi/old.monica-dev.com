@@ -29,7 +29,11 @@ export const ThemeSwitch = () => {
   };
 
   return (
-    <button className={styles.themeSwitch} onClick={switchTheme}>
+    <button
+      className={styles.themeSwitch}
+      onClick={switchTheme}
+      area-label="theme switch button"
+    >
       <FaMoon className={styles.moon} />
       <FaSun className={styles.sun} />
     </button>
