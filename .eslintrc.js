@@ -14,6 +14,12 @@ module.exports = {
         '@typescript-eslint/no-var-requires': ['off'],
       },
     },
+    {
+      files: ['*.css.ts'],
+      rules: {
+        'sort/object-properties': ['off'],
+      },
+    },
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
