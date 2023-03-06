@@ -5,17 +5,23 @@ import { vars } from '@/style/theme.css';
 export const container = style({
   alignItems: 'center',
   display: 'flex',
-  flexDirection: 'column',
   height: '100%',
   justifyContent: 'center',
   position: 'relative',
   width: '100%',
+  gap: '3rem',
 });
 
 export const themeSwitchContainer = style({
   position: 'absolute',
   right: '1rem',
   top: '1rem',
+});
+
+export const profile = style({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
 });
 
 export const icon = style({
@@ -145,9 +151,63 @@ export const socialItem = style({
 });
 
 export const socialLink = style({
+  color: vars.color.text.secondary,
+
   ':hover': {
     opacity: 0.8,
   },
+});
 
+export const divider = style({
+  margin: 0,
+  width: '1px',
+  height: '20rem',
+  border: 'none',
+  background: vars.color.bg.secondary,
+});
+
+export const meta = style({});
+
+export const navList = style({
+  listStyle: 'none',
+  padding: 0,
+});
+
+export const navListItem = style({
+  selectors: {
+    '& + &': {
+      marginTop: '1rem',
+    },
+  },
+});
+
+export const navLink = style({
+  padding: '0.5rem 1rem',
+  width: '100%',
+  display: 'block',
+  boxSizing: 'border-box',
   color: vars.color.text.secondary,
+  textDecoration: 'none',
+  fontSize: '1.5rem',
+  borderRadius: '0.25rem',
+  transition: 'background .5s ease-out',
+
+  selectors: {
+    '.dark &:hover': {
+      background: `linear-gradient(${[
+        '60deg',
+        `rgba(${vars.color.blue.secondaryRGB}, 1) 0%`,
+        `rgba(${vars.color.blue.secondaryRGB}, 0.5) 30%`,
+        `rgba(${vars.color.blue.secondaryRGB}, 0) 100%`,
+      ].join(',')})`,
+    },
+    '.light &:hover': {
+      background: `linear-gradient(${[
+        '-60deg',
+        `rgba(${vars.color.blue.secondaryRGB}, 1) 0%`,
+        `rgba(${vars.color.blue.secondaryRGB}, 0.5) 30%`,
+        `rgba(${vars.color.blue.secondaryRGB}, 0) 100%`,
+      ].join(',')})`,
+    },
+  },
 });

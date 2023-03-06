@@ -9,4 +9,10 @@ export const colorVars = createThemeContract({
     primary: '',
     secondary: '',
   },
+  blue: {
+    primary: '',
+    primaryRGB: '',
+    secondary: '',
+    secondaryRGB: '',
+  },
 });

@@ -28,6 +28,12 @@ createGlobalTheme('.light', colorVars, {
     primary: '#1F262D',
     secondary: '#2F3A45',
   },
+  blue: {
+    primary: '#84a0c6',
+    primaryRGB: '132, 160, 198',
+    secondary: '#90abd0',
+    secondaryRGB: '145, 172, 209',
+  },
 });
 
 createGlobalTheme('.dark', colorVars, {
@@ -38,6 +44,12 @@ createGlobalTheme('.dark', colorVars, {
   text: {
     primary: '#EDF2F7',
     secondary: '#c9d2e1',
+  },
+  blue: {
+    primary: '#84a0c6',
+    primaryRGB: '132, 160, 198',
+    secondary: '#91acd1',
+    secondaryRGB: '145, 172, 209',
   },
 });
 
