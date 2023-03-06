@@ -15,11 +15,13 @@
     "@types/react-dom": "18.0.11",
     "@vanilla-extract/css": "^1.9.5",
     "@vanilla-extract/next-plugin": "^2.1.1",
+    "clsx": "^1.2.1",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
     "next": "13.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.8.0",
     "typescript": "4.9.5"
   },
   "pnpm": {
