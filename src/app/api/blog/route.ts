@@ -10,19 +10,23 @@ const getSomeBlogRequestSchema = z.object({
 });
 
 type BlogGetEachResponse = {
-  /** ブログのID */
-  id: string;
-  /** ブログのSlug */
-  slug: string;
-  /** ブログのタイトル */
-  title: string;
-  /** ブログの本文 */
-  description: string;
-  /** ブログのタグ */
-  tags: string[];
-  /** ブログの作成日 */
-  createdAt: string;
-}[];
+  data: {
+    /** ブログのID */
+    id: string;
+    /** ブログのSlug */
+    slug: string;
+    /** ブログのタイトル */
+    title: string;
+    /** ブログの本文 */
+    description: string;
+    /** ブログのタグ */
+    tags: string[];
+    /** ブログの作成日 */
+    createdAt: string;
+  }[];
+  /** ブログの総数 */
+  total: number;
+};
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -31,7 +35,10 @@ export async function GET(request: Request) {
     offset: searchParams.get('offset'),
   });
 
-  const response = MockBlogData.slice(offset, offset + count);
+  const response = {
+    data: MockBlogData.slice(offset, offset + count),
+    total: MockBlogData.length,
+  } satisfies BlogGetEachResponse;
 
   return new Response(JSON.stringify(response), {
     headers: {
@@ -41,5 +48,10 @@ export async function GET(request: Request) {
 }
 
 export const fetchGetSomeBlog = (params: z.infer<typeof getSomeBlogRequestSchema>) => {
-  return customFetch<BlogGetEachResponse>(`/api/blog?count=${params.count}&offset=${params.offset}`);
+  const { count, offset } = params;
+  const query = new URLSearchParams({
+    count: String(count),
+    offset: String(offset),
+  });
+  return customFetch<BlogGetEachResponse>(`/api/blog?${query}`);
 };
