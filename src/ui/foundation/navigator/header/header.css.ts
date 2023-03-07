@@ -53,12 +53,17 @@ export const navigationListItem = style({
 });
 
 export const navigationLink = style({
-  ':hover': {
-    color: vars.color.text.secondary,
-  },
   color: vars.color.text.primary,
   fontSize: '1rem',
   fontWeight: 400,
   textDecoration: 'none',
   transition: 'color .2s ease-in-out',
+
+  '@media': {
+    '(hover: hover)': {
+      ':hover': {
+        color: vars.color.text.secondary,
+      },
+    },
+  },
 });

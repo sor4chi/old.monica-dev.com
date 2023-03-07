@@ -3,21 +3,25 @@ import { style } from '@vanilla-extract/css';
 import { vars } from '@/style/theme.css';
 
 export const themeSwitch = style({
-  ':hover': {
-    opacity: 0.8,
-  },
-  alignItems: 'center',
   background: vars.color.bg.secondary,
   border: 'none',
   borderRadius: '50%',
   cursor: 'pointer',
 
   display: 'flex',
-  height: '2rem',
-
   justifyContent: 'center',
+  alignItems: 'center',
 
+  height: '2rem',
   width: '2rem',
+
+  '@media': {
+    '(hover: hover)': {
+      ':hover': {
+        opacity: 0.8,
+      },
+    },
+  },
 });
 
 export const sun = style({

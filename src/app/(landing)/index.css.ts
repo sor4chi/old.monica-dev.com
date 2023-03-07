@@ -195,12 +195,16 @@ export const navLink = style({
   borderRadius: '0.25rem',
   transition: 'background .5s ease-out',
 
-  ':hover': {
-    background: `linear-gradient(${[
-      '60deg',
-      `rgba(${vars.color.accent.secondaryRGB}, 1) 0%`,
-      `rgba(${vars.color.accent.secondaryRGB}, 0.5) 30%`,
-      `rgba(${vars.color.accent.secondaryRGB}, 0) 100%`,
-    ].join(',')})`,
+  '@media': {
+    '(hover: hover)': {
+      ':hover': {
+        background: `linear-gradient(${[
+          '60deg',
+          `rgba(${vars.color.accent.secondaryRGB}, 1) 0%`,
+          `rgba(${vars.color.accent.secondaryRGB}, 0.5) 30%`,
+          `rgba(${vars.color.accent.secondaryRGB}, 0) 100%`,
+        ].join(',')})`,
+      },
+    },
   },
 });
