@@ -1,8 +1,15 @@
-export interface AboutGetResponse {
+import { customFetch } from '@/util/fetcher';
+
+interface AboutGetResponse {
   /** 自己紹介 */
   introduction: string;
   /** プロフィール画像のURLs */
-  profileImages: string[];
+  profileImages: {
+    /** 画像のURL */
+    url: string;
+    /** 画像の説明 */
+    title: string;
+  }[];
   /** Social Links */
   socialLinks: {
     /** Twitter */
@@ -39,7 +46,12 @@ export interface AboutGetResponse {
 
 const MockAboutResponse = {
   introduction: 'MonicaやSor4chiというハンドルネームで活動しているWebエンジニアです。',
-  profileImages: ['/icon.png'],
+  profileImages: [
+    {
+      title: '上京したての特に訪れたスカイツリーでの一枚',
+      url: '/icon.webp',
+    },
+  ],
   socialLinks: {
     github: 'https://github.com/sor4chi',
     other: [
@@ -88,3 +100,5 @@ export async function GET(_request: Request) {
     },
   });
 }
+
+export const fetchGetAbout = () => customFetch<AboutGetResponse>('/api/about');
