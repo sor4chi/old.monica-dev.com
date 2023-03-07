@@ -25,33 +25,29 @@ export const Pagination = ({ hrefGenerator, now, total }: Props) => {
   if (total <= 1) {
     return null;
   }
+  const Item = ({ offset }: { offset: number }) =>
+    now === offset ? (
+      <span className={clsx(styles.link, styles.linkState['active'])}>{offset}</span>
+    ) : (
+      <Link href={hrefGenerator(offset)} passHref className={clsx(styles.link, styles.linkState['inactive'])}>
+        {offset}
+      </Link>
+    );
+
   if (total <= max) {
     return (
       <div className={styles.container}>
         {Array(total)
           .fill(0)
           .map((_, i) => (
-            <Link
-              href={hrefGenerator(i + 1)}
-              key={i}
-              passHref
-              className={clsx(styles.link, styles.linkState[now === i + 1 ? 'active' : 'inactive'])}
-            >
-              {i + 1}
-            </Link>
+            <Item key={i} offset={i + 1} />
           ))}
       </div>
     );
   }
   return (
     <div className={styles.container}>
-      <Link
-        href={hrefGenerator(1)}
-        passHref
-        className={clsx(styles.link, styles.linkState[now === 1 ? 'active' : 'inactive'])}
-      >
-        1
-      </Link>
+      <Item offset={1} />
       {now - Math.floor(max / 2) > 2 && <ThreeDots />}
       {Array(max)
         .fill(0)
@@ -60,25 +56,10 @@ export const Pagination = ({ hrefGenerator, now, total }: Props) => {
           if (offset < 2 || offset > total - 1) {
             return null;
           }
-          return (
-            <Link
-              href={hrefGenerator(offset)}
-              key={i}
-              passHref
-              className={clsx(styles.link, styles.linkState[now === offset ? 'active' : 'inactive'])}
-            >
-              {offset}
-            </Link>
-          );
+          return <Item key={i} offset={offset} />;
         })}
       {total - now - Math.floor(max / 2) > 1 && <ThreeDots />}
-      <Link
-        href={hrefGenerator(total)}
-        passHref
-        className={clsx(styles.link, styles.linkState[now === total ? 'active' : 'inactive'])}
-      >
-        {total}
-      </Link>
+      <Item offset={total} />
     </div>
   );
 };

@@ -22,11 +22,11 @@ import { colorVars } from './contract.css';
 createGlobalTheme('.light', colorVars, {
   bg: {
     primary: '#EDF2F7',
-    secondary: '#c9d2e1',
+    secondary: '#dee5f1',
   },
   text: {
     primary: '#1F262D',
-    secondary: '#2F3A45',
+    secondary: '#4f5b67',
   },
   accent: {
     primary: '#a093c7',

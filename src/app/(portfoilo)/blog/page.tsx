@@ -27,10 +27,10 @@ export default async function Blog() {
 
   return (
     <article className={styles.container}>
-      <h1 className={styles.title}>Blog Page</h1>
+      <h1 className={styles.title}>Blog</h1>
       <BlogList blogs={blogs.data} />
       <Pagination
-        total={Math.ceil(blogs?.total / ITEMS_PER_PAGE)}
+        total={Math.ceil(blogs.total / ITEMS_PER_PAGE)}
         now={1}
         hrefGenerator={(offset) => `/blog/page/${offset}`}
       />
