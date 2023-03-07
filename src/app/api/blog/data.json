@@ -78,5 +78,93 @@
     "slug": "code-review",
     "tags": ["コードレビュー", "開発者向け"],
     "title": "コードレビューの効果的な方法とツール"
+  },
+  {
+    "createdAt": "2022-03-01",
+    "description": "機械学習は、人工知能の分野の一部であり、コンピュータが人間と同じように学習することができるようにするための技術です。",
+    "id": "11",
+    "slug": "introduction-to-machine-learning",
+    "tags": ["機械学習", "人工知能"],
+    "title": "機械学習の概要"
+  },
+  {
+    "createdAt": "2022-02-28",
+    "description": "Reactは、Facebookが開発したJavaScriptのライブラリであり、Webアプリケーションを構築するための人気の高いツールです。",
+    "id": "12",
+    "slug": "getting-started-with-react",
+    "tags": ["React", "JavaScript", "Web開発"],
+    "title": "Reactのはじめかた"
+  },
+  {
+    "createdAt": "2022-02-27",
+    "description": "データ構造は、データを効率的に処理するための方法を提供する重要なコンピュータサイエンスの分野です。",
+    "id": "13",
+    "slug": "the-basics-of-data-structures",
+    "tags": ["データ構造", "アルゴリズム", "コンピュータサイエンス"],
+    "title": "データ構造の基本"
+  },
+  {
+    "createdAt": "2022-02-25",
+    "description": "Dockerは、コンテナ仮想化技術を使用してアプリケーションを実行するためのプラットフォームであり、今日のソフトウェア開発において不可欠なツールの1つです。",
+    "id": "14",
+    "slug": "beginners-guide-to-docker",
+    "tags": ["Docker", "コンテナ仮想化", "DevOps"],
+    "title": "Docker入門ガイド"
+  },
+  {
+    "createdAt": "2022-02-24",
+    "description": "人工知能は、ますます重要性を増し、私たちの生活のあらゆる側面に影響を与えるようになっています。この記事では、人工知能の将来について考察しています。",
+    "id": "15",
+    "slug": "the-future-of-artificial-intelligence",
+    "tags": ["人工知能", "技術の未来"],
+    "title": "人工知能の未来"
+  },
+  {
+    "createdAt": "2022-02-15",
+    "description": "プログラミングは芸術であるという見方がある。しかし、その芸術はどのようにして生まれるのか？",
+    "id": "16",
+    "slug": "the-art-of-programming",
+    "tags": ["プログラミング", "芸術", "哲学"],
+    "title": "プログラミングの芸術"
+  },
+  {
+    "createdAt": "2022-02-23",
+    "description": "AIは人類の最大の発明の一つと言われる。その力を知れば、未来を切り開くことができる。",
+    "id": "17",
+    "slug": "the-power-of-ai",
+    "tags": ["AI", "未来", "革命"],
+    "title": "AIの力"
+  },
+  {
+    "createdAt": "2022-03-01",
+    "description": "ReactはWeb開発において最も人気のあるフレームワークの一つだ。その本質とは何か？",
+    "id": "18",
+    "slug": "the-essence-of-react",
+    "tags": ["React", "フロントエンド", "Web開発"],
+    "title": "Reactの本質"
+  },
+  {
+    "createdAt": "2022-03-05",
+    "description": "ブロックチェーンは今やビジネスの現場で欠かせない技術となっている。その理由を探る。",
+    "id": "19",
+    "slug": "the-rise-of-blockchain",
+    "tags": ["ブロックチェーン", "ビジネス", "テクノロジー"],
+    "title": "ブロックチェーンの台頭"
+  },
+  {
+    "createdAt": "2022-03-10",
+    "description": "プログラミングにおいて、デザインパターンは美しく有用なものだ。その魅力を探る。",
+    "id": "20",
+    "slug": "the-beauty-of-design-patterns",
+    "tags": ["デザインパターン", "プログラミング", "美学"],
+    "title": "デザインパターンの美"
+  },
+  {
+    "createdAt": "2022-03-15",
+    "description": "JavaScriptはWeb開発の世界で最も重要なプログラミング言語の一つだ。その未来にはどんな約束があるのか？",
+    "id": "21",
+    "slug": "the-promise-of-javascript",
+    "tags": ["JavaScript", "フロントエンド", "Web開発"],
+    "title": "JavaScriptの約束"
   }
 ]
