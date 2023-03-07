@@ -27,13 +27,13 @@ const formatYMD = (date: string) => {
   return d;
 };
 
-export const BlogList = ({ blogs }: Props) => {
-  const NOTFOUND_MSG = twemoji.parse('Sorry, no items found. 😭', {
-    className: 'twemoji',
-    ext: '.svg',
-    folder: 'svg',
-  });
+const NOTFOUND_MSG = twemoji.parse('Sorry, no items found. 😭', {
+  className: 'twemoji',
+  ext: '.svg',
+  folder: 'svg',
+});
 
+export const BlogList = ({ blogs }: Props) => {
   if (!blogs.length) {
     return (
       <div className={styles.container}>
