@@ -10,5 +10,5 @@ export const logo = style({
     },
   },
 
-  transition: 'rotate .5s ease-out',
+  transition: 'rotate .5s ease-in-out',
 });
