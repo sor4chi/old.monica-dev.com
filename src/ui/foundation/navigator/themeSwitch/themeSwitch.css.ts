@@ -25,7 +25,7 @@ export const themeSwitch = style({
 });
 
 export const sun = style({
-  color: vars.color.text.primary,
+  color: vars.color.accent.primary,
   display: 'none',
 
   selectors: {
@@ -36,7 +36,7 @@ export const sun = style({
 });
 
 export const moon = style({
-  color: vars.color.text.primary,
+  color: vars.color.accent.primary,
   display: 'none',
 
   selectors: {
