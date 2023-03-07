@@ -7,6 +7,13 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  redirects: async () => [
+    {
+      destination: '/blog',
+      permanent: true,
+      source: '/blog/page',
+    },
+  ],
 };
 
 module.exports = withVanillaExtract(nextConfig);
