@@ -7,6 +7,12 @@ export const toc = style({
   top: `calc(${vars.size.headerHeight} + 1rem)`,
 });
 
+export const tocTitle = style({
+  fontSize: '1.5rem',
+  fontWeight: 700,
+  marginBottom: '1rem',
+});
+
 export const tocWrapper = style({
   paddingLeft: '1rem',
   listStyle: 'none',
@@ -29,4 +35,5 @@ export const tocItemLink = style({
 
 export const tocActive = style({
   color: vars.color.accent.primary,
+  fontWeight: 700,
 });

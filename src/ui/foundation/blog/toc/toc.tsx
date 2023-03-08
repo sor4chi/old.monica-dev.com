@@ -49,12 +49,12 @@ const TocItem = ({ children, depth, value }: TocItemProps) => {
 
 export const Toc = ({ toc }: { toc: TocItemProps[] }) => {
   return (
-    <div className={styles.toc}>
-      <h2>目次</h2>
+    <section className={styles.toc}>
+      <p className={styles.tocTitle}>目次</p>
       {toc.length === 0 && <p>目次はありません</p>}
       {toc.map((toc) => (
         <TocItem {...toc} key={toc.value} />
       ))}
-    </div>
+    </section>
   );
 };
