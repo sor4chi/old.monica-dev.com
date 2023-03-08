@@ -39,7 +39,7 @@ export default async function Blog({ searchParams }: Props) {
   const blogs = await getBlogs(page);
 
   return (
-    <article className={styles.container}>
+    <>
       <h1 className={styles.title}>Blog</h1>
       <BlogList blogs={blogs.data} />
       <Pagination
@@ -47,6 +47,6 @@ export default async function Blog({ searchParams }: Props) {
         now={page}
         hrefGenerator={(offset) => `/blog?page=${offset}`}
       />
-    </article>
+    </>
   );
 }

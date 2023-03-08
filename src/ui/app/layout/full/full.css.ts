@@ -8,5 +8,8 @@ export const container = style({
 });
 
 export const main = style({
-  paddingTop: '4rem',
+  maxWidth: '1024px',
+  margin: '0 auto',
+  marginTop: '4rem',
+  padding: '0 1rem',
 });

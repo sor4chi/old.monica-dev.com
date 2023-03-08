@@ -9,7 +9,7 @@ import { ThemeSwitch } from '@/ui/foundation/navigator/themeSwitch';
 
 export default function Home() {
   return (
-    <article className={styles.container}>
+    <div className={styles.container}>
       <div className={styles.themeSwitchContainer}>
         <ThemeSwitch />
       </div>
@@ -81,6 +81,6 @@ export default function Home() {
           </li>
         </ul>
       </div>
-    </article>
+    </div>
   );
 }
