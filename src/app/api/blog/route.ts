@@ -17,7 +17,7 @@ type BlogGetEachResponse = {
     slug: string;
     /** ブログのタイトル */
     title: string;
-    /** ブログの本文 */
+    /** ブログの説明 */
     description: string;
     /** ブログのタグ */
     tags: string[];
