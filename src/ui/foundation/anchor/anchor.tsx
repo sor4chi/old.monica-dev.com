@@ -5,20 +5,26 @@ type Props = ComponentProps<typeof Link> & {
   href: string;
 };
 
-export const Anchor = ({ children, href }: Props) => {
-  const isInternalLink = href && (href.startsWith('/') || href.startsWith('#'));
+export const Anchor = ({ children, href, ...rest }: Props) => {
+  if (href.startsWith('/')) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" {...rest}>
+        {children}
+      </a>
+    );
+  }
+
+  if (href.startsWith('#')) {
+    return (
+      <a href={href} {...rest}>
+        {children}
+      </a>
+    );
+  }
 
   return (
-    <>
-      {isInternalLink ? (
-        <Link href={href} passHref>
-          {children}
-        </Link>
-      ) : (
-        <a href={href} target="_blank" rel="noopener noreferrer">
-          {children}
-        </a>
-      )}
-    </>
+    <Link href={href} passHref {...rest}>
+      {children}
+    </Link>
   );
 };
