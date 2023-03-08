@@ -9,4 +9,5 @@ globalStyle('body', {
   margin: 0,
   padding: 0,
   transition: 'color .2s ease-in-out, background-color .2s ease-in-out, background .2s ease-in-out',
+  color: vars.color.text.primary,
 });
