@@ -8,6 +8,10 @@ interface TocItem {
   depth: number;
   /** ヘッダーのテキスト */
   value: string;
+  /** ヘッダーの属性データ */
+  data: {
+    id: string;
+  };
   /** ヘッダーの子要素 */
   children: TocItem[];
 }

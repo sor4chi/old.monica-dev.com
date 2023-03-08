@@ -2,12 +2,20 @@ import { clsx } from 'clsx';
 import { useEffect, useRef } from 'react';
 
 import * as styles from './toc.css';
-import type { TocItemProps } from './types';
 
-const TocItem = ({ children, depth, value }: TocItemProps) => {
+export interface TocItemProps {
+  depth: number;
+  value: string;
+  data: {
+    id: string;
+  };
+  children: TocItemProps[];
+}
+
+const TocItem = ({ children, data, depth, value }: TocItemProps) => {
   const observer = useRef<IntersectionObserver>();
   const toc = useRef<HTMLAnchorElement>(null);
-  const targetId = `#${value}`;
+  const targetId = `#${data.id}`;
 
   useEffect(() => {
     observer.current = new IntersectionObserver((entries) => {

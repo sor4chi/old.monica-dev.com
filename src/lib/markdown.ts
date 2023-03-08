@@ -34,7 +34,9 @@ export const parseMarkdownToHTML = (mdContent: string) => {
   const tocProcessor = unified()
     .use(remarkParse) // [md    -> mdast] Markdownをmdast(Markdown抽象構文木)に変換
     .use(remarkSlug) // [mdast -> mdast] Headingにid付与（Toc Anchor用）
-    .use(remarkExtractToc);
+    .use(remarkExtractToc, {
+      keys: ['data'],
+    });
 
   return {
     content: mdHtmlProcessor.processSync(mdContent).toString(),
