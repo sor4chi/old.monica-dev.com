@@ -1,10 +1,16 @@
-import type { Root } from 'mdast';
-
 import { blogData, blogsData } from '../data';
 
-import { parseMarkdownToHTML } from './../../../../lib/markdown';
-
+import { parseMarkdownToHTML } from '@/lib/markdown';
 import { customFetch } from '@/util/fetcher';
+
+interface TocItem {
+  /** ヘッダーのレベル */
+  depth: number;
+  /** ヘッダーのテキスト */
+  value: string;
+  /** ヘッダーの子要素 */
+  children: TocItem[];
+}
 
 type BlogShowResponse = {
   /** ブログのID */
@@ -18,7 +24,7 @@ type BlogShowResponse = {
   /** ブログの本文 */
   content: string;
   /** ブログのTOC */
-  toc: Root;
+  toc: TocItem[];
   /** ブログのタグ */
   tags: string[];
   /** ブログの作成日 */
@@ -42,7 +48,7 @@ export async function GET(_request: Request, { params }: { params: { slug: strin
   const response = {
     ...data,
     ...parsed,
-  } satisfies BlogShowResponse;
+  };
 
   return new Response(JSON.stringify(response), {
     headers: {
