@@ -2,4 +2,6 @@ import Image from 'next/image';
 
 import * as styles from './logo.css';
 
-export const Logo = () => <Image src="/logo.svg" alt="logo" width={32} height={32} className={styles.logo} />;
+export const Logo = ({ height = 32, width = 32 }) => (
+  <Image src="/logo.svg" alt="logo" width={width} height={height} className={styles.logo} />
+);
