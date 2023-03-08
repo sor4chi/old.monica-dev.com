@@ -1,7 +1,6 @@
 import type { Root } from 'mdast';
 
-import { blogData } from '../data';
-import blogsData from '../data.json';
+import { blogData, blogsData } from '../data';
 
 import { parseMarkdownToHTML } from './../../../../lib/markdown';
 

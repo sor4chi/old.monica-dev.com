@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import MockBlogData from './data.json';
+import { blogsData } from './data';
 
 import { customFetch } from '@/util/fetcher';
 
@@ -36,8 +36,8 @@ export async function GET(request: Request) {
   });
 
   const response = {
-    data: MockBlogData.slice(offset, offset + count),
-    total: MockBlogData.length,
+    data: blogsData.slice(offset, offset + count),
+    total: blogsData.length,
   } satisfies BlogGetEachResponse;
 
   return new Response(JSON.stringify(response), {
