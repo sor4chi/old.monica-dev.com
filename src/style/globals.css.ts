@@ -10,4 +10,9 @@ globalStyle('body', {
   padding: 0,
   transition: 'color .2s ease-in-out, background-color .2s ease-in-out, background .2s ease-in-out',
   color: vars.color.text.primary,
+  accentColor: vars.color.accent.primary,
+});
+
+globalStyle('a', {
+  color: vars.color.accent.primary,
 });
