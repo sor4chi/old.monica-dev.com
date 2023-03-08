@@ -13,6 +13,11 @@ globalStyle('body', {
   accentColor: vars.color.accent.primary,
 });
 
+globalStyle('html', {
+  scrollPaddingTop: '5rem',
+  scrollBehavior: 'smooth',
+});
+
 globalStyle('a', {
   color: vars.color.accent.primary,
 });
