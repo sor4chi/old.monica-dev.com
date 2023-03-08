@@ -19,24 +19,26 @@ import { unified } from 'unified';
 import { Anchor } from '@/ui/foundation/anchor';
 
 export const parseMarkdownToHTML = (mdContent: string) => {
-  const mdProcessor = unified()
+  const mdHtmlProcessor = unified()
     .use(remarkParse) // [md    -> mdast] Markdownをmdast(Markdown抽象構文木)に変換
     .use(remarkSlug) // [mdast -> mdast] Headingにid付与（Toc Anchor用）
     .use(remarkGfm) // [mdast -> mdast] table等の拡張md記法変換
     .use(remarkMath) // [mdast -> mdast] mathブロックを変換
     .use(remarkDirective) // [mdast -> mdast] messageブロックを変換
     .use(remarkCodeTitle) // [mdast -> mdast] codeブロックへタイトル等の構文拡張
-    .use(remarkExtractToc); // [mdast -> mdast] Tocを抽出する関数をmdastに追加
-
-  const htmlProcessor = unified()
     .use(remarkRehype) // [mdast -> hast ] mdast(Markdown抽象構文木)をhast(HTML抽象構文木)に変換
     .use(rehypeKatex) // [mdast -> hast ] mathブロックをkatex.jsに対応
     .use(rehypeHighlight) // [mdast -> hast ] codeブロックをhighlight.jsに対応
     .use(rehypeStringify); // [hast  -> html ] hast(HTML抽象構文木)をHTMLに変換
 
+  const tocProcessor = unified()
+    .use(remarkParse) // [md    -> mdast] Markdownをmdast(Markdown抽象構文木)に変換
+    .use(remarkSlug) // [mdast -> mdast] Headingにid付与（Toc Anchor用）
+    .use(remarkExtractToc);
+
   return {
-    content: htmlProcessor.processSync(mdProcessor.processSync(mdContent)).toString(),
-    toc: mdProcessor.runSync(mdProcessor.parse(mdContent)),
+    content: mdHtmlProcessor.processSync(mdContent).toString(),
+    toc: tocProcessor.runSync(tocProcessor.parse(mdContent)),
   };
 };
 
