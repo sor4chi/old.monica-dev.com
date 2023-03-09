@@ -9,8 +9,8 @@ export const toc = style({
 });
 
 export const tocTitle = style({
-  fontSize: '1.5rem',
-  fontWeight: 700,
+  fontSize: '1.25rem',
+  fontWeight: 400,
   marginBottom: '1rem',
   marginTop: 0,
 });
