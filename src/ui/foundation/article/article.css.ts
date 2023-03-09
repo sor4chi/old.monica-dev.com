@@ -31,6 +31,10 @@ globalStyle(`${content} h4`, {
 });
 
 globalStyle(`${content} p`, {
+  color: 'inherit',
+});
+
+globalStyle(`${content} > p`, {
   color: vars.color.text.secondary,
 });
 
@@ -108,10 +112,6 @@ globalStyle(`${content} blockquote`, {
   padding: '0 1rem',
   margin: '1rem 0',
   color: vars.color.text.tertiary,
-});
-
-globalStyle(`${content} p`, {
-  color: 'inherit',
 });
 
 globalStyle(`${content} :not(pre) > code`, {
