@@ -4,8 +4,8 @@ import { FaGithub, FaTwitter } from 'react-icons/fa';
 
 import * as styles from './index.css';
 
-import { Logo } from '@/ui/foundation/navigator/logo';
-import { ThemeSwitch } from '@/ui/foundation/navigator/themeSwitch';
+import { Logo } from '@/ui/navigator/logo';
+import { ThemeSwitch } from '@/ui/navigator/themeSwitch';
 
 export default function Home() {
   return (

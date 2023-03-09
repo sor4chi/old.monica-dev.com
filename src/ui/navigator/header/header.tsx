@@ -4,7 +4,7 @@ import { Logo } from '../logo';
 
 import * as styles from './header.css';
 
-import { ThemeSwitch } from '@/ui/foundation/navigator/themeSwitch';
+import { ThemeSwitch } from '@/ui/navigator/themeSwitch';
 
 export const Header = () => {
   return (
