@@ -44,12 +44,14 @@ interface contentTemplateParams {
 }
 
 const contentTemplate = ({ email, message, name, time }: contentTemplateParams) => `
+--------------------------------
 **お問い合わせ通知**
 ${time} に ${process.env.NEXT_PUBLIC_BASE_URL} から新たなお問い合わせがありました。
 
 > Name: ${name}様
 > Email: ${email}
 > Message: ${message}
+--------------------------------
 `;
 
 export async function POST(request: Request) {

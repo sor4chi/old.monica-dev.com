@@ -1,11 +1,13 @@
 import type { ChangeEvent } from 'react';
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
+import twemoji from 'twemoji';
 import { z } from 'zod';
 
 import * as styles from './form.css';
 
 import { postContact } from '@/app/api/contact/route';
 import { Button } from '@/ui/foundation/button';
+import { Text } from '@/ui/foundation/text';
 import { TextInput } from '@/ui/foundation/textInput';
 import { Textarea } from '@/ui/foundation/textarea';
 
@@ -91,6 +93,7 @@ const errorReducer = (state: typeof initialFormError, action: ErrorReducerAction
 };
 
 export const ContactForm = () => {
+  const [phase, setPhase] = useState<'form' | 'success'>('form');
   const [form, dispatch] = useReducer(reducer, initialForm);
   const [formError, dispatchError] = useReducer(errorReducer, initialFormError);
 
@@ -99,6 +102,7 @@ export const ContactForm = () => {
     const formData = formSchema.safeParse(form);
     if (formData.success) {
       postContact(formData.data);
+      setPhase('success');
       dispatch({ type: 'reset' });
       dispatchError({ type: 'reset' });
     } else {
@@ -115,6 +119,36 @@ export const ContactForm = () => {
   useEffect(() => {
     dispatch({ type: 'load' });
   }, []);
+
+  if (phase === 'success') {
+    return (
+      <div className={styles.success}>
+        <p
+          className={styles.successMessage}
+          dangerouslySetInnerHTML={{
+            __html: twemoji.parse('Thank you for your message 🚀', {
+              className: 'twemoji',
+              ext: '.svg',
+              folder: 'svg',
+            }),
+          }}
+        />
+        <p className={styles.successMessage}>
+          <Text value={'お問い合わせありがとうございます。'} normal />
+          <Text value={'返信が遅れる場合がありますが、'} normal />
+          <Text value={'しばらくお待ちください。'} normal />
+        </p>
+        <p className={styles.successMessage}>
+          <Text value={'また、TwitterのDMもお待ちしております。'} />
+          <a href="https://twitter.com/monica18_pr">@monica18_pr</a>
+        </p>
+
+        <button className={styles.backButton} onClick={() => setPhase('form')}>
+          Back
+        </button>
+      </div>
+    );
+  }
 
   return (
     <form className={styles.form} onSubmit={onSubmit}>
