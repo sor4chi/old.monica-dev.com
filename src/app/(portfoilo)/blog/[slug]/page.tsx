@@ -6,7 +6,7 @@ import * as styles from './detail.css';
 
 import { fetchGetBlogBySlug } from '@/app/api/blog/[slug]/route';
 import { fetchGetBlogSlugs } from '@/app/api/blog/slugs/route';
-import { parseHTMLToReactJSX } from '@/lib/markdown';
+import { Article } from '@/ui/foundation/article';
 import { Toc } from '@/ui/foundation/blog/toc';
 
 export async function generateStaticParams() {
@@ -49,7 +49,7 @@ export default async function BlogDetail({ params }: Props) {
     <>
       <h1 className={styles.title}>{blog.title}</h1>
       <div className={styles.detail}>
-        <article className={styles.content}>{parseHTMLToReactJSX(blog.content)}</article>
+        <Article content={blog.content} />
         <aside className={styles.sidebar}>
           <Toc toc={blog.toc} />
         </aside>
