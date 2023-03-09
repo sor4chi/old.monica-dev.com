@@ -24,7 +24,7 @@ const wrap = <T>(task: Promise<Response>): Promise<T> => {
 
 export const customFetch = <T>(input: RequestInfo, init?: RequestInit | undefined): Promise<T> => {
   if (typeof input === 'string' && !/^https?:\/\//.test(input)) {
-    input = new URL(input, 'http://localhost:3000').toString();
+    input = new URL(input, process.env.BASE_URL).toString();
   }
   return wrap<T>(fetch(input, init));
 };
