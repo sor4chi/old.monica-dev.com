@@ -1,7 +1,16 @@
 import { createElement, Fragment } from 'react';
-import rehypeHighlight from 'rehype-highlight';
+import refractorC from 'refractor/lang/c';
+import refractorCpp from 'refractor/lang/cpp';
+import refractorGo from 'refractor/lang/go';
+import refractorJava from 'refractor/lang/java';
+import refractorJavascript from 'refractor/lang/javascript';
+import refractorPython from 'refractor/lang/python';
+import refractorRust from 'refractor/lang/rust';
+import refractorTypescript from 'refractor/lang/typescript';
+import { refractor } from 'refractor/lib/core.js';
 import rehypeKatex from 'rehype-katex';
 import rehypeParse from 'rehype-parse';
+import rehypePrismGenerator from 'rehype-prism-plus/generator';
 import rehypeReact from 'rehype-react';
 import rehypeStringify from 'rehype-stringify';
 import remarkDirective from 'remark-directive';
@@ -18,6 +27,16 @@ import { unified } from 'unified';
 
 import { Anchor } from '@/ui/foundation/anchor';
 
+refractor.register(refractorRust);
+refractor.register(refractorTypescript);
+refractor.register(refractorJavascript);
+refractor.register(refractorPython);
+refractor.register(refractorJava);
+refractor.register(refractorC);
+refractor.register(refractorCpp);
+refractor.register(refractorGo);
+const rehypePrism = rehypePrismGenerator(refractor);
+
 export const parseMarkdownToHTML = (mdContent: string) => {
   const mdHtmlProcessor = unified()
     .use(remarkParse) // [md    -> mdast] Markdownをmdast(Markdown抽象構文木)に変換
@@ -28,7 +47,9 @@ export const parseMarkdownToHTML = (mdContent: string) => {
     .use(remarkCodeTitle) // [mdast -> mdast] codeブロックへタイトル等の構文拡張
     .use(remarkRehype) // [mdast -> hast ] mdast(Markdown抽象構文木)をhast(HTML抽象構文木)に変換
     .use(rehypeKatex) // [mdast -> hast ] mathブロックをkatex.jsに対応
-    .use(rehypeHighlight) // [mdast -> hast ] codeブロックをhighlight.jsに対応
+    .use(rehypePrism, {
+      ignoreMissing: true,
+    })
     .use(rehypeStringify); // [hast  -> html ] hast(HTML抽象構文木)をHTMLに変換
 
   const tocProcessor = unified()
