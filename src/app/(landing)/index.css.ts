@@ -128,7 +128,7 @@ export const titleToggle = style({
 });
 
 export const subtitle = style({
-  color: vars.color.text.secondary,
+  color: vars.color.text.tertiary,
   fontSize: '1.5rem',
   fontWeight: 400,
   lineHeight: '2rem',
@@ -152,7 +152,7 @@ export const socialItem = style({
 });
 
 export const socialLink = style({
-  color: vars.color.text.secondary,
+  color: vars.color.text.tertiary,
   display: 'block',
   padding: '0.5rem',
 

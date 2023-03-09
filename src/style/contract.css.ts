@@ -8,6 +8,7 @@ export const colorVars = createThemeContract({
   text: {
     primary: '',
     secondary: '',
+    tertiary: '',
   },
   accent: {
     primary: '',
