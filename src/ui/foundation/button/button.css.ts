@@ -12,8 +12,12 @@ export const button = style({
   cursor: 'pointer',
   width: 'fit-content',
 
-  ':hover': {
-    backgroundColor: vars.color.accent.secondary,
-    color: vars.color.text.primary,
+  '@media': {
+    '(hover: hover)': {
+      ':hover': {
+        backgroundColor: vars.color.accent.secondary,
+        color: vars.color.text.primary,
+      },
+    },
   },
 });
