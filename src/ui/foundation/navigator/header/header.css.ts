@@ -18,10 +18,8 @@ export const container = style({
   gap: '1rem',
   height: vars.size.headerHeight,
   justifyContent: 'space-between',
-  margin: '0 auto',
-  maxWidth: vars.size.containerMaxWidth,
-  padding: '0 1rem',
   width: '100%',
+  padding: `0 max(calc((100vw - ${vars.size.containerMaxWidth}) / 2), 1rem)`,
 });
 
 export const divider = style({
