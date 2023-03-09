@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import 'highlight.js/styles/nord.css';
 import 'katex/dist/katex.min.css';
@@ -8,6 +9,12 @@ import { fetchGetBlogBySlug } from '@/app/api/blog/[slug]/route';
 import { fetchGetBlogSlugs } from '@/app/api/blog/slugs/route';
 import { Article } from '@/ui/foundation/article';
 import { Toc } from '@/ui/foundation/blog/toc';
+
+interface Props {
+  params: {
+    slug: string;
+  };
+}
 
 export async function generateStaticParams() {
   let blogSlugs: string[] = [];
@@ -25,6 +32,37 @@ export async function generateStaticParams() {
   }));
 }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const res = await fetchGetBlogBySlug(params.slug);
+  const ogImageUrl = `${process.env.BASE_URL}/api/og?title=${res.title}`;
+
+  return {
+    description: res.description,
+    openGraph: {
+      description: res.description,
+      images: [
+        {
+          alt: res.title,
+          height: 630,
+          url: ogImageUrl,
+          width: 1200,
+        },
+      ],
+      publishedTime: res.createdAt,
+      title: res.title,
+      type: 'article',
+      url: `${process.env.BASE_URL}/blog/${params.slug}`,
+    },
+    title: res.title,
+    twitter: {
+      card: 'summary_large_image',
+      description: res.description,
+      images: [ogImageUrl],
+      title: res.title,
+    },
+  };
+}
+
 async function getBlog(slug: string) {
   try {
     const res = await fetchGetBlogBySlug(slug);
@@ -37,11 +75,6 @@ async function getBlog(slug: string) {
   }
 }
 
-interface Props {
-  params: {
-    slug: string;
-  };
-}
 export default async function BlogDetail({ params }: Props) {
   const blog = await getBlog(params.slug);
 
