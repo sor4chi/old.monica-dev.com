@@ -1,6 +1,7 @@
 import twemoji from 'twemoji';
 
 import * as styles from './article.css';
+import './prism.css';
 
 import { parseHTMLToReactJSX } from '@/lib/markdown';
 

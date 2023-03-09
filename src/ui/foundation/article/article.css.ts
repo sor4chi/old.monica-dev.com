@@ -126,18 +126,6 @@ globalStyle(`${content} :not(pre) > code`, {
   margin: '0 0.5rem',
 });
 
-globalStyle(`${content} pre > code`, {
-  borderRadius: '0.5rem',
-  fontSize: '1rem',
-  padding: '1rem',
-});
-
-globalStyle(`${content} pre`, {
-  overflowX: 'auto',
-  maxWidth: 'calc(100vw - 2rem)',
-  boxSizing: 'border-box',
-});
-
 globalStyle(`${content} .twemoji`, {
   height: '1em',
   width: '1em',

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import 'highlight.js/styles/nord.css';
+
 import 'katex/dist/katex.min.css';
 
 import * as styles from './detail.css';
