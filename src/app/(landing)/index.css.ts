@@ -2,14 +2,29 @@ import { keyframes, style } from '@vanilla-extract/css';
 
 import { vars } from '@/style/theme.css';
 
+const containerPadding = '1rem';
+const containerGap = {
+  pc: '3rem',
+  mobile: '1rem',
+};
+
 export const container = style({
   alignItems: 'center',
   display: 'flex',
-  height: '100%',
   justifyContent: 'center',
   position: 'relative',
   width: '100%',
-  gap: '3rem',
+  height: '100%',
+  gap: containerGap.pc,
+  padding: containerPadding,
+  boxSizing: 'border-box',
+
+  '@media': {
+    [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
+      flexDirection: 'column',
+      gap: containerGap.mobile,
+    },
+  },
 });
 
 export const themeSwitchContainer = style({
@@ -18,15 +33,51 @@ export const themeSwitchContainer = style({
   top: '1rem',
 });
 
+const navItemCount = 3;
+const navItemHeight = '2rem';
+const navItemVerticalPadding = '0.5rem';
+const navItemGap = '1rem';
+const navHeight = `calc(${navItemHeight} * ${navItemCount} + ${navItemVerticalPadding} * ${navItemCount} * 2 + ${navItemGap} * ${
+  navItemCount - 1
+})`;
+const dividerThickness = '1px';
+
+const fullProfileHeight = `calc(100svh - ${containerPadding} * 2)`;
+const withNavProfileHeight = `calc(100svh - ${containerPadding} * 2 - ${navHeight} - ${containerGap.mobile} * 2 - ${dividerThickness})`;
+
+const shrinkAnimation = keyframes({
+  '0%': { height: fullProfileHeight },
+  '80%': { height: fullProfileHeight },
+  '100%': { height: withNavProfileHeight },
+});
+
 export const profile = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+
+  '@media': {
+    [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
+      height: withNavProfileHeight,
+      justifyContent: 'center',
+      animationDuration: '2s',
+      animationIterationCount: 1,
+      animationName: shrinkAnimation,
+      animationTimingFunction: 'ease-in-out',
+    },
+  },
 });
 
 export const icon = style({
   borderRadius: '50%',
   boxShadow: `0 0 1rem 0 ${vars.color.bg.secondary}`,
+
+  '@media': {
+    [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
+      width: '10rem',
+      height: '10rem',
+    },
+  },
 });
 
 export const logoContainer = style({
@@ -51,6 +102,12 @@ export const logo = style({
   animationName: floatAnimation,
   animationTimingFunction: 'ease-in-out',
   display: 'block',
+
+  '@media': {
+    [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
+      scale: 0.8,
+    },
+  },
 });
 
 export const shadow = style({
@@ -75,20 +132,33 @@ export const shadow = style({
   animationTimingFunction: 'ease-in-out',
 });
 
-const titleLineHeight = '3.5rem';
-const titleFontSize = '3rem';
+const titleLineHeight = {
+  pc: '3.5rem',
+  mobile: '2.5rem',
+};
+const titleFontSize = {
+  pc: '3rem',
+  mobile: '2rem',
+};
 
 export const title = style({
   alignItems: 'center',
   color: vars.color.text.primary,
   display: 'inline-flex',
-  fontSize: titleFontSize,
+  fontSize: titleFontSize.pc,
   fontWeight: 700,
-  lineHeight: titleLineHeight,
+  lineHeight: titleLineHeight.pc,
   margin: 0,
   marginTop: '2rem',
   overflow: 'hidden',
   textAlign: 'center',
+
+  '@media': {
+    [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
+      fontSize: titleFontSize.mobile,
+      lineHeight: titleLineHeight.mobile,
+    },
+  },
 });
 
 const stopTime = 10;
@@ -123,8 +193,14 @@ export const titleToggle = style({
 
   display: 'inline-flex',
   flexDirection: 'column',
-  height: titleLineHeight,
+  height: titleLineHeight.pc,
   margin: '0 1rem',
+
+  '@media': {
+    [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
+      height: titleLineHeight.mobile,
+    },
+  },
 });
 
 export const subtitle = style({
@@ -163,10 +239,17 @@ export const socialLink = style({
 
 export const divider = style({
   margin: 0,
-  width: '1px',
+  width: dividerThickness,
   height: '20rem',
   border: 'none',
   background: vars.color.bg.secondary,
+
+  '@media': {
+    [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
+      width: '80%',
+      height: dividerThickness,
+    },
+  },
 });
 
 export const meta = style({});
@@ -174,18 +257,21 @@ export const meta = style({});
 export const navList = style({
   listStyle: 'none',
   padding: 0,
+  margin: 0,
 });
 
 export const navListItem = style({
+  lineHeight: navItemHeight,
+
   selectors: {
     '& + &': {
-      marginTop: '1rem',
+      marginTop: navItemGap,
     },
   },
 });
 
 export const navLink = style({
-  padding: '0.5rem 1rem',
+  padding: `${navItemVerticalPadding} 1rem`,
   width: '100%',
   display: 'block',
   boxSizing: 'border-box',
