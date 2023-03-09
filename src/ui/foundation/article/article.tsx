@@ -1,3 +1,5 @@
+import twemoji from 'twemoji';
+
 import * as styles from './article.css';
 
 import { parseHTMLToReactJSX } from '@/lib/markdown';
@@ -8,5 +10,15 @@ interface Props {
 }
 
 export const Article = ({ content }: Props) => {
-  return <article className={styles.content}>{parseHTMLToReactJSX(content)}</article>;
+  return (
+    <article className={styles.content}>
+      {parseHTMLToReactJSX(
+        twemoji.parse(content, {
+          className: 'twemoji',
+          ext: '.svg',
+          folder: 'svg',
+        }),
+      )}
+    </article>
+  );
 };

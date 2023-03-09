@@ -137,3 +137,10 @@ globalStyle(`${content} pre`, {
   maxWidth: 'calc(100vw - 2rem)',
   boxSizing: 'border-box',
 });
+
+globalStyle(`${content} .twemoji`, {
+  height: '1em',
+  width: '1em',
+  display: 'inline-block',
+  verticalAlign: 'middle',
+});
