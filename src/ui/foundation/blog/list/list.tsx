@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import twemoji from 'twemoji';
 
+import { Text } from '../../text';
 import { TagList } from '../tagList';
 
 import * as styles from './list.css';
@@ -41,7 +42,9 @@ export const BlogList = ({ blogs }: Props) => {
         <li key={blog.id} className={styles.item}>
           <time className={styles.date}>{formatYMD(blog.createdAt)}</time>
           <Link href={`/blog/${blog.slug}`} className={styles.link} passHref>
-            <h2 className={styles.title}>{blog.title}</h2>
+            <h2 className={styles.title}>
+              <Text value={blog.title} />
+            </h2>
             <p className={styles.description}>{blog.description}</p>
           </Link>
           <TagList tags={blog.tags.map((tag) => ({ name: tag, slug: tag }))} />

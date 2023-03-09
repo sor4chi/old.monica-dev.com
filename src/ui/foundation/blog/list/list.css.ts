@@ -32,6 +32,7 @@ export const title = style({
   marginTop: '1rem',
   marginBottom: '0.5rem',
   color: vars.color.text.primary,
+  textDecoration: 'inherit',
 });
 
 export const description = style({
