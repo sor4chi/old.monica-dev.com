@@ -92,7 +92,11 @@ globalStyle(`${content} a`, {
 });
 
 globalStyle(`${content} a:hover`, {
-  textDecoration: 'underline',
+  '@media': {
+    'screen and (hover: hover)': {
+      textDecoration: 'underline',
+    },
+  },
 });
 
 globalStyle(`${content} strong`, {

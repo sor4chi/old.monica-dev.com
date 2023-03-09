@@ -8,9 +8,9 @@ type Props = ComponentProps<typeof Link> & {
 export const Anchor = ({ children, href, ...rest }: Props) => {
   if (href.startsWith('/')) {
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" {...rest}>
+      <Link href={href} passHref {...rest}>
         {children}
-      </a>
+      </Link>
     );
   }
 
@@ -23,8 +23,8 @@ export const Anchor = ({ children, href, ...rest }: Props) => {
   }
 
   return (
-    <Link href={href} passHref {...rest}>
+    <a href={href} target="_blank" rel="noopener noreferrer" {...rest}>
       {children}
-    </Link>
+    </a>
   );
 };
