@@ -8,7 +8,7 @@ export const container = style({
 });
 
 export const main = style({
-  maxWidth: '1024px',
+  width: 'min(1024px, calc(100vw - 2rem))',
   margin: '0 auto',
   marginTop: '4rem',
   padding: '0 1rem',

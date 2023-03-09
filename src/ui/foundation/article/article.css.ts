@@ -4,6 +4,7 @@ import { vars } from '@/style/theme.css';
 
 export const content = style({
   width: '100%',
+  minWidth: 0,
 });
 
 globalStyle(`${content} h2`, {
@@ -106,6 +107,11 @@ globalStyle(`${content} blockquote`, {
   borderLeft: `0.25rem solid ${vars.color.accent.primary}`,
   padding: '0 1rem',
   margin: '1rem 0',
+  color: vars.color.text.tertiary,
+});
+
+globalStyle(`${content} p`, {
+  color: 'inherit',
 });
 
 globalStyle(`${content} :not(pre) > code`, {

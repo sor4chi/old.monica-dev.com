@@ -19,6 +19,7 @@ export const detail = style({
 
 export const sidebar = style({
   width: '15rem',
+  flexShrink: 0,
 
   '@media': {
     'screen and (max-width: 768px)': {
