@@ -3,7 +3,7 @@ import { z } from 'zod';
 import * as styles from './blog.css';
 
 import { fetchGetSomeBlog } from '@/app/api/blog/route';
-import { BlogList } from '@/ui/foundation/blog/list';
+import { BlogList } from '@/ui/feature/blog/list';
 import { Pagination } from '@/ui/foundation/pagination';
 
 const ITEMS_PER_PAGE = 5;

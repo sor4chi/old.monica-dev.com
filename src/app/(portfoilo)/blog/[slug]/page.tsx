@@ -6,9 +6,9 @@ import * as styles from './detail.css';
 
 import { fetchGetBlogBySlug } from '@/app/api/blog/[slug]/route';
 import { fetchGetBlogSlugs } from '@/app/api/blog/slugs/route';
+import { TagList } from '@/ui/feature/blog/tagList';
+import { Toc } from '@/ui/feature/blog/toc';
 import { Article } from '@/ui/foundation/article';
-import { TagList } from '@/ui/foundation/blog/tagList';
-import { Toc } from '@/ui/foundation/blog/toc';
 import { Text } from '@/ui/foundation/text';
 import { formatYYYYMMDD } from '@/util/date';
 

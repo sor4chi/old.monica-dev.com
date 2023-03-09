@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import twemoji from 'twemoji';
 
-import { Text } from '../../text';
 import { TagList } from '../tagList';
 
 import * as styles from './list.css';
 
+import { Text } from '@/ui/foundation/text';
 import { formatYMD } from '@/util/date';
 
 type Blog = {
