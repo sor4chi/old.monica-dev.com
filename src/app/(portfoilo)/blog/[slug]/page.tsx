@@ -38,7 +38,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const res = await fetchGetBlogBySlug(params.slug);
-  const ogImageUrl = `${process.env.BASE_URL}/api/og?title=${res.title}`;
+  const ogImageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/og?title=${res.title}`;
 
   return {
     description: res.description,
@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: res.createdAt,
       title: res.title,
       type: 'article',
-      url: `${process.env.BASE_URL}/blog/${params.slug}`,
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${params.slug}`,
     },
     title: res.title,
     twitter: {

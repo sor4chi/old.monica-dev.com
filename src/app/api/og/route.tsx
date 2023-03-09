@@ -2,7 +2,7 @@ import { ImageResponse } from '@vercel/og';
 
 export const runtime = 'experimental-edge';
 
-const font = fetch(`${process.env.BASE_URL}/NotoSansJP-Bold.woff`).then((res) => res.arrayBuffer());
+const font = fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/NotoSansJP-Bold.woff`).then((res) => res.arrayBuffer());
 
 export async function GET(request: Request) {
   try {
@@ -17,7 +17,7 @@ export async function GET(request: Request) {
         <div
           style={{
             alignItems: 'center',
-            backgroundImage: `url(${process.env.BASE_URL}/ogp.png)`,
+            backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}/ogp.png)`,
             backgroundSize: '100% 100%',
             display: 'flex',
             flexDirection: 'column',
