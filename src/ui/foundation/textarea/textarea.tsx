@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react';
 
-import * as styles from './textInput.css';
+import * as styles from './textarea.css';
 
-type Props = ComponentProps<'input'> & {
+type Props = ComponentProps<'textarea'> & {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
@@ -11,15 +11,14 @@ type Props = ComponentProps<'input'> & {
   id: string;
 };
 
-export const TextInput = ({ error, id, label, onChange, placeholder, value, ...props }: Props) => {
+export const Textarea = ({ error, id, label, onChange, placeholder, value, ...props }: Props) => {
   return (
     <div className={styles.wrapper}>
       <label className={styles.label} htmlFor={id}>
         {label}
       </label>
-      <input
-        id={id}
-        className={styles.input}
+      <textarea
+        className={styles.textarea}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
