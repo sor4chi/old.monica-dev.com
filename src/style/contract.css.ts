@@ -16,4 +16,5 @@ export const colorVars = createThemeContract({
     secondary: '',
     secondaryRGB: '',
   },
+  error: '',
 });

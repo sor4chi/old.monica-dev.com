@@ -35,6 +35,7 @@ createGlobalTheme('.light', colorVars, {
     secondary: '#ada0d3',
     secondaryRGB: '173, 160, 211',
   },
+  error: '#e27878',
 });
 
 createGlobalTheme('.dark', colorVars, {
@@ -53,6 +54,7 @@ createGlobalTheme('.dark', colorVars, {
     secondary: '#90abd0',
     secondaryRGB: '145, 172, 209',
   },
+  error: '#e27878',
 });
 
 const [commonThemeClass, commonVars] = createTheme({
