@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { formatYYYYMMDDHHMM } from '@/util/date';
 import { customFetch } from '@/util/fetcher';
 
 const allowedOrigins = [process.env.NODE_ENV === 'development' && 'http://localhost:3000', 'https://monica-dev.com'];
@@ -35,6 +36,22 @@ const statusMessage = {
   OK: 'OK',
 } as const;
 
+interface contentTemplateParams {
+  time: string;
+  email: string;
+  message: string;
+  name: string;
+}
+
+const contentTemplate = ({ email, message, name, time }: contentTemplateParams) => `
+**お問い合わせ通知**
+${time} に ${process.env.NEXT_PUBLIC_BASE_URL} から新たなお問い合わせがありました。
+
+> Name: ${name}様
+> Email: ${email}
+> Message: ${message}
+`;
+
 export async function POST(request: Request) {
   const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
   if (!webhookUrl) {
@@ -52,7 +69,12 @@ export async function POST(request: Request) {
 
   const response = await fetch(webhookUrl, {
     body: JSON.stringify({
-      content: [`**Name:** ${name}`, `**Email:** ${email}`, `**Message:** ${message}`].join('\n'),
+      content: contentTemplate({
+        email,
+        message,
+        name,
+        time: formatYYYYMMDDHHMM(new Date().toString()),
+      }),
     }),
     headers: {
       'Content-Type': 'application/json',
