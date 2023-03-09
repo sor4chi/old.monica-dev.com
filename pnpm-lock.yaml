@@ -29,6 +29,7 @@ specifiers:
   eslint-plugin-unused-imports: ^2.0.0
   katex: ^0.16.4
   mdast: ^3.0.0
+  mikanjs: ^1.0.14
   next: 13.2.3
   prettier: ^2.8.4
   prettier-plugin-packagejson: ^2.4.3
@@ -64,6 +65,7 @@ dependencies:
   clsx: 1.2.1
   katex: 0.16.4
   mdast: 3.0.0
+  mikanjs: 1.0.14
   next: 13.2.3_cgm7hdvw56vqlcmfj4ipjs7qc4_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -3441,6 +3443,10 @@ packages:
       braces: 3.0.2
       picomatch: 2.3.1
     dev: true
+
+  /mikanjs/1.0.14:
+    resolution: {integrity: sha512-PdTkPUIPhTfumBRHaXmbU9b7TIjDS/6rAK7yrFjOJnW89SEUpxQv5KRp1iaU39frq8nHBYiu4EympS2X3idIlQ==}
+    dev: false
 
   /minimatch/3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
