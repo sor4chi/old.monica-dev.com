@@ -5,12 +5,14 @@ import { vars } from '@/style/theme.css';
 export const toc = style({
   position: 'sticky',
   top: `calc(${vars.size.headerHeight} + 1rem)`,
+  height: 'fit-content'
 });
 
 export const tocTitle = style({
   fontSize: '1.5rem',
   fontWeight: 700,
   marginBottom: '1rem',
+  marginTop: 0,
 });
 
 export const tocWrapper = style({

@@ -106,6 +106,7 @@ export default async function BlogDetail({ params }: Props) {
       <section className={styles.detail}>
         <Article content={blog.content} />
         <aside className={styles.sidebar}>
+          <hr className={styles.sidebarDivider} />
           <Toc toc={blog.toc} />
         </aside>
       </section>
