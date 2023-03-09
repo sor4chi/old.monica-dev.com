@@ -1,4 +1,4 @@
-import { createElement } from 'react';
+import { createElement, Fragment } from 'react';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeKatex from 'rehype-katex';
 import rehypeParse from 'rehype-parse';
@@ -55,7 +55,8 @@ export const parseHTMLToReactJSX = (htmlContent: string) => {
       components: {
         a: Anchor,
       },
-      createElement: createElement,
+      createElement,
+      Fragment,
     }); // [hast -> jsx] hast(HTML抽象構文木)を一部ReactJSXに変換
   return processor.processSync(htmlContent).result;
 };
