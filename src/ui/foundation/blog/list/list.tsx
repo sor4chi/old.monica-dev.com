@@ -5,6 +5,8 @@ import { TagList } from '../tagList';
 
 import * as styles from './list.css';
 
+import { formatYMD } from '@/util/date';
+
 type Blog = {
   id: string;
   slug: string;
@@ -17,15 +19,6 @@ type Blog = {
 interface Props {
   blogs: Blog[];
 }
-
-const formatYMD = (date: string) => {
-  const d = new Date(date).toLocaleDateString('en-US', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-  return d;
-};
 
 const NOTFOUND_MSG = twemoji.parse('Sorry, no items found. 😭', {
   className: 'twemoji',

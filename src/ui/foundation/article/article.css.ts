@@ -31,10 +31,6 @@ globalStyle(`${content} h4`, {
 });
 
 globalStyle(`${content} p`, {
-  color: 'inherit',
-});
-
-globalStyle(`${content} > p`, {
   color: vars.color.text.secondary,
 });
 

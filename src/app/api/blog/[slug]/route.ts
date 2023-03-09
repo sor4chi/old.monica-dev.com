@@ -33,6 +33,8 @@ type BlogShowResponse = {
   tags: string[];
   /** ブログの作成日 */
   createdAt: string;
+  /** ブログの更新日 */
+  updatedAt: string;
 };
 
 export async function GET(_request: Request, { params }: { params: { slug: string } }) {

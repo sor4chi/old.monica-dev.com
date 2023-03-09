@@ -6,11 +6,14 @@ export const container = style({
   display: 'flex',
   gap: '0.25rem 1rem',
   padding: 0,
+  margin: 0,
   flexWrap: 'wrap',
 });
 
 export const item = style({
+  display: 'inline',
   listStyle: 'none',
+  lineHeight: 1,
 });
 
 export const link = style({

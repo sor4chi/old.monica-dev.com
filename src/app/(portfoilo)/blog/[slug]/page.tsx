@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -8,7 +9,9 @@ import * as styles from './detail.css';
 import { fetchGetBlogBySlug } from '@/app/api/blog/[slug]/route';
 import { fetchGetBlogSlugs } from '@/app/api/blog/slugs/route';
 import { Article } from '@/ui/foundation/article';
+import { TagList } from '@/ui/foundation/blog/tagList';
 import { Toc } from '@/ui/foundation/blog/toc';
+import { formatYYYYMMDD } from '@/util/date';
 
 interface Props {
   params: {
@@ -80,13 +83,29 @@ export default async function BlogDetail({ params }: Props) {
 
   return (
     <>
-      <h1 className={styles.title}>{blog.title}</h1>
-      <div className={styles.detail}>
+      <section className={styles.hero}>
+        <h1 className={styles.title}>{blog.title}</h1>
+        <div className={styles.meta}>
+          <div className={styles.metaItem}>
+            <span className={styles.metaLabel}>Created at</span>
+            <span>{formatYYYYMMDD(blog.createdAt)}</span>
+          </div>
+          <div className={styles.metaItem}>
+            <span className={styles.metaLabel}>Updated at</span>
+            <span>{formatYYYYMMDD(blog.updatedAt)}</span>
+          </div>
+          <div className={clsx(styles.metaItem, styles.tagList)}>
+            <span className={styles.metaLabel}>Tags</span>
+            <TagList tags={blog.tags.map((tag) => ({ name: tag, slug: tag }))} />
+          </div>
+        </div>
+      </section>
+      <section className={styles.detail}>
         <Article content={blog.content} />
         <aside className={styles.sidebar}>
           <Toc toc={blog.toc} />
         </aside>
-      </div>
+      </section>
     </>
   );
 }
