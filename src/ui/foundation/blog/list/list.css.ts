@@ -6,7 +6,7 @@ export const container = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '3rem',
-  padding: '0 1rem',
+  padding: 0,
 });
 
 export const noItems = style({
