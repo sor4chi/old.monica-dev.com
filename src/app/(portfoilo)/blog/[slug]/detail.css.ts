@@ -63,6 +63,10 @@ export const title = style({
   textAlign: 'center',
 });
 
+export const titleWord = style({
+  display: 'inline-block',
+});
+
 export const detail = style({
   display: 'flex',
   gap: '2rem',

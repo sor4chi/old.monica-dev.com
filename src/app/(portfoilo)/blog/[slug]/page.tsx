@@ -1,8 +1,7 @@
 import { clsx } from 'clsx';
+import mikan from 'mikanjs';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-
-import 'katex/dist/katex.min.css';
 
 import * as styles from './detail.css';
 
@@ -12,6 +11,8 @@ import { Article } from '@/ui/foundation/article';
 import { TagList } from '@/ui/foundation/blog/tagList';
 import { Toc } from '@/ui/foundation/blog/toc';
 import { formatYYYYMMDD } from '@/util/date';
+
+import 'katex/dist/katex.min.css';
 
 interface Props {
   params: {
@@ -84,7 +85,13 @@ export default async function BlogDetail({ params }: Props) {
   return (
     <>
       <section className={styles.hero}>
-        <h1 className={styles.title}>{blog.title}</h1>
+        <h1 className={styles.title}>
+          {mikan.split(blog.title).map((item, i) => (
+            <span key={i} className={styles.titleWord}>
+              {item}
+            </span>
+          ))}
+        </h1>
         <div className={styles.meta}>
           <div className={styles.metaItem}>
             <span className={styles.metaLabel}>Created at</span>
