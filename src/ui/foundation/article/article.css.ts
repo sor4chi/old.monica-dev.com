@@ -118,7 +118,7 @@ globalStyle(`${content} :not(pre) > code`, {
 
 globalStyle(`${content} pre > code`, {
   borderRadius: '0.5rem',
-  fontSize: '0.875rem',
+  fontSize: '1rem',
   padding: '1rem',
 });
 
