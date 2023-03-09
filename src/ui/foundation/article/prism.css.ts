@@ -2,6 +2,8 @@ import { globalStyle } from '@vanilla-extract/css';
 
 import { content } from './article.css';
 
+import { vars } from '@/style/theme.css';
+
 globalStyle(`${content} code[class*="language-"], pre[class*="language-"]`, {
   color: '#f8f8f2',
   background: 'none',
@@ -11,25 +13,29 @@ globalStyle(`${content} code[class*="language-"], pre[class*="language-"]`, {
   wordSpacing: 'normal',
   wordBreak: 'normal',
   wordWrap: 'normal',
-  lineHeight: '1.5',
-  MozTabSize: '4',
-  OTabSize: '4',
-  tabSize: '4',
+  lineHeight: 1.5,
+  MozTabSize: 4,
+  OTabSize: 4,
+  tabSize: 4,
   WebkitHyphens: 'none',
   MozHyphens: 'none',
   msHyphens: 'none',
   hyphens: 'none',
 });
 
+const preBorderRadius = '0.5rem';
+
 globalStyle(`${content} pre[class*="language-"]`, {
   padding: '1rem',
-  margin: '0.5rem 0',
+  margin: 0,
   overflow: 'auto',
-  borderRadius: '0.3rem',
+  borderRadius: preBorderRadius,
 });
 
+const preBg = '#2E3440';
+
 globalStyle(`${content} :not(pre) > code[class*="language-"], pre[class*="language-"]`, {
-  background: '#2E3440',
+  background: preBg,
 });
 
 globalStyle(`${content} :not(pre) > code[class*="language-"]`, {
@@ -47,7 +53,7 @@ globalStyle(`${content} .token.punctuation`, {
 });
 
 globalStyle(`${content} .namespace`, {
-  opacity: '0.7',
+  opacity: 0.7,
 });
 
 globalStyle(
@@ -104,4 +110,31 @@ globalStyle(`${content} .token.italic`, {
 
 globalStyle(`${content} .token.entity`, {
   cursor: 'help',
+});
+
+globalStyle(`${content} .remark-code-title`, {
+  display: 'block',
+  fontSize: '0.75rem',
+  color: vars.color.text.secondary,
+  padding: '0.5rem 1rem',
+  background: '#2e3236',
+  borderRadius: '0.25rem 0.25rem 0 0',
+  width: 'fit-content',
+  position: 'relative',
+  fontWeight: 700,
+});
+
+globalStyle(`${content} .remark-code-title:after`, {
+  content: '""',
+  position: 'absolute',
+  top: '100%',
+  left: 0,
+  width: preBorderRadius,
+  height: preBorderRadius,
+  background: preBg,
+  zIndex: -1,
+});
+
+globalStyle(`${content} .remark-code-container`, {
+  margin: '0.5rem 0',
 });
