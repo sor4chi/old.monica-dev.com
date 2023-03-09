@@ -7,7 +7,7 @@ export const hero = style({
   textAlign: 'center',
 
   '@media': {
-    'screen and (max-width: 768px)': {
+    [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
       margin: '2rem 0',
     },
   },
@@ -20,7 +20,7 @@ export const meta = style({
   gap: '3rem',
 
   '@media': {
-    'screen and (max-width: 768px)': {
+    [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
       display: 'grid',
       gridTemplateColumns: 'min-content min-content',
       gap: '1rem 5rem',
@@ -30,7 +30,7 @@ export const meta = style({
 
 export const tagList = style({
   '@media': {
-    'screen and (max-width: 768px)': {
+    [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
       gridColumn: '1 / 3',
       width: '100%',
     },
@@ -77,7 +77,7 @@ export const sidebar = style({
   flexShrink: 0,
 
   '@media': {
-    'screen and (max-width: 768px)': {
+    [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
       display: 'none',
     },
   },

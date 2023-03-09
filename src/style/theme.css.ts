@@ -65,6 +65,10 @@ const [commonThemeClass, commonVars] = createTheme({
 export const vars = {
   color: colorVars,
   size: commonVars.size,
+  breakpoint: {
+    mobile: '768px',
+    pc: '1024px',
+  },
 };
 
 export const themeClass = commonThemeClass;
