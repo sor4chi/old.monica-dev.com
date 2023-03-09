@@ -20,3 +20,14 @@ export const formatYYYYMMDD = (date: string) => {
   });
   return d.split('/').reverse().join('.');
 };
+
+export const formatYYYYMMDDHHMM = (date: string) => {
+  const d = new Date(date).toLocaleDateString('ja-JP', {
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+  return d;
+};
