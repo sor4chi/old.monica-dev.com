@@ -8,10 +8,15 @@ import * as styles from './list.css';
 import { Text } from '@/ui/foundation/text';
 import { formatYMD } from '@/util/date';
 
-type Blog = {
+type Tag = {
+  name: string;
+  slug: string;
+};
+
+interface Blog {
   id: string;
   slug: string;
-  tags: string[];
+  tags: Tag[];
   title: string;
   description: string;
   createdAt: string;
@@ -47,7 +52,7 @@ export const BlogList = ({ blogs }: Props) => {
             </h2>
             <p className={styles.description}>{blog.description}</p>
           </Link>
-          <TagList tags={blog.tags.map((tag) => ({ name: tag, slug: tag }))} />
+          <TagList tags={blog.tags} />
         </li>
       ))}
     </ul>
