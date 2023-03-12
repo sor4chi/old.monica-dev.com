@@ -1,6 +1,6 @@
 import { ImageResponse } from '@vercel/og';
 
-export const runtime = 'experimental-edge';
+export const runtime = 'edge';
 
 const font = fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/NotoSansJP-Bold.woff`).then((res) => res.arrayBuffer());
 
