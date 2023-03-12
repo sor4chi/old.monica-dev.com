@@ -18,6 +18,10 @@ interface Props {
   };
 }
 
+// force-static for ISR, because static page for SEO
+export const dynamic = 'force-static';
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   try {
     const blogSlugs = await getPublishedBlogSlugs();

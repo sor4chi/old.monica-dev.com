@@ -9,6 +9,9 @@ import { Pagination } from '@/ui/foundation/pagination';
 const ITEMS_PER_PAGE = 5;
 const pageSchema = z.preprocess((v) => Number(v), z.number().min(1));
 
+// force-dynamic for SSR, because use dynamic sort with query params
+export const dynamic = 'force-dynamic';
+
 async function getBlogs(page: number) {
   try {
     const [data, count] = await Promise.all([getSomePublishedBlogs(page, ITEMS_PER_PAGE), getPublishedBlogsCount()]);
