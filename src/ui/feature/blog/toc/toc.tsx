@@ -29,9 +29,14 @@ const TocItem = ({ children, data, depth, value }: TocItemProps) => {
       });
     });
 
-    const heading = document.querySelector(targetId);
-    if (heading && observer.current) {
-      observer.current.observe(heading);
+    // probably, targetId starts with '#[0-9]', so try-catch is needed
+    try {
+      const heading = document.querySelector(targetId);
+      if (heading && observer.current) {
+        observer.current.observe(heading);
+      }
+    } catch (e) {
+      console.error(e);
     }
 
     return () => {
