@@ -9,3 +9,30 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Blog {
+  id          Int       @id @default(autoincrement())
+  slug        String    @unique
+  title       String
+  description String
+  content     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishedAt DateTime?
+  BlogTag     BlogTag[]
+}
+
+model Tag {
+  id      Int       @id @default(autoincrement())
+  slug    String    @unique
+  name    String
+  BlogTag BlogTag[]
+}
+
+model BlogTag {
+  id     Int  @id @default(autoincrement())
+  blog   Blog @relation(fields: [blogId], references: [id])
+  blogId Int
+  tag    Tag  @relation(fields: [tagId], references: [id])
+  tagId  Int
+}
