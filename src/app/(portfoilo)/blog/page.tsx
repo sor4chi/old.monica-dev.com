@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import * as styles from './blog.css';
 
-import { fetchGetSomeBlog } from '@/app/api/blog/route';
+import { getPublishedBlogsCount, getSomePublishedBlogs } from '@/repository/blog';
 import { BlogList } from '@/ui/feature/blog/list';
 import { Pagination } from '@/ui/foundation/pagination';
 
@@ -11,18 +11,18 @@ const pageSchema = z.preprocess((v) => Number(v), z.number().min(1));
 
 async function getBlogs(page: number) {
   try {
-    const res = await fetchGetSomeBlog({
-      count: ITEMS_PER_PAGE,
-      offset: ITEMS_PER_PAGE * (page - 1),
-    });
-    return res;
+    const [data, count] = await Promise.all([getSomePublishedBlogs(page, ITEMS_PER_PAGE), getPublishedBlogsCount()]);
+    return {
+      count,
+      data,
+    };
   } catch (e) {
     if (process.env.NODE_ENV === 'development') {
       console.log(e);
     }
     return {
+      count: 0,
       data: [],
-      total: 0,
     };
   }
 }
@@ -43,7 +43,7 @@ export default async function Blog({ searchParams }: Props) {
       <h1 className={styles.title}>Blog</h1>
       <BlogList blogs={blogs.data} />
       <Pagination
-        total={Math.ceil(blogs.total / ITEMS_PER_PAGE)}
+        total={Math.ceil(blogs.count / ITEMS_PER_PAGE)}
         now={page}
         hrefGenerator={(offset) => `/blog?page=${offset}`}
       />

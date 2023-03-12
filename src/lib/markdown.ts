@@ -37,6 +37,19 @@ refractor.register(refractorCpp);
 refractor.register(refractorGo);
 const rehypePrism = rehypePrismGenerator(refractor);
 
+interface TocItem {
+  /** ヘッダーのレベル */
+  depth: number;
+  /** ヘッダーのテキスト */
+  value: string;
+  /** ヘッダーの属性データ */
+  data: {
+    id: string;
+  };
+  /** ヘッダーの子要素 */
+  children: TocItem[];
+}
+
 export const parseMarkdownToHTML = (mdContent: string) => {
   const mdHtmlProcessor = unified()
     .use(remarkParse) // [md    -> mdast] Markdownをmdast(Markdown抽象構文木)に変換
@@ -61,7 +74,7 @@ export const parseMarkdownToHTML = (mdContent: string) => {
 
   return {
     content: mdHtmlProcessor.processSync(mdContent).toString(),
-    toc: tocProcessor.runSync(tocProcessor.parse(mdContent)),
+    toc: tocProcessor.runSync(tocProcessor.parse(mdContent)) as unknown as TocItem[],
   };
 };
 

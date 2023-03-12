@@ -4,8 +4,8 @@ import { notFound } from 'next/navigation';
 
 import * as styles from './detail.css';
 
-import { fetchGetBlogBySlug } from '@/app/api/blog/[slug]/route';
-import { fetchGetBlogSlugs } from '@/app/api/blog/slugs/route';
+import { parseMarkdownToHTML } from '@/lib/markdown';
+import { getPublishedBlogBySlug, getPublishedBlogSlugs } from '@/repository/blog';
 import { TagList } from '@/ui/feature/blog/tagList';
 import { Toc } from '@/ui/feature/blog/toc';
 import { Article } from '@/ui/foundation/article';
@@ -19,23 +19,26 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  let blogSlugs: string[] = [];
   try {
-    blogSlugs = await fetchGetBlogSlugs();
+    const blogSlugs = await getPublishedBlogSlugs();
+    return blogSlugs.map((slug) => slug);
   } catch (e) {
     if (process.env.NODE_ENV === 'development') {
       console.log(e);
     }
-    blogSlugs = [];
+    return [];
   }
-
-  return blogSlugs.map((slug) => ({
-    slug,
-  }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const res = await fetchGetBlogBySlug(params.slug);
+  const res = await getPublishedBlogBySlug(params.slug);
+
+  if (!res) {
+    return {
+      robots: 'noindex',
+    };
+  }
+
   const ogImageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/og?title=${res.title}`;
 
   return {
@@ -50,7 +53,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           width: 1200,
         },
       ],
-      publishedTime: res.createdAt,
+      publishedTime: res.publishedAt.toISOString(),
       title: res.title,
       type: 'article',
       url: `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${params.slug}`,
@@ -67,18 +70,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 async function getBlog(slug: string) {
   try {
-    const res = await fetchGetBlogBySlug(slug);
-    return res;
+    const res = await getPublishedBlogBySlug(slug);
+    if (!res) {
+      return null;
+    }
+
+    return {
+      ...res,
+      ...parseMarkdownToHTML(res?.content || ''),
+    };
   } catch (e) {
     if (process.env.NODE_ENV === 'development') {
       console.log(e);
     }
-    notFound();
+    return null;
   }
 }
 
 export default async function BlogDetail({ params }: Props) {
   const blog = await getBlog(params.slug);
+
+  if (!blog) {
+    notFound();
+  }
 
   return (
     <>
@@ -97,7 +111,7 @@ export default async function BlogDetail({ params }: Props) {
           </div>
           <div className={clsx(styles.metaItem, styles.tagList)}>
             <span className={styles.metaLabel}>Tags</span>
-            <TagList tags={blog.tags.map((tag) => ({ name: tag, slug: tag }))} />
+            <TagList tags={blog.tags} />
           </div>
         </div>
       </section>
