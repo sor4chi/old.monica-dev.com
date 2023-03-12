@@ -9,6 +9,7 @@
     "format:check": "prettier --check ./**/*.{js,jsx,ts,tsx,json}",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "migrate:postgres:dev": "dotenv -e .env.development -- npx prisma migrate dev --name postgres-init",
     "start": "next start"
   },
   "dependencies": {
@@ -51,6 +52,7 @@
     "@types/react-dom": "18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.54.1",
     "@typescript-eslint/parser": "^5.54.1",
+    "dotenv-cli": "^7.1.0",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
     "eslint-config-prettier": "^8.7.0",
