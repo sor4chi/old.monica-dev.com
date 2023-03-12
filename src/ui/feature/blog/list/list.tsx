@@ -14,13 +14,12 @@ type Tag = {
 };
 
 interface Blog {
-  id: string;
   slug: string;
   tags: Tag[];
   title: string;
   description: string;
-  createdAt: string;
-};
+  createdAt: Date;
+}
 
 interface Props {
   blogs: Blog[];
@@ -44,7 +43,7 @@ export const BlogList = ({ blogs }: Props) => {
   return (
     <ul className={styles.container}>
       {blogs.map((blog) => (
-        <li key={blog.id} className={styles.item}>
+        <li key={blog.slug} className={styles.item}>
           <time className={styles.date}>{formatYMD(blog.createdAt)}</time>
           <Link href={`/blog/${blog.slug}`} className={styles.link} passHref>
             <h2 className={styles.title}>
