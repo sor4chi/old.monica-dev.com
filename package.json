@@ -64,12 +64,16 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "prettier": "^2.8.4",
     "prettier-plugin-packagejson": "^2.4.3",
-    "prettier-plugin-sort-json": "^1.0.0"
+    "prettier-plugin-sort-json": "^1.0.0",
+    "ts-node": "^10.9.1"
   },
   "pnpm": {
     "patchedDependencies": {
       "@vanilla-extract/next-plugin@2.1.1": "patches/@vanilla-extract__next-plugin@2.1.1.patch",
       "next@13.2.3": "patches/next@13.2.3.patch"
     }
+  },
+  "prisma": {
+    "seed": "dotenv -e .env.development -- ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seeds/index.ts"
   }
 }
