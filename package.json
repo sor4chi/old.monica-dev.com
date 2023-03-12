@@ -9,11 +9,12 @@
     "format:check": "prettier --check ./**/*.{js,jsx,ts,tsx,json}",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "openai:generate-fixture": "dotenv -e .env -- node ./scripts/generate-fixture.js",
     "prisma:generate:dev": "dotenv -e .env.development -- prisma generate",
     "prisma:migrate:dev": "dotenv -e .env.development -- prisma migrate dev --name prisma-init",
-    "prisma:reset--danger": "dotenv -e .env.development -- prisma db push --accept-data-loss --schema=./prisma/reset.prisma; prisma db push --accept-data-loss",
-    "start": "next start",
-    "openai:generate-fixture": "dotenv -e .env -- node ./scripts/generate-fixture.js"
+    "prisma:reset--danger": "dotenv -e .env.development -- prisma db push --accept-data-loss --schema=./prisma/reset.prisma;dotenv -e .env.development -- prisma db push --accept-data-loss",
+    "prisma:studio": "dotenv -e .env.development -- prisma studio",
+    "start": "next start"
   },
   "dependencies": {
     "@prisma/client": "^4.11.0",
@@ -55,7 +56,9 @@
     "@types/react-dom": "18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.54.1",
     "@typescript-eslint/parser": "^5.54.1",
+    "dotenv": "^16.0.3",
     "dotenv-cli": "^7.1.0",
+    "dotenv-expand": "^10.0.0",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
     "eslint-config-prettier": "^8.7.0",
@@ -75,6 +78,6 @@
     }
   },
   "prisma": {
-    "seed": "dotenv -e .env.development -- ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seeds/index.ts"
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seeds/index.ts"
   }
 }

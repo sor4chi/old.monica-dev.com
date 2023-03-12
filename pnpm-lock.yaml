@@ -20,7 +20,9 @@ specifiers:
   '@vanilla-extract/next-plugin': ^2.1.1
   '@vercel/og': ^0.4.0
   clsx: ^1.2.1
+  dotenv: ^16.0.3
   dotenv-cli: ^7.1.0
+  dotenv-expand: ^10.0.0
   eslint: 8.35.0
   eslint-config-next: 13.2.3
   eslint-config-prettier: ^8.7.0
@@ -99,7 +101,9 @@ devDependencies:
   '@types/react-dom': 18.0.11
   '@typescript-eslint/eslint-plugin': 5.54.1_mlk7dnz565t663n4razh6a6v6i
   '@typescript-eslint/parser': 5.54.1_ycpbpc6yetojsgtrx3mwntkhsu
+  dotenv: 16.0.3
   dotenv-cli: 7.1.0
+  dotenv-expand: 10.0.0
   eslint: 8.35.0
   eslint-config-next: 13.2.3_ycpbpc6yetojsgtrx3mwntkhsu
   eslint-config-prettier: 8.7.0_eslint@8.35.0
