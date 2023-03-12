@@ -12,7 +12,8 @@
     "prisma:generate:dev": "dotenv -e .env.development -- prisma generate",
     "prisma:migrate:dev": "dotenv -e .env.development -- prisma migrate dev --name prisma-init",
     "prisma:reset--danger": "dotenv -e .env.development -- prisma db push --accept-data-loss --schema=./prisma/reset.prisma; prisma db push --accept-data-loss",
-    "start": "next start"
+    "start": "next start",
+    "openai:generate-fixture": "dotenv -e .env -- node ./scripts/generate-fixture.js"
   },
   "dependencies": {
     "@prisma/client": "^4.11.0",
