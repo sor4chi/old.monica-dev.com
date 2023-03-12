@@ -1,4 +1,4 @@
-export const formatYMD = (date: string) => {
+export const formatYMD = (date: Date | string) => {
   const d = new Date(date).toLocaleDateString('en-US', {
     day: 'numeric',
     month: 'long',
@@ -12,7 +12,7 @@ export const formatYMD = (date: string) => {
  * @param date
  * @returns YYYY.MM.DD(string)
  */
-export const formatYYYYMMDD = (date: string) => {
+export const formatYYYYMMDD = (date: Date | string) => {
   const d = new Date(date).toLocaleDateString('en-US', {
     day: '2-digit',
     month: '2-digit',
@@ -21,7 +21,7 @@ export const formatYYYYMMDD = (date: string) => {
   return d.split('/').reverse().join('.');
 };
 
-export const formatYYYYMMDDHHMM = (date: string) => {
+export const formatYYYYMMDDHHMM = (date: Date | string) => {
   const d = new Date(date).toLocaleDateString('ja-JP', {
     day: '2-digit',
     hour: '2-digit',
