@@ -7,10 +7,11 @@
     "dev": "next dev",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,json}'",
     "format:check": "prettier --check ./**/*.{js,jsx,ts,tsx,json}",
-    "generate:prisma:dev": "dotenv -e .env.development -- npx prisma generate",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "migrate:prisma:dev": "dotenv -e .env.development -- npx prisma migrate dev --name prisma-init",
+    "prisma:generate:dev": "dotenv -e .env.development -- prisma generate",
+    "prisma:migrate:dev": "dotenv -e .env.development -- prisma migrate dev --name prisma-init",
+    "prisma:reset--danger": "dotenv -e .env.development -- prisma db push --accept-data-loss --schema=./prisma/reset.prisma; prisma db push --accept-data-loss",
     "start": "next start"
   },
   "dependencies": {
