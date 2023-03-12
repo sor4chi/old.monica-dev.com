@@ -38,7 +38,7 @@ export const spacer = style({
 export const navigationList = style({
   alignItems: 'center',
   display: 'flex',
-  gap: 20,
+  gap: '1rem',
   height: '100%',
   justifyContent: 'space-between',
   listStyleType: 'none',

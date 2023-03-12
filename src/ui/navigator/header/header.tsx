@@ -13,7 +13,6 @@ export const Header = () => {
         <Link href="/" passHref aria-label="jump to top page">
           <Logo />
         </Link>
-        <div className={styles.spacer} />
         <nav>
           <ul className={styles.navigationList}>
             <li className={styles.navigationListItem}>
@@ -31,9 +30,9 @@ export const Header = () => {
                 Contact
               </Link>
             </li>
+            <ThemeSwitch />
           </ul>
         </nav>
-        <ThemeSwitch />
       </div>
       <hr className={styles.divider} />
     </header>
