@@ -12,8 +12,6 @@ import { Article } from '@/ui/foundation/article';
 import { Text } from '@/ui/foundation/text';
 import { formatYYYYMMDD } from '@/util/date';
 
-import 'katex/dist/katex.min.css';
-
 interface Props {
   params: {
     slug: string;
