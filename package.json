@@ -7,9 +7,10 @@
     "dev": "next dev",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,json}'",
     "format:check": "prettier --check ./**/*.{js,jsx,ts,tsx,json}",
+    "generate:prisma:dev": "dotenv -e .env.development -- npx prisma generate",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "migrate:postgres:dev": "dotenv -e .env.development -- npx prisma migrate dev --name postgres-init",
+    "migrate:prisma:dev": "dotenv -e .env.development -- npx prisma migrate dev --name prisma-init",
     "start": "next start"
   },
   "dependencies": {
