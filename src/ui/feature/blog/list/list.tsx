@@ -23,6 +23,7 @@ interface Blog {
 
 interface Props {
   blogs: Blog[];
+  tagsHrefGenerator: (tag: string) => string;
 }
 
 const NOTFOUND_MSG = twemoji.parse('Sorry, no items found. 😭', {
@@ -31,7 +32,7 @@ const NOTFOUND_MSG = twemoji.parse('Sorry, no items found. 😭', {
   folder: 'svg',
 });
 
-export const BlogList = ({ blogs }: Props) => {
+export const BlogList = ({ blogs, tagsHrefGenerator }: Props) => {
   if (!blogs.length) {
     return (
       <div className={styles.container}>
@@ -51,7 +52,7 @@ export const BlogList = ({ blogs }: Props) => {
             </h2>
             <p className={styles.description}>{blog.description}</p>
           </Link>
-          <TagList tags={blog.tags} />
+          <TagList tags={blog.tags} hrefGenerator={tagsHrefGenerator} />
         </li>
       ))}
     </ul>

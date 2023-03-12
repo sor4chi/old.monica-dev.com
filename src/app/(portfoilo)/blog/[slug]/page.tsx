@@ -115,7 +115,7 @@ export default async function BlogDetail({ params }: Props) {
           </div>
           <div className={clsx(styles.metaItem, styles.tagList)}>
             <span className={styles.metaLabel}>Tags</span>
-            <TagList tags={blog.tags} />
+            <TagList tags={blog.tags} hrefGenerator={(tag) => `/blog?tags=${tag}`} />
           </div>
         </div>
       </section>

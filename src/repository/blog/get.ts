@@ -5,10 +5,11 @@ import { prisma } from '@/lib/prisma';
  * Filtered by publishedAt is not null
  *
  * @param page 1-based
+ * @param tags
  * @param limit
  * @returns blogs
  */
-export const getSomePublishedBlogs = async (page: number, limit: number) => {
+export const getSomePublishedBlogs = async (page: number, tags: string[], limit: number) => {
   const blogs = await prisma.blog.findMany({
     include: {
       BlogTag: {
@@ -23,6 +24,15 @@ export const getSomePublishedBlogs = async (page: number, limit: number) => {
     skip: (page - 1) * limit,
     take: limit,
     where: {
+      BlogTag: {
+        some: {
+          tag: {
+            slug: {
+              in: tags.length === 0 ? undefined : tags,
+            },
+          },
+        },
+      },
       publishedAt: {
         not: null,
       },
@@ -39,11 +49,22 @@ export const getSomePublishedBlogs = async (page: number, limit: number) => {
 /**
  * Get all blogs count
  * Filtered by publishedAt is not null
+ *
+ * @param tags
  * @returns blogs count
  */
-export const getPublishedBlogsCount = async () => {
+export const getPublishedBlogsCount = async (tags: string[]) => {
   const count = await prisma.blog.count({
     where: {
+      BlogTag: {
+        some: {
+          tag: {
+            slug: {
+              in: tags.length === 0 ? undefined : tags,
+            },
+          },
+        },
+      },
       publishedAt: {
         not: null,
       },
