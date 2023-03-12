@@ -26,6 +26,7 @@ import remarkSlug from 'remark-slug';
 import { unified } from 'unified';
 
 import { Anchor } from '@/ui/foundation/anchor';
+import { Image } from '@/ui/foundation/image/image';
 
 refractor.register(refractorRust);
 refractor.register(refractorTypescript);
@@ -88,6 +89,7 @@ export const parseHTMLToReactJSX = (htmlContent: string) => {
     .use(rehypeReact, {
       components: {
         a: Anchor,
+        img: Image,
       },
       createElement,
       Fragment,
