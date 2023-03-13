@@ -9,7 +9,7 @@ module.exports = {
   ],
   overrides: [
     {
-      files: ['next.config.js', 'src/constant/env/server.ts'],
+      files: ['next.config.js', 'src/env/**'],
       rules: {
         '@typescript-eslint/no-var-requires': ['off'],
       },
