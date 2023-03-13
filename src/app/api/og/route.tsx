@@ -63,3 +63,7 @@ export async function GET(request: Request) {
     });
   }
 }
+
+export const getOgUrl = (title: string) => {
+  return `${process.env.NEXT_PUBLIC_BASE_URL}/api/og?title=${title}`;
+};
