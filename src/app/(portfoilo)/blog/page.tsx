@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+
 import * as styles from './blog.css';
 
 import { serverEnv } from '@/env/server';
@@ -6,6 +8,13 @@ import { BlogList } from '@/ui/feature/blog/list';
 import { Pagination } from '@/ui/foundation/pagination';
 
 const ITEMS_PER_PAGE = 5;
+
+interface Props {
+  searchParams: {
+    page?: string;
+    tags?: string;
+  };
+}
 
 // force-dynamic for SSR, because use dynamic sort with query params
 export const dynamic = 'force-dynamic';
@@ -32,10 +41,14 @@ async function getBlogs(page: number, tags: string[]) {
   }
 }
 
-interface Props {
-  searchParams: {
-    page?: string;
-    tags?: string;
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const page = parseInt(searchParams.page ?? '1');
+  const tags = searchParams.tags?.split(',') ?? [];
+
+  return {
+    title: ['Blog', ...(tags.length > 0 ? [`(${tags.join(', ')})`] : []), ...(page > 1 ? [`- Page ${page}`] : [])].join(
+      ' ',
+    ),
   };
 }
 
