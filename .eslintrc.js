@@ -9,7 +9,7 @@ module.exports = {
   ],
   overrides: [
     {
-      files: ['next.config.js'],
+      files: ['next.config.js', 'src/constant/env/server.ts'],
       rules: {
         '@typescript-eslint/no-var-requires': ['off'],
       },
@@ -33,6 +33,9 @@ module.exports = {
       'error',
       {
         argsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+        destructuredArrayIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
       },
     ],
     'import/namespace': ['off'],
