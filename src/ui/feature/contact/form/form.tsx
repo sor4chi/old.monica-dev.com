@@ -5,11 +5,12 @@ import { z } from 'zod';
 
 import * as styles from './form.css';
 
-import { postContact } from '@/app/api/contact/route';
+import type { PostContactResponse } from '@/app/api/contact/route';
 import { Button } from '@/ui/foundation/button';
 import { Text } from '@/ui/foundation/text';
 import { TextInput } from '@/ui/foundation/textInput';
 import { Textarea } from '@/ui/foundation/textarea';
+import { customFetch } from '@/util/fetcher';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address, 正しいメールアドレスを入力してください' }),
@@ -90,6 +91,13 @@ const errorReducer = (state: typeof initialFormError, action: ErrorReducerAction
     default:
       return state;
   }
+};
+
+const postContact = async (params: z.infer<typeof formSchema>) => {
+  return customFetch<PostContactResponse>('/api/contact', {
+    body: JSON.stringify(params),
+    method: 'POST',
+  });
 };
 
 export const ContactForm = () => {

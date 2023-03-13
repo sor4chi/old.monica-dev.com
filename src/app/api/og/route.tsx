@@ -1,8 +1,10 @@
 import { ImageResponse } from '@vercel/og';
 
+import { serverEnv } from '@/env/server';
+
 export const runtime = 'edge';
 
-const font = fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/NotoSansJP-Bold.woff`).then((res) => res.arrayBuffer());
+const font = fetch(`${serverEnv.NEXT_PUBLIC_SITE_URL}/NotoSansJP-Bold.woff`).then((res) => res.arrayBuffer());
 
 export async function GET(request: Request) {
   try {
@@ -17,7 +19,7 @@ export async function GET(request: Request) {
         <div
           style={{
             alignItems: 'center',
-            backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}/ogp.png)`,
+            backgroundImage: `url(${serverEnv.NEXT_PUBLIC_SITE_URL}/ogp.png)`,
             backgroundSize: '100% 100%',
             display: 'flex',
             flexDirection: 'column',
@@ -65,5 +67,5 @@ export async function GET(request: Request) {
 }
 
 export const getOgUrl = (title: string) => {
-  return `${process.env.NEXT_PUBLIC_BASE_URL}/api/og?title=${title}`;
+  return `${serverEnv.NEXT_PUBLIC_SITE_URL}/api/og?title=${title}`;
 };

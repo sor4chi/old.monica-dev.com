@@ -1,3 +1,5 @@
+import { clientEnv } from '@/env/schema';
+
 const wrap = <T>(task: Promise<Response>): Promise<T> => {
   return new Promise((resolve, reject) => {
     task
@@ -24,7 +26,7 @@ const wrap = <T>(task: Promise<Response>): Promise<T> => {
 
 export const customFetch = <T>(input: RequestInfo, init?: RequestInit | undefined): Promise<T> => {
   if (typeof input === 'string' && !/^https?:\/\//.test(input)) {
-    input = new URL(input, process.env.NEXT_PUBLIC_BASE_URL).toString();
+    input = new URL(input, clientEnv.NEXT_PUBLIC_SITE_URL).toString();
   }
   return wrap<T>(fetch(input, init));
 };

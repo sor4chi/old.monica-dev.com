@@ -1,5 +1,6 @@
 import * as styles from './blog.css';
 
+import { serverEnv } from '@/env/server';
 import { getPublishedBlogsCount, getSomePublishedBlogs } from '@/repository/blog';
 import { BlogList } from '@/ui/feature/blog/list';
 import { Pagination } from '@/ui/foundation/pagination';
@@ -21,7 +22,7 @@ async function getBlogs(page: number, tags: string[]) {
       data,
     };
   } catch (e) {
-    if (process.env.NODE_ENV === 'development') {
+    if (serverEnv.NODE_ENV === 'development') {
       console.log(e);
     }
     return {
