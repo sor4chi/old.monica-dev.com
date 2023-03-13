@@ -5,6 +5,7 @@ const { z } = require('zod');
  * サーバー側で使う環境変数のスキーマを定義
  */
 const serverSchema = z.object({
+  DISCORD_WEBHOOK_URL: z.string().url(),
   NODE_ENV: z.enum(['development', 'test', 'production']),
 });
 
