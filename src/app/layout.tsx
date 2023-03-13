@@ -8,7 +8,7 @@ import { themeClass } from '@/style/theme.css';
 import '@/style/globals.css';
 
 export const metadata = {
-  description: SITE_CONFIG.TITLE,
+  description: SITE_CONFIG.DESCRIPTION,
   metadataBase: new URL(SITE_CONFIG.URL),
   openGraph: {
     description: SITE_CONFIG.DESCRIPTION,
@@ -26,7 +26,7 @@ export const metadata = {
     type: 'website',
     url: SITE_CONFIG.URL,
   },
-  title: SITE_CONFIG.TITLE,
+  title: { default: SITE_CONFIG.TITLE, template: `%s | ${SITE_CONFIG.TITLE}` },
   twitter: {
     card: 'summary_large_image',
     site: `@${SITE_CONFIG.SOCIAL.TWITTER_ID}`,
