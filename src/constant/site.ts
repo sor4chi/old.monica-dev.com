@@ -8,4 +8,5 @@ export const SITE_CONFIG = {
     TWITTER_ID: 'monica18_pr',
   },
   TITLE: clientEnv.NEXT_PUBLIC_SITE_NAME,
+  URL: clientEnv.NEXT_PUBLIC_SITE_URL,
 } as const;
