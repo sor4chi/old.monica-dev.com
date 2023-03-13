@@ -1,11 +1,13 @@
 import type { ChangeEvent } from 'react';
 import { useEffect, useReducer, useState } from 'react';
+import { FaTwitter } from 'react-icons/fa';
 import twemoji from 'twemoji';
 import { z } from 'zod';
 
 import * as styles from './form.css';
 
 import type { PostContactResponse } from '@/app/api/contact/route';
+import { vars } from '@/style/theme.css';
 import { Button } from '@/ui/foundation/button';
 import { Text } from '@/ui/foundation/text';
 import { TextInput } from '@/ui/foundation/textInput';
@@ -132,7 +134,7 @@ export const ContactForm = () => {
     return (
       <div className={styles.success}>
         <p
-          className={styles.successMessage}
+          className={styles.successMessageEn}
           dangerouslySetInnerHTML={{
             __html: twemoji.parse('Thank you for your message 🚀', {
               className: 'twemoji',
@@ -141,14 +143,16 @@ export const ContactForm = () => {
             }),
           }}
         />
-        <p className={styles.successMessage}>
-          <Text value={'お問い合わせありがとうございます。'} normal />
-          <Text value={'返信が遅れる場合がありますが、'} normal />
+        <p className={styles.successMessageAnnotation}>
+          <Text value={'返信が遅れる場合がありますが'} normal />
           <Text value={'しばらくお待ちください。'} normal />
-        </p>
-        <p className={styles.successMessage}>
-          <Text value={'また、TwitterのDMもお待ちしております。'} />
-          <a href="https://twitter.com/monica18_pr">@monica18_pr</a>
+          <br />
+          <Text value={'またTwitterのDMもお待ちしております'} />
+          <br />
+          <a href="https://twitter.com/monica18_pr" target="_blank" rel="noreferrer" className={styles.twitterLink}>
+            <FaTwitter color={vars.color.text.tertiary} />
+            <span>@monica18_pr</span>
+          </a>
         </p>
 
         <button className={styles.backButton} onClick={() => setPhase('form')}>
