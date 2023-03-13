@@ -1,8 +1,9 @@
 import { clientEnv } from '@/env/client';
 
 export const SITE_CONFIG = {
+  AUTHOR: 'Monica',
   DESCRIPTION:
-    'Webエンジニア「Monica」のポートフォリオサイトです。プロフィールと制作物、アウトプット用のブログを公開しています。',
+    'MonicaやSor4chiといったハンドルネームで活動しているWebエンジニアのポートフォリオサイトです。プロフィールと制作物、アウトプット用のブログを公開しています。',
   SOCIAL: {
     GITHUB_ID: 'sor4chi',
     TWITTER_ID: 'monica18_pr',
