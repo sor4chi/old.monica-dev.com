@@ -3,7 +3,7 @@ import { StoryFn, Meta } from '@storybook/react';
 import { AccountHeader } from './account-header';
 
 export default {
-  title: 'ui/card/tweet/account-header',
+  title: 'embed/tweet/account-header',
   component: AccountHeader,
 } as Meta<typeof AccountHeader>;
 
@@ -18,10 +18,10 @@ Default.args = {
   created_at: new Date(2023, 0, 1),
 };
 
-export const Vertical = Template.bind({});
-Vertical.args = {
+export const Quote = Template.bind({});
+Quote.args = {
   name: 'Hogekawa Hugamich',
   username: 'hugamich',
   created_at: new Date(2023, 0, 1),
-  vertical: true,
+  quote: true,
 };

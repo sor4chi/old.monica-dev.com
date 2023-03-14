@@ -38,6 +38,7 @@ module.exports = {
     return config;
   },
   docs: {
-    autodocs: 'tag',
+    defaultName: 'Docs',
+    autodocs: true,
   },
 };

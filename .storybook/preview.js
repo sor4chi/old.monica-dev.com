@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 import colors from 'tailwindcss/colors';
+import Image from 'next/image';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -28,4 +29,12 @@ export const parameters = {
 
 export const globalTypes = {
   darkMode: true,
+};
+
+Image.propTypes = {
+  unoptimized: null,
+};
+
+Image.defaultProps = {
+  unoptimized: true,
 };

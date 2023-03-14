@@ -3,7 +3,7 @@ import { StoryFn, Meta } from '@storybook/react';
 import { Impressions } from './impression';
 
 export default {
-  title: 'ui/card/tweet/impression',
+  title: 'embed/tweet/impression',
   component: Impressions,
 } as Meta<typeof Impressions>;
 

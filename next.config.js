@@ -15,6 +15,7 @@ const nextConfig = {
             'note.com',
             'loremflickr.com',
             'pbs.twimg.com',
+            'avatars.githubusercontent.com',
           ]
         : ['pbs.twimg.com'],
   },

@@ -1,51 +1,21 @@
-import { GetProfileResponse, GetTweetResponse } from '#/types/tweet';
+import { Client } from '@sor4chi/twitter-api-sdk';
 
-interface GetTweetOptions {
-  id: string;
-  url: string;
-}
+if (!process.env.TWITTER_BEARER_TOKEN)
+  throw new Error('⚠️SET TWITTER_BEARER_TOKEN TO ENV⚠️');
 
-export const fetchTweet = async ({ id }: Partial<GetTweetOptions>) => {
-  const tweetId = id;
-  if (!tweetId) return null;
-  const params = new URLSearchParams({
+const client = new Client(process.env.TWITTER_BEARER_TOKEN);
+
+export const fetchTweet = async (id: string) => {
+  const res = await client.tweets.findTweetById(id, {
     'tweet.fields': [
       'referenced_tweets',
       'author_id',
       'created_at',
       'public_metrics',
-    ].join(','),
+    ],
+    expansions: ['author_id', 'attachments.media_keys'],
+    'user.fields': ['name', 'username', 'profile_image_url'],
+    'media.fields': ['url', 'preview_image_url'],
   });
-  const reqUrl = `https://api.twitter.com/2/tweets/${tweetId}?${params.toString()}`;
-  const res = await fetch(reqUrl, {
-    headers: {
-      Authorization: `Bearer ${process.env.TWITTER_BEARER_TOKEN}`,
-    },
-    cache: 'force-cache',
-  });
-  const json: GetTweetResponse = await res.json();
-  return json;
-};
-
-interface GetProfileOptions {
-  id: string;
-}
-
-export const fetchProfile = async ({ id }: Partial<GetProfileOptions>) => {
-  if (!id) return null;
-  const userId = id;
-  const params = new URLSearchParams({
-    'user.fields': ['profile_image_url'].join(','),
-  });
-  const res = await fetch(
-    `https://api.twitter.com/2/users/${userId}?${params.toString()}`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.TWITTER_BEARER_TOKEN}`,
-      },
-      cache: 'force-cache',
-    },
-  );
-  const json: GetProfileResponse = await res.json();
-  return json;
+  return res;
 };
