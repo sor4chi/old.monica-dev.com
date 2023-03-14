@@ -1,14 +1,14 @@
 version: '3'
 
 services:
-  postgres:
-    image: postgres:14
+  mysql:
+    image: mysql:8.0
     ports:
-      - '5432:5432'
+      - '3306:3306'
     env_file:
       - .env.development
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - mysql_data:/var/lib/mysql
 
 volumes:
-  pgdata:
+  mysql_data:
