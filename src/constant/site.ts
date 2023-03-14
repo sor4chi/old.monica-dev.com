@@ -2,6 +2,7 @@ import { clientEnv } from '@/env/client';
 
 export const SITE_CONFIG = {
   AUTHOR: 'Monica',
+  BLOG_LENGTH_PER_PAGE: 5,
   DESCRIPTION:
     'MonicaやSor4chiといったハンドルネームで活動しているWebエンジニアのポートフォリオサイトです。プロフィールと制作物、アウトプット用のブログを公開しています。',
   SOCIAL: {

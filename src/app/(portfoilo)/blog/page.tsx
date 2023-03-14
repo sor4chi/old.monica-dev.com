@@ -2,12 +2,11 @@ import type { Metadata } from 'next';
 
 import * as styles from './blog.css';
 
+import { SITE_CONFIG } from '@/constant/site';
 import { serverEnv } from '@/env/server';
 import { getPublishedBlogsCount, getSomePublishedBlogs } from '@/repository/blog';
 import { BlogList } from '@/ui/feature/blog/list';
 import { Pagination } from '@/ui/foundation/pagination';
-
-const ITEMS_PER_PAGE = 5;
 
 interface Props {
   searchParams: {
@@ -22,7 +21,7 @@ export const dynamic = 'force-dynamic';
 async function getBlogs(page: number, tags: string[]) {
   try {
     const [data, count] = await Promise.all([
-      getSomePublishedBlogs(page, tags, ITEMS_PER_PAGE),
+      getSomePublishedBlogs(page, tags, SITE_CONFIG.BLOG_LENGTH_PER_PAGE),
       getPublishedBlogsCount(tags),
     ]);
 
@@ -71,7 +70,11 @@ export default async function Blog({ searchParams }: Props) {
     <>
       <h1 className={styles.title}>Blog</h1>
       <BlogList blogs={blogs.data} tagsHrefGenerator={(tag) => `/blog?tags=${tag}`} />
-      <Pagination total={Math.ceil(blogs.count / ITEMS_PER_PAGE)} now={page} hrefGenerator={paginationHrefGenerator} />
+      <Pagination
+        total={Math.ceil(blogs.count / SITE_CONFIG.BLOG_LENGTH_PER_PAGE)}
+        now={page}
+        hrefGenerator={paginationHrefGenerator}
+      />
     </>
   );
 }
