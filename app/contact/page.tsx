@@ -26,9 +26,11 @@ export default function Page() {
   };
 
   return (
-    <div className="max-w-3xl p-4 space-y-6 m-auto dark:prose-invert prose prose-cyan prose-neutral">
-      <h1 className="text-3xl font-bold">Contact</h1>
-      <p className="dark:text-neutral-400 text-gray-500">
+    <div className="m-auto max-w-3xl space-y-6 p-4">
+      <h1 className="text-3xl font-bold text-gray-700 dark:text-neutral-200">
+        Contact
+      </h1>
+      <p className="text-gray-500 dark:text-neutral-400">
         都合上返事をお返しできるまでに時間がかかる場合があります。あらかじめご了承ください。
       </p>
 

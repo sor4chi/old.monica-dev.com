@@ -13,9 +13,9 @@ const NAVIGATION_ITEMS = [
     active: /^\/$/,
   },
   {
-    label: 'Projects',
-    href: '/projects',
-    active: /^\/projects(\/.*)?$/,
+    label: 'Timeline',
+    href: '/timeline',
+    active: /^\/timeline(\/.*)?$/,
   },
   {
     label: 'Blogs',
@@ -46,7 +46,7 @@ export const Navigation = () => {
 
   return (
     <nav
-      className="relative space-x-4 text-neutral-800 dark:text-neutral-100 flex"
+      className="relative flex space-x-4 text-neutral-800 transition-colors duration-300 dark:text-neutral-100"
       ref={navRef}
     >
       {NAVIGATION_ITEMS.map((item) => (
@@ -58,7 +58,7 @@ export const Navigation = () => {
         className={clsx(
           'main-gradient',
           'transition-all duration-300 ease-in-out',
-          'h-1 rounded-full absolute -bottom-2 !m-0',
+          'absolute -bottom-2 !m-0 h-1 rounded-full',
         )}
         ref={activeBarRef}
       />

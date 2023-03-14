@@ -33,7 +33,7 @@ export const TextArea = ({
         onChange={onChange}
         rows={rows}
         className={clsx(
-          'w-full p-2 focus:outline-none text-neutral-700 dark:text-neutral-300',
+          'w-full p-2 text-neutral-700 focus:outline-none dark:text-neutral-300',
           'cursor-pointer focus:cursor-text focus:ring-1 focus:ring-orange-500 dark:focus:ring-orange-500',
           'common-card',
           'placeholder:text-neutral-400 dark:placeholder:text-neutral-500',

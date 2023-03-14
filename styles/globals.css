@@ -2,9 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    @apply bg-slate-100 transition-colors duration-300 ease-in-out dark:bg-neutral-900;
+  }
+}
+
 @layer components {
   .main-gradient {
     @apply bg-gradient-to-r from-orange-400 to-orange-500;
+  }
+
+  .main-gradient-text {
+    @apply main-gradient text-transparent bg-clip-text;
   }
 
   .main-gradient-hover {
@@ -16,6 +26,11 @@
   }
 
   .common-card {
-    @apply border-[1.5px] rounded-lg transition-[border] ease-in-out text-neutral-800 bg-slate-50 border-white dark:text-slate-200 dark:bg-neutral-800 dark:border-neutral-700;
+    @apply border-[1px] rounded-lg text-neutral-800 bg-slate-50 border-white dark:text-slate-200 dark:bg-neutral-800 dark:border-neutral-700 transition-colors duration-300;
+  }
+
+  .use-markdown {
+    @apply dark:prose-invert prose prose-orange prose-neutral;
+    @apply prose-a:main-gradient-text prose-a:font-bold prose-p:mb-0;
   }
 }

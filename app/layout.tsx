@@ -1,7 +1,9 @@
-/* eslint-disable @next/next/no-sync-scripts */
+import Script from 'next/script';
+
 import { Header } from '#/ui/layout/header';
 
 import '#/styles/globals.css';
+
 export default function RootLayout({
   children,
 }: {
@@ -24,9 +26,9 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
         <link rel="manifest" href="/manifest.json" />
-        <script src="/fouc.js" />
+        <Script src="/fouc.js" />
       </head>
-      <body className="bg-slate-100 dark:bg-neutral-900">
+      <body>
         <Header />
         <div className="pt-16">{children}</div>
       </body>

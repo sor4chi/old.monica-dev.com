@@ -1,24 +1,31 @@
 import { use } from 'react';
 
-import { getOriginalBlog, getBlogByQiita, getBlogByZenn } from '#/lib/blog';
+import { prisma } from '#/lib/prisma';
 import { BlogCardList } from '#/ui/blog/card-list';
 
 async function getData() {
-  const res = await Promise.all([
-    getOriginalBlog(),
-    getBlogByQiita(),
-    getBlogByZenn(),
-  ]);
-  const blogs = res.flat();
-  return blogs.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-  );
+  const blogs = await prisma.blog.findMany({
+    where: { published: true },
+    include: {
+      tags: {
+        include: { tag: true },
+      },
+      provider: true,
+    },
+    orderBy: { updatedAt: 'desc' },
+  });
+  return blogs.map((blog) => ({
+    ...blog,
+    tags: blog.tags.map((tag) => tag.tag),
+    createdAt: blog.createdAt.toISOString(),
+    updatedAt: blog.updatedAt.toISOString(),
+  }));
 }
 
 export default function Page() {
   const blogs = use(getData());
   return (
-    <div className="max-w-3xl p-4 space-y-6 m-auto">
+    <div className="m-auto max-w-3xl space-y-6 p-4">
       <BlogCardList blogs={blogs} />
     </div>
   );

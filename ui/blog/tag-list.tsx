@@ -1,14 +1,16 @@
+import { BlogTag as TBlogTag } from '@prisma/client';
+
 import { BlogTag } from './tag';
 
 interface Props {
-  tags: string[];
+  tags: TBlogTag[];
 }
 
 export const BlogTagList = ({ tags }: Props) => {
   return (
-    <div className="gap-2 flex mt-1">
+    <div className="mt-1 flex gap-2">
       {(tags || []).map((tag) => (
-        <BlogTag key={tag} tag={tag} />
+        <BlogTag key={tag.id} tag={tag} />
       ))}
     </div>
   );
