@@ -16,8 +16,7 @@
     "prisma:reset--danger": "dotenv -e .env.development -- prisma db push --accept-data-loss --schema=./prisma/reset.prisma;dotenv -e .env.development -- prisma db push --accept-data-loss",
     "prisma:studio": "dotenv -e .env.development -- prisma studio",
     "start": "next start",
-    "start:dev": "dotenv -e .env.development -- next start",
-    "postinstall": "pnpm run prisma:generate:dev"
+    "start:dev": "dotenv -e .env.development -- next start"
   },
   "dependencies": {
     "@prisma/client": "^4.11.0",
