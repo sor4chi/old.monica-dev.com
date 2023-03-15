@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
+import { serverEnv } from '@/env/server';
 import { formatYYYYMMDDHHMM } from '@/util/date';
-import { customFetch } from '@/util/fetcher';
 
-const allowedOrigins = [process.env.NODE_ENV === 'development' && 'http://localhost:3000', 'https://monica-dev.com'];
+const allowedOrigins = [serverEnv.NODE_ENV === 'development' && 'http://localhost:3000', 'https://monica-dev.com'];
 
 export async function OPTIONS(request: Request) {
   const origin = request.headers.get('Origin');
@@ -46,7 +46,7 @@ interface contentTemplateParams {
 const contentTemplate = ({ email, message, name, time }: contentTemplateParams) => `
 --------------------------------
 **お問い合わせ通知**
-${time} に ${process.env.NEXT_PUBLIC_BASE_URL} から新たなお問い合わせがありました。
+${time} に ${serverEnv.NEXT_PUBLIC_SITE_URL} から新たなお問い合わせがありました。
 
 > Name: ${name}様
 > Email: ${email}
@@ -55,16 +55,16 @@ ${time} に ${process.env.NEXT_PUBLIC_BASE_URL} から新たなお問い合わ�
 `;
 
 export async function POST(request: Request) {
-  const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+  const webhookUrl = serverEnv.DISCORD_WEBHOOK_URL;
   if (!webhookUrl) {
-    return new Response(statusMessage.InternalServerError, { status: 500 });
+    return new Response(JSON.stringify({ status: statusMessage.InternalServerError }), { status: 500 });
   }
 
   const body = await request.json();
   const params = postContactScheme.safeParse(body);
 
   if (!params.success) {
-    return new Response(statusMessage.InvalidParams, { status: 400 });
+    return new Response(JSON.stringify({ status: statusMessage.InvalidParams }), { status: 400 });
   }
 
   const { email, message, name } = params.data;
@@ -85,19 +85,12 @@ export async function POST(request: Request) {
   });
 
   if (response.ok) {
-    return new Response(statusMessage.OK, { status: 200 });
+    return new Response(JSON.stringify({ status: statusMessage.OK }), { status: 200 });
   }
 
-  return new Response(statusMessage.Error, { status: 500 });
+  return new Response(JSON.stringify({ status: statusMessage.Error }), { status: 500 });
 }
 
-interface PostContactResponse {
-  status: (typeof statusMessage)[keyof typeof statusMessage];
+export interface PostContactResponse {
+  status: keyof typeof statusMessage;
 }
-
-export const postContact = async (params: z.infer<typeof postContactScheme>) => {
-  return customFetch<PostContactResponse>('/api/contact', {
-    body: JSON.stringify(params),
-    method: 'POST',
-  });
-};

@@ -1,6 +1,11 @@
+import type { Metadata } from 'next';
 import twemoji from 'twemoji';
 
 import * as styles from './about.css';
+
+export const metadata = {
+  title: 'About',
+} satisfies Metadata;
 
 export default function About() {
   return (

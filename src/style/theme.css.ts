@@ -32,8 +32,8 @@ createGlobalTheme('.light', colorVars, {
   accent: {
     primary: '#a093c7',
     primaryRGB: '160, 147, 199',
-    secondary: '#ada0d3',
-    secondaryRGB: '173, 160, 211',
+    secondary: '#d0c9e6',
+    secondaryRGB: '208, 201, 230',
   },
   error: '#e27878',
 });
@@ -49,10 +49,10 @@ createGlobalTheme('.dark', colorVars, {
     tertiary: '#b2b9c6',
   },
   accent: {
-    primary: '#84a0c6',
+    primary: '#859fc2',
     primaryRGB: '132, 160, 198',
-    secondary: '#90abd0',
-    secondaryRGB: '145, 172, 209',
+    secondary: '#627fa8',
+    secondaryRGB: '98, 127, 168',
   },
   error: '#e27878',
 });

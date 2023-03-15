@@ -2,7 +2,11 @@ import { ImageResponse } from '@vercel/og';
 
 export const runtime = 'edge';
 
-const font = fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/NotoSansJP-Bold.woff`).then((res) => res.arrayBuffer());
+/**
+ * このファイルは、VercelのEdge Functionsを使用しているため、serverEnvを使用できません。
+ */
+
+const font = fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/NotoSansJP-Bold.woff`).then((res) => res.arrayBuffer());
 
 export async function GET(request: Request) {
   try {
@@ -17,7 +21,7 @@ export async function GET(request: Request) {
         <div
           style={{
             alignItems: 'center',
-            backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}/ogp.png)`,
+            backgroundImage: `url(${process.env.NEXT_PUBLIC_SITE_URL}/ogp.png)`,
             backgroundSize: '100% 100%',
             display: 'flex',
             flexDirection: 'column',
@@ -35,7 +39,6 @@ export async function GET(request: Request) {
               fontSize: 16 * 4,
               fontStyle: 'normal',
               fontWeight: 'bold',
-              height: '100%',
               lineHeight: 1.3,
               wordWrap: 'break-word',
             }}
@@ -63,3 +66,7 @@ export async function GET(request: Request) {
     });
   }
 }
+
+export const getOgUrl = (title: string) => {
+  return `${process.env.NEXT_PUBLIC_SITE_URL}/api/og?title=${title}`;
+};

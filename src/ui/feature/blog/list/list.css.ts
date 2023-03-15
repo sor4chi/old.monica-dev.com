@@ -1,5 +1,6 @@
-import { globalStyle, style } from '@vanilla-extract/css';
+import { globalStyle, keyframes, style } from '@vanilla-extract/css';
 
+import { SITE_CONFIG } from '@/constant/site';
 import { vars } from '@/style/theme.css';
 
 export const container = style({
@@ -22,9 +23,30 @@ globalStyle(`${noItems} > .twemoji`, {
   height: '1em',
 });
 
+const fadeInAnimation = keyframes({
+  '0%': {
+    opacity: 0,
+    transform: 'translateY(1rem)',
+  },
+  '100%': {
+    opacity: 1,
+    transform: 'translateY(0)',
+  },
+});
+
 export const item = style({
   listStyle: 'none',
+  opacity: 0,
+  animation: `${fadeInAnimation} 0.5s ease-in-out forwards`,
 });
+
+const animationDelayStep = 0.05;
+
+for (let i = 0; i < SITE_CONFIG.BLOG_LENGTH_PER_PAGE; i++) {
+  globalStyle(`${item}:nth-child(${i + 1})`, {
+    animationDelay: `${animationDelayStep * i}s`,
+  });
+}
 
 export const title = style({
   fontSize: '1.5rem',

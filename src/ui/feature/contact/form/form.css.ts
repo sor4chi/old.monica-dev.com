@@ -16,21 +16,29 @@ export const success = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  gap: '2rem',
+  gap: '4rem',
   width: '100%',
   maxWidth: '40rem',
   margin: '0 auto',
 });
 
-export const successMessage = style({
+export const successMessageEn = style({
   textAlign: 'center',
-  fontSize: '1.2rem',
+  fontSize: '1.25rem',
+  fontWeight: 700,
+  color: vars.color.text.primary,
 });
 
-globalStyle(`${successMessage} .twemoji`, {
+globalStyle(`${successMessageEn} .twemoji`, {
   width: '1em',
   height: '1em',
   verticalAlign: '-0.1em',
+});
+
+export const successMessageAnnotation = style({
+  textAlign: 'center',
+  fontSize: '1rem',
+  color: vars.color.text.secondary,
 });
 
 export const backButton = style({
@@ -38,6 +46,17 @@ export const backButton = style({
   fontWeight: 300,
   background: 'transparent',
   border: 'none',
-  color: vars.color.accent.primary,
+  color: vars.color.text.primary,
   cursor: 'pointer',
+  padding: '0.5rem 1rem',
+  backgroundColor: vars.color.accent.primary,
+  borderRadius: '0.25rem',
+});
+
+export const twitterLink = style({
+  color: vars.color.accent.primary,
+});
+
+globalStyle(`${twitterLink} > *`, {
+  verticalAlign: 'middle',
 });

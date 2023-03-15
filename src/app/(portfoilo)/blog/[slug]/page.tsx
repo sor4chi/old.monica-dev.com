@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation';
 
 import * as styles from './detail.css';
 
+import { getOgUrl } from '@/app/api/og/route';
+import { serverEnv } from '@/env/server';
 import { parseMarkdownToHTML } from '@/lib/markdown';
 import { getPublishedBlogBySlug, getPublishedBlogSlugs } from '@/repository/blog';
 import { TagList } from '@/ui/feature/blog/tagList';
@@ -18,12 +20,16 @@ interface Props {
   };
 }
 
+// force-static for ISR, because static page for SEO
+export const dynamic = 'force-static';
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   try {
     const blogSlugs = await getPublishedBlogSlugs();
     return blogSlugs.map((slug) => slug);
   } catch (e) {
-    if (process.env.NODE_ENV === 'development') {
+    if (serverEnv.NODE_ENV === 'development') {
       console.log(e);
     }
     return [];
@@ -39,8 +45,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const ogImageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/og?title=${res.title}`;
-
   return {
     description: res.description,
     openGraph: {
@@ -49,20 +53,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         {
           alt: res.title,
           height: 630,
-          url: ogImageUrl,
+          url: getOgUrl(res.title),
           width: 1200,
         },
       ],
       publishedTime: res.publishedAt.toISOString(),
       title: res.title,
       type: 'article',
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${params.slug}`,
+      url: `${serverEnv.NEXT_PUBLIC_SITE_URL}/blog/${params.slug}`,
     },
     title: res.title,
     twitter: {
       card: 'summary_large_image',
       description: res.description,
-      images: [ogImageUrl],
+      images: [getOgUrl(res.title)],
       title: res.title,
     },
   };
@@ -80,7 +84,7 @@ async function getBlog(slug: string) {
       ...parseMarkdownToHTML(res?.content || ''),
     };
   } catch (e) {
-    if (process.env.NODE_ENV === 'development') {
+    if (serverEnv.NODE_ENV === 'development') {
       console.log(e);
     }
     return null;
@@ -111,7 +115,7 @@ export default async function BlogDetail({ params }: Props) {
           </div>
           <div className={clsx(styles.metaItem, styles.tagList)}>
             <span className={styles.metaLabel}>Tags</span>
-            <TagList tags={blog.tags} />
+            <TagList tags={blog.tags} hrefGenerator={(tag) => `/blog?tags=${tag}`} />
           </div>
         </div>
       </section>

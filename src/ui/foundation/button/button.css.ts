@@ -8,14 +8,14 @@ export const button = style({
   border: 'none',
   fontSize: '1rem',
   color: vars.color.text.primary,
-  backgroundColor: vars.color.accent.primary,
+  backgroundColor: vars.color.accent.secondary,
   cursor: 'pointer',
   width: 'fit-content',
 
   '@media': {
     '(hover: hover)': {
       ':hover': {
-        backgroundColor: vars.color.accent.secondary,
+        opacity: 0.8,
         color: vars.color.text.primary,
       },
     },
