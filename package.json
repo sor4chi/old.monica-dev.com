@@ -12,11 +12,13 @@
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "openai:generate-fixture": "dotenv -e .env -- node ./scripts/generate-fixture.js",
     "prisma:generate:dev": "dotenv -e .env.development -- prisma generate",
+    "prisma:generate:production": "prisma generate",
     "prisma:migrate:dev": "dotenv -e .env.development -- prisma migrate dev --name prisma-init",
     "prisma:reset--danger": "dotenv -e .env.development -- prisma db push --accept-data-loss --schema=./prisma/reset.prisma;dotenv -e .env.development -- prisma db push --accept-data-loss",
     "prisma:studio": "dotenv -e .env.development -- prisma studio",
     "start": "next start",
-    "start:dev": "dotenv -e .env.development -- next start"
+    "start:dev": "dotenv -e .env.development -- next start",
+    "prebuild": "pnpm run prisma:generate:production"
   },
   "dependencies": {
     "@prisma/client": "^4.11.0",
