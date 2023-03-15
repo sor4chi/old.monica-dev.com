@@ -6,7 +6,7 @@ export const runtime = 'edge';
  * このファイルは、VercelのEdge Functionsを使用しているため、serverEnvを使用できません。
  */
 
-const font = fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/NotoSansJP-Bold.woff`).then((res) => res.arrayBuffer());
+const font = fetch(new URL('../../../assets/NotoSansJP-Bold.woff', import.meta.url)).then((res) => res.arrayBuffer());
 
 export async function GET(request: Request) {
   try {
@@ -21,7 +21,7 @@ export async function GET(request: Request) {
         <div
           style={{
             alignItems: 'center',
-            backgroundImage: `url(${process.env.NEXT_PUBLIC_SITE_URL}/ogp.png)`,
+            backgroundImage: `url(${new URL('../../../assets/ogp.png', import.meta.url)})`,
             backgroundSize: '100% 100%',
             display: 'flex',
             flexDirection: 'column',
