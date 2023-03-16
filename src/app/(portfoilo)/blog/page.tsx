@@ -16,6 +16,9 @@ interface Props {
 
 // force-dynamic for SSR, because use dynamic sort with query params
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+export const runtime = 'nodejs';
+export const preferredRegion = 'home';
 
 async function getBlogs(page: number, tags: string[]) {
   try {
