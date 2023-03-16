@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import * as styles from './blog.css';
 
 import { SITE_CONFIG } from '@/constant/site';
-import { serverEnv } from '@/env/server';
 import { getPublishedBlogsCount, getSomePublishedBlogs } from '@/repository/blog';
 import { BlogList } from '@/ui/feature/blog/list';
 import { Pagination } from '@/ui/foundation/pagination';
@@ -30,9 +29,6 @@ async function getBlogs(page: number, tags: string[]) {
       data,
     };
   } catch (e) {
-    if (serverEnv.NODE_ENV === 'development') {
-      console.log(e);
-    }
     return {
       count: 0,
       data: [],

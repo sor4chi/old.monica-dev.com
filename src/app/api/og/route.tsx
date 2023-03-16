@@ -11,13 +11,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
 
     const hasTitle = searchParams.has('title');
-    let title = '';
-    if (hasTitle) {
-      // 100文字以上の場合は切り捨てる
-      title = searchParams.get('title')?.slice(0, 100) || process.env.NEXT_PUBLIC_SITE_NAME || '';
-    } else {
-      title = process.env.NEXT_PUBLIC_SITE_NAME || '';
-    }
+    const title = hasTitle ? searchParams.get('title')?.slice(0, 100) : process.env.NEXT_PUBLIC_SITE_NAME;
 
     return new ImageResponse(
       (

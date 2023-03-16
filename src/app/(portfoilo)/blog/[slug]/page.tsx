@@ -29,9 +29,6 @@ export async function generateStaticParams() {
     const blogSlugs = await getPublishedBlogSlugs();
     return blogSlugs.map((slug) => slug);
   } catch (e) {
-    if (serverEnv.NODE_ENV === 'development') {
-      console.log(e);
-    }
     return [];
   }
 }
