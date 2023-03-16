@@ -232,8 +232,12 @@ export const socialLink = style({
   display: 'block',
   padding: '0.5rem',
 
-  ':hover': {
-    opacity: 0.8,
+  '@media': {
+    '(hover: hover)': {
+      ':hover': {
+        opacity: 0.8,
+      },
+    },
   },
 });
 
@@ -294,10 +298,14 @@ export const navLink = style({
     transition: 'width .2s ease-out',
   },
 
-  selectors: {
-    '&:hover:before': {
-      width: '100%',
-      transition: 'width .2s ease-out',
+  '@media': {
+    '(hover: hover)': {
+      selectors: {
+        '&:hover:before': {
+          width: '100%',
+          transition: 'width .2s ease-out',
+        },
+      },
     },
   },
 });
