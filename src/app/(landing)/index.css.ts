@@ -178,8 +178,18 @@ const steps = [
 const toggleAnimation = keyframes({
   [steps[0]]: { transform: 'translateY(0)' },
   [steps[1]]: { transform: 'translateY(0)' },
-  [steps[2]]: { transform: `translateY(-${titleLineHeight})` },
-  [steps[3]]: { transform: `translateY(-${titleLineHeight})` },
+  [steps[2]]: {
+    [`@media screen and (max-width: ${vars.breakpoint.mobile})`]: {
+      transform: `translateY(-${titleLineHeight.mobile})`,
+    },
+    transform: `translateY(-${titleLineHeight.pc})`,
+  },
+  [steps[3]]: {
+    [`@media screen and (max-width: ${vars.breakpoint.mobile})`]: {
+      transform: `translateY(-${titleLineHeight.mobile})`,
+    },
+    transform: `translateY(-${titleLineHeight.pc})`,
+  },
   [steps[4]]: { transform: 'translateY(0)' },
   [steps[5]]: { transform: 'translateY(0)' },
 });
