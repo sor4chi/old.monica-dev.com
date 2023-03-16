@@ -28,7 +28,6 @@ export async function GET(request: Request) {
             backgroundSize: '100% 100%',
             display: 'flex',
             flexDirection: 'column',
-            fontFamily: 'NotoSansJP',
             height: '100%',
             justifyContent: 'center',
             padding: 16 * 7,
