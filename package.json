@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "prebuild": "pnpm run prisma:generate:production",
     "build": "next build",
     "build:dev": "dotenv -e .env.development -- next build",
     "dev": "next dev",
@@ -14,11 +15,11 @@
     "prisma:generate:dev": "dotenv -e .env.development -- prisma generate",
     "prisma:generate:production": "prisma generate",
     "prisma:migrate:dev": "dotenv -e .env.development -- prisma migrate dev --name prisma-init",
+    "prisma:push:prod": "dotenv -e .env.production -- prisma db push",
     "prisma:reset--danger": "dotenv -e .env.development -- prisma db push --accept-data-loss --schema=./prisma/reset.prisma;dotenv -e .env.development -- prisma db push --accept-data-loss",
     "prisma:studio": "dotenv -e .env.development -- prisma studio",
     "start": "next start",
-    "start:dev": "dotenv -e .env.development -- next start",
-    "prebuild": "pnpm run prisma:generate:production"
+    "start:dev": "dotenv -e .env.development -- next start"
   },
   "dependencies": {
     "@prisma/client": "^4.11.0",
