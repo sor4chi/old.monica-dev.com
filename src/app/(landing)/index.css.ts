@@ -280,17 +280,24 @@ export const navLink = style({
   fontSize: '1.5rem',
   borderRadius: '0.25rem',
   transition: 'background .5s ease-out',
+  position: 'relative',
 
-  '@media': {
-    '(hover: hover)': {
-      ':hover': {
-        background: `linear-gradient(${[
-          '60deg',
-          `rgba(${vars.color.accent.secondaryRGB}, 1) 0%`,
-          `rgba(${vars.color.accent.secondaryRGB}, 0.5) 30%`,
-          `rgba(${vars.color.accent.secondaryRGB}, 0) 100%`,
-        ].join(',')})`,
-      },
+  ':before': {
+    content: '""',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '1px',
+    background: vars.color.text.primary,
+    width: '0%',
+    transition: 'width .2s ease-out',
+  },
+
+  selectors: {
+    '&:hover:before': {
+      width: '100%',
+      transition: 'width .2s ease-out',
     },
   },
 });

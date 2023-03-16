@@ -56,11 +56,28 @@ export const navigationLink = style({
   fontWeight: 400,
   textDecoration: 'none',
   transition: 'color .2s ease-in-out',
+  position: 'relative',
+  padding: '0.25rem 0',
+
+  ':before': {
+    content: '""',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '1px',
+    background: vars.color.text.primary,
+    width: '0%',
+    transition: 'width .2s ease-out',
+  },
 
   '@media': {
     '(hover: hover)': {
-      ':hover': {
-        color: vars.color.text.secondary,
+      selectors: {
+        '&:hover:before': {
+          width: '100%',
+          transition: 'width .2s ease-out',
+        },
       },
     },
   },
