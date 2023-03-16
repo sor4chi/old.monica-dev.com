@@ -21,7 +21,7 @@ export async function GET(request: Request) {
         <div
           style={{
             alignItems: 'center',
-            backgroundImage: `url(${new URL('../../../assets/ogp.png', import.meta.url)})`,
+            backgroundImage: `url(${process.env.NEXT_PUBLIC_SITE_URL}/ogp.png)`,
             backgroundSize: '100% 100%',
             display: 'flex',
             flexDirection: 'column',
