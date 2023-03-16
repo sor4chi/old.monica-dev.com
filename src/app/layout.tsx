@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 
-import { getOgUrl } from './api/og/route';
-
 import { SITE_CONFIG } from '@/constant/site';
 import { themeClass, vars } from '@/style/theme.css';
+import { getOgUrl } from '@/util/og';
 
 import '@/style/globals.css';
 

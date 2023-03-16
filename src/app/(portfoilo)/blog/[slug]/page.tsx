@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation';
 
 import * as styles from './detail.css';
 
-import { getOgUrl } from '@/app/api/og/route';
 import { serverEnv } from '@/env/server';
 import { parseMarkdownToHTML } from '@/lib/markdown';
 import { getPublishedBlogBySlug, getPublishedBlogSlugs } from '@/repository/blog';
@@ -13,6 +12,7 @@ import { Toc } from '@/ui/feature/blog/toc';
 import { Article } from '@/ui/foundation/article';
 import { Text } from '@/ui/foundation/text';
 import { formatYYYYMMDD } from '@/util/date';
+import { getOgUrl } from '@/util/og';
 
 interface Props {
   params: {

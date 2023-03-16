@@ -1,10 +1,9 @@
 import '@/style/globals.css';
 import type { WebSite, WithContext } from 'schema-dts';
 
-import { getOgUrl } from '../api/og/route';
-
 import { SITE_CONFIG } from '@/constant/site';
 import { VanillaLayout } from '@/ui/app/layout/vanilla';
+import { getOgUrl } from '@/util/og';
 
 const jsonLd = {
   '@context': 'https://schema.org',
