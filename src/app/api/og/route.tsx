@@ -6,15 +6,18 @@ export const runtime = 'edge';
  * このファイルは、VercelのEdge Functionsを使用しているため、serverEnvを使用できません。
  */
 
-const font = fetch(new URL('../../../assets/NotoSansJP-Bold.woff', import.meta.url)).then((res) => res.arrayBuffer());
-
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
 
     const hasTitle = searchParams.has('title');
-    const title = hasTitle ? searchParams.get('title')?.slice(0, 100) : 'My default title';
-    const fontData = await font;
+    let title = '';
+    if (hasTitle) {
+      // 100文字以上の場合は切り捨てる
+      title = searchParams.get('title')?.slice(0, 100) || process.env.NEXT_PUBLIC_SITE_NAME || '';
+    } else {
+      title = process.env.NEXT_PUBLIC_SITE_NAME || '';
+    }
 
     return new ImageResponse(
       (
@@ -48,13 +51,6 @@ export async function GET(request: Request) {
         </div>
       ),
       {
-        fonts: [
-          {
-            data: fontData,
-            name: 'NotoSansJP',
-            style: 'normal',
-          },
-        ],
         height: 630,
         width: 1200,
       },
