@@ -21,8 +21,8 @@ import { colorVars } from './contract.css';
 
 createGlobalTheme('.light', colorVars, {
   bg: {
-    primary: '#EDF2F7',
-    secondary: '#dee5f1',
+    primary: '#ffffff',
+    secondary: '#EDF2F7',
   },
   text: {
     primary: '#1F262D',
