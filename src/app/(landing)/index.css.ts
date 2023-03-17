@@ -1,4 +1,4 @@
-import { keyframes, style } from '@vanilla-extract/css';
+import { assignVars, createThemeContract, keyframes, style } from '@vanilla-extract/css';
 
 import { vars } from '@/style/theme.css';
 
@@ -132,22 +132,22 @@ export const shadow = style({
   animationTimingFunction: 'ease-in-out',
 });
 
-const titleLineHeight = {
-  pc: '3.5rem',
-  mobile: '2.5rem',
-};
-const titleFontSize = {
-  pc: '3rem',
-  mobile: '2rem',
-};
+const titleVars = createThemeContract({
+  lineHeight: null,
+  fontSize: null,
+});
 
 export const title = style({
+  vars: assignVars(titleVars, {
+    lineHeight: '3.5rem',
+    fontSize: '3rem',
+  }),
   alignItems: 'center',
   color: vars.color.text.primary,
   display: 'inline-flex',
-  fontSize: titleFontSize.pc,
+  fontSize: titleVars.fontSize,
   fontWeight: 700,
-  lineHeight: titleLineHeight.pc,
+  lineHeight: titleVars.lineHeight,
   margin: 0,
   marginTop: '2rem',
   overflow: 'hidden',
@@ -155,8 +155,10 @@ export const title = style({
 
   '@media': {
     [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
-      fontSize: titleFontSize.mobile,
-      lineHeight: titleLineHeight.mobile,
+      vars: assignVars(titleVars, {
+        lineHeight: '2.5rem',
+        fontSize: '2rem',
+      }),
     },
   },
 });
@@ -179,16 +181,10 @@ const toggleAnimation = keyframes({
   [steps[0]]: { transform: 'translateY(0)' },
   [steps[1]]: { transform: 'translateY(0)' },
   [steps[2]]: {
-    [`@media screen and (max-width: ${vars.breakpoint.mobile})`]: {
-      transform: `translateY(-${titleLineHeight.mobile})`,
-    },
-    transform: `translateY(-${titleLineHeight.pc})`,
+    transform: `translateY(calc(-1 * ${titleVars.lineHeight}))`,
   },
   [steps[3]]: {
-    [`@media screen and (max-width: ${vars.breakpoint.mobile})`]: {
-      transform: `translateY(-${titleLineHeight.mobile})`,
-    },
-    transform: `translateY(-${titleLineHeight.pc})`,
+    transform: `translateY(calc(-1 * ${titleVars.lineHeight}))`,
   },
   [steps[4]]: { transform: 'translateY(0)' },
   [steps[5]]: { transform: 'translateY(0)' },
@@ -203,14 +199,8 @@ export const titleToggle = style({
 
   display: 'inline-flex',
   flexDirection: 'column',
-  height: titleLineHeight.pc,
+  height: titleVars.lineHeight,
   margin: '0 1rem',
-
-  '@media': {
-    [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
-      height: titleLineHeight.mobile,
-    },
-  },
 });
 
 export const subtitle = style({
