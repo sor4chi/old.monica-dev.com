@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
-import twemoji from 'twemoji';
 
 import * as styles from './about.css';
+
+import { parseTwemoji } from '@/lib/twemoji';
 
 export const metadata = {
   title: 'About',
@@ -14,11 +15,7 @@ export default function About() {
       <p
         className={styles.text}
         dangerouslySetInnerHTML={{
-          __html: twemoji.parse('⚠️Now Preparing⚠️', {
-            className: 'twemoji',
-            ext: '.svg',
-            folder: 'svg',
-          }),
+          __html: parseTwemoji('⚠️Now Preparing⚠️'),
         }}
       />
     </>

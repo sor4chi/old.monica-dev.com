@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import twemoji from 'twemoji';
 
 import { TagList } from '../tagList';
 
 import * as styles from './list.css';
 
+import { parseTwemoji } from '@/lib/twemoji';
 import { Text } from '@/ui/foundation/text';
 import { formatYMD } from '@/util/date';
 
@@ -26,11 +26,7 @@ interface Props {
   tagsHrefGenerator: (tag: string) => string;
 }
 
-const NOTFOUND_MSG = twemoji.parse('Sorry, no items found. 😭', {
-  className: 'twemoji',
-  ext: '.svg',
-  folder: 'svg',
-});
+const NOTFOUND_MSG = parseTwemoji('Sorry, no items found. 😭');
 
 export const BlogList = ({ blogs, tagsHrefGenerator }: Props) => {
   if (!blogs.length) {
