@@ -1,4 +1,4 @@
-import { createGlobalTheme, createTheme } from '@vanilla-extract/css';
+import { createGlobalTheme } from '@vanilla-extract/css';
 
 import { colorVars } from './contract.css';
 
@@ -57,20 +57,14 @@ createGlobalTheme('.dark', colorVars, {
   error: '#e27878',
 });
 
-const [commonThemeClass, commonVars] = createTheme({
+export const vars = {
+  color: colorVars,
   size: {
     containerMaxWidth: '64rem',
     headerHeight: '4rem',
   },
-});
-
-export const vars = {
-  color: colorVars,
-  size: commonVars.size,
   breakpoint: {
     mobile: '768px',
     pc: '1024px',
   },
 };
-
-export const themeClass = commonThemeClass;
