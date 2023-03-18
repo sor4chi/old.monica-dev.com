@@ -6,6 +6,7 @@ const injectionText = `
 内容には必要に応じてTableやCodeBlock、画像やリンク、引用にリストなどを使いバリエーションを持たせてください。
 titleと全く同じ内容のテキストは含めないでください。
 Headingはlevel2からlevel4まで使ってください。
+記事は全て日本語で書いてください。
 `;
 
 const dynamicData = [
@@ -125,44 +126,75 @@ const dynamicData = [
 ];
 
 const data = [];
+let total = dynamicData.length;
+let count = 0;
 
-const genData = async (dynamicText) => {
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
-    body: JSON.stringify({
-      frequency_penalty: 0,
-      messages: [
-        {
-          content: `
+const genData = async (dynamicText, id) => {
+  try {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      body: JSON.stringify({
+        frequency_penalty: 0,
+        messages: [
+          {
+            content: `
 ${dynamicText}
 ${injectionText}
 `,
-          role: 'user',
-        },
-      ],
-      model: 'gpt-3.5-turbo',
-      n: 1,
-      presence_penalty: 0,
-      temperature: 0.9,
-      top_p: 1,
-    }),
-    headers: {
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    method: 'POST',
-  });
-  const json = await response.json();
-  data.push({
-    content: json.choices[0].message.content,
-  });
+            role: 'user',
+          },
+        ],
+        model: 'gpt-4',
+        n: 1,
+        presence_penalty: 0,
+        temperature: 0.9,
+        top_p: 1,
+      }),
+      headers: {
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+    }).catch((error) => {
+      throw error;
+    });
+
+    const json = await response.json();
+    data.push({
+      content: json.choices[0].message.content,
+      id,
+    });
+
+    count += 1;
+    console.log(`${count}/${total}`);
+  } catch (error) {
+    total -= 1;
+    console.log(`${count}/${total}`);
+    console.log(error);
+  }
 };
+
+const fixturePath = './prisma/seeds/fixture/blogs.json';
 
 (async () => {
   await Promise.all(
     dynamicData.map(async (dynamicText) => {
-      await genData(dynamicText);
+      await genData(JSON.stringify(dynamicText, null, 2), dynamicText.id);
     }),
   );
 
-  fs.writeFileSync('./data.json', JSON.stringify(data));
+  const json = fs.readFileSync(fixturePath, 'utf8');
+  const beforeData = JSON.parse(json);
+
+  const afterData = beforeData.map((before) => {
+    const after = data.find((d) => d.id === before.id);
+    if (after) {
+      return {
+        ...before,
+        content: after.content,
+      };
+    }
+    return before;
+  });
+
+  fs.writeFileSync(fixturePath, JSON.stringify(afterData, null, 2));
 })();
