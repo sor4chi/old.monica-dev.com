@@ -35,6 +35,10 @@ createGlobalTheme('.light', colorVars, {
     secondary: '#d0c9e6',
     secondaryRGB: '208, 201, 230',
   },
+  social: {
+    twitter: '#1da1f2',
+    github: '#111111',
+  },
   error: '#e27878',
 });
 
@@ -53,6 +57,10 @@ createGlobalTheme('.dark', colorVars, {
     primaryRGB: '132, 160, 198',
     secondary: '#627fa8',
     secondaryRGB: '98, 127, 168',
+  },
+  social: {
+    twitter: '#1da1f2',
+    github: '#ffffff',
   },
   error: '#e27878',
 });

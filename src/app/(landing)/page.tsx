@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaGithub, FaTwitter } from 'react-icons/fa';
 
 import * as styles from './index.css';
 
+import { SocialList } from '@/ui/feature/account/socialList';
 import { Logo } from '@/ui/navigator/logo';
 import { ThemeSwitch } from '@/ui/navigator/themeSwitch';
 
@@ -36,51 +36,26 @@ export default function Home() {
           <span style={{ display: 'inline' }}>Portfolio</span>
         </h1>
         <p className={styles.subtitle}>Web App Developer</p>
-        <ul className={styles.social}>
-          <li className={styles.socialItem}>
-            <Link
-              href="https://twitter.com/monica18_pr"
-              target="_blank"
-              className={styles.socialLink}
-              passHref
-              aria-label="twitter @monica18_pr"
-            >
-              <FaTwitter size="2rem" />
-            </Link>
-          </li>
-          <li className={styles.socialItem}>
-            <Link
-              href="https://github.com/sor4chi"
-              target="_blank"
-              className={styles.socialLink}
-              passHref
-              aria-label="github sor4chi"
-            >
-              <FaGithub size="2rem" />
-            </Link>
-          </li>
-        </ul>
+        <SocialList />
       </div>
       <hr className={styles.divider} />
-      <div className={styles.meta}>
-        <ul className={styles.navList}>
-          <li className={styles.navListItem}>
-            <Link href="/about" className={styles.navLink} passHref>
-              About
-            </Link>
-          </li>
-          <li className={styles.navListItem}>
-            <Link href="/blog" className={styles.navLink} passHref>
-              Blog
-            </Link>
-          </li>
-          <li className={styles.navListItem}>
-            <Link href="/contact" className={styles.navLink} passHref>
-              Contact
-            </Link>
-          </li>
-        </ul>
-      </div>
+      <ul className={styles.navList}>
+        <li className={styles.navListItem}>
+          <Link href="/about" className={styles.navLink} passHref>
+            About
+          </Link>
+        </li>
+        <li className={styles.navListItem}>
+          <Link href="/blog" className={styles.navLink} passHref>
+            Blog
+          </Link>
+        </li>
+        <li className={styles.navListItem}>
+          <Link href="/contact" className={styles.navLink} passHref>
+            Contact
+          </Link>
+        </li>
+      </ul>
     </div>
   );
 }

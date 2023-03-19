@@ -208,37 +208,8 @@ export const subtitle = style({
   fontSize: '1.5rem',
   fontWeight: 400,
   lineHeight: '2rem',
-  margin: 0,
-  marginTop: '1rem',
+  margin: '1rem 0 0.5rem 0',
   textAlign: 'center',
-});
-
-export const social = style({
-  alignItems: 'center',
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'center',
-  margin: 0,
-  marginTop: '1rem',
-  padding: 0,
-});
-
-export const socialItem = style({
-  listStyle: 'none',
-});
-
-export const socialLink = style({
-  color: vars.color.text.tertiary,
-  display: 'block',
-  padding: '0.5rem',
-
-  '@media': {
-    '(hover: hover)': {
-      ':hover': {
-        opacity: 0.8,
-      },
-    },
-  },
 });
 
 export const divider = style({
@@ -255,8 +226,6 @@ export const divider = style({
     },
   },
 });
-
-export const meta = style({});
 
 export const navList = style({
   listStyle: 'none',
