@@ -4,9 +4,9 @@ import { vars } from '@/style/theme.css';
 
 export const socials = style({
   display: 'flex',
-  gap: '0.5rem',
   flexWrap: 'wrap',
   justifyContent: 'center',
+  fontSize: 'inherit',
 });
 
 const baseSocial = style({
@@ -14,7 +14,7 @@ const baseSocial = style({
   textDecoration: 'none',
   color: vars.color.text.tertiary,
   transition: 'color 0.3s ease, transform 0.3s ease',
-  fontSize: '1rem',
+  fontSize: 'inherit',
 });
 
 export const socialIcon = style({
