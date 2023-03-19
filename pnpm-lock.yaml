@@ -1,12 +1,12 @@
 lockfileVersion: 5.4
 
 patchedDependencies:
+  '@vanilla-extract/next-plugin@2.1.1':
+    hash: hz6lluegxntrcqhisbglfa7hbi
+    path: patches/@vanilla-extract__next-plugin@2.1.1.patch
   next@13.2.3:
     hash: cgm7hdvw56vqlcmfj4ipjs7qc4
     path: patches/next@13.2.3.patch
-  '@vanilla-extract/next-plugin@2.1.1':
-    hash: h6qb7d2d47y626zsb6ve2wffp4
-    path: patches/@vanilla-extract__next-plugin@2.1.1.patch
 
 specifiers:
   '@prisma/client': ^4.11.0
@@ -66,7 +66,7 @@ specifiers:
 dependencies:
   '@prisma/client': 4.11.0_prisma@4.11.0
   '@vanilla-extract/css': 1.9.5
-  '@vanilla-extract/next-plugin': 2.1.1_h6qb7d2d47y626zsb6ve2wffp4_next@13.2.3
+  '@vanilla-extract/next-plugin': 2.1.1_hz6lluegxntrcqhisbglfa7hbi_next@13.2.3
   clsx: 1.2.1
   katex: 0.16.4
   mdast: 3.0.0
@@ -1116,7 +1116,7 @@ packages:
       - supports-color
     dev: false
 
-  /@vanilla-extract/next-plugin/2.1.1_h6qb7d2d47y626zsb6ve2wffp4_next@13.2.3:
+  /@vanilla-extract/next-plugin/2.1.1_hz6lluegxntrcqhisbglfa7hbi_next@13.2.3:
     resolution: {integrity: sha512-8+7WRL7JRv9w9MOwTpVi/ZDv3qXkxjkgJgxzS9wQJHjvdfcs0Xyq30ePeaJfBN4b6ClUeqOdj7UYa8fqKA8oOQ==}
     peerDependencies:
       next: '>=12.0.5'
