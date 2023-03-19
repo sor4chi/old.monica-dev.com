@@ -2,7 +2,7 @@ import { style } from '@vanilla-extract/css';
 
 import { vars } from '@/style/theme.css';
 
-export const container = style({
+export const wrapper = style({
   display: 'grid',
   gridTemplateColumns: '100%',
   gridTemplateRows: '1fr auto',
