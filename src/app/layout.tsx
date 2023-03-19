@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 import { SITE_CONFIG } from '@/constant/site';
-import { themeClass, vars } from '@/style/theme.css';
+import { vars } from '@/style/theme.css';
 import { getOgUrl } from '@/util/og';
 
 import '@/style/globals.css';
@@ -72,7 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script src="/theme.js" />
       </head>
       <html lang="ja">
-        <body className={themeClass}>{children}</body>
+        <body>{children}</body>
       </html>
     </>
   );

@@ -5,7 +5,7 @@ import { vars } from '@/style/theme.css';
 export const toc = style({
   position: 'sticky',
   top: `calc(${vars.size.headerHeight} + 1rem)`,
-  height: 'fit-content'
+  height: 'fit-content',
 });
 
 export const tocTitle = style({
