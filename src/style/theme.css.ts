@@ -70,7 +70,7 @@ export const vars = {
   size: {
     containerMaxWidth: '64rem',
     headerHeight: '4rem',
-    sideMenuWidth: '10rem',
+    sideMenuWidth: '13rem',
   },
   breakpoint: {
     mobile: '768px',
