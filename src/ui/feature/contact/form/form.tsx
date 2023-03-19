@@ -1,5 +1,6 @@
-import type { ChangeEvent } from 'react';
-import { useEffect, useReducer, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { FaTwitter } from 'react-icons/fa';
 import twemoji from 'twemoji';
 import { z } from 'zod';
@@ -14,88 +15,15 @@ import { TextInput } from '@/ui/foundation/textInput';
 import { Textarea } from '@/ui/foundation/textarea';
 import { customFetch } from '@/util/fetcher';
 
-const formSchema = z.object({
+const scheme = z.object({
   email: z.string().email({ message: 'Please enter a valid email address, 正しいメールアドレスを入力してください' }),
   message: z.string().min(1, { message: 'Please enter a message, メッセージを入力してください' }),
   name: z.string().min(1, { message: 'Please enter your name, 名前を入力してください' }),
 });
 
-const initialForm = {
-  email: '',
-  message: '',
-  name: '',
-} satisfies z.infer<typeof formSchema>;
+type Scheme = z.infer<typeof scheme>;
 
-const initialFormError = {
-  email: '',
-  message: '',
-  name: '',
-} satisfies z.infer<typeof formSchema>;
-
-type ReducerAction =
-  | {
-      type: 'change';
-      payload: {
-        name: keyof typeof initialForm;
-        value: string | ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>;
-      };
-    }
-  | {
-      type: 'reset';
-    }
-  | {
-      type: 'load';
-    };
-
-const reducer = (state: typeof initialForm, action: ReducerAction) => {
-  switch (action.type) {
-    case 'change':
-      localStorage.setItem('contactForm', JSON.stringify({ ...state, [action.payload.name]: action.payload.value }));
-      return {
-        ...state,
-        [action.payload.name]: action.payload.value,
-      };
-    case 'reset':
-      localStorage.removeItem('contactForm');
-      return initialForm;
-    case 'load':
-      const form = localStorage.getItem('contactForm');
-      if (form) {
-        return JSON.parse(form);
-      }
-      return state;
-    default:
-      return state;
-  }
-};
-
-type ErrorReducerAction =
-  | {
-      type: 'update';
-      payload: {
-        name: keyof typeof initialFormError;
-        value: string;
-      };
-    }
-  | {
-      type: 'reset';
-    };
-
-const errorReducer = (state: typeof initialFormError, action: ErrorReducerAction) => {
-  switch (action.type) {
-    case 'update':
-      return {
-        ...state,
-        [action.payload.name]: action.payload.value,
-      };
-    case 'reset':
-      return initialFormError;
-    default:
-      return state;
-  }
-};
-
-const postContact = async (params: z.infer<typeof formSchema>) => {
+const postContact = async (params: Scheme) => {
   return customFetch<PostContactResponse>('/api/contact', {
     body: JSON.stringify(params),
     method: 'POST',
@@ -104,30 +32,38 @@ const postContact = async (params: z.infer<typeof formSchema>) => {
 
 export const ContactForm = () => {
   const [phase, setPhase] = useState<'form' | 'success'>('form');
-  const [form, dispatch] = useReducer(reducer, initialForm);
-  const [formError, dispatchError] = useReducer(errorReducer, initialFormError);
+  const {
+    formState: { errors },
+    handleSubmit,
+    register,
+    setValue,
+    watch,
+  } = useForm<Scheme>({
+    resolver: zodResolver(scheme),
+  });
+  const formData = watch();
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = formSchema.safeParse(form);
-    if (formData.success) {
-      postContact(formData.data);
-      setPhase('success');
-      dispatch({ type: 'reset' });
-      dispatchError({ type: 'reset' });
-    } else {
-      const error = formData.error.flatten();
-      dispatchError({ payload: { name: 'name', value: (error.fieldErrors.name || []).join(', ') }, type: 'update' });
-      dispatchError({ payload: { name: 'email', value: (error.fieldErrors.email || []).join(', ') }, type: 'update' });
-      dispatchError({
-        payload: { name: 'message', value: (error.fieldErrors.message || []).join(', ') },
-        type: 'update',
-      });
-    }
+  const onSubmit = (d: Scheme) => {
+    postContact(d);
+    setPhase('success');
+    setValue('email', '');
+    setValue('message', '');
+    setValue('name', '');
+    localStorage.removeItem('contactForm');
+  };
+
+  const handleChange = () => {
+    localStorage.setItem('contactForm', JSON.stringify(formData));
   };
 
   useEffect(() => {
-    dispatch({ type: 'load' });
+    const form = localStorage.getItem('contactForm');
+    if (form) {
+      const parsed = JSON.parse(form);
+      setValue('email', parsed.email);
+      setValue('message', parsed.message);
+      setValue('name', parsed.name);
+    }
   }, []);
 
   if (phase === 'success') {
@@ -163,32 +99,23 @@ export const ContactForm = () => {
   }
 
   return (
-    <form className={styles.form} onSubmit={onSubmit}>
-      <TextInput
-        label="Name"
-        id="name"
-        value={form.name}
-        onChange={(value) => dispatch({ payload: { name: 'name', value }, type: 'change' })}
-        placeholder="Taro Yamada"
-        error={formError.name}
-      />
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)} onChange={handleChange}>
+      <TextInput label="Name" id="name" placeholder="Taro Yamada" {...register('name')} error={errors.name?.message} />
       <TextInput
         label="Email"
         id="email"
-        value={form.email}
-        onChange={(value) => dispatch({ payload: { name: 'email', value }, type: 'change' })}
-        placeholder="hoge@example.com"
-        error={formError.email}
+        placeholder="taro.yamada@example.com"
+        {...register('email')}
+        error={errors.email?.message}
       />
       <Textarea
         label="Message"
         id="message"
-        value={form.message}
-        onChange={(value) => dispatch({ payload: { name: 'message', value }, type: 'change' })}
         placeholder="I would like to ask you about ... (EN) 〇〇の件でお伺いしたいです (JP)"
         style={{ resize: 'none' }}
         rows={5}
-        error={formError.message}
+        {...register('message')}
+        error={errors.message?.message}
       />
       <Button type="submit">Submit</Button>
     </form>
