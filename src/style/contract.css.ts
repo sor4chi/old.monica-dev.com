@@ -16,5 +16,9 @@ export const colorVars = createThemeContract({
     secondary: '',
     secondaryRGB: '',
   },
+  social: {
+    twitter: '',
+    github: '',
+  },
   error: '',
 });
