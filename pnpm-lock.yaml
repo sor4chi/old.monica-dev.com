@@ -9,6 +9,7 @@ patchedDependencies:
     path: patches/next@13.2.3.patch
 
 specifiers:
+  '@hookform/resolvers': ^2.9.11
   '@prisma/client': ^4.11.0
   '@types/mdast': ^3.0.10
   '@types/node': 18.14.6
@@ -39,6 +40,7 @@ specifiers:
   prisma: ^4.11.0
   react: 18.2.0
   react-dom: 18.2.0
+  react-hook-form: ^7.43.7
   react-icons: ^4.8.0
   refractor: ^4.8.1
   rehype-katex: ^6.0.2
@@ -64,6 +66,7 @@ specifiers:
   zod: ^3.21.4
 
 dependencies:
+  '@hookform/resolvers': 2.9.11_react-hook-form@7.43.7
   '@prisma/client': 4.11.0_prisma@4.11.0
   '@vanilla-extract/css': 1.9.5
   '@vanilla-extract/next-plugin': 2.1.1_hz6lluegxntrcqhisbglfa7hbi_next@13.2.3
@@ -75,6 +78,7 @@ dependencies:
   prisma: 4.11.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-hook-form: 7.43.7_react@18.2.0
   react-icons: 4.8.0_react@18.2.0
   refractor: 4.8.1
   rehype-katex: 6.0.2
@@ -576,6 +580,14 @@ packages:
     resolution: {integrity: sha512-JXdzbRiWclLVoD8sNUjR443VVlYqiYmDVT6rGUEIEHU5YJW0gaVZwV2xgM7D4arkvASqD0IlLUVjHiFuxaftRw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
+
+  /@hookform/resolvers/2.9.11_react-hook-form@7.43.7:
+    resolution: {integrity: sha512-bA3aZ79UgcHj7tFV7RlgThzwSSHZgvfbt2wprldRkYBcMopdMvHyO17Wwp/twcJasNFischFfS7oz8Katz8DdQ==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.43.7_react@18.2.0
+    dev: false
 
   /@humanwhocodes/config-array/0.11.8:
     resolution: {integrity: sha512-UybHIJzJnR5Qc/MsD9Kr+RpO2h+/P1GhOwdiLPXK5TWk5sgTdu88bTD9UP+CKbPPh5Rni1u0GjAdYQLemG8g+g==}
@@ -3972,6 +3984,15 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-hook-form/7.43.7_react@18.2.0:
+    resolution: {integrity: sha512-38yehQkQQ5uufaPKFScs7jhLE8n3+LG9H/BZfFAiBL2+7piDmw/BrdNJV4irzMaPnWZGhmGLHVICHXNVGIuXZg==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-icons/4.8.0_react@18.2.0:
