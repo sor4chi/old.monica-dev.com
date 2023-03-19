@@ -66,10 +66,10 @@ export default async function About() {
             <br />
             埼玉大学工学部情報工学科・学士2年。
           </p>
-          <p>高校三年生の時に他の人と違うことがしたいというモチベーションでプログラミングを始めた。</p>
+          <p>高校三年生の時に他の人と違うことがしたいというモチベーションでプログラミングを始めました。</p>
           <p>
             以降<a href="https://twitter.com/SERPENT_4">SERPENT</a>のメンバーと一緒にプログラミングを続け、現在は
-            <strong>Sor4chi</strong>(Github名)や<strong>Monica</strong>(Twitter名)という名前で活動している。
+            <strong>Sor4chi</strong>(Github名)や<strong>Monica</strong>(Twitter名)という名前で活動しています。
           </p>
         </section>
         <section>
