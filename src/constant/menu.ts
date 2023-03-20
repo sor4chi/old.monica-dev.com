@@ -4,16 +4,19 @@ import { MdEditNote, MdHome, MdMail, MdOutlineEditNote, MdOutlineHome, MdOutline
 export const MENU_ITEM = {
   Home: {
     link: '/dashboard',
+    isActive: (pathname: string) => pathname === '/dashboard',
     ActiveIcon: MdHome,
     DefaultIcon: MdOutlineHome,
   },
   Blog: {
     link: '/dashboard/blog',
+    isActive: (pathname: string) => pathname.startsWith('/dashboard/blog'),
     ActiveIcon: MdEditNote,
     DefaultIcon: MdOutlineEditNote,
   },
   Contact: {
     link: '/dashboard/contact',
+    isActive: (pathname: string) => pathname === '/dashboard/contact',
     ActiveIcon: MdMail,
     DefaultIcon: MdOutlineMail,
   },

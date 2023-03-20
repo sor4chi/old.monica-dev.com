@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import { Logo } from '../logo';
 
@@ -9,6 +10,7 @@ import { useMenu } from '@/hooks';
 
 export const Menu = () => {
   const { menuActive } = useMenu();
+  const pathname = usePathname();
 
   return (
     <>
@@ -18,9 +20,9 @@ export const Menu = () => {
           Monica.log
         </div>
         <div className={styles.menu}>
-          {MENU_ITEM_ENTRY.map(([label, { ActiveIcon, DefaultIcon, link }]) => (
-            <Link className={styles.menuItem[menuActive === label ? 'active' : 'default']} key={label} href={link}>
-              {menuActive === label ? <ActiveIcon /> : <DefaultIcon />}
+          {MENU_ITEM_ENTRY.map(([label, { ActiveIcon, DefaultIcon, isActive, link }]) => (
+            <Link className={styles.menuItem[isActive(pathname) ? 'active' : 'default']} key={label} href={link}>
+              {isActive(pathname) ? <ActiveIcon /> : <DefaultIcon />}
               <span>{label}</span>
             </Link>
           ))}
