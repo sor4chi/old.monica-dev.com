@@ -1,62 +1,73 @@
-import { globalStyle, style } from '@vanilla-extract/css';
-
-import { vars } from '@/style/theme.css';
+import { style, styleVariants } from '@vanilla-extract/css';
 
 export const form = style({
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
   gap: '2rem',
   width: '100%',
-  maxWidth: '40rem',
-  margin: '0 auto',
 });
 
-export const success = style({
+export const meta = style({
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '1rem',
+});
+
+export const content = style({
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
-  gap: '4rem',
+  gap: '2rem',
   width: '100%',
-  maxWidth: '40rem',
-  margin: '0 auto',
 });
 
-export const successMessageEn = style({
-  textAlign: 'center',
-  fontSize: '1.25rem',
-  fontWeight: 700,
-  color: vars.color.text.primary,
+export const contentHeader = style({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'flex-end',
+  marginBottom: '0.5rem',
 });
 
-globalStyle(`${successMessageEn} .twemoji`, {
-  width: '1em',
-  height: '1em',
-  verticalAlign: '-0.1em',
+export const previewSetting = style({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: '1rem',
 });
 
-export const successMessageAnnotation = style({
-  textAlign: 'center',
-  fontSize: '1rem',
-  color: vars.color.text.secondary,
+export const contentEditor = style({
+  display: 'flex',
 });
 
-export const backButton = style({
-  fontSize: '1rem',
-  fontWeight: 300,
-  background: 'transparent',
-  border: 'none',
-  color: vars.color.text.primary,
-  cursor: 'pointer',
-  padding: '0.5rem 1rem',
-  backgroundColor: vars.color.accent.primary,
-  borderRadius: '0.25rem',
+export const contentTextArea = style({
+  height: '50rem',
+  resize: 'none',
+  width: '100%',
 });
 
-export const twitterLink = style({
-  color: vars.color.accent.primary,
+export const PREVIEW_EDITOR_HEIGHT = '90vh';
+
+const basePreview = style({
+  height: PREVIEW_EDITOR_HEIGHT,
+  overflowX: 'hidden',
+  overflowY: 'auto',
+  transition: 'all 0.2s ease-in-out, opacity 0.2s ease-in-out',
 });
 
-globalStyle(`${twitterLink} > *`, {
-  verticalAlign: 'middle',
+export const preview = styleVariants({
+  show: [
+    basePreview,
+    {
+      opacity: 1,
+      width: '100%',
+      marginLeft: '1rem',
+    },
+  ],
+  hide: [
+    basePreview,
+    {
+      opacity: 0,
+      width: 0,
+      marginLeft: 0,
+    },
+  ],
 });

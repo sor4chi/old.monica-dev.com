@@ -13,5 +13,5 @@ export const sideWrapper = style({
 });
 
 export const main = style({
-  padding: '1rem',
+  padding: '2rem',
 });

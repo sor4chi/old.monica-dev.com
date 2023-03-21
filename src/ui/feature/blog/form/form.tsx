@@ -5,11 +5,15 @@ import { z } from 'zod';
 
 import * as styles from './form.css';
 
+import { parseMarkdownToHTML } from '@/lib/markdown';
+import { Article } from '@/ui/foundation/article';
 import { Button } from '@/ui/foundation/button';
 import { TextInput } from '@/ui/foundation/textInput';
 import { Textarea } from '@/ui/foundation/textarea';
+import { Toggle } from '@/ui/foundation/toggle';
 
 const scheme = z.object({
+  content: z.string().min(1, { message: '本文を入力してください' }),
   description: z.string().min(1, { message: '説明を入力してください' }),
   title: z.string().min(1, { message: 'タイトルを入力してください' }),
 });
@@ -25,6 +29,7 @@ interface Props {
     id: number;
     title: string;
     description: string;
+    content: string;
   };
 }
 
@@ -62,6 +67,7 @@ export const BlogForm = ({ blog }: Props) => {
   const [phase, setPhase] = useState<'form' | 'success'>('form');
   const {
     formState: { errors },
+    getValues,
     handleSubmit,
     register,
     setValue,
@@ -70,6 +76,7 @@ export const BlogForm = ({ blog }: Props) => {
     resolver: zodResolver(scheme),
   });
   const formData = watch();
+  const [showPreview, setShowPreview] = useState(false);
 
   const onSubmit = (d: Scheme) => {
     postBlog(d);
@@ -86,11 +93,13 @@ export const BlogForm = ({ blog }: Props) => {
   useEffect(() => {
     const data = getBlogFromLocalStorageById(blog.id);
     if (data) {
-      setValue('description', data.description);
       setValue('title', data.title);
+      setValue('description', data.description);
+      setValue('content', data.content);
     } else {
-      setValue('description', blog.description);
       setValue('title', blog.title);
+      setValue('description', blog.description);
+      setValue('content', blog.content);
     }
   }, []);
 
@@ -100,22 +109,48 @@ export const BlogForm = ({ blog }: Props) => {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)} onChange={handleChange}>
-      <TextInput
-        label="Title"
-        id="title"
-        placeholder="ブログのタイトル"
-        {...register('title')}
-        error={errors.title?.message}
-      />
-      <Textarea
-        label="Description"
-        id="description"
-        placeholder="ブログの説明・要約"
-        style={{ resize: 'none' }}
-        rows={5}
-        {...register('description')}
-        error={errors.description?.message}
-      />
+      <section className={styles.meta}>
+        <TextInput
+          label="Title"
+          id="title"
+          placeholder="ブログのタイトル"
+          {...register('title')}
+          error={errors.title?.message}
+        />
+        <TextInput
+          label="Description"
+          id="description"
+          placeholder="ブログの説明・要約"
+          {...register('description')}
+          error={errors.description?.message}
+        />
+      </section>
+      <section>
+        <div className={styles.contentHeader}>
+          <label htmlFor="content">Content</label>
+          <div className={styles.previewSetting}>
+            <label htmlFor="toggle-show-preview">プレビューを表示</label>
+            <Toggle
+              id="toggle-show-preview"
+              label="プレビュー"
+              checked={showPreview}
+              onChange={() => setShowPreview(!showPreview)}
+            />
+          </div>
+        </div>
+        <div className={styles.contentEditor}>
+          <Textarea
+            id="content"
+            placeholder="ブログの本文"
+            height={styles.PREVIEW_EDITOR_HEIGHT}
+            {...register('content')}
+            error={errors.content?.message}
+          />
+          <div className={styles.preview[showPreview ? 'show' : 'hide']}>
+            <Article content={parseMarkdownToHTML(getValues('content') || '').content} />
+          </div>
+        </div>
+      </section>
       <Button type="submit">Submit</Button>
     </form>
   );

@@ -131,3 +131,35 @@ export const getPublishedBlogBySlug = async (slug: string) => {
     tags: blog.BlogTag.map((blogTag) => blogTag.tag),
   };
 };
+
+/**
+ * Get a blog by slug
+ *
+ * @param slug
+ * @returns blog
+ */
+export const getBlogBySlug = async (slug: string) => {
+  const blog = await prisma.blog.findUnique({
+    include: {
+      BlogTag: {
+        include: {
+          tag: true,
+        },
+      },
+    },
+    where: {
+      slug,
+    },
+  });
+
+  if (!blog) {
+    return null;
+  }
+
+  return {
+    ...blog,
+    BlogTag: undefined,
+    publishedAt: blog.publishedAt,
+    tags: blog.BlogTag.map((blogTag) => blogTag.tag),
+  };
+};

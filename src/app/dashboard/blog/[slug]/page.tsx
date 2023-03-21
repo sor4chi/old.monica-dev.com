@@ -2,8 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { serverEnv } from '@/env/server';
-import { parseMarkdownToHTML } from '@/lib/markdown';
-import { getPublishedBlogBySlug } from '@/repository/blog';
+import { getBlogBySlug, getPublishedBlogBySlug } from '@/repository/blog';
 import { BlogForm } from '@/ui/feature/blog/form';
 
 interface Props {
@@ -29,14 +28,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 async function getBlog(slug: string) {
   try {
-    const res = await getPublishedBlogBySlug(slug);
+    const res = await getBlogBySlug(slug);
     if (!res) {
       return null;
     }
 
     return {
       ...res,
-      ...parseMarkdownToHTML(res?.content || ''),
     };
   } catch (e) {
     if (serverEnv.NODE_ENV === 'development') {
