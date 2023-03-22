@@ -52,9 +52,13 @@ export const contentEditorVars = createThemeContract({
 
 export const contentEditor = style({
   vars: assignVars(contentEditorVars, {
-    bodyHeight: '80vh',
+    bodyHeight: '57vh',
   }),
 });
+
+const CONTENT_EDITOR_HEADER_HEIGHT = '1.5rem';
+const CONTENT_EDITOR_HEADER_MARGIN_BOTTOM = '0.5rem';
+const CONTENT_FULL_SCREEN_PADDING = '2rem';
 
 export const contentFullScreen = style({
   position: 'fixed',
@@ -64,10 +68,10 @@ export const contentFullScreen = style({
   width: '100vw',
   height: '100vh',
   background: vars.color.bg.primary,
-  padding: '2rem',
+  padding: CONTENT_FULL_SCREEN_PADDING,
   boxSizing: 'border-box',
   vars: assignVars(contentEditorVars, {
-    bodyHeight: '90vh !important',
+    bodyHeight: `calc(100svh - ${CONTENT_EDITOR_HEADER_HEIGHT} - ${CONTENT_EDITOR_HEADER_MARGIN_BOTTOM} - ${CONTENT_FULL_SCREEN_PADDING} * 2) !important`,
   }),
 });
 
@@ -75,7 +79,8 @@ export const contentHeader = style({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'flex-end',
-  marginBottom: '0.5rem',
+  height: CONTENT_EDITOR_HEADER_HEIGHT,
+  marginBottom: CONTENT_EDITOR_HEADER_MARGIN_BOTTOM,
 });
 
 export const previewLabel = style({
