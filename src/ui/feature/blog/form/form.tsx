@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import clsx from 'clsx';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { MdAdd, MdClose } from 'react-icons/md';
@@ -6,6 +7,7 @@ import { z } from 'zod';
 
 import * as styles from './form.css';
 
+import { useDashboardHeader } from '@/hooks';
 import { parseMarkdownToHTML } from '@/lib/markdown';
 import { Article } from '@/ui/foundation/article';
 import { Button } from '@/ui/foundation/button';
@@ -28,6 +30,8 @@ const scheme = z.object({
 
 type Scheme = z.infer<typeof scheme>;
 
+const BLOG_FORM_ID = 'blogForm';
+
 const postBlog = async (params: Scheme) => {
   console.log(params);
 };
@@ -42,6 +46,7 @@ interface Props {
       slug: string;
       name: string;
     }[];
+    publishedAt: Date | null;
   };
   tagOptions: {
     slug: string;
@@ -80,11 +85,9 @@ const getBlogFromLocalStorageById = (id: number) => {
 };
 
 export const BlogForm = ({ blog, tagOptions }: Props) => {
-  const [phase, setPhase] = useState<'form' | 'success'>('form');
   const {
     formState: { errors },
     getValues,
-    handleSubmit,
     register,
     setValue,
     watch,
@@ -92,21 +95,23 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
     resolver: zodResolver(scheme),
   });
   const formData = watch();
-  const [showPreview, setShowPreview] = useState(false);
+  const [contentEditorOptions, setContentEditorOptions] = useState({
+    fullscreen: false,
+    preview: false,
+  });
   const [showTagInput, setShowTagInput] = useState(false);
   const [searchTagInput, setSearchTagInput] = useState('');
+  const [isPublished, setIsPublished] = useState(blog.publishedAt !== null);
   const [addTagInput, setAddTagInput] = useState({
     name: '',
     slug: '',
   });
+  const { setDashboardHeaderContent } = useDashboardHeader();
 
-  const onSubmit = (d: Scheme) => {
-    postBlog(d);
-    setPhase('success');
-    setValue('description', '');
-    setValue('title', '');
-    setValue('content', '');
-    setValue('tags', []);
+  const onSubmitButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    const data = getValues();
+    postBlog(data);
     removeBlogFromLocalStorageById(blog.id);
   };
 
@@ -120,12 +125,26 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
       name: addTagInput.name,
       slug: addTagInput.slug,
     };
-    setValue('tags', [...tags, newTag]);
+    const newTags = [...tags, newTag];
+    setValue('tags', newTags);
+    updateBlogFromLocalStorageById(blog.id, { ...formData, tags: newTags });
     setAddTagInput({
       name: '',
       slug: '',
     });
     setShowTagInput(false);
+  };
+
+  const handleSelectTag = (tag: { name: string; slug: string }) => {
+    const newTags = [...getValues('tags'), tag];
+    setValue('tags', newTags);
+    updateBlogFromLocalStorageById(blog.id, { ...formData, tags: newTags });
+  };
+
+  const handleRemoveTag = (tag: { name: string; slug: string }) => {
+    const newTags = getValues('tags').filter((t: { name: string; slug: string }) => t.slug !== tag.slug);
+    setValue('tags', newTags);
+    updateBlogFromLocalStorageById(blog.id, { ...formData, tags: newTags });
   };
 
   useEffect(() => {
@@ -141,7 +160,25 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
       setValue('content', blog.content);
       setValue('tags', blog.tags);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    setDashboardHeaderContent(
+      <>
+        <Toggle
+          label="公開する"
+          id="toggle-publish"
+          onChange={() => setIsPublished(!isPublished)}
+          checked={isPublished}
+        />
+        <Button type="submit" form={BLOG_FORM_ID} onClick={onSubmitButtonClick}>
+          Save
+        </Button>
+      </>,
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPublished]);
 
   const filteredTags = useMemo(() => {
     if (Object.values(searchTagInput).some((v) => v === '')) {
@@ -155,12 +192,8 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
       });
   }, [searchTagInput, tagOptions, formData.tags]);
 
-  if (phase === 'success') {
-    return null;
-  }
-
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)} onChange={handleChange}>
+    <form className={styles.form} onChange={handleChange} id={BLOG_FORM_ID}>
       <section className={styles.metaArea}>
         <TextInput
           label="Title"
@@ -180,16 +213,7 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
           <label className={styles.tagEditorLabel}>Tags</label>
           <div className={styles.tagList}>
             {(getValues('tags') || []).map((tag) => (
-              <IconButton
-                key={tag.slug}
-                icon={<MdClose />}
-                onClick={() =>
-                  setValue(
-                    'tags',
-                    getValues('tags').filter((t: { slug: string }) => t.slug !== tag.slug),
-                  )
-                }
-              >
+              <IconButton key={tag.slug} icon={<MdClose />} onClick={() => handleRemoveTag(tag)}>
                 {tag.name}
               </IconButton>
             ))}
@@ -200,15 +224,12 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
             <label htmlFor="content" className={styles.previewLabel}>
               Content
             </label>
-            <div className={styles.tagSettingHeader}>
-              <label htmlFor="toggle-show-tag-input">タグを追加</label>
-              <Toggle
-                id="toggle-show-tag-input"
-                label="タグを追加"
-                checked={showTagInput}
-                onChange={() => setShowTagInput(!showTagInput)}
-              />
-            </div>
+            <Toggle
+              id="toggle-show-tag-input"
+              label="タグを追加"
+              checked={showTagInput}
+              onChange={() => setShowTagInput(!showTagInput)}
+            />
           </div>
           <div className={styles.tagSetting}>
             {showTagInput ? (
@@ -244,11 +265,7 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
                 />
                 <div className={styles.tagList}>
                   {filteredTags.map((tag) => (
-                    <IconButton
-                      key={tag.slug}
-                      icon={<MdAdd />}
-                      onClick={() => setValue('tags', [...getValues('tags'), tag])}
-                    >
+                    <IconButton key={tag.slug} icon={<MdAdd />} onClick={() => handleSelectTag(tag)}>
                       {tag.name}
                     </IconButton>
                   ))}
@@ -258,35 +275,43 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
           </div>
         </div>
       </section>
-      <section>
+      <section className={clsx(styles.contentEditor, contentEditorOptions.fullscreen && styles.contentFullScreen)}>
         <div className={styles.contentHeader}>
           <label htmlFor="content" className={styles.previewLabel}>
             Content
           </label>
-          <div className={styles.previewSetting}>
-            <label htmlFor="toggle-show-preview">プレビューを表示</label>
+          <div className={styles.contentEditorOptions}>
+            <Toggle
+              id="toggle-fullscreen"
+              label="フルスクリーンで編集"
+              checked={contentEditorOptions.fullscreen}
+              onChange={() =>
+                setContentEditorOptions({ ...contentEditorOptions, fullscreen: !contentEditorOptions.fullscreen })
+              }
+            />
             <Toggle
               id="toggle-show-preview"
-              label="プレビュー"
-              checked={showPreview}
-              onChange={() => setShowPreview(!showPreview)}
+              label="プレビューを表示"
+              checked={contentEditorOptions.preview}
+              onChange={() =>
+                setContentEditorOptions({ ...contentEditorOptions, preview: !contentEditorOptions.preview })
+              }
             />
           </div>
         </div>
-        <div className={styles.contentEditor}>
+        <div className={styles.contentEditorBody}>
           <Textarea
             id="content"
             placeholder="ブログの本文"
-            height={styles.PREVIEW_EDITOR_HEIGHT}
+            height={styles.contentEditorVars.bodyHeight}
             {...register('content')}
             error={errors.content?.message}
           />
-          <div className={styles.preview[showPreview ? 'show' : 'hide']}>
+          <div className={styles.preview[contentEditorOptions.preview ? 'show' : 'hide']}>
             <Article content={parseMarkdownToHTML(getValues('content') || '').content} />
           </div>
         </div>
       </section>
-      <Button type="submit">Submit</Button>
     </form>
   );
 };

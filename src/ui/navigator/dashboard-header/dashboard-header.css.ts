@@ -16,9 +16,16 @@ export const container = style({
   boxSizing: 'border-box',
   display: 'flex',
   gap: '1rem',
+  height: vars.size.headerHeight,
   justifyContent: 'space-between',
   width: '100%',
   padding: `0 2rem`,
+});
+
+export const content = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '1rem',
 });
 
 export const divider = style({

@@ -1,4 +1,4 @@
-import { style, styleVariants } from '@vanilla-extract/css';
+import { assignVars, createThemeContract, style, styleVariants } from '@vanilla-extract/css';
 
 import { vars } from '@/style/theme.css';
 
@@ -18,14 +18,6 @@ export const metaArea = style({
 export const tagEditor = style({
   gridRow: '1 / 4',
   gridColumn: '2 / 3',
-});
-
-export const tagSettingHeader = style({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  gap: '1rem',
-  marginBottom: '0.5rem',
 });
 
 export const tagSetting = style({
@@ -54,11 +46,29 @@ export const tagList = style({
   overflowY: 'auto',
 });
 
-export const content = style({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '2rem',
-  width: '100%',
+export const contentEditorVars = createThemeContract({
+  bodyHeight: null,
+});
+
+export const contentEditor = style({
+  vars: assignVars(contentEditorVars, {
+    bodyHeight: '80vh',
+  }),
+});
+
+export const contentFullScreen = style({
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  zIndex: 1,
+  width: '100vw',
+  height: '100vh',
+  background: vars.color.bg.primary,
+  padding: '2rem',
+  boxSizing: 'border-box',
+  vars: assignVars(contentEditorVars, {
+    bodyHeight: '90vh !important',
+  }),
 });
 
 export const contentHeader = style({
@@ -68,34 +78,24 @@ export const contentHeader = style({
   marginBottom: '0.5rem',
 });
 
-export const previewSetting = style({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  gap: '1rem',
-});
-
 export const previewLabel = style({
   color: vars.color.text.secondary,
 });
 
-export const contentEditor = style({
+export const contentEditorBody = style({
   display: 'flex',
 });
 
-export const contentTextArea = style({
-  height: '50rem',
-  resize: 'none',
-  width: '100%',
+export const contentEditorOptions = style({
+  display: 'flex',
+  gap: '1rem',
 });
 
-export const PREVIEW_EDITOR_HEIGHT = '90vh';
-
 const basePreview = style({
-  height: PREVIEW_EDITOR_HEIGHT,
+  height: contentEditorVars.bodyHeight,
   overflowX: 'hidden',
   overflowY: 'auto',
-  transition: 'all 0.2s ease-in-out, opacity 0.2s ease-in-out',
+  transition: 'width 0.2s ease-in-out, opacity 0.2s ease-in-out, margin-left 0.2s ease-in-out',
 });
 
 export const preview = styleVariants({

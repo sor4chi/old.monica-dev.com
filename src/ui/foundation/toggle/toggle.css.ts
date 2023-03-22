@@ -7,6 +7,12 @@ const TOGGLE_CURSOR_SIZE = '1rem';
 const TOGGLE_PADDING = '0.25rem';
 const TOGGLE_WIDTH = `2.5rem`;
 
+export const wrapper = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.5rem',
+});
+
 const baseToggle = style({
   width: TOGGLE_WIDTH,
   height: TOGGLE_CURSOR_SIZE,
