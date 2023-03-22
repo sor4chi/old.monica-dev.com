@@ -1,7 +1,7 @@
 /* eslint-disable sort/object-properties */
 import { MdEditNote, MdHome, MdMail, MdOutlineEditNote, MdOutlineHome, MdOutlineMail } from 'react-icons/md';
 
-export const MENU_ITEM = {
+const MENU_ITEM = {
   Home: {
     link: '/dashboard',
     isActive: (pathname: string) => pathname === '/dashboard',
@@ -22,7 +22,6 @@ export const MENU_ITEM = {
   },
 } as const;
 
-export type MenuItem = keyof typeof MENU_ITEM;
+type MenuItem = keyof typeof MENU_ITEM;
 
-export const MENU_ITEM_LIST = Object.keys(MENU_ITEM) as MenuItem[];
 export const MENU_ITEM_ENTRY = Object.entries(MENU_ITEM) as [MenuItem, (typeof MENU_ITEM)[MenuItem]][];
