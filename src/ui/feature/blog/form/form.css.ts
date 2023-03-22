@@ -50,6 +50,8 @@ export const tagList = style({
   display: 'flex',
   flexWrap: 'wrap',
   gap: '0.5rem',
+  maxHeight: '5rem',
+  overflowY: 'auto',
 });
 
 export const content = style({

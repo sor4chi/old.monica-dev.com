@@ -1,10 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { MdAdd } from 'react-icons/md';
+import { MdAdd, MdClose } from 'react-icons/md';
 import { z } from 'zod';
-
-import { TagList } from '../tagList';
 
 import * as styles from './form.css';
 
@@ -96,7 +94,8 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
   const formData = watch();
   const [showPreview, setShowPreview] = useState(false);
   const [showTagInput, setShowTagInput] = useState(false);
-  const [searchTagInput, setSearchTagInput] = useState({
+  const [searchTagInput, setSearchTagInput] = useState('');
+  const [addTagInput, setAddTagInput] = useState({
     name: '',
     slug: '',
   });
@@ -115,14 +114,14 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
     updateBlogFromLocalStorageById(blog.id, formData);
   };
 
-  const handleSubmitTag = () => {
+  const handleAddTag = () => {
     const tags = getValues('tags');
     const newTag = {
-      name: searchTagInput.name,
-      slug: searchTagInput.slug,
+      name: addTagInput.name,
+      slug: addTagInput.slug,
     };
     setValue('tags', [...tags, newTag]);
-    setSearchTagInput({
+    setAddTagInput({
       name: '',
       slug: '',
     });
@@ -149,7 +148,7 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
       return [];
     }
     return tagOptions
-      .filter((tag) => tag.name.toLowerCase().includes(searchTagInput.name.toLowerCase()))
+      .filter((tag) => tag.name.toLowerCase().includes(searchTagInput.toLowerCase()))
       .filter((tag) => {
         const tags = formData.tags || [];
         return !tags.some((t) => t.slug === tag.slug);
@@ -179,7 +178,22 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
         />
         <div>
           <label className={styles.tagEditorLabel}>Tags</label>
-          <TagList tags={getValues('tags') || []} hrefGenerator={(slug) => `/tags/${slug}`} />
+          <div className={styles.tagList}>
+            {(getValues('tags') || []).map((tag) => (
+              <IconButton
+                key={tag.slug}
+                icon={<MdClose />}
+                onClick={() =>
+                  setValue(
+                    'tags',
+                    getValues('tags').filter((t: { slug: string }) => t.slug !== tag.slug),
+                  )
+                }
+              >
+                {tag.name}
+              </IconButton>
+            ))}
+          </div>
         </div>
         <div className={styles.tagEditor}>
           <div className={styles.contentHeader}>
@@ -204,17 +218,17 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
                     label="Slug"
                     id="slug"
                     placeholder="スラッグ（半角英数字とハイフンのみ）"
-                    value={searchTagInput.slug}
-                    onChange={(e) => setSearchTagInput({ ...searchTagInput, slug: e.target.value })}
+                    value={addTagInput.slug}
+                    onChange={(e) => setAddTagInput({ ...addTagInput, slug: e.target.value })}
                   />
                   <TextInput
                     label="Name"
                     id="name"
                     placeholder="名前"
-                    value={searchTagInput.name}
-                    onChange={(e) => setSearchTagInput({ ...searchTagInput, name: e.target.value })}
+                    value={addTagInput.name}
+                    onChange={(e) => setAddTagInput({ ...addTagInput, name: e.target.value })}
                   />
-                  <Button type="button" onClick={handleSubmitTag}>
+                  <Button type="button" onClick={handleAddTag}>
                     追加
                   </Button>
                 </div>
@@ -225,8 +239,8 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
                   label="Search Tag"
                   id="search-tag"
                   placeholder="タグを検索・追加"
-                  value={searchTagInput.name}
-                  onChange={(e) => setSearchTagInput({ ...searchTagInput, name: e.target.value })}
+                  value={searchTagInput}
+                  onChange={(e) => setSearchTagInput(e.target.value)}
                 />
                 <div className={styles.tagList}>
                   {filteredTags.map((tag) => (
