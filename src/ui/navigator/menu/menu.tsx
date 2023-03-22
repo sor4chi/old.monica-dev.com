@@ -6,10 +6,8 @@ import { Logo } from '../logo';
 import * as styles from './menu.css';
 
 import { MENU_ITEM_ENTRY } from '@/constant/menu';
-import { useMenu } from '@/hooks';
 
 export const Menu = () => {
-  const { menuActive } = useMenu();
   const pathname = usePathname();
 
   return (

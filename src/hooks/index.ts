@@ -1,2 +1,2 @@
 'use client';
-export * from './useSidebar';
+export * from './useDashboardHeader';

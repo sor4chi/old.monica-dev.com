@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { MenuProvider } from '@/hooks';
+import { DashboardHeaderProvider } from '@/hooks';
 import { DashboardLayout } from '@/ui/app/layout/dashboard';
 
 import '@/style/globals.css';
@@ -15,8 +15,8 @@ export const metadata = {
 
 export default function PortfolioLayout({ children }: { children: React.ReactNode }) {
   return (
-    <MenuProvider>
+    <DashboardHeaderProvider>
       <DashboardLayout>{children}</DashboardLayout>
-    </MenuProvider>
+    </DashboardHeaderProvider>
   );
 }
