@@ -6,7 +6,6 @@ export const wrapper = style({
   display: 'flex',
   alignItems: 'center',
   gap: '0.5rem',
-  marginBottom: '1rem',
 });
 
 export const item = style({

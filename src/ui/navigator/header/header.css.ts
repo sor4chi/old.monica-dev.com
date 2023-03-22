@@ -31,10 +31,6 @@ export const divider = style({
   width: '100vw',
 });
 
-export const spacer = style({
-  flex: 1,
-});
-
 export const navigationList = style({
   alignItems: 'center',
   display: 'flex',
