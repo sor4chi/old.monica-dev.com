@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { serverEnv } from '@/env/server';
 import { getBlogBySlug, getPublishedBlogBySlug } from '@/repository/blog';
+import { getAllTags } from '@/repository/tags';
 import { BlogForm } from '@/ui/feature/blog/form';
 
 interface Props {
@@ -26,26 +27,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-async function getBlog(slug: string) {
+async function getData(slug: string) {
   try {
-    const res = await getBlogBySlug(slug);
-    if (!res) {
-      return null;
-    }
-
-    return {
-      ...res,
-    };
+    const [blog, tags] = await Promise.all([getBlogBySlug(slug), getAllTags()]);
+    return { blog, tagOptions: tags };
   } catch (e) {
     if (serverEnv.NODE_ENV === 'development') {
       console.log(e);
     }
-    return null;
+    return {
+      blog: null,
+      tagOptions: [],
+    };
   }
 }
 
 export default async function BlogDetail({ params }: Props) {
-  const blog = await getBlog(params.slug);
+  const { blog, tagOptions } = await getData(params.slug);
 
   if (!blog) {
     notFound();
@@ -53,7 +51,7 @@ export default async function BlogDetail({ params }: Props) {
 
   return (
     <>
-      <BlogForm blog={blog} />
+      <BlogForm blog={blog} tagOptions={tagOptions} />
     </>
   );
 }

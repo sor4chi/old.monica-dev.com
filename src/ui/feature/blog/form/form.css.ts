@@ -1,5 +1,7 @@
 import { style, styleVariants } from '@vanilla-extract/css';
 
+import { vars } from '@/style/theme.css';
+
 export const form = style({
   display: 'flex',
   flexDirection: 'column',
@@ -7,10 +9,47 @@ export const form = style({
   width: '100%',
 });
 
-export const meta = style({
+export const metaArea = style({
   display: 'grid',
   gridTemplateColumns: '1fr 1fr',
   gap: '1rem',
+});
+
+export const tagEditor = style({
+  gridRow: '1 / 4',
+  gridColumn: '2 / 3',
+});
+
+export const tagSettingHeader = style({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: '1rem',
+  marginBottom: '0.5rem',
+});
+
+export const tagSetting = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '1rem',
+});
+
+export const tagEditorLabel = style({
+  color: vars.color.text.secondary,
+  marginBottom: '0.5rem',
+  display: 'inline-block',
+});
+
+export const tagInputs = style({
+  display: 'flex',
+  gap: '1rem',
+  alignItems: 'flex-end',
+});
+
+export const tagList = style({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '0.5rem',
 });
 
 export const content = style({
@@ -32,6 +71,10 @@ export const previewSetting = style({
   justifyContent: 'space-between',
   alignItems: 'center',
   gap: '1rem',
+});
+
+export const previewLabel = style({
+  color: vars.color.text.secondary,
 });
 
 export const contentEditor = style({
