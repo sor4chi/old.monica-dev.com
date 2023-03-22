@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { MdAdd, MdClose } from 'react-icons/md';
@@ -19,10 +19,11 @@ import { Toggle } from '@/ui/foundation/toggle';
 const scheme = z.object({
   content: z.string().min(1, { message: '本文を入力してください' }),
   description: z.string().min(1, { message: '説明を入力してください' }),
+  slug: z.string().regex(/^[a-z0-9-]+$/, { message: 'スラッグは半角英数字とハイフンのみで入力してください' }),
   tags: z.array(
     z.object({
       name: z.string().min(1, { message: 'タグを入力してください' }),
-      slug: z.string().regex(/^[a-z0-9-]+$/, { message: 'タグは半角英数字とハイフンのみで入力してください' }),
+      slug: z.string().regex(/^[a-z0-9-]+$/, { message: 'スラッグは半角英数字とハイフンのみで入力してください' }),
     }),
   ),
   title: z.string().min(1, { message: 'タイトルを入力してください' }),
@@ -39,6 +40,7 @@ const postBlog = async (params: Scheme) => {
 interface Props {
   blog: {
     id: number;
+    slug: string;
     title: string;
     description: string;
     content: string;
@@ -154,11 +156,13 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
       setValue('description', data.description);
       setValue('content', data.content);
       setValue('tags', data.tags);
+      setValue('slug', data.slug);
     } else {
       setValue('title', blog.title);
       setValue('description', blog.description);
       setValue('content', blog.content);
       setValue('tags', blog.tags);
+      setValue('slug', blog.slug);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -209,27 +213,33 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
           {...register('description')}
           error={errors.description?.message}
         />
-        <div>
-          <label className={styles.tagEditorLabel}>Tags</label>
-          <div className={styles.tagList}>
-            {(getValues('tags') || []).map((tag) => (
-              <IconButton key={tag.slug} icon={<MdClose />} onClick={() => handleRemoveTag(tag)}>
-                {tag.name}
-              </IconButton>
-            ))}
-          </div>
-        </div>
+        <TextInput
+          label="Slug"
+          id="slug"
+          placeholder="ブログのURLスラッグ"
+          {...register('slug')}
+          error={errors.slug?.message}
+        />
         <div className={styles.tagEditor}>
-          <div className={styles.contentHeader}>
-            <label htmlFor="content" className={styles.previewLabel}>
-              Content
-            </label>
-            <Toggle
-              id="toggle-show-tag-input"
-              label="タグを追加"
-              checked={showTagInput}
-              onChange={() => setShowTagInput(!showTagInput)}
-            />
+          <div>
+            <div className={styles.contentHeader}>
+              <label className={styles.tagEditorLabel}>Tags</label>
+              <Toggle
+                id="toggle-show-tag-input"
+                label="タグを追加"
+                checked={showTagInput}
+                onChange={() => setShowTagInput(!showTagInput)}
+              />
+            </div>
+            <div>
+              <div className={styles.tagList}>
+                {(getValues('tags') || []).map((tag) => (
+                  <IconButton key={tag.slug} icon={<MdClose />} onClick={() => handleRemoveTag(tag)}>
+                    {tag.name}
+                  </IconButton>
+                ))}
+              </div>
+            </div>
           </div>
           <div className={styles.tagSetting}>
             {showTagInput ? (

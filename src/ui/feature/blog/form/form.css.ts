@@ -5,7 +5,7 @@ import { vars } from '@/style/theme.css';
 export const form = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: '2rem',
+  gap: '1rem',
   width: '100%',
 });
 
@@ -18,6 +18,9 @@ export const metaArea = style({
 export const tagEditor = style({
   gridRow: '1 / 4',
   gridColumn: '2 / 3',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '1rem',
 });
 
 export const tagSetting = style({
@@ -42,7 +45,7 @@ export const tagList = style({
   display: 'flex',
   flexWrap: 'wrap',
   gap: '0.5rem',
-  maxHeight: '5rem',
+  maxHeight: '2.5rem',
   overflowY: 'auto',
 });
 
@@ -52,7 +55,7 @@ export const contentEditorVars = createThemeContract({
 
 export const contentEditor = style({
   vars: assignVars(contentEditorVars, {
-    bodyHeight: '57vh',
+    bodyHeight: '58vh',
   }),
 });
 
