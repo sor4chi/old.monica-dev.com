@@ -8,7 +8,7 @@ import (
 	"entgo.io/ent/dialect"
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	server "github.com/sor4chi/portfolio-blog/server"
+	"github.com/sor4chi/portfolio-blog/server"
 	"github.com/sor4chi/portfolio-blog/server/ent"
 	"github.com/sor4chi/portfolio-blog/server/ent/migrate"
 
