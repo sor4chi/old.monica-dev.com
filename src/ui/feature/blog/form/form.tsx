@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { clsx } from 'clsx';
+import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { MdAdd, MdClose } from 'react-icons/md';
@@ -7,6 +8,7 @@ import { z } from 'zod';
 
 import * as styles from './form.css';
 
+import type { PutBlogResponse } from '@/app/api/blog/[slug]/route';
 import { useDashboardHeader } from '@/hooks';
 import { parseMarkdownToHTML } from '@/lib/markdown';
 import { Article } from '@/ui/foundation/article';
@@ -15,6 +17,7 @@ import { IconButton } from '@/ui/foundation/icon-button';
 import { TextInput } from '@/ui/foundation/textInput';
 import { Textarea } from '@/ui/foundation/textarea';
 import { Toggle } from '@/ui/foundation/toggle';
+import { customFetch } from '@/util/fetcher';
 
 const scheme = z.object({
   content: z.string().min(1, { message: '本文を入力してください' }),
@@ -33,8 +36,18 @@ type Scheme = z.infer<typeof scheme>;
 
 const BLOG_FORM_ID = 'blogForm';
 
-const postBlog = async (params: Scheme) => {
-  console.log(params);
+const postBlog = async (slug: string, params: Scheme & { published: boolean }) => {
+  return customFetch(`/api/blog/${slug}`, {
+    body: JSON.stringify(params),
+    method: 'POST',
+  });
+};
+
+const updateBlog = async (slug: string, params: Scheme & { published: boolean }) => {
+  return customFetch<PutBlogResponse>(`/api/blog/${slug}`, {
+    body: JSON.stringify(params),
+    method: 'PUT',
+  });
 };
 
 interface Props {
@@ -45,6 +58,7 @@ interface Props {
     description: string;
     content: string;
     tags: {
+      id: number;
       slug: string;
       name: string;
     }[];
@@ -87,6 +101,7 @@ const getBlogFromLocalStorageById = (id: number) => {
 };
 
 export const BlogForm = ({ blog, tagOptions }: Props) => {
+  const router = useRouter();
   const {
     formState: { errors },
     getValues,
@@ -110,11 +125,18 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
   });
   const { setDashboardHeaderContent } = useDashboardHeader();
 
-  const onSubmitButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onSubmitButtonClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     const data = getValues();
-    postBlog(data);
-    removeBlogFromLocalStorageById(blog.id);
+    const newBlog = await updateBlog(blog.slug, {
+      ...data,
+      published: isPublished,
+    });
+    if (newBlog) {
+      setValue('tags', newBlog.tags);
+      router.push(`/dashboard/blog/${newBlog.slug}`);
+      removeBlogFromLocalStorageById(blog.id);
+    }
   };
 
   const handleChange = () => {
@@ -193,6 +215,15 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
       .filter((tag) => {
         const tags = formData.tags || [];
         return !tags.some((t) => t.slug === tag.slug);
+      })
+      .sort((a, b) => {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
       });
   }, [searchTagInput, tagOptions, formData.tags]);
 
@@ -233,11 +264,21 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
             </div>
             <div>
               <div className={styles.tagList}>
-                {(getValues('tags') || []).map((tag) => (
-                  <IconButton key={tag.slug} icon={<MdClose />} onClick={() => handleRemoveTag(tag)}>
-                    {tag.name}
-                  </IconButton>
-                ))}
+                {(getValues('tags') || [])
+                  .sort((a, b) => {
+                    if (a.name < b.name) {
+                      return -1;
+                    }
+                    if (a.name > b.name) {
+                      return 1;
+                    }
+                    return 0;
+                  })
+                  .map((tag) => (
+                    <IconButton key={tag.slug} icon={<MdClose />} onClick={() => handleRemoveTag(tag)}>
+                      {tag.name}
+                    </IconButton>
+                  ))}
               </div>
             </div>
           </div>

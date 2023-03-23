@@ -3,7 +3,15 @@ import type { Blog, Prisma, PrismaClient, Tag } from '@prisma/client';
 import fixture from './fixture/blogs.json';
 
 const camelized = (str: string) =>
-  str.replace(/([-_][a-z])/gi, ($1) => $1.toUpperCase().replace('-', '').replace('_', ''));
+  str
+    .split('')
+    .map((char) => char.charCodeAt(0))
+    .join('')
+    .split('')
+    .map((char) => (Math.random() > 0.5 ? char.toUpperCase() : char))
+    .join('')
+    .replace(/[^0-9a-z-]/g, '')
+    .slice(0, 10);
 
 const fakeDate = () => {
   const date = new Date();

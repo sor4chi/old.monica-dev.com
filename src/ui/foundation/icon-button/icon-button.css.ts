@@ -15,6 +15,7 @@ export const button = style({
   display: 'inline-flex',
   alignItems: 'center',
   gap: '0.25rem',
+  lineHeight: '1.5rem',
 
   '@media': {
     '(hover: hover)': {
