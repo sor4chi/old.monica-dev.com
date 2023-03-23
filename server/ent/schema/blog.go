@@ -7,6 +7,7 @@ import (
 	"entgo.io/contrib/entgql"
 	"entgo.io/ent"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -73,7 +74,10 @@ func (Blog) Fields() []ent.Field {
 
 // Edges of the Blog.
 func (Blog) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{
+		edge.From("tags", Tag.Type).
+			Ref("blogs"),
+	}
 }
 
 func (Blog) Annotations() []schema.Annotation {
