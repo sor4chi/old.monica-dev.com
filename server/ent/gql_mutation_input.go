@@ -15,6 +15,7 @@ type CreateBlogInput struct {
 	CreatedAt   *time.Time
 	UpdatedAt   *time.Time
 	PublishedAt *time.Time
+	TagIDs      []int
 }
 
 // Mutate applies the CreateBlogInput on the BlogMutation builder.
@@ -31,6 +32,9 @@ func (i *CreateBlogInput) Mutate(m *BlogMutation) {
 	}
 	if v := i.PublishedAt; v != nil {
 		m.SetPublishedAt(*v)
+	}
+	if v := i.TagIDs; len(v) > 0 {
+		m.AddTagIDs(v...)
 	}
 }
 

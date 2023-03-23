@@ -19,6 +19,31 @@ type Tag struct {
 	Name string `json:"name,omitempty"`
 	// タグのスラッグ、URLのパラメータとして使用
 	Slug string `json:"slug,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the TagQuery when eager-loading is set.
+	Edges TagEdges `json:"edges"`
+}
+
+// TagEdges holds the relations/edges for other nodes in the graph.
+type TagEdges struct {
+	// Blogs holds the value of the blogs edge.
+	Blogs []*Blog `json:"blogs,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+	// totalCount holds the count of the edges above.
+	totalCount [1]map[string]int
+
+	namedBlogs map[string][]*Blog
+}
+
+// BlogsOrErr returns the Blogs value or an error if the edge
+// was not loaded in eager-loading.
+func (e TagEdges) BlogsOrErr() ([]*Blog, error) {
+	if e.loadedTypes[0] {
+		return e.Blogs, nil
+	}
+	return nil, &NotLoadedError{edge: "blogs"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -68,6 +93,11 @@ func (t *Tag) assignValues(columns []string, values []any) error {
 	return nil
 }
 
+// QueryBlogs queries the "blogs" edge of the Tag entity.
+func (t *Tag) QueryBlogs() *BlogQuery {
+	return NewTagClient(t.config).QueryBlogs(t)
+}
+
 // Update returns a builder for updating this Tag.
 // Note that you need to call Tag.Unwrap() before calling this method if this Tag
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -98,6 +128,30 @@ func (t *Tag) String() string {
 	builder.WriteString(t.Slug)
 	builder.WriteByte(')')
 	return builder.String()
+}
+
+// NamedBlogs returns the Blogs named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (t *Tag) NamedBlogs(name string) ([]*Blog, error) {
+	if t.Edges.namedBlogs == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := t.Edges.namedBlogs[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (t *Tag) appendNamedBlogs(name string, edges ...*Blog) {
+	if t.Edges.namedBlogs == nil {
+		t.Edges.namedBlogs = make(map[string][]*Blog)
+	}
+	if len(edges) == 0 {
+		t.Edges.namedBlogs[name] = []*Blog{}
+	} else {
+		t.Edges.namedBlogs[name] = append(t.Edges.namedBlogs[name], edges...)
+	}
 }
 
 // Tags is a parsable slice of Tag.

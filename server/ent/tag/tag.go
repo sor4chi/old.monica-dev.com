@@ -11,8 +11,15 @@ const (
 	FieldName = "name"
 	// FieldSlug holds the string denoting the slug field in the database.
 	FieldSlug = "slug"
+	// EdgeBlogs holds the string denoting the blogs edge name in mutations.
+	EdgeBlogs = "blogs"
 	// Table holds the table name of the tag in the database.
 	Table = "tags"
+	// BlogsTable is the table that holds the blogs relation/edge. The primary key declared below.
+	BlogsTable = "tag_blogs"
+	// BlogsInverseTable is the table name for the Blog entity.
+	// It exists in this package in order to avoid circular dependency with the "blog" package.
+	BlogsInverseTable = "blogs"
 )
 
 // Columns holds all SQL columns for tag fields.
@@ -21,6 +28,12 @@ var Columns = []string{
 	FieldName,
 	FieldSlug,
 }
+
+var (
+	// BlogsPrimaryKey and BlogsColumn2 are the table columns denoting the
+	// primary key for the blogs relation (M2M).
+	BlogsPrimaryKey = []string{"tag_id", "blog_id"}
+)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {

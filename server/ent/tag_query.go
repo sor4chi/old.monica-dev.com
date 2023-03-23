@@ -4,12 +4,14 @@ package ent
 
 import (
 	"context"
+	"database/sql/driver"
 	"fmt"
 	"math"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/sor4chi/portfolio-blog/server/ent/blog"
 	"github.com/sor4chi/portfolio-blog/server/ent/predicate"
 	"github.com/sor4chi/portfolio-blog/server/ent/tag"
 )
@@ -17,12 +19,14 @@ import (
 // TagQuery is the builder for querying Tag entities.
 type TagQuery struct {
 	config
-	ctx        *QueryContext
-	order      []OrderFunc
-	inters     []Interceptor
-	predicates []predicate.Tag
-	modifiers  []func(*sql.Selector)
-	loadTotal  []func(context.Context, []*Tag) error
+	ctx            *QueryContext
+	order          []OrderFunc
+	inters         []Interceptor
+	predicates     []predicate.Tag
+	withBlogs      *BlogQuery
+	modifiers      []func(*sql.Selector)
+	loadTotal      []func(context.Context, []*Tag) error
+	withNamedBlogs map[string]*BlogQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -57,6 +61,28 @@ func (tq *TagQuery) Unique(unique bool) *TagQuery {
 func (tq *TagQuery) Order(o ...OrderFunc) *TagQuery {
 	tq.order = append(tq.order, o...)
 	return tq
+}
+
+// QueryBlogs chains the current query on the "blogs" edge.
+func (tq *TagQuery) QueryBlogs() *BlogQuery {
+	query := (&BlogClient{config: tq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := tq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := tq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tag.Table, tag.FieldID, selector),
+			sqlgraph.To(blog.Table, blog.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, tag.BlogsTable, tag.BlogsPrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first Tag entity from the query.
@@ -251,10 +277,22 @@ func (tq *TagQuery) Clone() *TagQuery {
 		order:      append([]OrderFunc{}, tq.order...),
 		inters:     append([]Interceptor{}, tq.inters...),
 		predicates: append([]predicate.Tag{}, tq.predicates...),
+		withBlogs:  tq.withBlogs.Clone(),
 		// clone intermediate query.
 		sql:  tq.sql.Clone(),
 		path: tq.path,
 	}
+}
+
+// WithBlogs tells the query-builder to eager-load the nodes that are connected to
+// the "blogs" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TagQuery) WithBlogs(opts ...func(*BlogQuery)) *TagQuery {
+	query := (&BlogClient{config: tq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	tq.withBlogs = query
+	return tq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -333,8 +371,11 @@ func (tq *TagQuery) prepareQuery(ctx context.Context) error {
 
 func (tq *TagQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tag, error) {
 	var (
-		nodes = []*Tag{}
-		_spec = tq.querySpec()
+		nodes       = []*Tag{}
+		_spec       = tq.querySpec()
+		loadedTypes = [1]bool{
+			tq.withBlogs != nil,
+		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*Tag).scanValues(nil, columns)
@@ -342,6 +383,7 @@ func (tq *TagQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tag, err
 	_spec.Assign = func(columns []string, values []any) error {
 		node := &Tag{config: tq.config}
 		nodes = append(nodes, node)
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	if len(tq.modifiers) > 0 {
@@ -356,12 +398,88 @@ func (tq *TagQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tag, err
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+	if query := tq.withBlogs; query != nil {
+		if err := tq.loadBlogs(ctx, query, nodes,
+			func(n *Tag) { n.Edges.Blogs = []*Blog{} },
+			func(n *Tag, e *Blog) { n.Edges.Blogs = append(n.Edges.Blogs, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range tq.withNamedBlogs {
+		if err := tq.loadBlogs(ctx, query, nodes,
+			func(n *Tag) { n.appendNamedBlogs(name) },
+			func(n *Tag, e *Blog) { n.appendNamedBlogs(name, e) }); err != nil {
+			return nil, err
+		}
+	}
 	for i := range tq.loadTotal {
 		if err := tq.loadTotal[i](ctx, nodes); err != nil {
 			return nil, err
 		}
 	}
 	return nodes, nil
+}
+
+func (tq *TagQuery) loadBlogs(ctx context.Context, query *BlogQuery, nodes []*Tag, init func(*Tag), assign func(*Tag, *Blog)) error {
+	edgeIDs := make([]driver.Value, len(nodes))
+	byID := make(map[int]*Tag)
+	nids := make(map[int]map[*Tag]struct{})
+	for i, node := range nodes {
+		edgeIDs[i] = node.ID
+		byID[node.ID] = node
+		if init != nil {
+			init(node)
+		}
+	}
+	query.Where(func(s *sql.Selector) {
+		joinT := sql.Table(tag.BlogsTable)
+		s.Join(joinT).On(s.C(blog.FieldID), joinT.C(tag.BlogsPrimaryKey[1]))
+		s.Where(sql.InValues(joinT.C(tag.BlogsPrimaryKey[0]), edgeIDs...))
+		columns := s.SelectedColumns()
+		s.Select(joinT.C(tag.BlogsPrimaryKey[0]))
+		s.AppendSelect(columns...)
+		s.SetDistinct(false)
+	})
+	if err := query.prepareQuery(ctx); err != nil {
+		return err
+	}
+	qr := QuerierFunc(func(ctx context.Context, q Query) (Value, error) {
+		return query.sqlAll(ctx, func(_ context.Context, spec *sqlgraph.QuerySpec) {
+			assign := spec.Assign
+			values := spec.ScanValues
+			spec.ScanValues = func(columns []string) ([]any, error) {
+				values, err := values(columns[1:])
+				if err != nil {
+					return nil, err
+				}
+				return append([]any{new(sql.NullInt64)}, values...), nil
+			}
+			spec.Assign = func(columns []string, values []any) error {
+				outValue := int(values[0].(*sql.NullInt64).Int64)
+				inValue := int(values[1].(*sql.NullInt64).Int64)
+				if nids[inValue] == nil {
+					nids[inValue] = map[*Tag]struct{}{byID[outValue]: {}}
+					return assign(columns[1:], values[1:])
+				}
+				nids[inValue][byID[outValue]] = struct{}{}
+				return nil
+			}
+		})
+	})
+	neighbors, err := withInterceptors[[]*Blog](ctx, query, qr, query.inters)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected "blogs" node returned %v`, n.ID)
+		}
+		for kn := range nodes {
+			assign(kn, n)
+		}
+	}
+	return nil
 }
 
 func (tq *TagQuery) sqlCount(ctx context.Context) (int, error) {
@@ -446,6 +564,20 @@ func (tq *TagQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// WithNamedBlogs tells the query-builder to eager-load the nodes that are connected to the "blogs"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (tq *TagQuery) WithNamedBlogs(name string, opts ...func(*BlogQuery)) *TagQuery {
+	query := (&BlogClient{config: tq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if tq.withNamedBlogs == nil {
+		tq.withNamedBlogs = make(map[string]*BlogQuery)
+	}
+	tq.withNamedBlogs[name] = query
+	return tq
 }
 
 // TagGroupBy is the group-by builder for Tag entities.

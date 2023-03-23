@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/sor4chi/portfolio-blog/server/ent/blog"
 	"github.com/sor4chi/portfolio-blog/server/ent/predicate"
+	"github.com/sor4chi/portfolio-blog/server/ent/tag"
 )
 
 // BlogUpdate is the builder for updating Blog entities.
@@ -78,9 +79,45 @@ func (bu *BlogUpdate) ClearPublishedAt() *BlogUpdate {
 	return bu
 }
 
+// AddTagIDs adds the "tags" edge to the Tag entity by IDs.
+func (bu *BlogUpdate) AddTagIDs(ids ...int) *BlogUpdate {
+	bu.mutation.AddTagIDs(ids...)
+	return bu
+}
+
+// AddTags adds the "tags" edges to the Tag entity.
+func (bu *BlogUpdate) AddTags(t ...*Tag) *BlogUpdate {
+	ids := make([]int, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return bu.AddTagIDs(ids...)
+}
+
 // Mutation returns the BlogMutation object of the builder.
 func (bu *BlogUpdate) Mutation() *BlogMutation {
 	return bu.mutation
+}
+
+// ClearTags clears all "tags" edges to the Tag entity.
+func (bu *BlogUpdate) ClearTags() *BlogUpdate {
+	bu.mutation.ClearTags()
+	return bu
+}
+
+// RemoveTagIDs removes the "tags" edge to Tag entities by IDs.
+func (bu *BlogUpdate) RemoveTagIDs(ids ...int) *BlogUpdate {
+	bu.mutation.RemoveTagIDs(ids...)
+	return bu
+}
+
+// RemoveTags removes "tags" edges to Tag entities.
+func (bu *BlogUpdate) RemoveTags(t ...*Tag) *BlogUpdate {
+	ids := make([]int, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return bu.RemoveTagIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -177,6 +214,51 @@ func (bu *BlogUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if bu.mutation.PublishedAtCleared() {
 		_spec.ClearField(blog.FieldPublishedAt, field.TypeTime)
 	}
+	if bu.mutation.TagsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   blog.TagsTable,
+			Columns: blog.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := bu.mutation.RemovedTagsIDs(); len(nodes) > 0 && !bu.mutation.TagsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   blog.TagsTable,
+			Columns: blog.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := bu.mutation.TagsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   blog.TagsTable,
+			Columns: blog.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, bu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{blog.Label}
@@ -247,9 +329,45 @@ func (buo *BlogUpdateOne) ClearPublishedAt() *BlogUpdateOne {
 	return buo
 }
 
+// AddTagIDs adds the "tags" edge to the Tag entity by IDs.
+func (buo *BlogUpdateOne) AddTagIDs(ids ...int) *BlogUpdateOne {
+	buo.mutation.AddTagIDs(ids...)
+	return buo
+}
+
+// AddTags adds the "tags" edges to the Tag entity.
+func (buo *BlogUpdateOne) AddTags(t ...*Tag) *BlogUpdateOne {
+	ids := make([]int, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return buo.AddTagIDs(ids...)
+}
+
 // Mutation returns the BlogMutation object of the builder.
 func (buo *BlogUpdateOne) Mutation() *BlogMutation {
 	return buo.mutation
+}
+
+// ClearTags clears all "tags" edges to the Tag entity.
+func (buo *BlogUpdateOne) ClearTags() *BlogUpdateOne {
+	buo.mutation.ClearTags()
+	return buo
+}
+
+// RemoveTagIDs removes the "tags" edge to Tag entities by IDs.
+func (buo *BlogUpdateOne) RemoveTagIDs(ids ...int) *BlogUpdateOne {
+	buo.mutation.RemoveTagIDs(ids...)
+	return buo
+}
+
+// RemoveTags removes "tags" edges to Tag entities.
+func (buo *BlogUpdateOne) RemoveTags(t ...*Tag) *BlogUpdateOne {
+	ids := make([]int, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return buo.RemoveTagIDs(ids...)
 }
 
 // Where appends a list predicates to the BlogUpdate builder.
@@ -375,6 +493,51 @@ func (buo *BlogUpdateOne) sqlSave(ctx context.Context) (_node *Blog, err error) 
 	}
 	if buo.mutation.PublishedAtCleared() {
 		_spec.ClearField(blog.FieldPublishedAt, field.TypeTime)
+	}
+	if buo.mutation.TagsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   blog.TagsTable,
+			Columns: blog.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := buo.mutation.RemovedTagsIDs(); len(nodes) > 0 && !buo.mutation.TagsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   blog.TagsTable,
+			Columns: blog.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := buo.mutation.TagsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   blog.TagsTable,
+			Columns: blog.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &Blog{config: buo.config}
 	_spec.Assign = _node.assignValues

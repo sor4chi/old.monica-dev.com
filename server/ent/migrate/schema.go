@@ -37,12 +37,40 @@ var (
 		Columns:    TagsColumns,
 		PrimaryKey: []*schema.Column{TagsColumns[0]},
 	}
+	// TagBlogsColumns holds the columns for the "tag_blogs" table.
+	TagBlogsColumns = []*schema.Column{
+		{Name: "tag_id", Type: field.TypeInt},
+		{Name: "blog_id", Type: field.TypeInt},
+	}
+	// TagBlogsTable holds the schema information for the "tag_blogs" table.
+	TagBlogsTable = &schema.Table{
+		Name:       "tag_blogs",
+		Columns:    TagBlogsColumns,
+		PrimaryKey: []*schema.Column{TagBlogsColumns[0], TagBlogsColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "tag_blogs_tag_id",
+				Columns:    []*schema.Column{TagBlogsColumns[0]},
+				RefColumns: []*schema.Column{TagsColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "tag_blogs_blog_id",
+				Columns:    []*schema.Column{TagBlogsColumns[1]},
+				RefColumns: []*schema.Column{BlogsColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		BlogsTable,
 		TagsTable,
+		TagBlogsTable,
 	}
 )
 
 func init() {
+	TagBlogsTable.ForeignKeys[0].RefTable = TagsTable
+	TagBlogsTable.ForeignKeys[1].RefTable = BlogsTable
 }

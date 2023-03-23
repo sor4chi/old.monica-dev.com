@@ -43,6 +43,9 @@ type BlogMutation struct {
 	updated_at    *time.Time
 	published_at  *time.Time
 	clearedFields map[string]struct{}
+	tags          map[int]struct{}
+	removedtags   map[int]struct{}
+	clearedtags   bool
 	done          bool
 	oldValue      func(context.Context) (*Blog, error)
 	predicates    []predicate.Blog
@@ -411,6 +414,60 @@ func (m *BlogMutation) ResetPublishedAt() {
 	delete(m.clearedFields, blog.FieldPublishedAt)
 }
 
+// AddTagIDs adds the "tags" edge to the Tag entity by ids.
+func (m *BlogMutation) AddTagIDs(ids ...int) {
+	if m.tags == nil {
+		m.tags = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.tags[ids[i]] = struct{}{}
+	}
+}
+
+// ClearTags clears the "tags" edge to the Tag entity.
+func (m *BlogMutation) ClearTags() {
+	m.clearedtags = true
+}
+
+// TagsCleared reports if the "tags" edge to the Tag entity was cleared.
+func (m *BlogMutation) TagsCleared() bool {
+	return m.clearedtags
+}
+
+// RemoveTagIDs removes the "tags" edge to the Tag entity by IDs.
+func (m *BlogMutation) RemoveTagIDs(ids ...int) {
+	if m.removedtags == nil {
+		m.removedtags = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.tags, ids[i])
+		m.removedtags[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedTags returns the removed IDs of the "tags" edge to the Tag entity.
+func (m *BlogMutation) RemovedTagsIDs() (ids []int) {
+	for id := range m.removedtags {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// TagsIDs returns the "tags" edge IDs in the mutation.
+func (m *BlogMutation) TagsIDs() (ids []int) {
+	for id := range m.tags {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetTags resets all changes to the "tags" edge.
+func (m *BlogMutation) ResetTags() {
+	m.tags = nil
+	m.clearedtags = false
+	m.removedtags = nil
+}
+
 // Where appends a list predicates to the BlogMutation builder.
 func (m *BlogMutation) Where(ps ...predicate.Blog) {
 	m.predicates = append(m.predicates, ps...)
@@ -655,49 +712,85 @@ func (m *BlogMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *BlogMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.tags != nil {
+		edges = append(edges, blog.EdgeTags)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *BlogMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case blog.EdgeTags:
+		ids := make([]ent.Value, 0, len(m.tags))
+		for id := range m.tags {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *BlogMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.removedtags != nil {
+		edges = append(edges, blog.EdgeTags)
+	}
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *BlogMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case blog.EdgeTags:
+		ids := make([]ent.Value, 0, len(m.removedtags))
+		for id := range m.removedtags {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *BlogMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.clearedtags {
+		edges = append(edges, blog.EdgeTags)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *BlogMutation) EdgeCleared(name string) bool {
+	switch name {
+	case blog.EdgeTags:
+		return m.clearedtags
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *BlogMutation) ClearEdge(name string) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown Blog unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *BlogMutation) ResetEdge(name string) error {
+	switch name {
+	case blog.EdgeTags:
+		m.ResetTags()
+		return nil
+	}
 	return fmt.Errorf("unknown Blog edge %s", name)
 }
 
@@ -710,6 +803,9 @@ type TagMutation struct {
 	name          *string
 	slug          *string
 	clearedFields map[string]struct{}
+	blogs         map[int]struct{}
+	removedblogs  map[int]struct{}
+	clearedblogs  bool
 	done          bool
 	oldValue      func(context.Context) (*Tag, error)
 	predicates    []predicate.Tag
@@ -885,6 +981,60 @@ func (m *TagMutation) ResetSlug() {
 	m.slug = nil
 }
 
+// AddBlogIDs adds the "blogs" edge to the Blog entity by ids.
+func (m *TagMutation) AddBlogIDs(ids ...int) {
+	if m.blogs == nil {
+		m.blogs = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.blogs[ids[i]] = struct{}{}
+	}
+}
+
+// ClearBlogs clears the "blogs" edge to the Blog entity.
+func (m *TagMutation) ClearBlogs() {
+	m.clearedblogs = true
+}
+
+// BlogsCleared reports if the "blogs" edge to the Blog entity was cleared.
+func (m *TagMutation) BlogsCleared() bool {
+	return m.clearedblogs
+}
+
+// RemoveBlogIDs removes the "blogs" edge to the Blog entity by IDs.
+func (m *TagMutation) RemoveBlogIDs(ids ...int) {
+	if m.removedblogs == nil {
+		m.removedblogs = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.blogs, ids[i])
+		m.removedblogs[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedBlogs returns the removed IDs of the "blogs" edge to the Blog entity.
+func (m *TagMutation) RemovedBlogsIDs() (ids []int) {
+	for id := range m.removedblogs {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// BlogsIDs returns the "blogs" edge IDs in the mutation.
+func (m *TagMutation) BlogsIDs() (ids []int) {
+	for id := range m.blogs {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetBlogs resets all changes to the "blogs" edge.
+func (m *TagMutation) ResetBlogs() {
+	m.blogs = nil
+	m.clearedblogs = false
+	m.removedblogs = nil
+}
+
 // Where appends a list predicates to the TagMutation builder.
 func (m *TagMutation) Where(ps ...predicate.Tag) {
 	m.predicates = append(m.predicates, ps...)
@@ -1035,48 +1185,84 @@ func (m *TagMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *TagMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.blogs != nil {
+		edges = append(edges, tag.EdgeBlogs)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *TagMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case tag.EdgeBlogs:
+		ids := make([]ent.Value, 0, len(m.blogs))
+		for id := range m.blogs {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *TagMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.removedblogs != nil {
+		edges = append(edges, tag.EdgeBlogs)
+	}
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *TagMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case tag.EdgeBlogs:
+		ids := make([]ent.Value, 0, len(m.removedblogs))
+		for id := range m.removedblogs {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *TagMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.clearedblogs {
+		edges = append(edges, tag.EdgeBlogs)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *TagMutation) EdgeCleared(name string) bool {
+	switch name {
+	case tag.EdgeBlogs:
+		return m.clearedblogs
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *TagMutation) ClearEdge(name string) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown Tag unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *TagMutation) ResetEdge(name string) error {
+	switch name {
+	case tag.EdgeBlogs:
+		m.ResetBlogs()
+		return nil
+	}
 	return fmt.Errorf("unknown Tag edge %s", name)
 }

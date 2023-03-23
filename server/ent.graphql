@@ -16,6 +16,7 @@ type Blog implements Node {
   updatedAt: Time!
   """ブログの公開日時、公開されていない場合はnull"""
   publishedAt: Time
+  tags: [Tag!]
 }
 """Ordering options for Blog connections"""
 input BlogOrder {
@@ -53,6 +54,7 @@ input CreateBlogInput {
   updatedAt: Time
   """ブログの公開日時、公開されていない場合はnull"""
   publishedAt: Time
+  tagIDs: [ID!]
 }
 """
 Define a Relay Cursor type:
@@ -100,6 +102,7 @@ type Query {
     ids: [ID!]!
   ): [Node]!
   blogs: [Blog!]!
+  tags: [Tag!]!
 }
 type Tag implements Node {
   id: ID!
@@ -107,6 +110,7 @@ type Tag implements Node {
   name: String!
   """タグのスラッグ、URLのパラメータとして使用"""
   slug: String!
+  blogs: [Blog!]
 }
 """Ordering options for Tag connections"""
 input TagOrder {

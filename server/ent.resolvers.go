@@ -26,6 +26,11 @@ func (r *queryResolver) Blogs(ctx context.Context) ([]*ent.Blog, error) {
 	return r.client.Blog.Query().All(ctx)
 }
 
+// Tags is the resolver for the tags field.
+func (r *queryResolver) Tags(ctx context.Context) ([]*ent.Tag, error) {
+	panic(fmt.Errorf("not implemented: Tags - tags"))
+}
+
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 

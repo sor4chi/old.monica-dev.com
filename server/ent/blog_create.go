@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/sor4chi/portfolio-blog/server/ent/blog"
+	"github.com/sor4chi/portfolio-blog/server/ent/tag"
 )
 
 // BlogCreate is the builder for creating a Blog entity.
@@ -84,6 +85,21 @@ func (bc *BlogCreate) SetNillablePublishedAt(t *time.Time) *BlogCreate {
 		bc.SetPublishedAt(*t)
 	}
 	return bc
+}
+
+// AddTagIDs adds the "tags" edge to the Tag entity by IDs.
+func (bc *BlogCreate) AddTagIDs(ids ...int) *BlogCreate {
+	bc.mutation.AddTagIDs(ids...)
+	return bc
+}
+
+// AddTags adds the "tags" edges to the Tag entity.
+func (bc *BlogCreate) AddTags(t ...*Tag) *BlogCreate {
+	ids := make([]int, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return bc.AddTagIDs(ids...)
 }
 
 // Mutation returns the BlogMutation object of the builder.
@@ -224,6 +240,22 @@ func (bc *BlogCreate) createSpec() (*Blog, *sqlgraph.CreateSpec) {
 	if value, ok := bc.mutation.PublishedAt(); ok {
 		_spec.SetField(blog.FieldPublishedAt, field.TypeTime, value)
 		_node.PublishedAt = &value
+	}
+	if nodes := bc.mutation.TagsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   blog.TagsTable,
+			Columns: blog.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

@@ -30,6 +30,31 @@ type Blog struct {
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// ブログの公開日時、公開されていない場合はnull
 	PublishedAt *time.Time `json:"published_at,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the BlogQuery when eager-loading is set.
+	Edges BlogEdges `json:"edges"`
+}
+
+// BlogEdges holds the relations/edges for other nodes in the graph.
+type BlogEdges struct {
+	// Tags holds the value of the tags edge.
+	Tags []*Tag `json:"tags,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+	// totalCount holds the count of the edges above.
+	totalCount [1]map[string]int
+
+	namedTags map[string][]*Tag
+}
+
+// TagsOrErr returns the Tags value or an error if the edge
+// was not loaded in eager-loading.
+func (e BlogEdges) TagsOrErr() ([]*Tag, error) {
+	if e.loadedTypes[0] {
+		return e.Tags, nil
+	}
+	return nil, &NotLoadedError{edge: "tags"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -112,6 +137,11 @@ func (b *Blog) assignValues(columns []string, values []any) error {
 	return nil
 }
 
+// QueryTags queries the "tags" edge of the Blog entity.
+func (b *Blog) QueryTags() *TagQuery {
+	return NewBlogClient(b.config).QueryTags(b)
+}
+
 // Update returns a builder for updating this Blog.
 // Note that you need to call Blog.Unwrap() before calling this method if this Blog
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -159,6 +189,30 @@ func (b *Blog) String() string {
 	}
 	builder.WriteByte(')')
 	return builder.String()
+}
+
+// NamedTags returns the Tags named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (b *Blog) NamedTags(name string) ([]*Tag, error) {
+	if b.Edges.namedTags == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := b.Edges.namedTags[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (b *Blog) appendNamedTags(name string, edges ...*Tag) {
+	if b.Edges.namedTags == nil {
+		b.Edges.namedTags = make(map[string][]*Tag)
+	}
+	if len(edges) == 0 {
+		b.Edges.namedTags[name] = []*Tag{}
+	} else {
+		b.Edges.namedTags[name] = append(b.Edges.namedTags[name], edges...)
+	}
 }
 
 // Blogs is a parsable slice of Blog.

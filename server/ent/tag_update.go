@@ -10,6 +10,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/sor4chi/portfolio-blog/server/ent/blog"
 	"github.com/sor4chi/portfolio-blog/server/ent/predicate"
 	"github.com/sor4chi/portfolio-blog/server/ent/tag"
 )
@@ -39,9 +40,45 @@ func (tu *TagUpdate) SetSlug(s string) *TagUpdate {
 	return tu
 }
 
+// AddBlogIDs adds the "blogs" edge to the Blog entity by IDs.
+func (tu *TagUpdate) AddBlogIDs(ids ...int) *TagUpdate {
+	tu.mutation.AddBlogIDs(ids...)
+	return tu
+}
+
+// AddBlogs adds the "blogs" edges to the Blog entity.
+func (tu *TagUpdate) AddBlogs(b ...*Blog) *TagUpdate {
+	ids := make([]int, len(b))
+	for i := range b {
+		ids[i] = b[i].ID
+	}
+	return tu.AddBlogIDs(ids...)
+}
+
 // Mutation returns the TagMutation object of the builder.
 func (tu *TagUpdate) Mutation() *TagMutation {
 	return tu.mutation
+}
+
+// ClearBlogs clears all "blogs" edges to the Blog entity.
+func (tu *TagUpdate) ClearBlogs() *TagUpdate {
+	tu.mutation.ClearBlogs()
+	return tu
+}
+
+// RemoveBlogIDs removes the "blogs" edge to Blog entities by IDs.
+func (tu *TagUpdate) RemoveBlogIDs(ids ...int) *TagUpdate {
+	tu.mutation.RemoveBlogIDs(ids...)
+	return tu
+}
+
+// RemoveBlogs removes "blogs" edges to Blog entities.
+func (tu *TagUpdate) RemoveBlogs(b ...*Blog) *TagUpdate {
+	ids := make([]int, len(b))
+	for i := range b {
+		ids[i] = b[i].ID
+	}
+	return tu.RemoveBlogIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -104,6 +141,51 @@ func (tu *TagUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := tu.mutation.Slug(); ok {
 		_spec.SetField(tag.FieldSlug, field.TypeString, value)
 	}
+	if tu.mutation.BlogsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   tag.BlogsTable,
+			Columns: tag.BlogsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(blog.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.RemovedBlogsIDs(); len(nodes) > 0 && !tu.mutation.BlogsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   tag.BlogsTable,
+			Columns: tag.BlogsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(blog.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.BlogsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   tag.BlogsTable,
+			Columns: tag.BlogsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(blog.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, tu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{tag.Label}
@@ -136,9 +218,45 @@ func (tuo *TagUpdateOne) SetSlug(s string) *TagUpdateOne {
 	return tuo
 }
 
+// AddBlogIDs adds the "blogs" edge to the Blog entity by IDs.
+func (tuo *TagUpdateOne) AddBlogIDs(ids ...int) *TagUpdateOne {
+	tuo.mutation.AddBlogIDs(ids...)
+	return tuo
+}
+
+// AddBlogs adds the "blogs" edges to the Blog entity.
+func (tuo *TagUpdateOne) AddBlogs(b ...*Blog) *TagUpdateOne {
+	ids := make([]int, len(b))
+	for i := range b {
+		ids[i] = b[i].ID
+	}
+	return tuo.AddBlogIDs(ids...)
+}
+
 // Mutation returns the TagMutation object of the builder.
 func (tuo *TagUpdateOne) Mutation() *TagMutation {
 	return tuo.mutation
+}
+
+// ClearBlogs clears all "blogs" edges to the Blog entity.
+func (tuo *TagUpdateOne) ClearBlogs() *TagUpdateOne {
+	tuo.mutation.ClearBlogs()
+	return tuo
+}
+
+// RemoveBlogIDs removes the "blogs" edge to Blog entities by IDs.
+func (tuo *TagUpdateOne) RemoveBlogIDs(ids ...int) *TagUpdateOne {
+	tuo.mutation.RemoveBlogIDs(ids...)
+	return tuo
+}
+
+// RemoveBlogs removes "blogs" edges to Blog entities.
+func (tuo *TagUpdateOne) RemoveBlogs(b ...*Blog) *TagUpdateOne {
+	ids := make([]int, len(b))
+	for i := range b {
+		ids[i] = b[i].ID
+	}
+	return tuo.RemoveBlogIDs(ids...)
 }
 
 // Where appends a list predicates to the TagUpdate builder.
@@ -230,6 +348,51 @@ func (tuo *TagUpdateOne) sqlSave(ctx context.Context) (_node *Tag, err error) {
 	}
 	if value, ok := tuo.mutation.Slug(); ok {
 		_spec.SetField(tag.FieldSlug, field.TypeString, value)
+	}
+	if tuo.mutation.BlogsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   tag.BlogsTable,
+			Columns: tag.BlogsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(blog.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.RemovedBlogsIDs(); len(nodes) > 0 && !tuo.mutation.BlogsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   tag.BlogsTable,
+			Columns: tag.BlogsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(blog.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.BlogsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   tag.BlogsTable,
+			Columns: tag.BlogsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(blog.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &Tag{config: tuo.config}
 	_spec.Assign = _node.assignValues

@@ -4,6 +4,7 @@ package tag
 
 import (
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/sor4chi/portfolio-blog/server/ent/predicate"
 )
 
@@ -190,6 +191,33 @@ func SlugEqualFold(v string) predicate.Tag {
 // SlugContainsFold applies the ContainsFold predicate on the "slug" field.
 func SlugContainsFold(v string) predicate.Tag {
 	return predicate.Tag(sql.FieldContainsFold(FieldSlug, v))
+}
+
+// HasBlogs applies the HasEdge predicate on the "blogs" edge.
+func HasBlogs() predicate.Tag {
+	return predicate.Tag(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, BlogsTable, BlogsPrimaryKey...),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasBlogsWith applies the HasEdge predicate on the "blogs" edge with a given conditions (other predicates).
+func HasBlogsWith(preds ...predicate.Blog) predicate.Tag {
+	return predicate.Tag(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(BlogsInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, BlogsTable, BlogsPrimaryKey...),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

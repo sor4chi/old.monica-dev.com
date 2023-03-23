@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/sor4chi/portfolio-blog/server/ent/blog"
 	"github.com/sor4chi/portfolio-blog/server/ent/tag"
 )
@@ -292,6 +293,22 @@ func (c *BlogClient) GetX(ctx context.Context, id int) *Blog {
 	return obj
 }
 
+// QueryTags queries the tags edge of a Blog.
+func (c *BlogClient) QueryTags(b *Blog) *TagQuery {
+	query := (&TagClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := b.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(blog.Table, blog.FieldID, id),
+			sqlgraph.To(tag.Table, tag.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, blog.TagsTable, blog.TagsPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(b.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *BlogClient) Hooks() []Hook {
 	return c.hooks.Blog
@@ -408,6 +425,22 @@ func (c *TagClient) GetX(ctx context.Context, id int) *Tag {
 		panic(err)
 	}
 	return obj
+}
+
+// QueryBlogs queries the blogs edge of a Tag.
+func (c *TagClient) QueryBlogs(t *Tag) *BlogQuery {
+	query := (&BlogClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tag.Table, tag.FieldID, id),
+			sqlgraph.To(blog.Table, blog.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, tag.BlogsTable, tag.BlogsPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.

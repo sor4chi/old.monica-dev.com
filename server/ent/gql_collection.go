@@ -23,6 +23,22 @@ func (b *BlogQuery) CollectFields(ctx context.Context, satisfies ...string) (*Bl
 
 func (b *BlogQuery) collectField(ctx context.Context, op *graphql.OperationContext, field graphql.CollectedField, path []string, satisfies ...string) error {
 	path = append([]string(nil), path...)
+	for _, field := range graphql.CollectFields(op, field.Selections, satisfies) {
+		switch field.Name {
+		case "tags":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&TagClient{config: b.config}).Query()
+			)
+			if err := query.collectField(ctx, op, field, path, satisfies...); err != nil {
+				return err
+			}
+			b.WithNamedTags(alias, func(wq *TagQuery) {
+				*wq = *query
+			})
+		}
+	}
 	return nil
 }
 
@@ -88,6 +104,22 @@ func (t *TagQuery) CollectFields(ctx context.Context, satisfies ...string) (*Tag
 
 func (t *TagQuery) collectField(ctx context.Context, op *graphql.OperationContext, field graphql.CollectedField, path []string, satisfies ...string) error {
 	path = append([]string(nil), path...)
+	for _, field := range graphql.CollectFields(op, field.Selections, satisfies) {
+		switch field.Name {
+		case "blogs":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&BlogClient{config: t.config}).Query()
+			)
+			if err := query.collectField(ctx, op, field, path, satisfies...); err != nil {
+				return err
+			}
+			t.WithNamedBlogs(alias, func(wq *BlogQuery) {
+				*wq = *query
+			})
+		}
+	}
 	return nil
 }
 
