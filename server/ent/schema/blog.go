@@ -4,6 +4,7 @@ import (
 	"entgo.io/contrib/entgql"
 	"entgo.io/ent"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/field"
 )
 
 // Blog holds the schema definition for the Blog entity.
@@ -13,7 +14,13 @@ type Blog struct {
 
 // Fields of the Blog.
 func (Blog) Fields() []ent.Field {
-	return nil
+	return []ent.Field{
+		field.String("title").
+			NotEmpty().
+			Annotations(
+				entgql.OrderField("TITLE"),
+			),
+	}
 }
 
 // Edges of the Blog.
