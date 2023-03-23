@@ -21,6 +21,8 @@ type BlogQuery struct {
 	order      []OrderFunc
 	inters     []Interceptor
 	predicates []predicate.Blog
+	modifiers  []func(*sql.Selector)
+	loadTotal  []func(context.Context, []*Blog) error
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -320,6 +322,9 @@ func (bq *BlogQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Blog, e
 		nodes = append(nodes, node)
 		return node.assignValues(columns, values)
 	}
+	if len(bq.modifiers) > 0 {
+		_spec.Modifiers = bq.modifiers
+	}
 	for i := range hooks {
 		hooks[i](ctx, _spec)
 	}
@@ -329,11 +334,19 @@ func (bq *BlogQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Blog, e
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+	for i := range bq.loadTotal {
+		if err := bq.loadTotal[i](ctx, nodes); err != nil {
+			return nil, err
+		}
+	}
 	return nodes, nil
 }
 
 func (bq *BlogQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := bq.querySpec()
+	if len(bq.modifiers) > 0 {
+		_spec.Modifiers = bq.modifiers
+	}
 	_spec.Node.Columns = bq.ctx.Fields
 	if len(bq.ctx.Fields) > 0 {
 		_spec.Unique = bq.ctx.Unique != nil && *bq.ctx.Unique

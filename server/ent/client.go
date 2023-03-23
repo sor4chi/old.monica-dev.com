@@ -23,6 +23,8 @@ type Client struct {
 	Schema *migrate.Schema
 	// Blog is the client for interacting with the Blog builders.
 	Blog *BlogClient
+	// additional fields for node api
+	tables tables
 }
 
 // NewClient creates a new client configured with the given options.
