@@ -101,5 +101,24 @@ type Query {
   ): [Node]!
   blogs: [Blog!]!
 }
+type Tag implements Node {
+  id: ID!
+  """タグの名前"""
+  name: String!
+  """タグのスラッグ、URLのパラメータとして使用"""
+  slug: String!
+}
+"""Ordering options for Tag connections"""
+input TagOrder {
+  """The ordering direction."""
+  direction: OrderDirection! = ASC
+  """The field by which to order Tags."""
+  field: TagOrderField!
+}
+"""Properties by which Tag connections can be ordered."""
+enum TagOrderField {
+  NAME
+  SLUG
+}
 """The builtin Time type"""
 scalar Time

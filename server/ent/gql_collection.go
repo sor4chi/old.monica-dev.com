@@ -74,6 +74,71 @@ func newBlogPaginateArgs(rv map[string]interface{}) *blogPaginateArgs {
 	return args
 }
 
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (t *TagQuery) CollectFields(ctx context.Context, satisfies ...string) (*TagQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return t, nil
+	}
+	if err := t.collectField(ctx, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return t, nil
+}
+
+func (t *TagQuery) collectField(ctx context.Context, op *graphql.OperationContext, field graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	return nil
+}
+
+type tagPaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []TagPaginateOption
+}
+
+func newTagPaginateArgs(rv map[string]interface{}) *tagPaginateArgs {
+	args := &tagPaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case map[string]interface{}:
+			var (
+				err1, err2 error
+				order      = &TagOrder{Field: &TagOrderField{}}
+			)
+			if d, ok := v[directionField]; ok {
+				err1 = order.Direction.UnmarshalGQL(d)
+			}
+			if f, ok := v[fieldField]; ok {
+				err2 = order.Field.UnmarshalGQL(f)
+			}
+			if err1 == nil && err2 == nil {
+				args.opts = append(args.opts, WithTagOrder(order))
+			}
+		case *TagOrder:
+			if v != nil {
+				args.opts = append(args.opts, WithTagOrder(v))
+			}
+		}
+	}
+	return args
+}
+
 const (
 	afterField     = "after"
 	firstField     = "first"

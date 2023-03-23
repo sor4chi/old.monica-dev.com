@@ -25,9 +25,22 @@ var (
 		Columns:    BlogsColumns,
 		PrimaryKey: []*schema.Column{BlogsColumns[0]},
 	}
+	// TagsColumns holds the columns for the "tags" table.
+	TagsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString, Size: 64},
+		{Name: "slug", Type: field.TypeString, Unique: true, Size: 64},
+	}
+	// TagsTable holds the schema information for the "tags" table.
+	TagsTable = &schema.Table{
+		Name:       "tags",
+		Columns:    TagsColumns,
+		PrimaryKey: []*schema.Column{TagsColumns[0]},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		BlogsTable,
+		TagsTable,
 	}
 )
 

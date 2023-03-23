@@ -7,6 +7,7 @@ import (
 
 	"github.com/sor4chi/portfolio-blog/server/ent/blog"
 	"github.com/sor4chi/portfolio-blog/server/ent/schema"
+	"github.com/sor4chi/portfolio-blog/server/ent/tag"
 )
 
 // The init function reads all schema descriptors with runtime code
@@ -84,4 +85,43 @@ func init() {
 	blog.DefaultUpdatedAt = blogDescUpdatedAt.Default.(func() time.Time)
 	// blog.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	blog.UpdateDefaultUpdatedAt = blogDescUpdatedAt.UpdateDefault.(func() time.Time)
+	tagFields := schema.Tag{}.Fields()
+	_ = tagFields
+	// tagDescName is the schema descriptor for name field.
+	tagDescName := tagFields[0].Descriptor()
+	// tag.NameValidator is a validator for the "name" field. It is called by the builders before save.
+	tag.NameValidator = func() func(string) error {
+		validators := tagDescName.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(name string) error {
+			for _, fn := range fns {
+				if err := fn(name); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// tagDescSlug is the schema descriptor for slug field.
+	tagDescSlug := tagFields[1].Descriptor()
+	// tag.SlugValidator is a validator for the "slug" field. It is called by the builders before save.
+	tag.SlugValidator = func() func(string) error {
+		validators := tagDescSlug.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+			validators[2].(func(string) error),
+		}
+		return func(slug string) error {
+			for _, fn := range fns {
+				if err := fn(slug); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 }
