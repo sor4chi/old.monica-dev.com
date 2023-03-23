@@ -449,6 +449,66 @@ var (
 			}
 		},
 	}
+	// BlogOrderFieldSlug orders Blog by slug.
+	BlogOrderFieldSlug = &BlogOrderField{
+		field: blog.FieldSlug,
+		toCursor: func(b *Blog) Cursor {
+			return Cursor{
+				ID:    b.ID,
+				Value: b.Slug,
+			}
+		},
+	}
+	// BlogOrderFieldDescription orders Blog by description.
+	BlogOrderFieldDescription = &BlogOrderField{
+		field: blog.FieldDescription,
+		toCursor: func(b *Blog) Cursor {
+			return Cursor{
+				ID:    b.ID,
+				Value: b.Description,
+			}
+		},
+	}
+	// BlogOrderFieldContent orders Blog by content.
+	BlogOrderFieldContent = &BlogOrderField{
+		field: blog.FieldContent,
+		toCursor: func(b *Blog) Cursor {
+			return Cursor{
+				ID:    b.ID,
+				Value: b.Content,
+			}
+		},
+	}
+	// BlogOrderFieldCreatedAt orders Blog by created_at.
+	BlogOrderFieldCreatedAt = &BlogOrderField{
+		field: blog.FieldCreatedAt,
+		toCursor: func(b *Blog) Cursor {
+			return Cursor{
+				ID:    b.ID,
+				Value: b.CreatedAt,
+			}
+		},
+	}
+	// BlogOrderFieldUpdatedAt orders Blog by updated_at.
+	BlogOrderFieldUpdatedAt = &BlogOrderField{
+		field: blog.FieldUpdatedAt,
+		toCursor: func(b *Blog) Cursor {
+			return Cursor{
+				ID:    b.ID,
+				Value: b.UpdatedAt,
+			}
+		},
+	}
+	// BlogOrderFieldPublishedAt orders Blog by published_at.
+	BlogOrderFieldPublishedAt = &BlogOrderField{
+		field: blog.FieldPublishedAt,
+		toCursor: func(b *Blog) Cursor {
+			return Cursor{
+				ID:    b.ID,
+				Value: b.PublishedAt,
+			}
+		},
+	}
 )
 
 // String implement fmt.Stringer interface.
@@ -457,6 +517,18 @@ func (f BlogOrderField) String() string {
 	switch f.field {
 	case blog.FieldTitle:
 		str = "TITLE"
+	case blog.FieldSlug:
+		str = "SLUG"
+	case blog.FieldDescription:
+		str = "DESCRIPTION"
+	case blog.FieldContent:
+		str = "CONTENT"
+	case blog.FieldCreatedAt:
+		str = "CREATED_AT"
+	case blog.FieldUpdatedAt:
+		str = "UPDATED_AT"
+	case blog.FieldPublishedAt:
+		str = "PUBLISHED_AT"
 	}
 	return str
 }
@@ -475,6 +547,18 @@ func (f *BlogOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "TITLE":
 		*f = *BlogOrderFieldTitle
+	case "SLUG":
+		*f = *BlogOrderFieldSlug
+	case "DESCRIPTION":
+		*f = *BlogOrderFieldDescription
+	case "CONTENT":
+		*f = *BlogOrderFieldContent
+	case "CREATED_AT":
+		*f = *BlogOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *BlogOrderFieldUpdatedAt
+	case "PUBLISHED_AT":
+		*f = *BlogOrderFieldPublishedAt
 	default:
 		return fmt.Errorf("%s is not a valid BlogOrderField", str)
 	}

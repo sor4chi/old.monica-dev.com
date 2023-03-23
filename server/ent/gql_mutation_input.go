@@ -2,14 +2,36 @@
 
 package ent
 
+import (
+	"time"
+)
+
 // CreateBlogInput represents a mutation input for creating blogs.
 type CreateBlogInput struct {
-	Title string
+	Title       string
+	Slug        string
+	Description string
+	Content     string
+	CreatedAt   *time.Time
+	UpdatedAt   *time.Time
+	PublishedAt *time.Time
 }
 
 // Mutate applies the CreateBlogInput on the BlogMutation builder.
 func (i *CreateBlogInput) Mutate(m *BlogMutation) {
 	m.SetTitle(i.Title)
+	m.SetSlug(i.Slug)
+	m.SetDescription(i.Description)
+	m.SetContent(i.Content)
+	if v := i.CreatedAt; v != nil {
+		m.SetCreatedAt(*v)
+	}
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if v := i.PublishedAt; v != nil {
+		m.SetPublishedAt(*v)
+	}
 }
 
 // SetInput applies the change-set in the CreateBlogInput on the BlogCreate builder.

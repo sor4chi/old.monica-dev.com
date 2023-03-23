@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -33,6 +34,50 @@ func (bu *BlogUpdate) SetTitle(s string) *BlogUpdate {
 	return bu
 }
 
+// SetSlug sets the "slug" field.
+func (bu *BlogUpdate) SetSlug(s string) *BlogUpdate {
+	bu.mutation.SetSlug(s)
+	return bu
+}
+
+// SetDescription sets the "description" field.
+func (bu *BlogUpdate) SetDescription(s string) *BlogUpdate {
+	bu.mutation.SetDescription(s)
+	return bu
+}
+
+// SetContent sets the "content" field.
+func (bu *BlogUpdate) SetContent(s string) *BlogUpdate {
+	bu.mutation.SetContent(s)
+	return bu
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (bu *BlogUpdate) SetUpdatedAt(t time.Time) *BlogUpdate {
+	bu.mutation.SetUpdatedAt(t)
+	return bu
+}
+
+// SetPublishedAt sets the "published_at" field.
+func (bu *BlogUpdate) SetPublishedAt(t time.Time) *BlogUpdate {
+	bu.mutation.SetPublishedAt(t)
+	return bu
+}
+
+// SetNillablePublishedAt sets the "published_at" field if the given value is not nil.
+func (bu *BlogUpdate) SetNillablePublishedAt(t *time.Time) *BlogUpdate {
+	if t != nil {
+		bu.SetPublishedAt(*t)
+	}
+	return bu
+}
+
+// ClearPublishedAt clears the value of the "published_at" field.
+func (bu *BlogUpdate) ClearPublishedAt() *BlogUpdate {
+	bu.mutation.ClearPublishedAt()
+	return bu
+}
+
 // Mutation returns the BlogMutation object of the builder.
 func (bu *BlogUpdate) Mutation() *BlogMutation {
 	return bu.mutation
@@ -40,6 +85,7 @@ func (bu *BlogUpdate) Mutation() *BlogMutation {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (bu *BlogUpdate) Save(ctx context.Context) (int, error) {
+	bu.defaults()
 	return withHooks[int, BlogMutation](ctx, bu.sqlSave, bu.mutation, bu.hooks)
 }
 
@@ -65,11 +111,34 @@ func (bu *BlogUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (bu *BlogUpdate) defaults() {
+	if _, ok := bu.mutation.UpdatedAt(); !ok {
+		v := blog.UpdateDefaultUpdatedAt()
+		bu.mutation.SetUpdatedAt(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (bu *BlogUpdate) check() error {
 	if v, ok := bu.mutation.Title(); ok {
 		if err := blog.TitleValidator(v); err != nil {
 			return &ValidationError{Name: "title", err: fmt.Errorf(`ent: validator failed for field "Blog.title": %w`, err)}
+		}
+	}
+	if v, ok := bu.mutation.Slug(); ok {
+		if err := blog.SlugValidator(v); err != nil {
+			return &ValidationError{Name: "slug", err: fmt.Errorf(`ent: validator failed for field "Blog.slug": %w`, err)}
+		}
+	}
+	if v, ok := bu.mutation.Description(); ok {
+		if err := blog.DescriptionValidator(v); err != nil {
+			return &ValidationError{Name: "description", err: fmt.Errorf(`ent: validator failed for field "Blog.description": %w`, err)}
+		}
+	}
+	if v, ok := bu.mutation.Content(); ok {
+		if err := blog.ContentValidator(v); err != nil {
+			return &ValidationError{Name: "content", err: fmt.Errorf(`ent: validator failed for field "Blog.content": %w`, err)}
 		}
 	}
 	return nil
@@ -89,6 +158,24 @@ func (bu *BlogUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := bu.mutation.Title(); ok {
 		_spec.SetField(blog.FieldTitle, field.TypeString, value)
+	}
+	if value, ok := bu.mutation.Slug(); ok {
+		_spec.SetField(blog.FieldSlug, field.TypeString, value)
+	}
+	if value, ok := bu.mutation.Description(); ok {
+		_spec.SetField(blog.FieldDescription, field.TypeString, value)
+	}
+	if value, ok := bu.mutation.Content(); ok {
+		_spec.SetField(blog.FieldContent, field.TypeString, value)
+	}
+	if value, ok := bu.mutation.UpdatedAt(); ok {
+		_spec.SetField(blog.FieldUpdatedAt, field.TypeTime, value)
+	}
+	if value, ok := bu.mutation.PublishedAt(); ok {
+		_spec.SetField(blog.FieldPublishedAt, field.TypeTime, value)
+	}
+	if bu.mutation.PublishedAtCleared() {
+		_spec.ClearField(blog.FieldPublishedAt, field.TypeTime)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, bu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -116,6 +203,50 @@ func (buo *BlogUpdateOne) SetTitle(s string) *BlogUpdateOne {
 	return buo
 }
 
+// SetSlug sets the "slug" field.
+func (buo *BlogUpdateOne) SetSlug(s string) *BlogUpdateOne {
+	buo.mutation.SetSlug(s)
+	return buo
+}
+
+// SetDescription sets the "description" field.
+func (buo *BlogUpdateOne) SetDescription(s string) *BlogUpdateOne {
+	buo.mutation.SetDescription(s)
+	return buo
+}
+
+// SetContent sets the "content" field.
+func (buo *BlogUpdateOne) SetContent(s string) *BlogUpdateOne {
+	buo.mutation.SetContent(s)
+	return buo
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (buo *BlogUpdateOne) SetUpdatedAt(t time.Time) *BlogUpdateOne {
+	buo.mutation.SetUpdatedAt(t)
+	return buo
+}
+
+// SetPublishedAt sets the "published_at" field.
+func (buo *BlogUpdateOne) SetPublishedAt(t time.Time) *BlogUpdateOne {
+	buo.mutation.SetPublishedAt(t)
+	return buo
+}
+
+// SetNillablePublishedAt sets the "published_at" field if the given value is not nil.
+func (buo *BlogUpdateOne) SetNillablePublishedAt(t *time.Time) *BlogUpdateOne {
+	if t != nil {
+		buo.SetPublishedAt(*t)
+	}
+	return buo
+}
+
+// ClearPublishedAt clears the value of the "published_at" field.
+func (buo *BlogUpdateOne) ClearPublishedAt() *BlogUpdateOne {
+	buo.mutation.ClearPublishedAt()
+	return buo
+}
+
 // Mutation returns the BlogMutation object of the builder.
 func (buo *BlogUpdateOne) Mutation() *BlogMutation {
 	return buo.mutation
@@ -136,6 +267,7 @@ func (buo *BlogUpdateOne) Select(field string, fields ...string) *BlogUpdateOne 
 
 // Save executes the query and returns the updated Blog entity.
 func (buo *BlogUpdateOne) Save(ctx context.Context) (*Blog, error) {
+	buo.defaults()
 	return withHooks[*Blog, BlogMutation](ctx, buo.sqlSave, buo.mutation, buo.hooks)
 }
 
@@ -161,11 +293,34 @@ func (buo *BlogUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (buo *BlogUpdateOne) defaults() {
+	if _, ok := buo.mutation.UpdatedAt(); !ok {
+		v := blog.UpdateDefaultUpdatedAt()
+		buo.mutation.SetUpdatedAt(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (buo *BlogUpdateOne) check() error {
 	if v, ok := buo.mutation.Title(); ok {
 		if err := blog.TitleValidator(v); err != nil {
 			return &ValidationError{Name: "title", err: fmt.Errorf(`ent: validator failed for field "Blog.title": %w`, err)}
+		}
+	}
+	if v, ok := buo.mutation.Slug(); ok {
+		if err := blog.SlugValidator(v); err != nil {
+			return &ValidationError{Name: "slug", err: fmt.Errorf(`ent: validator failed for field "Blog.slug": %w`, err)}
+		}
+	}
+	if v, ok := buo.mutation.Description(); ok {
+		if err := blog.DescriptionValidator(v); err != nil {
+			return &ValidationError{Name: "description", err: fmt.Errorf(`ent: validator failed for field "Blog.description": %w`, err)}
+		}
+	}
+	if v, ok := buo.mutation.Content(); ok {
+		if err := blog.ContentValidator(v); err != nil {
+			return &ValidationError{Name: "content", err: fmt.Errorf(`ent: validator failed for field "Blog.content": %w`, err)}
 		}
 	}
 	return nil
@@ -202,6 +357,24 @@ func (buo *BlogUpdateOne) sqlSave(ctx context.Context) (_node *Blog, err error) 
 	}
 	if value, ok := buo.mutation.Title(); ok {
 		_spec.SetField(blog.FieldTitle, field.TypeString, value)
+	}
+	if value, ok := buo.mutation.Slug(); ok {
+		_spec.SetField(blog.FieldSlug, field.TypeString, value)
+	}
+	if value, ok := buo.mutation.Description(); ok {
+		_spec.SetField(blog.FieldDescription, field.TypeString, value)
+	}
+	if value, ok := buo.mutation.Content(); ok {
+		_spec.SetField(blog.FieldContent, field.TypeString, value)
+	}
+	if value, ok := buo.mutation.UpdatedAt(); ok {
+		_spec.SetField(blog.FieldUpdatedAt, field.TypeTime, value)
+	}
+	if value, ok := buo.mutation.PublishedAt(); ok {
+		_spec.SetField(blog.FieldPublishedAt, field.TypeTime, value)
+	}
+	if buo.mutation.PublishedAtCleared() {
+		_spec.ClearField(blog.FieldPublishedAt, field.TypeTime)
 	}
 	_node = &Blog{config: buo.config}
 	_spec.Assign = _node.assignValues

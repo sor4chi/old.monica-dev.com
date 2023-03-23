@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -25,6 +26,66 @@ func (bc *BlogCreate) SetTitle(s string) *BlogCreate {
 	return bc
 }
 
+// SetSlug sets the "slug" field.
+func (bc *BlogCreate) SetSlug(s string) *BlogCreate {
+	bc.mutation.SetSlug(s)
+	return bc
+}
+
+// SetDescription sets the "description" field.
+func (bc *BlogCreate) SetDescription(s string) *BlogCreate {
+	bc.mutation.SetDescription(s)
+	return bc
+}
+
+// SetContent sets the "content" field.
+func (bc *BlogCreate) SetContent(s string) *BlogCreate {
+	bc.mutation.SetContent(s)
+	return bc
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (bc *BlogCreate) SetCreatedAt(t time.Time) *BlogCreate {
+	bc.mutation.SetCreatedAt(t)
+	return bc
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (bc *BlogCreate) SetNillableCreatedAt(t *time.Time) *BlogCreate {
+	if t != nil {
+		bc.SetCreatedAt(*t)
+	}
+	return bc
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (bc *BlogCreate) SetUpdatedAt(t time.Time) *BlogCreate {
+	bc.mutation.SetUpdatedAt(t)
+	return bc
+}
+
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
+func (bc *BlogCreate) SetNillableUpdatedAt(t *time.Time) *BlogCreate {
+	if t != nil {
+		bc.SetUpdatedAt(*t)
+	}
+	return bc
+}
+
+// SetPublishedAt sets the "published_at" field.
+func (bc *BlogCreate) SetPublishedAt(t time.Time) *BlogCreate {
+	bc.mutation.SetPublishedAt(t)
+	return bc
+}
+
+// SetNillablePublishedAt sets the "published_at" field if the given value is not nil.
+func (bc *BlogCreate) SetNillablePublishedAt(t *time.Time) *BlogCreate {
+	if t != nil {
+		bc.SetPublishedAt(*t)
+	}
+	return bc
+}
+
 // Mutation returns the BlogMutation object of the builder.
 func (bc *BlogCreate) Mutation() *BlogMutation {
 	return bc.mutation
@@ -32,6 +93,7 @@ func (bc *BlogCreate) Mutation() *BlogMutation {
 
 // Save creates the Blog in the database.
 func (bc *BlogCreate) Save(ctx context.Context) (*Blog, error) {
+	bc.defaults()
 	return withHooks[*Blog, BlogMutation](ctx, bc.sqlSave, bc.mutation, bc.hooks)
 }
 
@@ -57,6 +119,18 @@ func (bc *BlogCreate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (bc *BlogCreate) defaults() {
+	if _, ok := bc.mutation.CreatedAt(); !ok {
+		v := blog.DefaultCreatedAt()
+		bc.mutation.SetCreatedAt(v)
+	}
+	if _, ok := bc.mutation.UpdatedAt(); !ok {
+		v := blog.DefaultUpdatedAt()
+		bc.mutation.SetUpdatedAt(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (bc *BlogCreate) check() error {
 	if _, ok := bc.mutation.Title(); !ok {
@@ -66,6 +140,36 @@ func (bc *BlogCreate) check() error {
 		if err := blog.TitleValidator(v); err != nil {
 			return &ValidationError{Name: "title", err: fmt.Errorf(`ent: validator failed for field "Blog.title": %w`, err)}
 		}
+	}
+	if _, ok := bc.mutation.Slug(); !ok {
+		return &ValidationError{Name: "slug", err: errors.New(`ent: missing required field "Blog.slug"`)}
+	}
+	if v, ok := bc.mutation.Slug(); ok {
+		if err := blog.SlugValidator(v); err != nil {
+			return &ValidationError{Name: "slug", err: fmt.Errorf(`ent: validator failed for field "Blog.slug": %w`, err)}
+		}
+	}
+	if _, ok := bc.mutation.Description(); !ok {
+		return &ValidationError{Name: "description", err: errors.New(`ent: missing required field "Blog.description"`)}
+	}
+	if v, ok := bc.mutation.Description(); ok {
+		if err := blog.DescriptionValidator(v); err != nil {
+			return &ValidationError{Name: "description", err: fmt.Errorf(`ent: validator failed for field "Blog.description": %w`, err)}
+		}
+	}
+	if _, ok := bc.mutation.Content(); !ok {
+		return &ValidationError{Name: "content", err: errors.New(`ent: missing required field "Blog.content"`)}
+	}
+	if v, ok := bc.mutation.Content(); ok {
+		if err := blog.ContentValidator(v); err != nil {
+			return &ValidationError{Name: "content", err: fmt.Errorf(`ent: validator failed for field "Blog.content": %w`, err)}
+		}
+	}
+	if _, ok := bc.mutation.CreatedAt(); !ok {
+		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "Blog.created_at"`)}
+	}
+	if _, ok := bc.mutation.UpdatedAt(); !ok {
+		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "Blog.updated_at"`)}
 	}
 	return nil
 }
@@ -97,6 +201,30 @@ func (bc *BlogCreate) createSpec() (*Blog, *sqlgraph.CreateSpec) {
 		_spec.SetField(blog.FieldTitle, field.TypeString, value)
 		_node.Title = value
 	}
+	if value, ok := bc.mutation.Slug(); ok {
+		_spec.SetField(blog.FieldSlug, field.TypeString, value)
+		_node.Slug = value
+	}
+	if value, ok := bc.mutation.Description(); ok {
+		_spec.SetField(blog.FieldDescription, field.TypeString, value)
+		_node.Description = value
+	}
+	if value, ok := bc.mutation.Content(); ok {
+		_spec.SetField(blog.FieldContent, field.TypeString, value)
+		_node.Content = value
+	}
+	if value, ok := bc.mutation.CreatedAt(); ok {
+		_spec.SetField(blog.FieldCreatedAt, field.TypeTime, value)
+		_node.CreatedAt = value
+	}
+	if value, ok := bc.mutation.UpdatedAt(); ok {
+		_spec.SetField(blog.FieldUpdatedAt, field.TypeTime, value)
+		_node.UpdatedAt = value
+	}
+	if value, ok := bc.mutation.PublishedAt(); ok {
+		_spec.SetField(blog.FieldPublishedAt, field.TypeTime, value)
+		_node.PublishedAt = &value
+	}
 	return _node, _spec
 }
 
@@ -114,6 +242,7 @@ func (bcb *BlogCreateBulk) Save(ctx context.Context) ([]*Blog, error) {
 	for i := range bcb.builders {
 		func(i int, root context.Context) {
 			builder := bcb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*BlogMutation)
 				if !ok {

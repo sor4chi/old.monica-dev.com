@@ -3,6 +3,8 @@
 package ent
 
 import (
+	"time"
+
 	"github.com/sor4chi/portfolio-blog/server/ent/blog"
 	"github.com/sor4chi/portfolio-blog/server/ent/schema"
 )
@@ -16,5 +18,70 @@ func init() {
 	// blogDescTitle is the schema descriptor for title field.
 	blogDescTitle := blogFields[0].Descriptor()
 	// blog.TitleValidator is a validator for the "title" field. It is called by the builders before save.
-	blog.TitleValidator = blogDescTitle.Validators[0].(func(string) error)
+	blog.TitleValidator = func() func(string) error {
+		validators := blogDescTitle.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(title string) error {
+			for _, fn := range fns {
+				if err := fn(title); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// blogDescSlug is the schema descriptor for slug field.
+	blogDescSlug := blogFields[1].Descriptor()
+	// blog.SlugValidator is a validator for the "slug" field. It is called by the builders before save.
+	blog.SlugValidator = func() func(string) error {
+		validators := blogDescSlug.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+			validators[2].(func(string) error),
+		}
+		return func(slug string) error {
+			for _, fn := range fns {
+				if err := fn(slug); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// blogDescDescription is the schema descriptor for description field.
+	blogDescDescription := blogFields[2].Descriptor()
+	// blog.DescriptionValidator is a validator for the "description" field. It is called by the builders before save.
+	blog.DescriptionValidator = func() func(string) error {
+		validators := blogDescDescription.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(description string) error {
+			for _, fn := range fns {
+				if err := fn(description); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// blogDescContent is the schema descriptor for content field.
+	blogDescContent := blogFields[3].Descriptor()
+	// blog.ContentValidator is a validator for the "content" field. It is called by the builders before save.
+	blog.ContentValidator = blogDescContent.Validators[0].(func(string) error)
+	// blogDescCreatedAt is the schema descriptor for created_at field.
+	blogDescCreatedAt := blogFields[4].Descriptor()
+	// blog.DefaultCreatedAt holds the default value on creation for the created_at field.
+	blog.DefaultCreatedAt = blogDescCreatedAt.Default.(func() time.Time)
+	// blogDescUpdatedAt is the schema descriptor for updated_at field.
+	blogDescUpdatedAt := blogFields[5].Descriptor()
+	// blog.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	blog.DefaultUpdatedAt = blogDescUpdatedAt.Default.(func() time.Time)
+	// blog.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	blog.UpdateDefaultUpdatedAt = blogDescUpdatedAt.UpdateDefault.(func() time.Time)
 }

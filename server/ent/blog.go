@@ -5,6 +5,7 @@ package ent
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/sor4chi/portfolio-blog/server/ent/blog"
@@ -15,8 +16,20 @@ type Blog struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// Title holds the value of the "title" field.
+	// ブログのタイトル
 	Title string `json:"title,omitempty"`
+	// ブログのスラッグ、URLのパラメータとして使用
+	Slug string `json:"slug,omitempty"`
+	// ブログの説明
+	Description string `json:"description,omitempty"`
+	// ブログの本文
+	Content string `json:"content,omitempty"`
+	// ブログの作成日時
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// ブログの更新日時
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// ブログの公開日時、公開されていない場合はnull
+	PublishedAt *time.Time `json:"published_at,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -26,8 +39,10 @@ func (*Blog) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case blog.FieldID:
 			values[i] = new(sql.NullInt64)
-		case blog.FieldTitle:
+		case blog.FieldTitle, blog.FieldSlug, blog.FieldDescription, blog.FieldContent:
 			values[i] = new(sql.NullString)
+		case blog.FieldCreatedAt, blog.FieldUpdatedAt, blog.FieldPublishedAt:
+			values[i] = new(sql.NullTime)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Blog", columns[i])
 		}
@@ -54,6 +69,43 @@ func (b *Blog) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field title", values[i])
 			} else if value.Valid {
 				b.Title = value.String
+			}
+		case blog.FieldSlug:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field slug", values[i])
+			} else if value.Valid {
+				b.Slug = value.String
+			}
+		case blog.FieldDescription:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field description", values[i])
+			} else if value.Valid {
+				b.Description = value.String
+			}
+		case blog.FieldContent:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field content", values[i])
+			} else if value.Valid {
+				b.Content = value.String
+			}
+		case blog.FieldCreatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
+			} else if value.Valid {
+				b.CreatedAt = value.Time
+			}
+		case blog.FieldUpdatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
+			} else if value.Valid {
+				b.UpdatedAt = value.Time
+			}
+		case blog.FieldPublishedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field published_at", values[i])
+			} else if value.Valid {
+				b.PublishedAt = new(time.Time)
+				*b.PublishedAt = value.Time
 			}
 		}
 	}
@@ -85,6 +137,26 @@ func (b *Blog) String() string {
 	builder.WriteString(fmt.Sprintf("id=%v, ", b.ID))
 	builder.WriteString("title=")
 	builder.WriteString(b.Title)
+	builder.WriteString(", ")
+	builder.WriteString("slug=")
+	builder.WriteString(b.Slug)
+	builder.WriteString(", ")
+	builder.WriteString("description=")
+	builder.WriteString(b.Description)
+	builder.WriteString(", ")
+	builder.WriteString("content=")
+	builder.WriteString(b.Content)
+	builder.WriteString(", ")
+	builder.WriteString("created_at=")
+	builder.WriteString(b.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("updated_at=")
+	builder.WriteString(b.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	if v := b.PublishedAt; v != nil {
+		builder.WriteString("published_at=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
 	builder.WriteByte(')')
 	return builder.String()
 }
