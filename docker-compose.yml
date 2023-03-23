@@ -1,15 +1,28 @@
-version: '3'
+version: "3"
 
 services:
   mysql:
     image: mysql:8.0
     ports:
-      - '3306:3306'
+      - "3306:3306"
     env_file:
       - .env.development
     volumes:
       - mysql_data:/var/lib/mysql
       - ./docker/mysql:/docker-entrypoint-initdb.d
+
+  go:
+    image: golang:1.20
+    ports:
+      - "8081:8081"
+    env_file:
+      - .env.development
+    volumes:
+      - ./server:/app
+    depends_on:
+      - mysql
+    working_dir: /app
+    command: go run ./cmd
 
 volumes:
   mysql_data:
