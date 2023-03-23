@@ -4,7 +4,7 @@ CREATE TABLE `Blog` (
     `slug` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NOT NULL,
-    `content` VARCHAR(191) NOT NULL,
+    `content` TEXT NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `publishedAt` DATETIME(3) NULL,
@@ -25,15 +25,10 @@ CREATE TABLE `Tag` (
 
 -- CreateTable
 CREATE TABLE `BlogTag` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `blogId` INTEGER NOT NULL,
     `tagId` INTEGER NOT NULL,
 
-    PRIMARY KEY (`id`)
+    INDEX `BlogTag_tagId_idx`(`tagId`),
+    INDEX `BlogTag_blogId_idx`(`blogId`),
+    PRIMARY KEY (`blogId`, `tagId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- AddForeignKey
-ALTER TABLE `BlogTag` ADD CONSTRAINT `BlogTag_blogId_fkey` FOREIGN KEY (`blogId`) REFERENCES `Blog`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `BlogTag` ADD CONSTRAINT `BlogTag_tagId_fkey` FOREIGN KEY (`tagId`) REFERENCES `Tag`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

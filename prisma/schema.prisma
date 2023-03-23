@@ -31,12 +31,12 @@ model Tag {
 }
 
 model BlogTag {
-  id     Int  @id @default(autoincrement())
   blog   Blog @relation(fields: [blogId], references: [id])
   blogId Int
   tag    Tag  @relation(fields: [tagId], references: [id])
   tagId  Int
 
-  @@index([blogId])
+  @@id([blogId, tagId])
   @@index([tagId])
+  @@index([blogId])
 }
