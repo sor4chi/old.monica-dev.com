@@ -23,7 +23,7 @@ func (r *queryResolver) Nodes(ctx context.Context, ids []int) ([]ent.Noder, erro
 
 // Blogs is the resolver for the blogs field.
 func (r *queryResolver) Blogs(ctx context.Context) ([]*ent.Blog, error) {
-	panic(fmt.Errorf("not implemented: Blogs - blogs"))
+	return r.client.Blog.Query().All(ctx)
 }
 
 // Query returns QueryResolver implementation.
