@@ -1,0 +1,3 @@
+type Mutation {
+  createBlog(input: CreateBlogInput!): Blog
+}
