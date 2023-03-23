@@ -8,8 +8,11 @@ require (
 	github.com/99designs/gqlgen v0.17.27
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/vektah/gqlparser/v2 v2.5.1
+	github.com/vmihailenco/msgpack/v5 v5.0.0-beta.9
 	golang.org/x/sync v0.1.0
 )
+
+require github.com/vmihailenco/tagparser v0.1.2 // indirect
 
 require (
 	ariga.io/atlas v0.9.2-0.20230303073438-03a4779a6338 // indirect

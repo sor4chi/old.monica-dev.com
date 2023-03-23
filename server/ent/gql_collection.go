@@ -5,10 +5,8 @@ package ent
 import (
 	"context"
 
-	"entgo.io/contrib/entgql"
 	"entgo.io/ent/dialect/sql"
 	"github.com/99designs/gqlgen/graphql"
-	"github.com/sor4chi/portfolio-blog/server/ent/blog"
 )
 
 // CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
@@ -23,27 +21,8 @@ func (b *BlogQuery) CollectFields(ctx context.Context, satisfies ...string) (*Bl
 	return b, nil
 }
 
-func (b *BlogQuery) collectField(ctx context.Context, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+func (b *BlogQuery) collectField(ctx context.Context, op *graphql.OperationContext, field graphql.CollectedField, path []string, satisfies ...string) error {
 	path = append([]string(nil), path...)
-	var (
-		unknownSeen    bool
-		fieldSeen      = make(map[string]struct{}, len(blog.Columns))
-		selectedFields = []string{blog.FieldID}
-	)
-	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
-		switch field.Name {
-		case "title":
-			if _, ok := fieldSeen[blog.FieldTitle]; !ok {
-				selectedFields = append(selectedFields, blog.FieldTitle)
-				fieldSeen[blog.FieldTitle] = struct{}{}
-			}
-		default:
-			unknownSeen = true
-		}
-	}
-	if !unknownSeen {
-		b.Select(selectedFields...)
-	}
 	return nil
 }
 
@@ -75,7 +54,7 @@ func newBlogPaginateArgs(rv map[string]interface{}) *blogPaginateArgs {
 		case map[string]interface{}:
 			var (
 				err1, err2 error
-				order      = &BlogOrder{Field: &BlogOrderField{}, Direction: entgql.OrderDirectionAsc}
+				order      = &BlogOrder{Field: &BlogOrderField{}}
 			)
 			if d, ok := v[directionField]; ok {
 				err1 = order.Direction.UnmarshalGQL(d)

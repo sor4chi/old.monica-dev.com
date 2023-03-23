@@ -4,31 +4,175 @@ package ent
 
 import (
 	"context"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"io"
 	"strconv"
+	"strings"
 
-	"entgo.io/contrib/entgql"
 	"entgo.io/ent/dialect/sql"
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/errcode"
 	"github.com/sor4chi/portfolio-blog/server/ent/blog"
 	"github.com/vektah/gqlparser/v2/gqlerror"
+	"github.com/vmihailenco/msgpack/v5"
 )
 
-// Common entgql types.
-type (
-	Cursor         = entgql.Cursor[int]
-	PageInfo       = entgql.PageInfo[int]
-	OrderDirection = entgql.OrderDirection
+// OrderDirection defines the directions in which to order a list of items.
+type OrderDirection string
+
+const (
+	// OrderDirectionAsc specifies an ascending order.
+	OrderDirectionAsc OrderDirection = "ASC"
+	// OrderDirectionDesc specifies a descending order.
+	OrderDirectionDesc OrderDirection = "DESC"
 )
 
-func orderFunc(o OrderDirection, field string) OrderFunc {
-	if o == entgql.OrderDirectionDesc {
+// Validate the order direction value.
+func (o OrderDirection) Validate() error {
+	if o != OrderDirectionAsc && o != OrderDirectionDesc {
+		return fmt.Errorf("%s is not a valid OrderDirection", o)
+	}
+	return nil
+}
+
+// String implements fmt.Stringer interface.
+func (o OrderDirection) String() string {
+	return string(o)
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (o OrderDirection) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(o.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (o *OrderDirection) UnmarshalGQL(val interface{}) error {
+	str, ok := val.(string)
+	if !ok {
+		return fmt.Errorf("order direction %T must be a string", val)
+	}
+	*o = OrderDirection(str)
+	return o.Validate()
+}
+
+func (o OrderDirection) reverse() OrderDirection {
+	if o == OrderDirectionDesc {
+		return OrderDirectionAsc
+	}
+	return OrderDirectionDesc
+}
+
+func (o OrderDirection) orderFunc(field string) OrderFunc {
+	if o == OrderDirectionDesc {
 		return Desc(field)
 	}
 	return Asc(field)
+}
+
+func cursorsToPredicates(direction OrderDirection, after, before *Cursor, field, idField string) []func(s *sql.Selector) {
+	var predicates []func(s *sql.Selector)
+	if after != nil {
+		if after.Value != nil {
+			var predicate func([]string, ...interface{}) *sql.Predicate
+			if direction == OrderDirectionAsc {
+				predicate = sql.CompositeGT
+			} else {
+				predicate = sql.CompositeLT
+			}
+			predicates = append(predicates, func(s *sql.Selector) {
+				s.Where(predicate(
+					s.Columns(field, idField),
+					after.Value, after.ID,
+				))
+			})
+		} else {
+			var predicate func(string, interface{}) *sql.Predicate
+			if direction == OrderDirectionAsc {
+				predicate = sql.GT
+			} else {
+				predicate = sql.LT
+			}
+			predicates = append(predicates, func(s *sql.Selector) {
+				s.Where(predicate(
+					s.C(idField),
+					after.ID,
+				))
+			})
+		}
+	}
+	if before != nil {
+		if before.Value != nil {
+			var predicate func([]string, ...interface{}) *sql.Predicate
+			if direction == OrderDirectionAsc {
+				predicate = sql.CompositeLT
+			} else {
+				predicate = sql.CompositeGT
+			}
+			predicates = append(predicates, func(s *sql.Selector) {
+				s.Where(predicate(
+					s.Columns(field, idField),
+					before.Value, before.ID,
+				))
+			})
+		} else {
+			var predicate func(string, interface{}) *sql.Predicate
+			if direction == OrderDirectionAsc {
+				predicate = sql.LT
+			} else {
+				predicate = sql.GT
+			}
+			predicates = append(predicates, func(s *sql.Selector) {
+				s.Where(predicate(
+					s.C(idField),
+					before.ID,
+				))
+			})
+		}
+	}
+	return predicates
+}
+
+// PageInfo of a connection type.
+type PageInfo struct {
+	HasNextPage     bool    `json:"hasNextPage"`
+	HasPreviousPage bool    `json:"hasPreviousPage"`
+	StartCursor     *Cursor `json:"startCursor"`
+	EndCursor       *Cursor `json:"endCursor"`
+}
+
+// Cursor of an edge type.
+type Cursor struct {
+	ID    int   `msgpack:"i"`
+	Value Value `msgpack:"v,omitempty"`
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (c Cursor) MarshalGQL(w io.Writer) {
+	quote := []byte{'"'}
+	w.Write(quote)
+	defer w.Write(quote)
+	wc := base64.NewEncoder(base64.RawStdEncoding, w)
+	defer wc.Close()
+	_ = msgpack.NewEncoder(wc).Encode(c)
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (c *Cursor) UnmarshalGQL(v interface{}) error {
+	s, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("%T is not a string", v)
+	}
+	if err := msgpack.NewDecoder(
+		base64.NewDecoder(
+			base64.RawStdEncoding,
+			strings.NewReader(s),
+		),
+	).Decode(c); err != nil {
+		return fmt.Errorf("cannot decode cursor: %w", err)
+	}
+	return nil
 }
 
 const errInvalidPagination = "INVALID_PAGINATION"
@@ -181,13 +325,12 @@ func WithBlogFilter(filter func(*BlogQuery) (*BlogQuery, error)) BlogPaginateOpt
 }
 
 type blogPager struct {
-	reverse bool
-	order   *BlogOrder
-	filter  func(*BlogQuery) (*BlogQuery, error)
+	order  *BlogOrder
+	filter func(*BlogQuery) (*BlogQuery, error)
 }
 
-func newBlogPager(opts []BlogPaginateOption, reverse bool) (*blogPager, error) {
-	pager := &blogPager{reverse: reverse}
+func newBlogPager(opts []BlogPaginateOption) (*blogPager, error) {
+	pager := &blogPager{}
 	for _, opt := range opts {
 		if err := opt(pager); err != nil {
 			return nil, err
@@ -210,33 +353,32 @@ func (p *blogPager) toCursor(b *Blog) Cursor {
 	return p.order.Field.toCursor(b)
 }
 
-func (p *blogPager) applyCursors(query *BlogQuery, after, before *Cursor) (*BlogQuery, error) {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
-	}
-	for _, predicate := range entgql.CursorsPredicate(after, before, DefaultBlogOrder.Field.field, p.order.Field.field, direction) {
+func (p *blogPager) applyCursors(query *BlogQuery, after, before *Cursor) *BlogQuery {
+	for _, predicate := range cursorsToPredicates(
+		p.order.Direction, after, before,
+		p.order.Field.field, DefaultBlogOrder.Field.field,
+	) {
 		query = query.Where(predicate)
-	}
-	return query, nil
-}
-
-func (p *blogPager) applyOrder(query *BlogQuery) *BlogQuery {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
-	}
-	query = query.Order(orderFunc(direction, p.order.Field.field))
-	if p.order.Field != DefaultBlogOrder.Field {
-		query = query.Order(orderFunc(direction, DefaultBlogOrder.Field.field))
 	}
 	return query
 }
 
-func (p *blogPager) orderExpr() sql.Querier {
+func (p *blogPager) applyOrder(query *BlogQuery, reverse bool) *BlogQuery {
 	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
+	if reverse {
+		direction = direction.reverse()
+	}
+	query = query.Order(direction.orderFunc(p.order.Field.field))
+	if p.order.Field != DefaultBlogOrder.Field {
+		query = query.Order(direction.orderFunc(DefaultBlogOrder.Field.field))
+	}
+	return query
+}
+
+func (p *blogPager) orderExpr(reverse bool) sql.Querier {
+	direction := p.order.Direction
+	if reverse {
+		direction = direction.reverse()
 	}
 	return sql.ExprFunc(func(b *sql.Builder) {
 		b.Ident(p.order.Field.field).Pad().WriteString(string(direction))
@@ -254,7 +396,7 @@ func (b *BlogQuery) Paginate(
 	if err := validateFirstLast(first, last); err != nil {
 		return nil, err
 	}
-	pager, err := newBlogPager(opts, last != nil)
+	pager, err := newBlogPager(opts)
 	if err != nil {
 		return nil, err
 	}
@@ -277,10 +419,8 @@ func (b *BlogQuery) Paginate(
 		return conn, nil
 	}
 
-	if b, err = pager.applyCursors(b, after, before); err != nil {
-		return nil, err
-	}
-	b = pager.applyOrder(b)
+	b = pager.applyCursors(b, after, before)
+	b = pager.applyOrder(b, last != nil)
 	if limit := paginateLimit(first, last); limit != 0 {
 		b.Limit(limit)
 	}
@@ -355,7 +495,7 @@ type BlogOrder struct {
 
 // DefaultBlogOrder is the default ordering of Blog.
 var DefaultBlogOrder = &BlogOrder{
-	Direction: entgql.OrderDirectionAsc,
+	Direction: OrderDirectionAsc,
 	Field: &BlogOrderField{
 		field: blog.FieldID,
 		toCursor: func(b *Blog) Cursor {
