@@ -2,8 +2,19 @@
 
 package ent
 
+import (
+	"github.com/sor4chi/portfolio-blog/server/ent/blog"
+	"github.com/sor4chi/portfolio-blog/server/ent/schema"
+)
+
 // The init function reads all schema descriptors with runtime code
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
+	blogFields := schema.Blog{}.Fields()
+	_ = blogFields
+	// blogDescTitle is the schema descriptor for title field.
+	blogDescTitle := blogFields[0].Descriptor()
+	// blog.TitleValidator is a validator for the "title" field. It is called by the builders before save.
+	blog.TitleValidator = blogDescTitle.Validators[0].(func(string) error)
 }

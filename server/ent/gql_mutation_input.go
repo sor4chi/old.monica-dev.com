@@ -4,10 +4,12 @@ package ent
 
 // CreateBlogInput represents a mutation input for creating blogs.
 type CreateBlogInput struct {
+	Title string
 }
 
 // Mutate applies the CreateBlogInput on the BlogMutation builder.
 func (i *CreateBlogInput) Mutate(m *BlogMutation) {
+	m.SetTitle(i.Title)
 }
 
 // SetInput applies the change-set in the CreateBlogInput on the BlogCreate builder.

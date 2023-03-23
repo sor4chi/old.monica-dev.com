@@ -5,6 +5,9 @@ package ent
 import (
 	"context"
 	"errors"
+	"fmt"
+	"io"
+	"strconv"
 
 	"entgo.io/contrib/entgql"
 	"entgo.io/ent/dialect/sql"
@@ -293,6 +296,49 @@ func (b *BlogQuery) Paginate(
 	}
 	conn.build(nodes, pager, after, first, before, last)
 	return conn, nil
+}
+
+var (
+	// BlogOrderFieldTitle orders Blog by title.
+	BlogOrderFieldTitle = &BlogOrderField{
+		field: blog.FieldTitle,
+		toCursor: func(b *Blog) Cursor {
+			return Cursor{
+				ID:    b.ID,
+				Value: b.Title,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f BlogOrderField) String() string {
+	var str string
+	switch f.field {
+	case blog.FieldTitle:
+		str = "TITLE"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f BlogOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *BlogOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("BlogOrderField %T must be a string", v)
+	}
+	switch str {
+	case "TITLE":
+		*f = *BlogOrderFieldTitle
+	default:
+		return fmt.Errorf("%s is not a valid BlogOrderField", str)
+	}
+	return nil
 }
 
 // BlogOrderField defines the ordering field of Blog.

@@ -12,9 +12,11 @@ import (
 
 // Blog is the model entity for the Blog schema.
 type Blog struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// Title holds the value of the "title" field.
+	Title string `json:"title,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -24,6 +26,8 @@ func (*Blog) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case blog.FieldID:
 			values[i] = new(sql.NullInt64)
+		case blog.FieldTitle:
+			values[i] = new(sql.NullString)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Blog", columns[i])
 		}
@@ -45,6 +49,12 @@ func (b *Blog) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			b.ID = int(value.Int64)
+		case blog.FieldTitle:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field title", values[i])
+			} else if value.Valid {
+				b.Title = value.String
+			}
 		}
 	}
 	return nil
@@ -72,7 +82,9 @@ func (b *Blog) Unwrap() *Blog {
 func (b *Blog) String() string {
 	var builder strings.Builder
 	builder.WriteString("Blog(")
-	builder.WriteString(fmt.Sprintf("id=%v", b.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", b.ID))
+	builder.WriteString("title=")
+	builder.WriteString(b.Title)
 	builder.WriteByte(')')
 	return builder.String()
 }

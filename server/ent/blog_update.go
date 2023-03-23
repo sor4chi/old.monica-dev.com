@@ -27,6 +27,12 @@ func (bu *BlogUpdate) Where(ps ...predicate.Blog) *BlogUpdate {
 	return bu
 }
 
+// SetTitle sets the "title" field.
+func (bu *BlogUpdate) SetTitle(s string) *BlogUpdate {
+	bu.mutation.SetTitle(s)
+	return bu
+}
+
 // Mutation returns the BlogMutation object of the builder.
 func (bu *BlogUpdate) Mutation() *BlogMutation {
 	return bu.mutation
@@ -59,7 +65,20 @@ func (bu *BlogUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (bu *BlogUpdate) check() error {
+	if v, ok := bu.mutation.Title(); ok {
+		if err := blog.TitleValidator(v); err != nil {
+			return &ValidationError{Name: "title", err: fmt.Errorf(`ent: validator failed for field "Blog.title": %w`, err)}
+		}
+	}
+	return nil
+}
+
 func (bu *BlogUpdate) sqlSave(ctx context.Context) (n int, err error) {
+	if err := bu.check(); err != nil {
+		return n, err
+	}
 	_spec := sqlgraph.NewUpdateSpec(blog.Table, blog.Columns, sqlgraph.NewFieldSpec(blog.FieldID, field.TypeInt))
 	if ps := bu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -67,6 +86,9 @@ func (bu *BlogUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := bu.mutation.Title(); ok {
+		_spec.SetField(blog.FieldTitle, field.TypeString, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, bu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -86,6 +108,12 @@ type BlogUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *BlogMutation
+}
+
+// SetTitle sets the "title" field.
+func (buo *BlogUpdateOne) SetTitle(s string) *BlogUpdateOne {
+	buo.mutation.SetTitle(s)
+	return buo
 }
 
 // Mutation returns the BlogMutation object of the builder.
@@ -133,7 +161,20 @@ func (buo *BlogUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (buo *BlogUpdateOne) check() error {
+	if v, ok := buo.mutation.Title(); ok {
+		if err := blog.TitleValidator(v); err != nil {
+			return &ValidationError{Name: "title", err: fmt.Errorf(`ent: validator failed for field "Blog.title": %w`, err)}
+		}
+	}
+	return nil
+}
+
 func (buo *BlogUpdateOne) sqlSave(ctx context.Context) (_node *Blog, err error) {
+	if err := buo.check(); err != nil {
+		return _node, err
+	}
 	_spec := sqlgraph.NewUpdateSpec(blog.Table, blog.Columns, sqlgraph.NewFieldSpec(blog.FieldID, field.TypeInt))
 	id, ok := buo.mutation.ID()
 	if !ok {
@@ -158,6 +199,9 @@ func (buo *BlogUpdateOne) sqlSave(ctx context.Context) (_node *Blog, err error) 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := buo.mutation.Title(); ok {
+		_spec.SetField(blog.FieldTitle, field.TypeString, value)
 	}
 	_node = &Blog{config: buo.config}
 	_spec.Assign = _node.assignValues

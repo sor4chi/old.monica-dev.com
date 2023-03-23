@@ -7,6 +7,8 @@ const (
 	Label = "blog"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldTitle holds the string denoting the title field in the database.
+	FieldTitle = "title"
 	// Table holds the table name of the blog in the database.
 	Table = "blogs"
 )
@@ -14,6 +16,7 @@ const (
 // Columns holds all SQL columns for blog fields.
 var Columns = []string{
 	FieldID,
+	FieldTitle,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -25,3 +28,8 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
+
+var (
+	// TitleValidator is a validator for the "title" field. It is called by the builders before save.
+	TitleValidator func(string) error
+)

@@ -11,6 +11,7 @@ var (
 	// BlogsColumns holds the columns for the "blogs" table.
 	BlogsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "title", Type: field.TypeString},
 	}
 	// BlogsTable holds the schema information for the "blogs" table.
 	BlogsTable = &schema.Table{

@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -16,6 +17,12 @@ type BlogCreate struct {
 	config
 	mutation *BlogMutation
 	hooks    []Hook
+}
+
+// SetTitle sets the "title" field.
+func (bc *BlogCreate) SetTitle(s string) *BlogCreate {
+	bc.mutation.SetTitle(s)
+	return bc
 }
 
 // Mutation returns the BlogMutation object of the builder.
@@ -52,6 +59,14 @@ func (bc *BlogCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (bc *BlogCreate) check() error {
+	if _, ok := bc.mutation.Title(); !ok {
+		return &ValidationError{Name: "title", err: errors.New(`ent: missing required field "Blog.title"`)}
+	}
+	if v, ok := bc.mutation.Title(); ok {
+		if err := blog.TitleValidator(v); err != nil {
+			return &ValidationError{Name: "title", err: fmt.Errorf(`ent: validator failed for field "Blog.title": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -78,6 +93,10 @@ func (bc *BlogCreate) createSpec() (*Blog, *sqlgraph.CreateSpec) {
 		_node = &Blog{config: bc.config}
 		_spec = sqlgraph.NewCreateSpec(blog.Table, sqlgraph.NewFieldSpec(blog.FieldID, field.TypeInt))
 	)
+	if value, ok := bc.mutation.Title(); ok {
+		_spec.SetField(blog.FieldTitle, field.TypeString, value)
+		_node.Title = value
+	}
 	return _node, _spec
 }
 
