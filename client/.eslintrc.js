@@ -5,6 +5,7 @@ module.exports = {
     'plugin:sort/recommended',
     'plugin:redos/recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'prettier',
   ],
   overrides: [
