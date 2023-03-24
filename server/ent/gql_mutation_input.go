@@ -43,3 +43,25 @@ func (c *BlogCreate) SetInput(i CreateBlogInput) *BlogCreate {
 	i.Mutate(c.Mutation())
 	return c
 }
+
+// CreateTagInput represents a mutation input for creating tags.
+type CreateTagInput struct {
+	Name    string
+	Slug    string
+	BlogIDs []int
+}
+
+// Mutate applies the CreateTagInput on the TagMutation builder.
+func (i *CreateTagInput) Mutate(m *TagMutation) {
+	m.SetName(i.Name)
+	m.SetSlug(i.Slug)
+	if v := i.BlogIDs; len(v) > 0 {
+		m.AddBlogIDs(v...)
+	}
+}
+
+// SetInput applies the change-set in the CreateTagInput on the TagCreate builder.
+func (c *TagCreate) SetInput(i CreateTagInput) *TagCreate {
+	i.Mutate(c.Mutation())
+	return c
+}

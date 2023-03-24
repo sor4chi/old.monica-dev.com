@@ -47,5 +47,6 @@ func (Tag) Edges() []ent.Edge {
 func (Tag) Annotations() []schema.Annotation {
 	return []schema.Annotation{
 		entgql.QueryField(),
+		entgql.Mutations(entgql.MutationCreate()),
 	}
 }
