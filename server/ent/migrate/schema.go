@@ -11,9 +11,9 @@ var (
 	// BlogsColumns holds the columns for the "blogs" table.
 	BlogsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "title", Type: field.TypeString, Size: 64},
+		{Name: "title", Type: field.TypeString, Size: 256},
 		{Name: "slug", Type: field.TypeString, Unique: true, Size: 64},
-		{Name: "description", Type: field.TypeString, Size: 256},
+		{Name: "description", Type: field.TypeString, Size: 1024},
 		{Name: "content", Type: field.TypeString, Size: 2147483647},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},

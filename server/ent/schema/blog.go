@@ -22,7 +22,7 @@ func (Blog) Fields() []ent.Field {
 		field.String("title").
 			NotEmpty().
 			Comment("ブログのタイトル").
-			MaxLen(64).
+			MaxLen(256).
 			Annotations(
 				entgql.OrderField("TITLE"),
 			),
@@ -38,7 +38,7 @@ func (Blog) Fields() []ent.Field {
 		field.String("description").
 			NotEmpty().
 			Comment("ブログの説明").
-			MaxLen(256).
+			MaxLen(1024).
 			Annotations(
 				entgql.OrderField("DESCRIPTION"),
 			),
