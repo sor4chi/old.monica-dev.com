@@ -40,6 +40,7 @@ type Config struct {
 type ResolverRoot interface {
 	Mutation() MutationResolver
 	Query() QueryResolver
+	CreateBlogInput() CreateBlogInputResolver
 }
 
 type DirectiveRoot struct {
@@ -92,6 +93,10 @@ type QueryResolver interface {
 	Nodes(ctx context.Context, ids []int) ([]ent.Noder, error)
 	Blogs(ctx context.Context) ([]*ent.Blog, error)
 	Tags(ctx context.Context) ([]*ent.Tag, error)
+}
+
+type CreateBlogInputResolver interface {
+	Tags(ctx context.Context, obj *ent.CreateBlogInput, data []*ent.CreateTagInput) error
 }
 
 type executableSchema struct {
@@ -3477,7 +3482,7 @@ func (ec *executionContext) unmarshalInputCreateBlogInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"title", "slug", "description", "content", "createdAt", "updatedAt", "publishedAt", "tagIDs"}
+	fieldsInOrder := [...]string{"title", "slug", "description", "content", "createdAt", "updatedAt", "publishedAt", "tagIDs", "tags"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -3546,6 +3551,17 @@ func (ec *executionContext) unmarshalInputCreateBlogInput(ctx context.Context, o
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tagIDs"))
 			it.TagIDs, err = ec.unmarshalOID2ᚕintᚄ(ctx, v)
 			if err != nil {
+				return it, err
+			}
+		case "tags":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tags"))
+			data, err := ec.unmarshalOCreateTagInput2ᚕᚖgithubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋentᚐCreateTagInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			if err = ec.resolvers.CreateBlogInput().Tags(ctx, &it, data); err != nil {
 				return it, err
 			}
 		}
@@ -4433,6 +4449,11 @@ func (ec *executionContext) unmarshalNCreateBlogInput2githubᚗcomᚋsor4chiᚋp
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) unmarshalNCreateTagInput2ᚖgithubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋentᚐCreateTagInput(ctx context.Context, v interface{}) (*ent.CreateTagInput, error) {
+	res, err := ec.unmarshalInputCreateTagInput(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalNID2int(ctx context.Context, v interface{}) (int, error) {
 	res, err := graphql.UnmarshalIntID(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -4959,6 +4980,26 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	}
 	res := graphql.MarshalBoolean(*v)
 	return res
+}
+
+func (ec *executionContext) unmarshalOCreateTagInput2ᚕᚖgithubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋentᚐCreateTagInputᚄ(ctx context.Context, v interface{}) ([]*ent.CreateTagInput, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*ent.CreateTagInput, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNCreateTagInput2ᚖgithubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋentᚐCreateTagInput(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
 }
 
 func (ec *executionContext) unmarshalOCursor2ᚖgithubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋentᚐCursor(ctx context.Context, v interface{}) (*ent.Cursor, error) {

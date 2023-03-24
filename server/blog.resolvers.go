@@ -15,6 +15,24 @@ func (r *mutationResolver) CreateBlog(ctx context.Context, input ent.CreateBlogI
 	return r.client.Blog.Create().SetInput(input).Save(ctx)
 }
 
+// Tags is the resolver for the tags field.
+func (r *createBlogInputResolver) Tags(ctx context.Context, obj *ent.CreateBlogInput, data []*ent.CreateTagInput) error {
+	bulk := make([]*ent.TagCreate, len(data))
+	for i, d := range data {
+		bulk[i] = r.client.Tag.Create().SetInput(*d)
+	}
+	tags, err := r.client.Tag.CreateBulk(bulk...).Save(ctx)
+	if err != nil {
+		return err
+	}
+	ids := make([]int, len(tags))
+	for i, t := range tags {
+		ids[i] = t.ID
+	}
+	obj.TagIDs = append(obj.TagIDs, ids...)
+	return nil
+}
+
 // Mutation returns MutationResolver implementation.
 func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 

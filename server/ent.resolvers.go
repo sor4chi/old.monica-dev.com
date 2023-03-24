@@ -34,4 +34,8 @@ func (r *queryResolver) Tags(ctx context.Context) ([]*ent.Tag, error) {
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
+// CreateBlogInput returns CreateBlogInputResolver implementation.
+func (r *Resolver) CreateBlogInput() CreateBlogInputResolver { return &createBlogInputResolver{r} }
+
 type queryResolver struct{ *Resolver }
+type createBlogInputResolver struct{ *Resolver }
