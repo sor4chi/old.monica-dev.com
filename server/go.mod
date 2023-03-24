@@ -12,18 +12,23 @@ require (
 	golang.org/x/sync v0.1.0
 )
 
-require github.com/vmihailenco/tagparser v0.1.2 // indirect
+require (
+	github.com/gosimple/unidecode v1.0.1 // indirect
+	github.com/vmihailenco/tagparser v0.1.2 // indirect
+)
 
 require (
 	ariga.io/atlas v0.9.2-0.20230303073438-03a4779a6338 // indirect
 	github.com/agext/levenshtein v1.2.1 // indirect
 	github.com/agnivade/levenshtein v1.1.1 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
+	github.com/brianvoe/gofakeit/v6 v6.20.2
 	github.com/go-openapi/inflect v0.19.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
+	github.com/gosimple/slug v1.13.1
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/golang-lru/v2 v2.0.1 // indirect
 	github.com/hashicorp/hcl/v2 v2.13.0 // indirect

@@ -22,7 +22,7 @@ services:
     depends_on:
       - mysql
     working_dir: /app
-    command: go run ./cmd
+    command: go run ./cmd/server
 
 volumes:
   mysql_data:
