@@ -22,13 +22,16 @@ func (r *queryResolver) Nodes(ctx context.Context, ids []int) ([]ent.Noder, erro
 }
 
 // Blogs is the resolver for the blogs field.
-func (r *queryResolver) Blogs(ctx context.Context) ([]*ent.Blog, error) {
-	return r.client.Blog.Query().All(ctx)
+func (r *queryResolver) Blogs(ctx context.Context, after *ent.Cursor, first *int, before *ent.Cursor, last *int, orderBy *ent.BlogOrder) (*ent.BlogConnection, error) {
+	return r.client.Blog.Query().
+		Paginate(ctx, after, first, before, last,
+			ent.WithBlogOrder(orderBy),
+		)
 }
 
 // Tags is the resolver for the tags field.
 func (r *queryResolver) Tags(ctx context.Context) ([]*ent.Tag, error) {
-	panic(fmt.Errorf("not implemented: Tags - tags"))
+	return r.client.Tag.Query().All(ctx)
 }
 
 // Query returns QueryResolver implementation.

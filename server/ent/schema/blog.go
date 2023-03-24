@@ -82,6 +82,7 @@ func (Blog) Edges() []ent.Edge {
 
 func (Blog) Annotations() []schema.Annotation {
 	return []schema.Annotation{
+		entgql.RelayConnection(),
 		entgql.QueryField(),
 		entgql.Mutations(entgql.MutationCreate()),
 	}
