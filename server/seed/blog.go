@@ -10,6 +10,7 @@ import (
 
 	"github.com/gosimple/slug"
 	"github.com/sor4chi/portfolio-blog/server/ent"
+	"github.com/sor4chi/portfolio-blog/server/ent/tag"
 	"github.com/sor4chi/portfolio-blog/server/util"
 )
 
@@ -67,17 +68,21 @@ func SeedBlog(ctx context.Context, client *ent.Client) {
 			}
 		}
 
-		_, err := client.Tag.
+		slug := slug.Make(dumies[i].Tags[0])
+		if tag, err := client.Tag.
+			Query().
+			Where(tag.Slug(slug)).
+			Only(ctx); err == nil {
+			client.Tag.UpdateOne(tag).AddBlogIDs(blogIDs...).Exec(ctx)
+			continue
+		}
+
+		if _, err := client.Tag.
 			Create().
 			SetName(dumies[i].Tags[0]).
-			SetSlug(
-				slug.Make(
-					dumies[i].Tags[0],
-				),
-			).
+			SetSlug(slug).
 			AddBlogIDs(blogIDs...).
-			Save(ctx)
-		if err != nil {
+			Save(ctx); err != nil {
 			log.Fatalf(ERROR_CREATE_TAG, err)
 		}
 	}
