@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import { SITE_CONFIG } from '@/constant/site';
 import { vars } from '@/style/theme.css';
 import { getOgUrl } from '@/util/og';
+import { client } from '@/lib/urql';
+import { Provider } from 'urql';
 
 import '@/style/globals.css';
 
@@ -72,7 +74,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script src="/theme.js" />
       </head>
       <html lang="ja">
-        <body>{children}</body>
+        <body>
+          <Provider value={client}>{children}</Provider>
+        </body>
       </html>
     </>
   );

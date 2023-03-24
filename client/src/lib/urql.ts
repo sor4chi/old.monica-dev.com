@@ -12,5 +12,5 @@ export const client = createClient({
       },
     };
   },
-  url: clientEnv.NEXT_PUBLIC_GQL_ENDPOINT || 'http://localhost:8081/graphql',
+  url: clientEnv.NEXT_PUBLIC_GQL_ENDPOINT,
 });
