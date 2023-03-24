@@ -63,6 +63,7 @@ specifiers:
   typescript: 4.9.5
   unified: ^10.1.2
   unist-util-visit: ^4.1.2
+  urql: ^3.0.4
   zod: ^3.21.4
 
 dependencies:
@@ -99,6 +100,7 @@ dependencies:
   typescript: 4.9.5
   unified: 10.1.2
   unist-util-visit: 4.1.2
+  urql: 3.0.4_react@18.2.0
   zod: 3.21.4
 
 devDependencies:
@@ -1085,6 +1087,14 @@ packages:
       '@typescript-eslint/types': 5.54.1
       eslint-visitor-keys: 3.3.0
     dev: true
+
+  /@urql/core/3.2.2:
+    resolution: {integrity: sha512-i046Cz8cZ4xIzGMTyHZrbdgzcFMcKD7+yhCAH5FwWBRjcKrc+RjEOuR9X5AMuBvr8c6IAaE92xAqa4wmlGfWTQ==}
+    peerDependencies:
+      graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+    dependencies:
+      wonka: 6.2.5
+    dev: false
 
   /@vanilla-extract/babel-plugin-debug-ids/1.0.2:
     resolution: {integrity: sha512-LjnbQWGeMwaydmovx8jWUR8BxLtLiPyq0xz5C8G5OvFhsuJxvavLdrBHNNizvr1dq7/3qZGlPv0znsvU4P44YA==}
@@ -4827,6 +4837,17 @@ packages:
       punycode: 2.3.0
     dev: true
 
+  /urql/3.0.4_react@18.2.0:
+    resolution: {integrity: sha512-okmQKQ9pF4t8O8iCC5gH9acqfFji5lkhW3nLBjx8WKDd2zZG7PXoUpUK19VQEMK87L6VFBOO/XZ52MMKFEI0AA==}
+    peerDependencies:
+      graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+      react: '>= 16.8.0'
+    dependencies:
+      '@urql/core': 3.2.2
+      react: 18.2.0
+      wonka: 6.2.5
+    dev: false
+
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
     dev: false
@@ -4911,6 +4932,10 @@ packages:
     dependencies:
       isexe: 2.0.0
     dev: true
+
+  /wonka/6.2.5:
+    resolution: {integrity: sha512-adhGYKm5xWIZYXRkzEqHbRbRl2gXHqOudjQJMXpRgSyboFmaKOjGm3RIThBk4tZdiZx1DXuKK0H9wKBgXHhzZg==}
+    dev: false
 
   /word-wrap/1.2.3:
     resolution: {integrity: sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==}

@@ -14,6 +14,7 @@ const serverSchema = z.object({
  * クライアント側に公開するには、`NEXT_PUBLIC_` プレフィックスをつける
  */
 const clientSchema = z.object({
+  NEXT_PUBLIC_GQL_ENDPOINT: z.string().url(),
   NEXT_PUBLIC_SITE_NAME: z.string(),
   NEXT_PUBLIC_SITE_URL: z.string().url(),
 });
@@ -23,6 +24,7 @@ const clientSchema = z.object({
  * @type {{ [k in keyof z.infer<typeof clientSchema>]: z.infer<typeof clientSchema>[k] | undefined }}
  */
 const clientEnv = {
+  NEXT_PUBLIC_GQL_ENDPOINT: process.env.NEXT_PUBLIC_GQL_ENDPOINT,
   NEXT_PUBLIC_SITE_NAME: process.env.NEXT_PUBLIC_SITE_NAME,
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
 };
