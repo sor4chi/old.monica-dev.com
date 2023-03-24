@@ -14,7 +14,7 @@ var (
 		{Name: "title", Type: field.TypeString, Size: 64},
 		{Name: "slug", Type: field.TypeString, Unique: true, Size: 64},
 		{Name: "description", Type: field.TypeString, Size: 256},
-		{Name: "content", Type: field.TypeString},
+		{Name: "content", Type: field.TypeString, Size: 2147483647},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "published_at", Type: field.TypeTime, Nullable: true},

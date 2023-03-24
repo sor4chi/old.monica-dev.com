@@ -42,7 +42,7 @@ func (Blog) Fields() []ent.Field {
 			Annotations(
 				entgql.OrderField("DESCRIPTION"),
 			),
-		field.String("content").
+		field.Text("content").
 			NotEmpty().
 			Comment("ブログの本文").
 			Annotations(
