@@ -22,11 +22,11 @@ var (
 	ERROR_START_HTTP_SERVER  = "failed to start http server"
 
 	GRAPHQL_PATH = "/query"
+	SERVER_PORT  = ":8081"
 )
 
 func main() {
-	env := db.NewMySQLConnectionEnv()
-	client, err := ent.Open(dialect.MySQL, db.Dsn(env))
+	client, err := ent.Open(dialect.MySQL, db.Dsn(db.NewMySQLConnectionEnv()))
 	if err != nil {
 		log.Fatal(ERROR_CONNECT_ENT_CLIENT, err)
 	}
@@ -43,8 +43,8 @@ func main() {
 		playground.Handler("Blog", GRAPHQL_PATH),
 	)
 	http.Handle(GRAPHQL_PATH, srv)
-	log.Println("listening on", env.Port)
-	if err := http.ListenAndServe(env.Port, nil); err != nil {
+	log.Println("listening on", SERVER_PORT)
+	if err := http.ListenAndServe(SERVER_PORT, nil); err != nil {
 		log.Fatal(ERROR_START_HTTP_SERVER, err)
 	}
 }
