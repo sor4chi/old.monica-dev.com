@@ -1,17 +1,18 @@
-import { style } from '@vanilla-extract/css';
+import { style, styleVariants } from '@vanilla-extract/css';
 
 import { vars } from '@/style/theme.css';
 
 export const button = style({
   padding: '0.5rem 1rem',
   borderRadius: '0.5rem',
-  border: 'none',
   fontSize: '1rem',
-  color: vars.color.text.primary,
-  backgroundColor: vars.color.accent.secondary,
   cursor: 'pointer',
   width: 'fit-content',
   whiteSpace: 'nowrap',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.5rem',
+  boxSizing: 'border-box',
 
   '@media': {
     '(hover: hover)': {
@@ -20,5 +21,18 @@ export const button = style({
         color: vars.color.text.primary,
       },
     },
+  },
+});
+
+export const variant = styleVariants({
+  primary: {
+    color: vars.color.text.primary,
+    backgroundColor: vars.color.accent.secondary,
+    border: 'none',
+  },
+  secondary: {
+    color: vars.color.text.primary,
+    backgroundColor: 'transparent',
+    border: `2px solid ${vars.color.accent.secondary}`,
   },
 });
