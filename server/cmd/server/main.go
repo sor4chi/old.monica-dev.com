@@ -12,6 +12,7 @@ import (
 	"github.com/sor4chi/portfolio-blog/server/db"
 	"github.com/sor4chi/portfolio-blog/server/ent"
 	"github.com/sor4chi/portfolio-blog/server/ent/migrate"
+	"github.com/sor4chi/portfolio-blog/server/util"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -42,7 +43,20 @@ func main() {
 	http.Handle("/",
 		playground.Handler("Blog", GRAPHQL_PATH),
 	)
-	http.Handle(GRAPHQL_PATH, srv)
+	http.HandleFunc(GRAPHQL_PATH, func(w http.ResponseWriter, r *http.Request) {
+		allow := util.GetEnv("ALLOW_ORIGIN", "*")
+
+		w.Header().Set("Access-Control-Allow-Origin", allow)
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+
+		if r.Method == "OPTIONS" {
+			return
+		}
+
+		srv.ServeHTTP(w, r)
+	})
+
 	log.Println("listening on", SERVER_PORT)
 	if err := http.ListenAndServe(SERVER_PORT, nil); err != nil {
 		log.Fatal(ERROR_START_HTTP_SERVER, err)

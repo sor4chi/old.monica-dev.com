@@ -2,7 +2,8 @@ package db
 
 import (
 	"fmt"
-	"os"
+
+	"github.com/sor4chi/portfolio-blog/server/util"
 )
 
 type MySQLConnectionEnv struct {
@@ -13,21 +14,13 @@ type MySQLConnectionEnv struct {
 	Password string
 }
 
-func getEnv(key string, defaultValue string) string {
-	val := os.Getenv(key)
-	if val != "" {
-		return val
-	}
-	return defaultValue
-}
-
 func NewMySQLConnectionEnv() *MySQLConnectionEnv {
 	return &MySQLConnectionEnv{
-		Host:     getEnv("MYSQL_HOST", "mysql"),
-		Port:     getEnv("MYSQL_PORT", "3306"),
-		User:     getEnv("MYSQL_USER", "monica"),
-		DBName:   getEnv("MYSQL_DATABASE", "portfolio"),
-		Password: getEnv("MYSQL_PASSWORD", "dev"),
+		Host:     util.GetEnv("MYSQL_HOST", "mysql"),
+		Port:     util.GetEnv("MYSQL_PORT", "3306"),
+		User:     util.GetEnv("MYSQL_USER", "monica"),
+		DBName:   util.GetEnv("MYSQL_DATABASE", "portfolio"),
+		Password: util.GetEnv("MYSQL_PASSWORD", "dev"),
 	}
 }
 
