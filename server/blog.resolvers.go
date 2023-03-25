@@ -8,11 +8,17 @@ import (
 	"context"
 
 	"github.com/sor4chi/portfolio-blog/server/ent"
+	"github.com/sor4chi/portfolio-blog/server/ent/blog"
 )
 
 // CreateBlog is the resolver for the createBlog field.
 func (r *mutationResolver) CreateBlog(ctx context.Context, input ent.CreateBlogInput) (*ent.Blog, error) {
 	return r.client.Blog.Create().SetInput(input).Save(ctx)
+}
+
+// ShowBlog is the resolver for the showBlog field.
+func (r *mutationResolver) ShowBlog(ctx context.Context, slug string) (*ent.Blog, error) {
+	return r.client.Blog.Query().Where(blog.Slug(slug)).Only(ctx)
 }
 
 // Tags is the resolver for the tags field.
