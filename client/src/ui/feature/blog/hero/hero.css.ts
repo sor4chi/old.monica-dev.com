@@ -62,35 +62,3 @@ export const title = style({
   color: vars.color.text.primary,
   textAlign: 'center',
 });
-
-export const titleWord = style({
-  display: 'inline-block',
-});
-
-export const detail = style({
-  display: 'flex',
-  gap: '2rem',
-});
-
-export const sidebar = style({
-  width: '15rem',
-  flexShrink: 0,
-  display: 'flex',
-  gap: '2rem',
-
-  '@media': {
-    [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
-      display: 'none',
-    },
-  },
-});
-
-export const sidebarDivider = style({
-  margin: 0,
-  height: '70vh',
-  width: 1,
-  border: 'none',
-  background: vars.color.bg.secondary,
-  position: 'sticky',
-  top: `calc(${vars.size.headerHeight} + 1rem)`,
-});

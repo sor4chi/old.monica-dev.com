@@ -1,4 +1,3 @@
-import { gql } from 'graphql-request';
 import Link from 'next/link';
 
 import type { TagListFragmentResponse } from '../tagList';
@@ -6,6 +5,7 @@ import { TagList, TagListFragment } from '../tagList';
 
 import * as styles from './list.css';
 
+import { gql } from '@/lib/graphql';
 import { parseTwemoji } from '@/lib/twemoji';
 import { Text } from '@/ui/foundation/text';
 import { formatYMD } from '@/util/date';

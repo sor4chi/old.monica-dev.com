@@ -1,17 +1,14 @@
-import { clsx } from 'clsx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import * as styles from './detail.css';
-
 import { serverEnv } from '@/env/server';
+import { client, gql } from '@/lib/graphql';
 import { parseMarkdownToHTML } from '@/lib/markdown';
-import { getPublishedBlogBySlug, getPublishedBlogSlugs } from '@/repository/blog';
-import { TagList } from '@/ui/feature/blog/tagList';
-import { Toc } from '@/ui/feature/blog/toc';
-import { Article } from '@/ui/foundation/article';
-import { Text } from '@/ui/foundation/text';
-import { formatYYYYMMDD } from '@/util/date';
+import { getPublishedBlogSlugs } from '@/repository/blog';
+import type { BlogArticleFragmentResponse } from '@/ui/feature/blog/atricle';
+import { BlogArticle, BlogArticleFragment } from '@/ui/feature/blog/atricle';
+import type { BlogHeroFragmentResponse } from '@/ui/feature/blog/hero';
+import { BlogHero, BlogHeroFragment } from '@/ui/feature/blog/hero';
 import { getOgUrl } from '@/util/og';
 
 interface Props {
@@ -24,6 +21,34 @@ interface Props {
 export const dynamic = 'force-static';
 export const dynamicParams = true;
 
+const BlogDetailPageQuery = gql`
+  ${BlogHeroFragment}
+  ${BlogArticleFragment}
+
+  query BlogDetailPageQuery($slug: String!) {
+    node(slug: $slug) {
+      ... on Blog {
+        ...BlogHeroFragment
+        ...BlogArticleFragment
+        description
+        publishedAt
+      }
+    }
+  }
+`;
+
+type BlogDetailPageQueryResponse = {
+  node: BlogHeroFragmentResponse &
+    BlogArticleFragmentResponse & {
+      description: string;
+      publishedAt: Date;
+    };
+};
+
+type BlogDetailPageQueryVariables = {
+  slug: string;
+};
+
 export async function generateStaticParams() {
   try {
     const blogSlugs = await getPublishedBlogSlugs();
@@ -34,57 +59,63 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const res = await getPublishedBlogBySlug(params.slug);
+  const data = await client.request<BlogDetailPageQueryResponse, BlogDetailPageQueryVariables>(BlogDetailPageQuery, {
+    slug: params.slug,
+  });
 
-  if (!res) {
-    return {
-      robots: 'noindex',
-    };
-  }
+  const blog = data.node;
 
   return {
-    description: res.description,
+    description: blog.description,
     openGraph: {
-      description: res.description,
+      description: blog.description,
       images: [
         {
-          alt: res.title,
+          alt: blog.title,
           height: 630,
-          url: getOgUrl(res.title),
+          url: getOgUrl(blog.title),
           width: 1200,
         },
       ],
-      publishedTime: res.publishedAt.toISOString(),
-      title: res.title,
+      publishedTime: blog.publishedAt.toISOString(),
+      title: blog.title,
       type: 'article',
       url: `${serverEnv.NEXT_PUBLIC_SITE_URL}/blog/${params.slug}`,
     },
-    title: res.title,
+    title: blog.title,
     twitter: {
       card: 'summary_large_image',
-      description: res.description,
-      images: [getOgUrl(res.title)],
-      title: res.title,
+      description: blog.description,
+      images: [getOgUrl(blog.title)],
+      title: blog.title,
     },
   };
 }
 
 async function getBlog(slug: string) {
   try {
-    const res = await getPublishedBlogBySlug(slug);
-    if (!res) {
-      return null;
-    }
+    const data = await client.request<BlogDetailPageQueryResponse, BlogDetailPageQueryVariables>(BlogDetailPageQuery, {
+      slug,
+    });
+
+    const blog = data.node;
 
     return {
-      ...res,
-      ...parseMarkdownToHTML(res?.content || ''),
+      body: {
+        ...parseMarkdownToHTML(blog?.content || ''),
+      },
+      meta: {
+        createdAt: blog.createdAt,
+        description: blog.description,
+        publishedAt: blog.publishedAt,
+        tags: blog.tags,
+        title: blog.title,
+        updatedAt: blog.updatedAt,
+      },
     };
   } catch (e) {
-    if (serverEnv.NODE_ENV === 'development') {
-      console.log(e);
-    }
-    return null;
+    console.error(e);
+    notFound();
   }
 }
 
@@ -97,32 +128,8 @@ export default async function BlogDetail({ params }: Props) {
 
   return (
     <>
-      <section className={styles.hero}>
-        <h1 className={styles.title}>
-          <Text value={blog.title} />
-        </h1>
-        <div className={styles.meta}>
-          <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Created at</span>
-            <span>{formatYYYYMMDD(blog.createdAt)}</span>
-          </div>
-          <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Updated at</span>
-            <span>{formatYYYYMMDD(blog.updatedAt)}</span>
-          </div>
-          <div className={clsx(styles.metaItem, styles.tagList)}>
-            <span className={styles.metaLabel}>Tags</span>
-            <TagList tags={blog.tags} hrefGenerator={(tag) => `/blog?tags=${tag}`} />
-          </div>
-        </div>
-      </section>
-      <section className={styles.detail}>
-        <Article content={blog.content} />
-        <aside className={styles.sidebar}>
-          <hr className={styles.sidebarDivider} />
-          <Toc toc={blog.toc} />
-        </aside>
-      </section>
+      <BlogHero blog={blog.meta} />
+      <BlogArticle content={blog.body.content} toc={blog.body.toc} />
     </>
   );
 }

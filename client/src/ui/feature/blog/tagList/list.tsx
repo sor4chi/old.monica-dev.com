@@ -1,7 +1,8 @@
-import { gql } from 'graphql-request';
 import Link from 'next/link';
 
 import * as styles from './list.css';
+
+import { gql } from '@/lib/graphql';
 
 export const TagListFragment = gql`
   fragment TagListFragment on Tag {

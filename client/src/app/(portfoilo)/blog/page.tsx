@@ -1,11 +1,10 @@
-import { gql } from 'graphql-request';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import * as styles from './blog.css';
 
 import { SITE_CONFIG } from '@/constant/site';
-import { client } from '@/lib/graphql';
+import { client, gql } from '@/lib/graphql';
 import type { BlogListFragmentResponse } from '@/ui/feature/blog/list';
 import { BlogList, BlogListFragment } from '@/ui/feature/blog/list';
 
