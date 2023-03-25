@@ -5,8 +5,9 @@ import * as styles from './blog.css';
 
 import { SITE_CONFIG } from '@/constant/site';
 import { client, gql } from '@/lib/graphql';
-import type { BlogListFragmentResponse } from '@/ui/feature/blog/list';
-import { BlogList, BlogListFragment } from '@/ui/feature/blog/list';
+import { BlogList } from '@/ui/feature/blog/list';
+import type { BlogListFragmentResponse } from '@/ui/feature/blog/list/query';
+import { BlogListFragment } from '@/ui/feature/blog/list/query';
 
 interface Props {
   searchParams: {
