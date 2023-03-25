@@ -1,14 +1,22 @@
+import { gql } from 'graphql-request';
 import Link from 'next/link';
 
 import * as styles from './list.css';
 
-type Tag = {
+export const TagListFragment = gql`
+  fragment TagListFragment on Tag {
+    name
+    slug
+  }
+`;
+
+export type TagListFragmentResponse = {
   name: string;
   slug: string;
 };
 
 interface Props {
-  tags: Tag[];
+  tags: TagListFragmentResponse[];
   hrefGenerator: (tag: string) => string;
 }
 

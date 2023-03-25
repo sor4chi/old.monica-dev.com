@@ -1,15 +1,16 @@
+import { gql } from 'graphql-request';
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 import * as styles from './blog.css';
 
 import { SITE_CONFIG } from '@/constant/site';
-import { getPublishedBlogsCount, getSomePublishedBlogs } from '@/repository/blog';
-import { BlogList } from '@/ui/feature/blog/list';
-import { Pagination } from '@/ui/foundation/pagination';
+import { client } from '@/lib/graphql';
+import type { BlogListFragmentResponse } from '@/ui/feature/blog/list';
+import { BlogList, BlogListFragment } from '@/ui/feature/blog/list';
 
 interface Props {
   searchParams: {
-    page?: string;
     tags?: string;
   };
 }
@@ -20,60 +21,56 @@ export const fetchCache = 'force-no-store';
 export const runtime = 'nodejs';
 export const preferredRegion = 'home';
 
-async function getBlogs(page: number, tags: string[]) {
+const BlogListPageQuery = gql`
+  ${BlogListFragment}
+
+  query BlogListPageQuery($first: Int!) {
+    blogs(first: $first, orderBy: { field: CREATED_AT, direction: DESC }) {
+      ...BlogListFragment
+    }
+  }
+`;
+
+type BlogListPageQueryResponse = {
+  blogs: BlogListFragmentResponse;
+};
+
+type BlogListPageQueryVariables = {
+  first: number;
+};
+
+async function getBlogs() {
   try {
-    const [data, count] = await Promise.all([
-      getSomePublishedBlogs(page, tags, SITE_CONFIG.BLOG_LENGTH_PER_PAGE),
-      getPublishedBlogsCount(tags),
-    ]);
+    const data = await client.request<BlogListPageQueryResponse, BlogListPageQueryVariables>(BlogListPageQuery, {
+      first: SITE_CONFIG.BLOG_LENGTH_PER_PAGE,
+    });
 
     return {
-      count,
       data,
     };
   } catch (e) {
-    return {
-      count: 0,
-      data: [],
-    };
+    console.error(e);
+    notFound();
   }
 }
 
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
-  const page = parseInt(searchParams.page ?? '1');
   const tags = searchParams.tags?.split(',') ?? [];
 
   return {
-    title: ['Blog', ...(tags.length > 0 ? [`(${tags.join(', ')})`] : []), ...(page > 1 ? [`- Page ${page}`] : [])].join(
-      ' ',
-    ),
+    title: ['Blog', ...(tags.length > 0 ? [`(${tags.join(', ')})`] : [])].join(' '),
   };
 }
 
 export default async function Blog({ searchParams }: Props) {
-  const page = parseInt(searchParams.page ?? '1');
   const tags = searchParams.tags?.split(',') ?? [];
 
-  const blogs = await getBlogs(page, tags);
-
-  const paginationHrefGenerator = (offset: number) => {
-    const params = new URLSearchParams();
-    params.append('page', offset.toString());
-    if (tags.length > 0) {
-      params.append('tags', tags.join(','));
-    }
-    return `/blog?${params.toString()}`;
-  };
+  const blogs = await getBlogs();
 
   return (
     <>
       <h1 className={styles.title}>Blog</h1>
-      <BlogList blogs={blogs.data} tagsHrefGenerator={(tag) => `/blog?tags=${tag}`} />
-      <Pagination
-        total={Math.ceil(blogs.count / SITE_CONFIG.BLOG_LENGTH_PER_PAGE)}
-        now={page}
-        hrefGenerator={paginationHrefGenerator}
-      />
+      <BlogList relay={blogs.data.blogs} />
     </>
   );
 }

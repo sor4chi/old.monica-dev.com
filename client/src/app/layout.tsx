@@ -3,8 +3,6 @@ import type { Metadata } from 'next';
 import { SITE_CONFIG } from '@/constant/site';
 import { vars } from '@/style/theme.css';
 import { getOgUrl } from '@/util/og';
-import { client } from '@/lib/urql';
-import { Provider } from 'urql';
 
 import '@/style/globals.css';
 
@@ -65,7 +63,7 @@ export const metadata = {
   },
 } satisfies Metadata;
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // observe body class, if it is changed, then change theme
   return (
     <>
@@ -74,9 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script src="/theme.js" />
       </head>
       <html lang="ja">
-        <body>
-          <Provider value={client}>{children}</Provider>
-        </body>
+        <body>{children}</body>
       </html>
     </>
   );
