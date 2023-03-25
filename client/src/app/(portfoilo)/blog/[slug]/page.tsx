@@ -25,23 +25,21 @@ const BlogDetailPageQuery = gql`
   ${BlogHeroFragment}
   ${BlogArticleFragment}
 
-  query BlogDetailPageQuery($slug: String!) {
-    node(slug: $slug) {
-      ... on Blog {
-        ...BlogHeroFragment
-        ...BlogArticleFragment
-        description
-        publishedAt
-      }
+  mutation BlogDetailPageQuery($slug: String!) {
+    showBlog(slug: $slug) {
+      ...BlogHeroFragment
+      ...BlogArticleFragment
+      description
+      publishedAt
     }
   }
 `;
 
 type BlogDetailPageQueryResponse = {
-  node: BlogHeroFragmentResponse &
+  showBlog: BlogHeroFragmentResponse &
     BlogArticleFragmentResponse & {
       description: string;
-      publishedAt: Date;
+      publishedAt: string;
     };
 };
 
@@ -63,7 +61,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     slug: params.slug,
   });
 
-  const blog = data.node;
+  const blog = data.showBlog;
 
   return {
     description: blog.description,
@@ -77,7 +75,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           width: 1200,
         },
       ],
-      publishedTime: blog.publishedAt.toISOString(),
+      publishedTime: blog.publishedAt,
       title: blog.title,
       type: 'article',
       url: `${serverEnv.NEXT_PUBLIC_SITE_URL}/blog/${params.slug}`,
@@ -98,7 +96,7 @@ async function getBlog(slug: string) {
       slug,
     });
 
-    const blog = data.node;
+    const blog = data.showBlog;
 
     return {
       body: {
