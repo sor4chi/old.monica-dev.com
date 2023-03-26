@@ -4,7 +4,6 @@ import (
 	"context"
 	"log"
 	"math/rand"
-	"os"
 	"path/filepath"
 	"time"
 
@@ -15,7 +14,7 @@ import (
 )
 
 var (
-	WD                = os.Getenv("PWD")
+	WD                = util.GetEnv("PWD", ".")
 	BLOG_FIXTURE_PATH = filepath.Join(WD, "seed/fixtures/blogs.json")
 	MAX_TAGS          = 3
 	ERROR_CREATE_BLOG = "failed creating blog: %v"
