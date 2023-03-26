@@ -1,18 +1,12 @@
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md';
 
 import { TagList } from '../tagList';
 
 import * as styles from './list.css';
-import type {
-  BlogListAfterQueryResponse,
-  BlogListAfterQueryVariables,
-  BlogListBeforeQueryResponse,
-  BlogListBeforeQueryVariables,
-  BlogListFragmentResponse,
-} from './query';
-import { BlogListAfterQuery, BlogListBeforeQuery } from './query';
+import type { BlogListFragmentResponse, BlogListQueryResponse, BlogListQueryVariables } from './query';
+import { BlogListQuery } from './query';
 
 import { SITE_CONFIG } from '@/constant/site';
 import { client } from '@/lib/graphql';
@@ -23,27 +17,45 @@ import { formatYMD } from '@/util/date';
 
 interface Props {
   relay: BlogListFragmentResponse;
+  filterTags?: string[];
 }
 
-export const BlogList = ({ relay }: Props) => {
+export const BlogList = ({ filterTags, relay }: Props) => {
   const [blogRelay, setBlogRelay] = useState(relay);
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    setBlogRelay(relay);
+    setPage(1);
+  }, [relay]);
+
+  const maxPage = Math.ceil(blogRelay.totalCount / SITE_CONFIG.BLOG_LENGTH_PER_PAGE);
+
   const loadBefore = async () => {
-    const data = await client.request<BlogListBeforeQueryResponse, BlogListBeforeQueryVariables>(BlogListBeforeQuery, {
+    const data = await client.request<BlogListQueryResponse, BlogListQueryVariables>(BlogListQuery, {
+      after: null,
       before: blogRelay.pageInfo.startCursor,
+      first: null,
       last: SITE_CONFIG.BLOG_LENGTH_PER_PAGE,
+      tagWhereInput: filterTags && filterTags.length > 0 ? { slugIn: filterTags } : null,
     });
     setBlogRelay(data.blogs);
+    setPage(page - 1);
   };
 
   const loadAfter = async () => {
-    const data = await client.request<BlogListAfterQueryResponse, BlogListAfterQueryVariables>(BlogListAfterQuery, {
+    const data = await client.request<BlogListQueryResponse, BlogListQueryVariables>(BlogListQuery, {
       after: blogRelay.pageInfo.endCursor,
+      before: null,
       first: SITE_CONFIG.BLOG_LENGTH_PER_PAGE,
+      last: null,
+      tagWhereInput: filterTags && filterTags.length > 0 ? { slugIn: filterTags } : null,
     });
     setBlogRelay(data.blogs);
+    setPage(page + 1);
   };
 
-  if (!relay.edges.length) {
+  if (!blogRelay.edges.length) {
     return (
       <div className={styles.container}>
         <p className={styles.noItems} dangerouslySetInnerHTML={{ __html: parseTwemoji('Sorry, no items found. 😭') }} />
@@ -55,7 +67,8 @@ export const BlogList = ({ relay }: Props) => {
     <>
       <ul className={styles.container}>
         {blogRelay.edges.map(({ node }) => (
-          <li key={node.slug} className={styles.item}>
+          // add timestamp to activate rendering animation
+          <li key={node.slug + new Date().getTime()} className={styles.item}>
             <time className={styles.date}>{formatYMD(node.createdAt)}</time>
             <Link href={`/blog/${node.slug}`} className={styles.link} passHref>
               <h2 className={styles.title}>
@@ -73,6 +86,11 @@ export const BlogList = ({ relay }: Props) => {
             <MdArrowBackIos />
             Prev
           </Button>
+        )}
+        {page > 1 && (
+          <span className={styles.page}>
+            {page} / {maxPage}
+          </span>
         )}
         {blogRelay.pageInfo.hasNextPage && (
           <Button onClick={loadAfter} variant="secondary">

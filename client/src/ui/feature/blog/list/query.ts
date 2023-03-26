@@ -24,6 +24,7 @@ export const BlogListFragment = gql`
       endCursor
       startCursor
     }
+    totalCount
   }
 `;
 
@@ -43,40 +44,33 @@ export type BlogListFragmentResponse = {
     endCursor: string;
     startCursor: string;
   };
+  totalCount: number;
 };
 
-export const BlogListBeforeQuery = gql`
-  query BlogListBeforeQuery($last: Int!, $before: Cursor!) {
-    blogs(last: $last, before: $before, orderBy: { field: CREATED_AT, direction: DESC }) {
+export const BlogListQuery = gql`
+  query BlogListQuery($first: Int, $last: Int, $before: Cursor, $after: Cursor, $tagWhereInput: [TagWhereInput!]) {
+    blogs(
+      first: $first
+      last: $last
+      before: $before
+      after: $after
+      orderBy: { field: CREATED_AT, direction: DESC }
+      where: { hasTagsWith: $tagWhereInput }
+    ) {
       ...BlogListFragment
     }
   }
   ${BlogListFragment}
 `;
 
-export type BlogListBeforeQueryResponse = {
+export type BlogListQueryResponse = {
   blogs: BlogListFragmentResponse;
 };
 
-export type BlogListBeforeQueryVariables = {
-  last: number;
-  before: string;
-};
-
-export const BlogListAfterQuery = gql`
-  query BlogListAfterQuery($first: Int!, $after: Cursor!) {
-    blogs(first: $first, after: $after, orderBy: { field: CREATED_AT, direction: DESC }) {
-      ...BlogListFragment
-    }
-  }
-  ${BlogListFragment}
-`;
-
-export type BlogListAfterQueryResponse = {
-  blogs: BlogListFragmentResponse;
-};
-
-export type BlogListAfterQueryVariables = {
-  first: number;
-  after: string;
+export type BlogListQueryVariables = {
+  first: number | null;
+  last: number | null;
+  before: string | null;
+  after: string | null;
+  tagWhereInput: { slugIn: string[] } | null;
 };

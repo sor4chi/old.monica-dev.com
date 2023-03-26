@@ -24,8 +24,8 @@ export const preferredRegion = 'home';
 const BlogListPageQuery = gql`
   ${BlogListFragment}
 
-  query BlogListPageQuery($first: Int!) {
-    blogs(first: $first, orderBy: { field: CREATED_AT, direction: DESC }) {
+  query BlogListPageQuery($first: Int!, $tagWhereInput: [TagWhereInput!]) {
+    blogs(first: $first, orderBy: { field: CREATED_AT, direction: DESC }, where: { hasTagsWith: $tagWhereInput }) {
       ...BlogListFragment
     }
   }
@@ -37,12 +37,16 @@ type BlogListPageQueryResponse = {
 
 type BlogListPageQueryVariables = {
   first: number;
+  tagWhereInput: {
+    slugIn: string[];
+  } | null;
 };
 
-async function getBlogs() {
+async function getBlogs(tags: string[]) {
   try {
     const data = await client.request<BlogListPageQueryResponse, BlogListPageQueryVariables>(BlogListPageQuery, {
       first: SITE_CONFIG.BLOG_LENGTH_PER_PAGE,
+      tagWhereInput: tags.length ? { slugIn: tags } : null,
     });
 
     return {
@@ -65,12 +69,12 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 export default async function Blog({ searchParams }: Props) {
   const tags = searchParams.tags?.split(',') ?? [];
 
-  const blogs = await getBlogs();
+  const blogs = await getBlogs(tags);
 
   return (
     <>
       <h1 className={styles.title}>Blog</h1>
-      <BlogList relay={blogs.data.blogs} />
+      <BlogList relay={blogs.data.blogs} filterTags={tags} />
     </>
   );
 }
