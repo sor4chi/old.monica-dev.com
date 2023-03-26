@@ -1,21 +1,15 @@
-import type { TagListFragmentResponse } from '../tagList';
-import { TagListFragment } from '../tagList';
+import type { BlogListCardFragmentResponse } from '../listCard';
+import { BlogListCardFragment } from '../listCard';
 
 import { gql } from '@/lib/graphql';
 
 export const BlogListFragment = gql`
-  ${TagListFragment}
+  ${BlogListCardFragment}
 
   fragment BlogListFragment on BlogConnection {
     edges {
       node {
-        title
-        slug
-        description
-        createdAt
-        tags {
-          ...TagListFragment
-        }
+        ...BlogListCardFragment
       }
     }
     pageInfo {
@@ -30,13 +24,7 @@ export const BlogListFragment = gql`
 
 export type BlogListFragmentResponse = {
   edges: {
-    node: {
-      title: string;
-      slug: string;
-      description: string;
-      createdAt: Date;
-      tags: TagListFragmentResponse[];
-    };
+    node: BlogListCardFragmentResponse;
   }[];
   pageInfo: {
     hasNextPage: boolean;

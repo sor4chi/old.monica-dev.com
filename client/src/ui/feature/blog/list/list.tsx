@@ -1,8 +1,7 @@
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md';
 
-import { TagList } from '../tagList';
+import { BlogListCard } from '../listCard';
 
 import * as styles from './list.css';
 import type { BlogListFragmentResponse, BlogListQueryResponse, BlogListQueryVariables } from './query';
@@ -12,8 +11,6 @@ import { SITE_CONFIG } from '@/constant/site';
 import { client } from '@/lib/graphql';
 import { parseTwemoji } from '@/lib/twemoji';
 import { Button } from '@/ui/foundation/button';
-import { Text } from '@/ui/foundation/text';
-import { formatYMD } from '@/util/date';
 
 interface Props {
   relay: BlogListFragmentResponse;
@@ -68,16 +65,7 @@ export const BlogList = ({ filterTags, relay }: Props) => {
       <ul className={styles.container}>
         {blogRelay.edges.map(({ node }) => (
           // add timestamp to activate rendering animation
-          <li key={node.slug + new Date().getTime()} className={styles.item}>
-            <time className={styles.date}>{formatYMD(node.createdAt)}</time>
-            <Link href={`/blog/${node.slug}`} className={styles.link} passHref>
-              <h2 className={styles.title}>
-                <Text value={node.title} />
-              </h2>
-              <p className={styles.description}>{node.description}</p>
-            </Link>
-            <TagList tags={node.tags} hrefGenerator={(tag) => `/blog?tags=${tag}`} />
-          </li>
+          <BlogListCard key={node.slug + new Date().getTime()} node={node} />
         ))}
       </ul>
       <div className={styles.pagination}>
