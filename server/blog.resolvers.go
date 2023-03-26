@@ -8,18 +8,7 @@ import (
 	"context"
 
 	"github.com/sor4chi/portfolio-blog/server/ent"
-	"github.com/sor4chi/portfolio-blog/server/ent/blog"
 )
-
-// CreateBlog is the resolver for the createBlog field.
-func (r *mutationResolver) CreateBlog(ctx context.Context, input ent.CreateBlogInput) (*ent.Blog, error) {
-	return r.client.Blog.Create().SetInput(input).Save(ctx)
-}
-
-// ShowBlog is the resolver for the showBlog field.
-func (r *mutationResolver) ShowBlog(ctx context.Context, slug string) (*ent.Blog, error) {
-	return r.client.Blog.Query().Where(blog.Slug(slug)).Only(ctx)
-}
 
 // Tags is the resolver for the tags field.
 func (r *createBlogInputResolver) Tags(ctx context.Context, obj *ent.CreateBlogInput, data []*ent.CreateTagInput) error {
@@ -38,8 +27,3 @@ func (r *createBlogInputResolver) Tags(ctx context.Context, obj *ent.CreateBlogI
 	obj.TagIDs = append(obj.TagIDs, ids...)
 	return nil
 }
-
-// Mutation returns MutationResolver implementation.
-func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
-
-type mutationResolver struct{ *Resolver }

@@ -14,7 +14,10 @@ require (
 
 require (
 	github.com/gosimple/unidecode v1.0.1 // indirect
+	github.com/mattn/go-sqlite3 v2.0.3+incompatible // indirect
+	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/vmihailenco/tagparser v0.1.2 // indirect
+	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 )
 
 require (
@@ -22,8 +25,6 @@ require (
 	github.com/agext/levenshtein v1.2.1 // indirect
 	github.com/agnivade/levenshtein v1.1.1 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
-	github.com/astaxie/beego v1.12.3
-	github.com/astaxie/session v0.0.0-20130408050157-95d7fe18579c
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-openapi/inflect v0.19.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.0

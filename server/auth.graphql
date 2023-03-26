@@ -1,0 +1,7 @@
+input LoginInput {
+  password: String!
+}
+
+type LoginPayload {
+  token: String!
+}

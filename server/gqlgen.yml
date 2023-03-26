@@ -2,6 +2,8 @@
 schema:
   - ent.graphql
   - blog.graphql
+  - auth.graphql
+  - mutation.graphql
 
 # resolver reports where the resolver implementations go.
 resolver:

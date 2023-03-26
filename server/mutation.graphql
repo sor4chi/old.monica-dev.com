@@ -1,0 +1,5 @@
+type Mutation {
+  createBlog(input: CreateBlogInput!): Blog
+  showBlog(slug: String!): Blog
+  login(input: LoginInput!): LoginPayload!
+}
