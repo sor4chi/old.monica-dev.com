@@ -12,6 +12,7 @@ import (
 	"github.com/sor4chi/portfolio-blog/server/db"
 	"github.com/sor4chi/portfolio-blog/server/ent"
 	"github.com/sor4chi/portfolio-blog/server/ent/migrate"
+	"github.com/sor4chi/portfolio-blog/server/middleware"
 	"github.com/sor4chi/portfolio-blog/server/util"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -21,9 +22,17 @@ var (
 	ERROR_CONNECT_ENT_CLIENT = "failed to connect ent client"
 	ERROR_MIGRATE_SCHEMA     = "failed to migrate schema"
 	ERROR_START_HTTP_SERVER  = "failed to start http server"
+)
 
-	GRAPHQL_PATH = "/query"
-	SERVER_PORT  = ":8081"
+var (
+	SERVER_PORT      = ":8081"
+	IS_DEV           = util.GetEnv("ENV", "production") == "development"
+	PLAYGROUND_TITLE = "Monica.log GQL PLAYGROUND"
+)
+
+var (
+	PATH_PLAYGROUND = "/"
+	PATH_GRAPHQL    = "/query"
 )
 
 func main() {
@@ -37,28 +46,25 @@ func main() {
 	); err != nil {
 		log.Fatal(ERROR_MIGRATE_SCHEMA, err)
 	}
+	// Init HTTP server with mux.
+	mux := http.NewServeMux()
 
-	// Configure the server and start listening on :8081.
+	// Configure the server and start listening on SERVER_PORT.
 	srv := handler.NewDefaultServer(server.NewSchema(client))
-	http.Handle("/",
-		playground.Handler("Blog", GRAPHQL_PATH),
-	)
-	http.HandleFunc(GRAPHQL_PATH, func(w http.ResponseWriter, r *http.Request) {
-		allow := util.GetEnv("ALLOW_ORIGIN", "*")
 
-		w.Header().Set("Access-Control-Allow-Origin", allow)
-		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+	if IS_DEV {
+		// GraphQL playground for development.
+		mux.Handle(PATH_PLAYGROUND, playground.Handler(PLAYGROUND_TITLE, PATH_GRAPHQL))
+	}
 
-		if r.Method == "OPTIONS" {
-			return
-		}
+	mm := util.NewMiddlewareManager()
+	mm.Use(middleware.AuthMiddleware)
+	mm.Use(middleware.CorsMiddleware)
 
-		srv.ServeHTTP(w, r)
-	})
+	mux.Handle(PATH_GRAPHQL, mm.Middleware(srv))
 
 	log.Println("listening on", SERVER_PORT)
-	if err := http.ListenAndServe(SERVER_PORT, nil); err != nil {
+	if err := http.ListenAndServe(SERVER_PORT, mux); err != nil {
 		log.Fatal(ERROR_START_HTTP_SERVER, err)
 	}
 }
