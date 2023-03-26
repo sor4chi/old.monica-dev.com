@@ -87,6 +87,9 @@ func newBlogPaginateArgs(rv map[string]interface{}) *blogPaginateArgs {
 			}
 		}
 	}
+	if v, ok := rv[whereField].(*BlogWhereInput); ok {
+		args.opts = append(args.opts, WithBlogFilter(v.Filter))
+	}
 	return args
 }
 
@@ -167,6 +170,9 @@ func newTagPaginateArgs(rv map[string]interface{}) *tagPaginateArgs {
 				args.opts = append(args.opts, WithTagOrder(v))
 			}
 		}
+	}
+	if v, ok := rv[whereField].(*TagWhereInput); ok {
+		args.opts = append(args.opts, WithTagFilter(v.Filter))
 	}
 	return args
 }
