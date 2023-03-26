@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md';
 
 import { BlogListCard } from '../listCard';
 
@@ -10,7 +9,7 @@ import { BlogListQuery } from './query';
 import { SITE_CONFIG } from '@/constant/site';
 import { client } from '@/lib/graphql';
 import { parseTwemoji } from '@/lib/twemoji';
-import { Button } from '@/ui/foundation/button';
+import { Pagination } from '@/ui/foundation/pagination';
 
 interface Props {
   relay: BlogListFragmentResponse;
@@ -68,25 +67,13 @@ export const BlogList = ({ filterTags, relay }: Props) => {
           <BlogListCard key={node.slug + new Date().getTime()} node={node} />
         ))}
       </ul>
-      <div className={styles.pagination}>
-        {blogRelay.pageInfo.hasPreviousPage && (
-          <Button onClick={loadBefore} variant="secondary">
-            <MdArrowBackIos />
-            Prev
-          </Button>
-        )}
-        {page > 1 && (
-          <span className={styles.page}>
-            {page} / {maxPage}
-          </span>
-        )}
-        {blogRelay.pageInfo.hasNextPage && (
-          <Button onClick={loadAfter} variant="secondary">
-            Next
-            <MdArrowForwardIos />
-          </Button>
-        )}
-      </div>
+      <Pagination
+        page={page}
+        maxPage={maxPage}
+        loadBefore={loadBefore}
+        loadAfter={loadAfter}
+        pageInfo={blogRelay.pageInfo}
+      />
     </>
   );
 };

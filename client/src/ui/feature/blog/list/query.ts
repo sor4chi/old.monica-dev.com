@@ -2,9 +2,12 @@ import type { BlogListCardFragmentResponse } from '../listCard';
 import { BlogListCardFragment } from '../listCard';
 
 import { gql } from '@/lib/graphql';
+import type { PaginationFragmentResponse } from '@/ui/foundation/pagination';
+import { PaginationFragment } from '@/ui/foundation/pagination';
 
 export const BlogListFragment = gql`
   ${BlogListCardFragment}
+  ${PaginationFragment}
 
   fragment BlogListFragment on BlogConnection {
     edges {
@@ -13,10 +16,7 @@ export const BlogListFragment = gql`
       }
     }
     pageInfo {
-      hasNextPage
-      hasPreviousPage
-      endCursor
-      startCursor
+      ...PaginationFragment
     }
     totalCount
   }
@@ -26,12 +26,7 @@ export type BlogListFragmentResponse = {
   edges: {
     node: BlogListCardFragmentResponse;
   }[];
-  pageInfo: {
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
-    endCursor: string;
-    startCursor: string;
-  };
+  pageInfo: PaginationFragmentResponse;
   totalCount: number;
 };
 
