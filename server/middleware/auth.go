@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"log"
 
 	"net/http"
 
@@ -22,9 +23,14 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		}
 
 		bearer := "bearer "
-		auth = auth[len(bearer):]
+		if len(auth) < len(bearer) {
+			http.Error(w, "Invalid token", http.StatusForbidden)
+			return
+		}
 
-		validate, err := service.JwtValidate(context.Background(), auth)
+		token := auth[len(bearer):]
+
+		validate, err := service.JwtValidate(token)
 		if err != nil || !validate.Valid {
 			http.Error(w, "Invalid token", http.StatusForbidden)
 			return
@@ -39,7 +45,15 @@ func AuthMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func CtxValue(ctx context.Context) *service.JwtCustom {
-	raw, _ := ctx.Value(AUTH_STRING).(*service.JwtCustom)
-	return raw
+func AuthCtxValue(ctx context.Context) (*service.JwtCustom, bool) {
+	log.Println("---------AUTH_STRING---------")
+	jwtCustom, ok := ctx.Value(AUTH_STRING).(*service.JwtCustom)
+	if !ok {
+		log.Println("Failed to get auth string from context")
+		return nil, false
+	} else {
+		log.Println("Success to get auth string from context")
+		log.Println("AUTH_STRING: ", jwtCustom)
+	}
+	return jwtCustom, ok
 }

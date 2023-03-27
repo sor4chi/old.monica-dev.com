@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 
 	"github.com/sor4chi/portfolio-blog/server/util"
 	"golang.org/x/crypto/bcrypt"
@@ -13,7 +14,7 @@ type User struct {
 }
 
 var (
-	password = util.GetEnv("ADMIN_PASSWORD", "admin") // password must be hashed
+	password = util.GetEnv("ADMIN_PASSWORD", "") // password must be encrypted by bcrypt
 )
 
 func checkPasswordHash(password string, hash string) bool {
@@ -21,17 +22,25 @@ func checkPasswordHash(password string, hash string) bool {
 	return err == nil
 }
 
-func UserLogin(ctx context.Context, p string) (interface{}, error) {
+type LoginResponse struct {
+	Token string `json:"token"`
+}
+
+func UserLogin(ctx context.Context, p string) (LoginResponse, error) {
+	if password == "" {
+		return LoginResponse{}, errors.New("internal error")
+	}
+
 	if !checkPasswordHash(p, password) {
-		return nil, nil
+		return LoginResponse{}, errors.New("invalid password")
 	}
 
-	token, err := JwtGenerate(ctx)
+	token, err := JwtGenerate()
 	if err != nil {
-		return nil, err
+		return LoginResponse{}, err
 	}
 
-	return map[string]interface{}{
-		"token": token,
+	return LoginResponse{
+		Token: token,
 	}, nil
 }

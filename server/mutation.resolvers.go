@@ -6,17 +6,24 @@ package server
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"log"
 
 	"github.com/sor4chi/portfolio-blog/server/ent"
 	"github.com/sor4chi/portfolio-blog/server/ent/blog"
+	"github.com/sor4chi/portfolio-blog/server/middleware"
+	"github.com/sor4chi/portfolio-blog/server/service"
 )
 
 // CreateBlog is the resolver for the createBlog field.
 func (r *mutationResolver) CreateBlog(ctx context.Context, input ent.CreateBlogInput) (*ent.Blog, error) {
-	log.Println("CreateBlogCtx", ctx)
-	// service.JwtValidate(ctx, "token")
+	token, ok := middleware.AuthCtxValue(ctx)
+	if !ok {
+		return nil, errors.New("unauthorized")
+	}
+	log.Println(token.ExpiresAt)
+	log.Println(token.IssuedAt)
+	log.Println(token.Id)
 	return r.client.Blog.Create().SetInput(input).Save(ctx)
 }
 
@@ -27,7 +34,13 @@ func (r *mutationResolver) ShowBlog(ctx context.Context, slug string) (*ent.Blog
 
 // Login is the resolver for the login field.
 func (r *mutationResolver) Login(ctx context.Context, input LoginInput) (*LoginPayload, error) {
-	panic(fmt.Errorf("not implemented: Login - login"))
+	res, err := service.UserLogin(ctx, input.Password)
+	if err != nil {
+		return nil, err
+	}
+	return &LoginPayload{
+		Token: res.Token,
+	}, nil
 }
 
 // Mutation returns MutationResolver implementation.
