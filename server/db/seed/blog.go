@@ -15,7 +15,7 @@ import (
 
 var (
 	WD                = util.GetEnv("PWD", ".")
-	BLOG_FIXTURE_PATH = filepath.Join(WD, "seed/fixtures/blogs.json")
+	BLOG_FIXTURE_PATH = filepath.Join(WD, "db/seed/fixtures/blogs.json")
 	MAX_TAGS          = 3
 	ERROR_CREATE_BLOG = "failed creating blog: %v"
 	ERROR_CREATE_TAG  = "failed creating tag: %v"

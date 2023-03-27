@@ -7,8 +7,8 @@ import (
 
 	"entgo.io/ent/dialect"
 	"github.com/sor4chi/portfolio-blog/server/db"
+	"github.com/sor4chi/portfolio-blog/server/db/seed"
 	"github.com/sor4chi/portfolio-blog/server/ent"
-	"github.com/sor4chi/portfolio-blog/server/seed"
 
 	_ "github.com/go-sql-driver/mysql"
 )
