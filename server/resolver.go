@@ -8,7 +8,7 @@ import (
 type Resolver struct{ client *ent.Client }
 
 func NewSchema(client *ent.Client) graphql.ExecutableSchema {
-	return NewExecutableSchema(Config{
-		Resolvers: &Resolver{client},
-	})
+	c := Config{Resolvers: &Resolver{client}}
+	c.Directives.Auth = AuthDirective
+	return NewExecutableSchema(c)
 }

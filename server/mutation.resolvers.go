@@ -6,24 +6,14 @@ package server
 
 import (
 	"context"
-	"errors"
-	"log"
 
 	"github.com/sor4chi/portfolio-blog/server/ent"
 	"github.com/sor4chi/portfolio-blog/server/ent/blog"
-	"github.com/sor4chi/portfolio-blog/server/middleware"
 	"github.com/sor4chi/portfolio-blog/server/service"
 )
 
 // CreateBlog is the resolver for the createBlog field.
 func (r *mutationResolver) CreateBlog(ctx context.Context, input ent.CreateBlogInput) (*ent.Blog, error) {
-	token, ok := middleware.AuthCtxValue(ctx)
-	if !ok {
-		return nil, errors.New("unauthorized")
-	}
-	log.Println(token.ExpiresAt)
-	log.Println(token.IssuedAt)
-	log.Println(token.Id)
 	return r.client.Blog.Create().SetInput(input).Save(ctx)
 }
 

@@ -1,5 +1,7 @@
 type Mutation {
-  createBlog(input: CreateBlogInput!): Blog
+  createBlog(input: CreateBlogInput!): Blog @auth
   showBlog(slug: String!): Blog
   login(input: LoginInput!): LoginPayload!
 }
+
+directive @auth on FIELD_DEFINITION
