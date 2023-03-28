@@ -8,6 +8,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/sor4chi/portfolio-blog/server/entity"
 	"github.com/sor4chi/portfolio-blog/server/graph/model"
 	"github.com/sor4chi/portfolio-blog/server/middleware"
 )
@@ -31,42 +32,41 @@ func (r *mutationResolver) DeleteBlog(ctx context.Context, id string) (*model.Bl
 func (r *queryResolver) Blogs(ctx context.Context) ([]*model.Blog, error) {
 	const PUBLIC_FILTER = "published_at IS NOT NULL"
 	_, ok := middleware.AuthCtxValue(ctx)
-	var blogs []*model.Blog
+	var blogs []*entity.Blog
 
-	if ok {
-		err := r.DB.Find(&blogs).Error
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		err := r.DB.Where(PUBLIC_FILTER).Find(&blogs).Error
-		if err != nil {
-			return nil, err
-		}
+	query := r.DB.Preload("Tags")
+	if !ok {
+		query = query.Where(PUBLIC_FILTER)
+	}
+	query = query.Find(&blogs)
+	if query.Error != nil {
+		return nil, query.Error
 	}
 
-	return blogs, nil
+	blogsModel := make([]*model.Blog, len(blogs))
+	for i, blog := range blogs {
+		blogsModel[i] = model.NewBlogFromEntity(blog)
+	}
+
+	return blogsModel, nil
 }
 
 // Blog is the resolver for the blog field.
 func (r *queryResolver) Blog(ctx context.Context, slug string) (*model.Blog, error) {
 	const PUBLIC_FILTER = "published_at IS NOT NULL"
 	_, ok := middleware.AuthCtxValue(ctx)
-	var blog model.Blog
+	var blog entity.Blog
 
-	if ok {
-		err := r.DB.First(&blog, "slug = ?", slug).Error
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		err := r.DB.Where(PUBLIC_FILTER).First(&blog, "slug = ?", slug).Error
-		if err != nil {
-			return nil, err
-		}
+	query := r.DB.Preload("Tags")
+	if !ok {
+		query = query.Where(PUBLIC_FILTER)
+	}
+	query = query.First(&blog, "slug = ?", slug)
+	if query.Error != nil {
+		return nil, query.Error
 	}
 
-	return &blog, nil
+	return model.NewBlogFromEntity(&blog), nil
 }
 
 // Mutation returns MutationResolver implementation.

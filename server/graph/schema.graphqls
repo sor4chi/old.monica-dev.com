@@ -8,9 +8,18 @@ type Blog {
   slug: String!
   description: String!
   content: String!
+  tags: [Tag!]!
   createdAt: String!
   updatedAt: String!
   publishedAt: String!
+}
+
+type Tag {
+  id: ID!
+  name: String!
+  slug: String!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Query {
@@ -23,7 +32,13 @@ input BlogInput {
   slug: String!
   description: String!
   content: String!
+  tags: [TagInput!]!
   publishedAt: String!
+}
+
+input TagInput {
+  name: String!
+  slug: String!
 }
 
 type Mutation {

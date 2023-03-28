@@ -8,15 +8,30 @@ type Blog struct {
 	Slug        string `json:"slug"`
 	Description string `json:"description"`
 	Content     string `json:"content"`
+	Tags        []*Tag `json:"tags"`
 	CreatedAt   string `json:"createdAt"`
 	UpdatedAt   string `json:"updatedAt"`
 	PublishedAt string `json:"publishedAt"`
 }
 
 type BlogInput struct {
-	Title       string `json:"title"`
-	Slug        string `json:"slug"`
-	Description string `json:"description"`
-	Content     string `json:"content"`
-	PublishedAt string `json:"publishedAt"`
+	Title       string      `json:"title"`
+	Slug        string      `json:"slug"`
+	Description string      `json:"description"`
+	Content     string      `json:"content"`
+	Tags        []*TagInput `json:"tags"`
+	PublishedAt string      `json:"publishedAt"`
+}
+
+type Tag struct {
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	Slug      string `json:"slug"`
+	CreatedAt string `json:"createdAt"`
+	UpdatedAt string `json:"updatedAt"`
+}
+
+type TagInput struct {
+	Name string `json:"name"`
+	Slug string `json:"slug"`
 }
