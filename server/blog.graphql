@@ -1,3 +1,0 @@
-extend input CreateBlogInput {
-  tags: [CreateTagInput!]
-}
