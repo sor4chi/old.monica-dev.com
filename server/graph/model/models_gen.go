@@ -23,6 +23,10 @@ type BlogInput struct {
 	PublishedAt string      `json:"publishedAt"`
 }
 
+type LoginPayload struct {
+	Token string `json:"token"`
+}
+
 type Tag struct {
 	ID        string `json:"id"`
 	Name      string `json:"name"`

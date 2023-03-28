@@ -11,7 +11,17 @@ import (
 	"github.com/sor4chi/portfolio-blog/server/entity"
 	"github.com/sor4chi/portfolio-blog/server/graph/model"
 	"github.com/sor4chi/portfolio-blog/server/middleware"
+	"github.com/sor4chi/portfolio-blog/server/service"
 )
+
+// Login is the resolver for the login field.
+func (r *mutationResolver) Login(ctx context.Context, password string) (*model.LoginPayload, error) {
+	res, err := service.UserLogin(ctx, password)
+
+	return &model.LoginPayload{
+		Token: res.Token,
+	}, err
+}
 
 // CreateBlog is the resolver for the createBlog field.
 func (r *mutationResolver) CreateBlog(ctx context.Context, input model.BlogInput) (*model.Blog, error) {
