@@ -9,6 +9,7 @@ import (
 	"fmt"
 
 	"github.com/sor4chi/portfolio-blog/server/graph/model"
+	"github.com/sor4chi/portfolio-blog/server/middleware"
 )
 
 // CreateBlog is the resolver for the createBlog field.
@@ -28,12 +29,44 @@ func (r *mutationResolver) DeleteBlog(ctx context.Context, id string) (*model.Bl
 
 // Blogs is the resolver for the blogs field.
 func (r *queryResolver) Blogs(ctx context.Context) ([]*model.Blog, error) {
-	panic(fmt.Errorf("not implemented: Blogs - blogs"))
+	const PUBLIC_FILTER = "published_at IS NOT NULL"
+	_, ok := middleware.AuthCtxValue(ctx)
+	var blogs []*model.Blog
+
+	if ok {
+		err := r.DB.Find(&blogs).Error
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		err := r.DB.Where(PUBLIC_FILTER).Find(&blogs).Error
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return blogs, nil
 }
 
 // Blog is the resolver for the blog field.
 func (r *queryResolver) Blog(ctx context.Context, slug string) (*model.Blog, error) {
-	panic(fmt.Errorf("not implemented: Blog - blog"))
+	const PUBLIC_FILTER = "published_at IS NOT NULL"
+	_, ok := middleware.AuthCtxValue(ctx)
+	var blog model.Blog
+
+	if ok {
+		err := r.DB.First(&blog, "slug = ?", slug).Error
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		err := r.DB.Where(PUBLIC_FILTER).First(&blog, "slug = ?", slug).Error
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return &blog, nil
 }
 
 // Mutation returns MutationResolver implementation.
