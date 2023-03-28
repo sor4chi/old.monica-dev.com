@@ -29,7 +29,7 @@ services:
     depends_on:
       - mysql
     working_dir: /app
-    command: go run ./cmd/server
+    command: sh -c "go run ./cmd/migrate && go run ./cmd/server"
 
 volumes:
   mysql_data:
