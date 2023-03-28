@@ -23,6 +23,17 @@ type BlogInput struct {
 	PublishedAt string      `json:"publishedAt"`
 }
 
+type BlogListInput struct {
+	Limit  int      `json:"limit"`
+	Offset int      `json:"offset"`
+	Tags   []string `json:"tags,omitempty"`
+}
+
+type BlogListResult struct {
+	Data  []*Blog `json:"data"`
+	Total int     `json:"total"`
+}
+
 type LoginPayload struct {
 	Token string `json:"token"`
 }

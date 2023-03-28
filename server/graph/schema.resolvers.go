@@ -12,6 +12,7 @@ import (
 	"github.com/sor4chi/portfolio-blog/server/graph/model"
 	"github.com/sor4chi/portfolio-blog/server/middleware"
 	"github.com/sor4chi/portfolio-blog/server/service"
+	"gorm.io/gorm"
 )
 
 // Login is the resolver for the login field.
@@ -39,26 +40,46 @@ func (r *mutationResolver) DeleteBlog(ctx context.Context, id string) (*model.Bl
 }
 
 // Blogs is the resolver for the blogs field.
-func (r *queryResolver) Blogs(ctx context.Context) ([]*model.Blog, error) {
+func (r *queryResolver) Blogs(ctx context.Context, input model.BlogListInput) (*model.BlogListResult, error) {
 	const PUBLIC_FILTER = "published_at IS NOT NULL"
+	const MAX_LIMIT = 30
+	if input.Limit > MAX_LIMIT {
+		input.Limit = MAX_LIMIT
+	}
+
 	_, ok := middleware.AuthCtxValue(ctx)
 	var blogs []*entity.Blog
+	var total int64
 
-	query := r.DB.Preload("Tags")
+	var q *gorm.DB
+
+	if len(input.Tags) > 0 {
+		q = r.DB.Where("id IN (?)",
+			r.DB.Table("blog_tags").Select("blog_id").Where(
+				"tag_id IN (?)",
+				r.DB.Table("tags").Select("id").Where("slug IN (?)", input.Tags),
+			),
+		)
+	} else {
+		q = r.DB.Preload("Tags")
+	}
+
 	if !ok {
-		query = query.Where(PUBLIC_FILTER)
-	}
-	query = query.Find(&blogs)
-	if query.Error != nil {
-		return nil, query.Error
+		q = q.Where(PUBLIC_FILTER)
 	}
 
-	blogsModel := make([]*model.Blog, len(blogs))
-	for i, blog := range blogs {
-		blogsModel[i] = model.NewBlogFromEntity(blog)
+	q.Model(&entity.Blog{}).Count(&total)
+	q.Limit(input.Limit).Offset(input.Offset).Find(&blogs)
+
+	parsed := make([]*model.Blog, len(blogs))
+	for i, b := range blogs {
+		parsed[i] = model.NewBlogFromEntity(b)
 	}
 
-	return blogsModel, nil
+	return &model.BlogListResult{
+		Total: int(total),
+		Data:  parsed,
+	}, nil
 }
 
 // Blog is the resolver for the blog field.

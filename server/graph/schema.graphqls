@@ -22,8 +22,19 @@ type Tag {
   updatedAt: String!
 }
 
+type BlogListResult {
+  data: [Blog!]!
+  total: Int!
+}
+
+input BlogListInput {
+  limit: Int!
+  offset: Int!
+  tags: [String!]
+}
+
 type Query {
-  blogs: [Blog!]!
+  blogs(input: BlogListInput!): BlogListResult!
   blog(slug: String!): Blog!
 }
 

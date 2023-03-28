@@ -57,6 +57,11 @@ type ComplexityRoot struct {
 		UpdatedAt   func(childComplexity int) int
 	}
 
+	BlogListResult struct {
+		Data  func(childComplexity int) int
+		Total func(childComplexity int) int
+	}
+
 	LoginPayload struct {
 		Token func(childComplexity int) int
 	}
@@ -70,7 +75,7 @@ type ComplexityRoot struct {
 
 	Query struct {
 		Blog  func(childComplexity int, slug string) int
-		Blogs func(childComplexity int) int
+		Blogs func(childComplexity int, input model.BlogListInput) int
 	}
 
 	Tag struct {
@@ -89,7 +94,7 @@ type MutationResolver interface {
 	DeleteBlog(ctx context.Context, id string) (*model.Blog, error)
 }
 type QueryResolver interface {
-	Blogs(ctx context.Context) ([]*model.Blog, error)
+	Blogs(ctx context.Context, input model.BlogListInput) (*model.BlogListResult, error)
 	Blog(ctx context.Context, slug string) (*model.Blog, error)
 }
 
@@ -171,6 +176,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Blog.UpdatedAt(childComplexity), true
 
+	case "BlogListResult.data":
+		if e.complexity.BlogListResult.Data == nil {
+			break
+		}
+
+		return e.complexity.BlogListResult.Data(childComplexity), true
+
+	case "BlogListResult.total":
+		if e.complexity.BlogListResult.Total == nil {
+			break
+		}
+
+		return e.complexity.BlogListResult.Total(childComplexity), true
+
 	case "LoginPayload.token":
 		if e.complexity.LoginPayload.Token == nil {
 			break
@@ -243,7 +262,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Query.Blogs(childComplexity), true
+		args, err := ec.field_Query_blogs_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Blogs(childComplexity, args["input"].(model.BlogListInput)), true
 
 	case "Tag.createdAt":
 		if e.complexity.Tag.CreatedAt == nil {
@@ -289,6 +313,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	ec := executionContext{rc, e}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
 		ec.unmarshalInputBlogInput,
+		ec.unmarshalInputBlogListInput,
 		ec.unmarshalInputTagInput,
 	)
 	first := true
@@ -465,6 +490,21 @@ func (ec *executionContext) field_Query_blog_args(ctx context.Context, rawArgs m
 		}
 	}
 	args["slug"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_blogs_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.BlogListInput
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNBlogListInput2githubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐBlogListInput(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
 	return args, nil
 }
 
@@ -914,6 +954,114 @@ func (ec *executionContext) fieldContext_Blog_publishedAt(ctx context.Context, f
 	return fc, nil
 }
 
+func (ec *executionContext) _BlogListResult_data(ctx context.Context, field graphql.CollectedField, obj *model.BlogListResult) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BlogListResult_data(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Data, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Blog)
+	fc.Result = res
+	return ec.marshalNBlog2ᚕᚖgithubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐBlogᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BlogListResult_data(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BlogListResult",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Blog_id(ctx, field)
+			case "title":
+				return ec.fieldContext_Blog_title(ctx, field)
+			case "slug":
+				return ec.fieldContext_Blog_slug(ctx, field)
+			case "description":
+				return ec.fieldContext_Blog_description(ctx, field)
+			case "content":
+				return ec.fieldContext_Blog_content(ctx, field)
+			case "tags":
+				return ec.fieldContext_Blog_tags(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Blog_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Blog_updatedAt(ctx, field)
+			case "publishedAt":
+				return ec.fieldContext_Blog_publishedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Blog", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _BlogListResult_total(ctx context.Context, field graphql.CollectedField, obj *model.BlogListResult) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_BlogListResult_total(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Total, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_BlogListResult_total(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "BlogListResult",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _LoginPayload_token(ctx context.Context, field graphql.CollectedField, obj *model.LoginPayload) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_LoginPayload_token(ctx, field)
 	if err != nil {
@@ -1256,7 +1404,7 @@ func (ec *executionContext) _Query_blogs(ctx context.Context, field graphql.Coll
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Blogs(rctx)
+		return ec.resolvers.Query().Blogs(rctx, fc.Args["input"].(model.BlogListInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1268,9 +1416,9 @@ func (ec *executionContext) _Query_blogs(ctx context.Context, field graphql.Coll
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*model.Blog)
+	res := resTmp.(*model.BlogListResult)
 	fc.Result = res
-	return ec.marshalNBlog2ᚕᚖgithubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐBlogᚄ(ctx, field.Selections, res)
+	return ec.marshalNBlogListResult2ᚖgithubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐBlogListResult(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_blogs(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1281,27 +1429,24 @@ func (ec *executionContext) fieldContext_Query_blogs(ctx context.Context, field 
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_Blog_id(ctx, field)
-			case "title":
-				return ec.fieldContext_Blog_title(ctx, field)
-			case "slug":
-				return ec.fieldContext_Blog_slug(ctx, field)
-			case "description":
-				return ec.fieldContext_Blog_description(ctx, field)
-			case "content":
-				return ec.fieldContext_Blog_content(ctx, field)
-			case "tags":
-				return ec.fieldContext_Blog_tags(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_Blog_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_Blog_updatedAt(ctx, field)
-			case "publishedAt":
-				return ec.fieldContext_Blog_publishedAt(ctx, field)
+			case "data":
+				return ec.fieldContext_BlogListResult_data(ctx, field)
+			case "total":
+				return ec.fieldContext_BlogListResult_total(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Blog", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type BlogListResult", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_blogs_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return
 	}
 	return fc, nil
 }
@@ -3571,6 +3716,50 @@ func (ec *executionContext) unmarshalInputBlogInput(ctx context.Context, obj int
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputBlogListInput(ctx context.Context, obj interface{}) (model.BlogListInput, error) {
+	var it model.BlogListInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"limit", "offset", "tags"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "limit":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+			it.Limit, err = ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "offset":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+			it.Offset, err = ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "tags":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tags"))
+			it.Tags, err = ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputTagInput(ctx context.Context, obj interface{}) (model.TagInput, error) {
 	var it model.TagInput
 	asMap := map[string]interface{}{}
@@ -3684,6 +3873,41 @@ func (ec *executionContext) _Blog(ctx context.Context, sel ast.SelectionSet, obj
 		case "publishedAt":
 
 			out.Values[i] = ec._Blog_publishedAt(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var blogListResultImplementors = []string{"BlogListResult"}
+
+func (ec *executionContext) _BlogListResult(ctx context.Context, sel ast.SelectionSet, obj *model.BlogListResult) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, blogListResultImplementors)
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("BlogListResult")
+		case "data":
+
+			out.Values[i] = ec._BlogListResult_data(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "total":
+
+			out.Values[i] = ec._BlogListResult_total(ctx, field, obj)
 
 			if out.Values[i] == graphql.Null {
 				invalids++
@@ -4318,6 +4542,25 @@ func (ec *executionContext) unmarshalNBlogInput2githubᚗcomᚋsor4chiᚋportfol
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) unmarshalNBlogListInput2githubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐBlogListInput(ctx context.Context, v interface{}) (model.BlogListInput, error) {
+	res, err := ec.unmarshalInputBlogListInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNBlogListResult2githubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐBlogListResult(ctx context.Context, sel ast.SelectionSet, v model.BlogListResult) graphql.Marshaler {
+	return ec._BlogListResult(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNBlogListResult2ᚖgithubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐBlogListResult(ctx context.Context, sel ast.SelectionSet, v *model.BlogListResult) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._BlogListResult(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalNBoolean2bool(ctx context.Context, v interface{}) (bool, error) {
 	res, err := graphql.UnmarshalBoolean(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -4340,6 +4583,21 @@ func (ec *executionContext) unmarshalNID2string(ctx context.Context, v interface
 
 func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.SelectionSet, v string) graphql.Marshaler {
 	res := graphql.MarshalID(v)
+	if res == graphql.Null {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+	}
+	return res
+}
+
+func (ec *executionContext) unmarshalNInt2int(ctx context.Context, v interface{}) (int, error) {
+	res, err := graphql.UnmarshalInt(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
+	res := graphql.MarshalInt(v)
 	if res == graphql.Null {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -4730,6 +4988,44 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	}
 	res := graphql.MarshalBoolean(*v)
 	return res
+}
+
+func (ec *executionContext) unmarshalOString2ᚕstringᚄ(ctx context.Context, v interface{}) ([]string, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]string, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNString2string(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalOString2ᚕstringᚄ(ctx context.Context, sel ast.SelectionSet, v []string) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	for i := range v {
+		ret[i] = ec.marshalNString2string(ctx, sel, v[i])
+	}
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
 }
 
 func (ec *executionContext) unmarshalOString2ᚖstring(ctx context.Context, v interface{}) (*string, error) {

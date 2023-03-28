@@ -34,7 +34,6 @@ type Input struct {
 }
 
 func SeedBlog(ctx context.Context, client *gorm.DB) {
-	var blogs []*entity.Blog
 	var dumies []Input
 
 	if err := util.LoadJSON(BLOG_FIXTURE_PATH, &dumies); err != nil {
@@ -45,10 +44,15 @@ func SeedBlog(ctx context.Context, client *gorm.DB) {
 		tags := []*entity.Tag{}
 		for _, t := range dumies[i].Tags {
 			s := slug.Make(t)
-			tags = append(tags, &entity.Tag{
+			tag := &entity.Tag{
 				Name: t,
 				Slug: s,
-			})
+			}
+			var existingTag entity.Tag
+			if err := client.Where("slug = ?", tag.Slug).FirstOrCreate(&existingTag, tag).Error; err != nil {
+				log.Fatalf(ERROR_CREATE_TAG, err)
+			}
+			tags = append(tags, &existingTag)
 		}
 
 		record := &entity.Blog{
@@ -63,9 +67,7 @@ func SeedBlog(ctx context.Context, client *gorm.DB) {
 		if err := client.Create(record).Error; err != nil {
 			log.Fatalf(ERROR_CREATE_BLOG, err)
 		}
-		blogs = append(blogs, record)
 	}
-
 }
 
 func ResetBlog(ctx context.Context, client *gorm.DB) {
