@@ -6,7 +6,9 @@ package graph
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"time"
 
 	"github.com/sor4chi/portfolio-blog/server/entity"
 	"github.com/sor4chi/portfolio-blog/server/graph/model"
@@ -26,17 +28,105 @@ func (r *mutationResolver) Login(ctx context.Context, password string) (*model.L
 
 // CreateBlog is the resolver for the createBlog field.
 func (r *mutationResolver) CreateBlog(ctx context.Context, input model.BlogInput) (*model.Blog, error) {
-	panic(fmt.Errorf("not implemented: CreateBlog - createBlog"))
+	_, ok := middleware.AuthCtxValue(ctx)
+	if !ok {
+		return nil, fmt.Errorf("unauthorized")
+	}
+
+	publishedAt, err := time.Parse(time.RFC3339, input.PublishedAt)
+	if err != nil {
+		return nil, errors.New("invalid date format for publishedAt")
+	}
+
+	tags := []*entity.Tag{}
+	for _, t := range input.Tags {
+		tag := &entity.Tag{
+			Slug: t.Slug,
+			Name: t.Name,
+		}
+		var existingTag entity.Tag
+
+		if err := r.DB.Where("slug = ?", tag.Slug).FirstOrCreate(&existingTag, tag).Error; err != nil {
+			return nil, err
+		}
+		tags = append(tags, &existingTag)
+	}
+
+	blog := &entity.Blog{
+		Title:       input.Title,
+		Slug:        input.Slug,
+		Description: input.Description,
+		Content:     input.Content,
+		PublishedAt: publishedAt,
+		Tags:        tags,
+	}
+
+	if err := r.DB.Create(blog).Error; err != nil {
+		return nil, err
+	}
+
+	return model.NewBlogFromEntity(blog), nil
 }
 
 // UpdateBlog is the resolver for the updateBlog field.
 func (r *mutationResolver) UpdateBlog(ctx context.Context, id string, input model.BlogInput) (*model.Blog, error) {
-	panic(fmt.Errorf("not implemented: UpdateBlog - updateBlog"))
+	_, ok := middleware.AuthCtxValue(ctx)
+	if !ok {
+		return nil, fmt.Errorf("unauthorized")
+	}
+
+	publishedAt, err := time.Parse(time.RFC3339, input.PublishedAt)
+	if err != nil {
+		return nil, errors.New("invalid date format for publishedAt")
+	}
+
+	tags := []*entity.Tag{}
+	for _, t := range input.Tags {
+		tag := &entity.Tag{
+			Slug: t.Slug,
+			Name: t.Name,
+		}
+		var existingTag entity.Tag
+
+		if err := r.DB.Where("slug = ?", tag.Slug).FirstOrCreate(&existingTag, tag).Error; err != nil {
+			return nil, err
+		}
+		tags = append(tags, &existingTag)
+	}
+
+	blog := &entity.Blog{
+		Title:       input.Title,
+		Slug:        input.Slug,
+		Description: input.Description,
+		Content:     input.Content,
+		PublishedAt: publishedAt,
+		Tags:        tags,
+	}
+
+	if err := r.DB.Model(&blog).Updates(blog).Error; err != nil {
+		return nil, err
+	}
+
+	return model.NewBlogFromEntity(blog), nil
 }
 
 // DeleteBlog is the resolver for the deleteBlog field.
 func (r *mutationResolver) DeleteBlog(ctx context.Context, id string) (*model.Blog, error) {
-	panic(fmt.Errorf("not implemented: DeleteBlog - deleteBlog"))
+	_, ok := middleware.AuthCtxValue(ctx)
+	if !ok {
+		return nil, fmt.Errorf("unauthorized")
+	}
+
+	var blog entity.Blog
+	if err := r.DB.Where("id = ?", id).First(&blog).Error; err != nil {
+		return nil, err
+	}
+
+	if err := r.DB.Delete(&blog).Error; err != nil {
+		return nil, err
+	}
+
+	return model.NewBlogFromEntity(&blog), nil
 }
 
 // Blogs is the resolver for the blogs field.
@@ -71,14 +161,9 @@ func (r *queryResolver) Blogs(ctx context.Context, input model.BlogListInput) (*
 	q.Model(&entity.Blog{}).Count(&total)
 	q.Limit(input.Limit).Offset(input.Offset).Find(&blogs)
 
-	parsed := make([]*model.Blog, len(blogs))
-	for i, b := range blogs {
-		parsed[i] = model.NewBlogFromEntity(b)
-	}
-
 	return &model.BlogListResult{
 		Total: int(total),
-		Data:  parsed,
+		Data:  model.NewBlogsFromEntityList(blogs),
 	}, nil
 }
 

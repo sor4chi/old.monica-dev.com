@@ -24,3 +24,11 @@ func NewBlogFromEntity(e *entity.Blog) *Blog {
 		PublishedAt: e.PublishedAt.String(),
 	}
 }
+
+func NewBlogsFromEntityList(e []*entity.Blog) []*Blog {
+	blogs := []*Blog{}
+	for _, b := range e {
+		blogs = append(blogs, NewBlogFromEntity(b))
+	}
+	return blogs
+}

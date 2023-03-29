@@ -15,3 +15,11 @@ func NewTagFromEntity(e *entity.Tag) *Tag {
 		UpdatedAt: e.UpdatedAt.String(),
 	}
 }
+
+func NewTagFromEntityList(e []*entity.Tag) []*Tag {
+	tags := []*Tag{}
+	for _, t := range e {
+		tags = append(tags, NewTagFromEntity(t))
+	}
+	return tags
+}
