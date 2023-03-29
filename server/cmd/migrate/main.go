@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"time"
 
 	"github.com/sor4chi/portfolio-blog/server/db"
 	"github.com/sor4chi/portfolio-blog/server/entity"
@@ -17,12 +18,21 @@ var (
 func main() {
 	dsn := db.Dsn(db.NewMySQLConnectionEnv())
 	log.Println("Starting migrate...")
-	client, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		log.Fatal(ERROR_CONNECT_ENT_CLIENT, err)
+
+	// loop until db is ready
+	var client *gorm.DB
+	var err error
+	for {
+		client, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+		if err != nil {
+			log.Println("Failed to connect to database. Retrying...")
+			time.Sleep(5 * time.Second)
+			continue
+		}
+		break
 	}
 
-	err = client.AutoMigrate(&entity.Blog{})
+	err = client.AutoMigrate(&entity.Tag{}, &entity.Blog{})
 	if err != nil {
 		log.Fatal(ERROR_MIGRATE, err)
 	}
