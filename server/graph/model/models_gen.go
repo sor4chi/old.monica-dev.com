@@ -3,15 +3,15 @@
 package model
 
 type Blog struct {
-	ID          string `json:"id"`
-	Title       string `json:"title"`
-	Slug        string `json:"slug"`
-	Description string `json:"description"`
-	Content     string `json:"content"`
-	Tags        []*Tag `json:"tags"`
-	CreatedAt   string `json:"createdAt"`
-	UpdatedAt   string `json:"updatedAt"`
-	PublishedAt string `json:"publishedAt"`
+	ID          string  `json:"id"`
+	Title       string  `json:"title"`
+	Slug        string  `json:"slug"`
+	Description string  `json:"description"`
+	Content     string  `json:"content"`
+	Tags        []*Tag  `json:"tags"`
+	CreatedAt   string  `json:"createdAt"`
+	UpdatedAt   string  `json:"updatedAt"`
+	PublishedAt *string `json:"publishedAt,omitempty"`
 }
 
 type BlogInput struct {
@@ -20,7 +20,7 @@ type BlogInput struct {
 	Description string      `json:"description"`
 	Content     string      `json:"content"`
 	Tags        []*TagInput `json:"tags"`
-	PublishedAt string      `json:"publishedAt"`
+	Published   bool        `json:"published"`
 }
 
 type BlogListInput struct {

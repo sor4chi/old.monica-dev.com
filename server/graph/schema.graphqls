@@ -11,7 +11,7 @@ type Blog {
   tags: [Tag!]!
   createdAt: String!
   updatedAt: String!
-  publishedAt: String!
+  publishedAt: String
 }
 
 type Tag {
@@ -44,7 +44,7 @@ input BlogInput {
   description: String!
   content: String!
   tags: [TagInput!]!
-  publishedAt: String!
+  published: Boolean!
 }
 
 input TagInput {

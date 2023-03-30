@@ -6,15 +6,12 @@ package graph
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"time"
 
 	"github.com/sor4chi/portfolio-blog/server/entity"
 	"github.com/sor4chi/portfolio-blog/server/graph/model"
 	"github.com/sor4chi/portfolio-blog/server/middleware"
 	"github.com/sor4chi/portfolio-blog/server/service"
-	"gorm.io/gorm"
 )
 
 // Login is the resolver for the login field.
@@ -33,35 +30,18 @@ func (r *mutationResolver) CreateBlog(ctx context.Context, input model.BlogInput
 		return nil, fmt.Errorf("unauthorized")
 	}
 
-	publishedAt, err := time.Parse(time.RFC3339, input.PublishedAt)
+	bs := service.NewBlogService(r.DB, true)
+
+	blog, err := bs.CreateBlog(
+		input.Title,
+		input.Slug,
+		input.Description,
+		input.Content,
+		input.Published,
+		model.ParseTagInputList(input.Tags),
+	)
+
 	if err != nil {
-		return nil, errors.New("invalid date format for publishedAt")
-	}
-
-	tags := []*entity.Tag{}
-	for _, t := range input.Tags {
-		tag := &entity.Tag{
-			Slug: t.Slug,
-			Name: t.Name,
-		}
-		var existingTag entity.Tag
-
-		if err := r.DB.Where("slug = ?", tag.Slug).FirstOrCreate(&existingTag, tag).Error; err != nil {
-			return nil, err
-		}
-		tags = append(tags, &existingTag)
-	}
-
-	blog := &entity.Blog{
-		Title:       input.Title,
-		Slug:        input.Slug,
-		Description: input.Description,
-		Content:     input.Content,
-		PublishedAt: publishedAt,
-		Tags:        tags,
-	}
-
-	if err := r.DB.Create(blog).Error; err != nil {
 		return nil, err
 	}
 
@@ -75,35 +55,19 @@ func (r *mutationResolver) UpdateBlog(ctx context.Context, id string, input mode
 		return nil, fmt.Errorf("unauthorized")
 	}
 
-	publishedAt, err := time.Parse(time.RFC3339, input.PublishedAt)
+	bs := service.NewBlogService(r.DB, true)
+
+	blog, err := bs.UpdateBlog(
+		id,
+		input.Title,
+		input.Slug,
+		input.Description,
+		input.Content,
+		input.Published,
+		model.ParseTagInputList(input.Tags),
+	)
+
 	if err != nil {
-		return nil, errors.New("invalid date format for publishedAt")
-	}
-
-	tags := []*entity.Tag{}
-	for _, t := range input.Tags {
-		tag := &entity.Tag{
-			Slug: t.Slug,
-			Name: t.Name,
-		}
-		var existingTag entity.Tag
-
-		if err := r.DB.Where("slug = ?", tag.Slug).FirstOrCreate(&existingTag, tag).Error; err != nil {
-			return nil, err
-		}
-		tags = append(tags, &existingTag)
-	}
-
-	blog := &entity.Blog{
-		Title:       input.Title,
-		Slug:        input.Slug,
-		Description: input.Description,
-		Content:     input.Content,
-		PublishedAt: publishedAt,
-		Tags:        tags,
-	}
-
-	if err := r.DB.Model(&blog).Updates(blog).Error; err != nil {
 		return nil, err
 	}
 
@@ -131,58 +95,31 @@ func (r *mutationResolver) DeleteBlog(ctx context.Context, id string) (*model.Bl
 
 // Blogs is the resolver for the blogs field.
 func (r *queryResolver) Blogs(ctx context.Context, input model.BlogListInput) (*model.BlogListResult, error) {
-	const PUBLIC_FILTER = "published_at IS NOT NULL"
-	const MAX_LIMIT = 30
-	if input.Limit > MAX_LIMIT {
-		input.Limit = MAX_LIMIT
+	_, isAuthenticated := middleware.AuthCtxValue(ctx)
+	bs := service.NewBlogService(r.DB, isAuthenticated)
+
+	blogs, total, err := bs.GetBlogs(input.Limit, input.Offset, input.Tags)
+	if err != nil {
+		return nil, err
 	}
-
-	_, ok := middleware.AuthCtxValue(ctx)
-	var blogs []*entity.Blog
-	var total int64
-
-	var q *gorm.DB
-
-	if len(input.Tags) > 0 {
-		q = r.DB.Where("id IN (?)",
-			r.DB.Table("blog_tags").Select("blog_id").Where(
-				"tag_id IN (?)",
-				r.DB.Table("tags").Select("id").Where("slug IN (?)", input.Tags),
-			),
-		)
-	} else {
-		q = r.DB.Preload("Tags")
-	}
-
-	if !ok {
-		q = q.Where(PUBLIC_FILTER)
-	}
-
-	q.Model(&entity.Blog{}).Count(&total)
-	q.Limit(input.Limit).Offset(input.Offset).Find(&blogs)
 
 	return &model.BlogListResult{
-		Total: int(total),
+		Total: total,
 		Data:  model.NewBlogsFromEntityList(blogs),
 	}, nil
 }
 
 // Blog is the resolver for the blog field.
 func (r *queryResolver) Blog(ctx context.Context, slug string) (*model.Blog, error) {
-	const PUBLIC_FILTER = "published_at IS NOT NULL"
-	_, ok := middleware.AuthCtxValue(ctx)
-	var blog entity.Blog
+	_, isAuthenticated := middleware.AuthCtxValue(ctx)
+	bs := service.NewBlogService(r.DB, isAuthenticated)
 
-	query := r.DB.Preload("Tags")
-	if !ok {
-		query = query.Where(PUBLIC_FILTER)
-	}
-	query = query.First(&blog, "slug = ?", slug)
-	if query.Error != nil {
-		return nil, query.Error
+	blog, err := bs.GetBlogBySlug(slug)
+	if err != nil {
+		return nil, err
 	}
 
-	return model.NewBlogFromEntity(&blog), nil
+	return model.NewBlogFromEntity(blog), nil
 }
 
 // Mutation returns MutationResolver implementation.

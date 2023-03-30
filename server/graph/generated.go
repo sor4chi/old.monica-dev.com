@@ -931,14 +931,11 @@ func (ec *executionContext) _Blog_publishedAt(ctx context.Context, field graphql
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*string)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Blog_publishedAt(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -3655,7 +3652,7 @@ func (ec *executionContext) unmarshalInputBlogInput(ctx context.Context, obj int
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"title", "slug", "description", "content", "tags", "publishedAt"}
+	fieldsInOrder := [...]string{"title", "slug", "description", "content", "tags", "published"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -3702,11 +3699,11 @@ func (ec *executionContext) unmarshalInputBlogInput(ctx context.Context, obj int
 			if err != nil {
 				return it, err
 			}
-		case "publishedAt":
+		case "published":
 			var err error
 
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("publishedAt"))
-			it.PublishedAt, err = ec.unmarshalNString2string(ctx, v)
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("published"))
+			it.Published, err = ec.unmarshalNBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -3874,9 +3871,6 @@ func (ec *executionContext) _Blog(ctx context.Context, sel ast.SelectionSet, obj
 
 			out.Values[i] = ec._Blog_publishedAt(ctx, field, obj)
 
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}

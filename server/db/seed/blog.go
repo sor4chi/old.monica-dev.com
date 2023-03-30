@@ -41,7 +41,7 @@ func SeedBlog(ctx context.Context, client *gorm.DB) {
 	}
 
 	for i := 0; i < len(dumies); i++ {
-		tags := []*entity.Tag{}
+		tags := []entity.Tag{}
 		for _, t := range dumies[i].Tags {
 			s := slug.Make(t)
 			tag := &entity.Tag{
@@ -52,8 +52,10 @@ func SeedBlog(ctx context.Context, client *gorm.DB) {
 			if err := client.Where("slug = ?", tag.Slug).FirstOrCreate(&existingTag, tag).Error; err != nil {
 				log.Fatalf(ERROR_CREATE_TAG, err)
 			}
-			tags = append(tags, &existingTag)
+			tags = append(tags, existingTag)
 		}
+
+		now := time.Now()
 
 		record := &entity.Blog{
 			Title:       dumies[i].Title,
@@ -61,7 +63,7 @@ func SeedBlog(ctx context.Context, client *gorm.DB) {
 			Description: dumies[i].Description,
 			Content:     dumies[i].Content,
 			Tags:        tags,
-			PublishedAt: time.Now(),
+			PublishedAt: &now,
 		}
 
 		if err := client.Create(record).Error; err != nil {
