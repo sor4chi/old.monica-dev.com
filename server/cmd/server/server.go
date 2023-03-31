@@ -3,21 +3,29 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
+
+	"database/sql"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/sor4chi/portfolio-blog/server/db"
 	"github.com/sor4chi/portfolio-blog/server/graph"
 	"github.com/sor4chi/portfolio-blog/server/middleware"
+	"github.com/sor4chi/portfolio-blog/server/sqlc"
 	"github.com/sor4chi/portfolio-blog/server/util"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
+
+	"github.com/rs/zerolog"
+	sqldblogger "github.com/simukti/sqldb-logger"
+	"github.com/simukti/sqldb-logger/logadapter/zerologadapter"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 var (
-	ERROR_CONNECT_ENT_CLIENT = "failed to connect ent client"
-	ERROR_MIGRATE_SCHEMA     = "failed to migrate schema"
-	ERROR_START_HTTP_SERVER  = "failed to start http server"
+	ERROR_CONNECT_DB_CLIENT = "failed to connect db client"
+	ERROR_MIGRATE_SCHEMA    = "failed to migrate schema"
+	ERROR_START_HTTP_SERVER = "failed to start http server"
 )
 
 var (
@@ -33,13 +41,31 @@ var (
 func main() {
 	mux := http.NewServeMux()
 	dsn := db.Dsn(db.NewMySQLConnectionEnv())
-	client, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	con, err := sql.Open("mysql", dsn)
 	if err != nil {
-		log.Fatal(ERROR_CONNECT_ENT_CLIENT, err)
+		log.Fatal(ERROR_CONNECT_DB_CLIENT, err)
+	}
+	defer con.Close()
+
+	if IS_DEV {
+		logger := zerolog.New(
+			zerolog.ConsoleWriter{Out: os.Stdout, NoColor: false},
+		)
+
+		con = sqldblogger.OpenDriver(
+			dsn,
+			con.Driver(),
+			zerologadapter.New(logger),
+		)
+	}
+
+	client := sqlc.New(con)
+	if err != nil {
+		log.Fatal(ERROR_CONNECT_DB_CLIENT, err)
 	}
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
-		DB: client,
+		Q: client,
 	}}))
 
 	if IS_DEV {

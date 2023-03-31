@@ -1,6 +1,8 @@
 package graph
 
-import "gorm.io/gorm"
+import (
+	"github.com/sor4chi/portfolio-blog/server/sqlc"
+)
 
 //go:generate go run github.com/99designs/gqlgen generate
 
@@ -9,5 +11,5 @@ import "gorm.io/gorm"
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	DB *gorm.DB
+	Q *sqlc.Queries
 }

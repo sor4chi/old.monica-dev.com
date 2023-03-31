@@ -14,6 +14,8 @@ type Blog struct {
 	ID int32
 	// blog title
 	Title string
+	// blog description
+	Description string
 	// blog slug
 	Slug string
 	// blog content
@@ -31,6 +33,22 @@ type BlogsTag struct {
 	BlogID int32
 	// tag id
 	TagID int32
+}
+
+type BlogsTagsView struct {
+	ID           int32
+	Title        string
+	Slug         string
+	Description  string
+	Content      string
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+	PublishedAt  sql.NullTime
+	TagID        int32
+	TagSlug      string
+	TagName      string
+	TagCreatedAt time.Time
+	TagUpdatedAt time.Time
 }
 
 type SchemaMigration struct {

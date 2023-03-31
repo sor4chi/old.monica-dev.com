@@ -6,7 +6,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/sor4chi/portfolio-blog/server/entity"
 	"github.com/sor4chi/portfolio-blog/server/graph/model"
@@ -25,101 +24,46 @@ func (r *mutationResolver) Login(ctx context.Context, password string) (*model.L
 
 // CreateBlog is the resolver for the createBlog field.
 func (r *mutationResolver) CreateBlog(ctx context.Context, input model.BlogInput) (*model.Blog, error) {
-	_, ok := middleware.AuthCtxValue(ctx)
-	if !ok {
-		return nil, fmt.Errorf("unauthorized")
-	}
-
-	bs := service.NewBlogService(r.DB, true)
-
-	blog, err := bs.CreateBlog(
-		input.Title,
-		input.Slug,
-		input.Description,
-		input.Content,
-		input.Published,
-		model.ParseTagInputList(input.Tags),
-	)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return model.NewBlogFromEntity(blog), nil
+	panic("CreateBlog is not implemented")
 }
 
 // UpdateBlog is the resolver for the updateBlog field.
 func (r *mutationResolver) UpdateBlog(ctx context.Context, id string, input model.BlogInput) (*model.Blog, error) {
-	_, ok := middleware.AuthCtxValue(ctx)
-	if !ok {
-		return nil, fmt.Errorf("unauthorized")
-	}
-
-	bs := service.NewBlogService(r.DB, true)
-
-	blog, err := bs.UpdateBlog(
-		id,
-		input.Title,
-		input.Slug,
-		input.Description,
-		input.Content,
-		input.Published,
-		model.ParseTagInputList(input.Tags),
-	)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return model.NewBlogFromEntity(blog), nil
+	panic("UpdateBlog is not implemented")
 }
 
 // DeleteBlog is the resolver for the deleteBlog field.
 func (r *mutationResolver) DeleteBlog(ctx context.Context, id string) (*model.Blog, error) {
-	_, ok := middleware.AuthCtxValue(ctx)
-	if !ok {
-		return nil, fmt.Errorf("unauthorized")
-	}
-
-	var blog entity.Blog
-	if err := r.DB.Where("id = ?", id).First(&blog).Error; err != nil {
-		return nil, err
-	}
-
-	if err := r.DB.Delete(&blog).Error; err != nil {
-		return nil, err
-	}
-
-	return model.NewBlogFromEntity(&blog), nil
+	panic("DeleteBlog is not implemented")
 }
 
 // Blogs is the resolver for the blogs field.
 func (r *queryResolver) Blogs(ctx context.Context, input model.BlogListInput) (*model.BlogListResult, error) {
 	_, isAuthenticated := middleware.AuthCtxValue(ctx)
-	bs := service.NewBlogService(r.DB, isAuthenticated)
+	bs := service.NewBlogService(r.Q, isAuthenticated)
+	var blogs []*entity.Blog
+	var total int
+	var err error
 
-	blogs, total, err := bs.GetBlogs(input.Limit, input.Offset, input.Tags)
+	if len(input.Tags) > 0 {
+		blogs, total, err = bs.GetBlogsByTagSlugs(input.Limit, input.Offset, input.Tags)
+	} else {
+		blogs, total, err = bs.GetBlogs(input.Limit, input.Offset)
+	}
+
 	if err != nil {
 		return nil, err
 	}
 
 	return &model.BlogListResult{
-		Total: total,
+		Total: int(total),
 		Data:  model.NewBlogsFromEntityList(blogs),
 	}, nil
 }
 
 // Blog is the resolver for the blog field.
 func (r *queryResolver) Blog(ctx context.Context, slug string) (*model.Blog, error) {
-	_, isAuthenticated := middleware.AuthCtxValue(ctx)
-	bs := service.NewBlogService(r.DB, isAuthenticated)
-
-	blog, err := bs.GetBlogBySlug(slug)
-	if err != nil {
-		return nil, err
-	}
-
-	return model.NewBlogFromEntity(blog), nil
+	panic("Blog is not implemented")
 }
 
 // Mutation returns MutationResolver implementation.

@@ -16,7 +16,7 @@ func NewTagFromEntity(e entity.Tag) Tag {
 	}
 }
 
-func NewTagFromEntityList(e []entity.Tag) []*Tag {
+func NewTagFromEntityList(e []*entity.Tag) []*Tag {
 	tags := []*Tag{}
 	for _, t := range e {
 		tags = append(tags, &Tag{

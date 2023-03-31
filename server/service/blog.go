@@ -1,10 +1,12 @@
 package service
 
 import (
-	"time"
+	"context"
+	"log"
+	"strings"
 
 	"github.com/sor4chi/portfolio-blog/server/entity"
-	"gorm.io/gorm"
+	"github.com/sor4chi/portfolio-blog/server/sqlc"
 )
 
 const (
@@ -16,117 +18,139 @@ const (
 )
 
 type BlogService struct {
-	db      *gorm.DB
+	q       *sqlc.Queries
 	isAdmin bool
 }
 
-func NewBlogService(db *gorm.DB, isAdmin bool) *BlogService {
+func NewBlogService(q *sqlc.Queries, isAdmin bool) *BlogService {
 	return &BlogService{
-		db,
+		q,
 		isAdmin,
 	}
 }
 
-func (s *BlogService) GetBlogs(limit, offset int, tags []string) ([]*entity.Blog, int, error) {
+func parseBlogsTagsViewToEntity(rows []sqlc.BlogsTagsView) []*entity.Blog {
+	bm := make(map[int32]*entity.Blog)
+	for _, row := range rows {
+		if _, ok := bm[row.ID]; !ok {
+			bm[row.ID] = &entity.Blog{
+				ID:          row.ID,
+				Title:       row.Title,
+				Slug:        row.Slug,
+				Description: row.Description,
+				Content:     row.Content,
+				CreatedAt:   row.CreatedAt,
+				UpdatedAt:   row.UpdatedAt,
+				PublishedAt: &row.PublishedAt.Time,
+			}
+		}
+		bm[row.ID].Tags = append(bm[row.ID].Tags, &entity.Tag{
+			ID:        row.TagID,
+			Slug:      row.TagSlug,
+			Name:      row.TagName,
+			CreatedAt: row.TagCreatedAt,
+			UpdatedAt: row.TagUpdatedAt,
+		})
+	}
+
+	blogs := make([]*entity.Blog, 0, len(bm))
+	for _, blog := range bm {
+		blogs = append(blogs, blog)
+	}
+
+	return blogs
+}
+
+type GetBlogsParam struct {
+	Limit  int32
+	Offset int32
+}
+
+func (s *BlogService) GetBlogs(limit, offset int) ([]*entity.Blog, int, error) {
 	if limit > MAX_LIMIT_PER_PAGE {
 		limit = MAX_LIMIT_PER_PAGE
 	}
 
-	var blogs []*entity.Blog
+	var rows []sqlc.BlogsTagsView
 	var total int64
+	var err error
 
-	var q *gorm.DB
-
-	if len(tags) > 0 {
-		q = s.db.Where("id IN (?)",
-			s.db.Table(TABLE_BLOG_TAGS).Select("blog_id").Where(
-				"tag_id IN (?)",
-				s.db.Table(TABLE_TAGS).Select("id").Where("slug IN (?)", tags),
-			),
-		)
-	} else {
-		q = s.db.Preload(TABLE_TAGS)
+	p := GetBlogsParam{
+		Limit:  int32(limit),
+		Offset: int32(offset),
 	}
+	ctx := context.Background()
 
 	if s.isAdmin {
-		q = q.Where(PUBLIC_FILTER)
-	}
-
-	q.Model(&entity.Blog{}).Count(&total)
-	q.Limit(limit).Offset(offset).Find(&blogs)
-
-	return blogs, int(total), nil
-}
-
-func (s *BlogService) GetBlogBySlug(slug string) (*entity.Blog, error) {
-	var blog entity.Blog
-	var q *gorm.DB
-
-	q = s.db.Preload(TABLE_TAGS)
-	if !s.isAdmin {
-		q = q.Where(PUBLIC_FILTER)
-	}
-	q = q.First(&blog, "slug = ?", slug)
-	if q.Error != nil {
-		return nil, q.Error
-	}
-
-	return &blog, nil
-}
-
-func (s *BlogService) CreateBlog(title, slug, description, content string, published bool, tags []*entity.Tag) (*entity.Blog, error) {
-	blog := &entity.Blog{
-		Title:       title,
-		Slug:        slug,
-		Description: description,
-		Content:     content,
-	}
-
-	if published {
-		now := time.Now()
-		blog.PublishedAt = &now
+		log.Println("admin - get blogs")
+		rows, err = s.q.GetBlogs(ctx, sqlc.GetBlogsParams(p))
+		if err != nil {
+			return nil, 0, err
+		}
+		total, err = s.q.GetBlogsCount(ctx)
+		if err != nil {
+			return nil, 0, err
+		}
 	} else {
-		blog.PublishedAt = nil
-	}
-
-	if err := s.db.Create(blog).Error; err != nil {
-		return nil, err
-	}
-
-	if err := s.db.Model(blog).Association("Tags").Append(tags); err != nil {
-		return nil, err
-	}
-
-	return blog, nil
-}
-
-func (s *BlogService) UpdateBlog(id string, title, slug, description, content string, published bool, tags []*entity.Tag) (*entity.Blog, error) {
-	var blog entity.Blog
-	if err := s.db.First(&blog, id).Error; err != nil {
-		return nil, err
-	}
-
-	blog.Title = title
-	blog.Slug = slug
-	blog.Description = description
-	blog.Content = content
-
-	if published && blog.PublishedAt == nil {
-		now := time.Now()
-		blog.PublishedAt = &now
-	} else {
-		blog.PublishedAt = nil
-	}
-
-	if tags != nil {
-		if err := s.db.Model(&blog).Association("Tags").Replace(tags); err != nil {
-			return nil, err
+		log.Println("public - get blogs")
+		rows, err = s.q.GetPublishedBlogs(ctx, sqlc.GetPublishedBlogsParams(p))
+		if err != nil {
+			return nil, 0, err
+		}
+		total, err = s.q.GetPublishedBlogsCount(ctx)
+		if err != nil {
+			return nil, 0, err
 		}
 	}
 
-	if err := s.db.Save(&blog).Error; err != nil {
-		return nil, err
+	return parseBlogsTagsViewToEntity(rows), int(total), nil
+}
+
+type GetBlogsByTagSlugsParams struct {
+	Slug   string
+	Limit  int32
+	Offset int32
+}
+
+func (s *BlogService) GetBlogsByTagSlugs(limit, offset int, tags []string) ([]*entity.Blog, int, error) {
+	if limit > MAX_LIMIT_PER_PAGE {
+		limit = MAX_LIMIT_PER_PAGE
 	}
 
-	return &blog, nil
+	var rows []sqlc.BlogsTagsView
+	var total int64
+	slug := strings.Join(tags, ",")
+	var err error
+
+	p := GetBlogsByTagSlugsParams{
+		Limit:  int32(limit),
+		Offset: int32(offset),
+		Slug:   slug,
+	}
+	ctx := context.Background()
+
+	if s.isAdmin {
+		log.Println("admin - get blogs by tag slugs")
+		rows, err = s.q.GetBlogsByTagSlugs(ctx, sqlc.GetBlogsByTagSlugsParams(p))
+		if err != nil {
+			return nil, 0, err
+		}
+		total, err = s.q.GetBlogsByTagSlugsCount(ctx, slug)
+		if err != nil {
+			return nil, 0, err
+		}
+	} else {
+		log.Println("public - get blogs by tag slugs")
+		rows, err = s.q.GetPublishedBlogsByTagSlugs(ctx, sqlc.GetPublishedBlogsByTagSlugsParams(p))
+		log.Println(rows)
+		if err != nil {
+			return nil, 0, err
+		}
+		total, err = s.q.GetPublishedBlogsByTagSlugsCount(ctx, slug)
+		if err != nil {
+			return nil, 0, err
+		}
+	}
+
+	return parseBlogsTagsViewToEntity(rows), int(total), nil
 }
