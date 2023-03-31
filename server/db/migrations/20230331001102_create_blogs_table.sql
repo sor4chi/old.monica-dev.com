@@ -2,6 +2,7 @@
 CREATE TABLE blogs (
   id int not null auto_increment primary key comment 'blog id',
   title varchar(255) not null comment 'blog title',
+  description varchar(255) not null comment 'blog description',
   slug varchar(255) not null unique comment 'blog slug',
   content text not null comment 'blog content',
   created_at datetime not null comment 'blog created at',
