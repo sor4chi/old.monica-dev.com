@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"log"
 	"strings"
 
 	"github.com/sor4chi/portfolio-blog/server/entity"
@@ -82,7 +81,6 @@ func (s *BlogService) GetBlogs(limit, offset int) ([]*entity.Blog, int, error) {
 	ctx := context.Background()
 
 	if s.isAdmin {
-		log.Println("admin - get blogs")
 		rows, err = s.q.GetBlogs(ctx, sqlc.GetBlogsParams(p))
 		if err != nil {
 			return nil, 0, err
@@ -92,7 +90,6 @@ func (s *BlogService) GetBlogs(limit, offset int) ([]*entity.Blog, int, error) {
 			return nil, 0, err
 		}
 	} else {
-		log.Println("public - get blogs")
 		rows, err = s.q.GetPublishedBlogs(ctx, sqlc.GetPublishedBlogsParams(p))
 		if err != nil {
 			return nil, 0, err
@@ -130,7 +127,6 @@ func (s *BlogService) GetBlogsByTagSlugs(limit, offset int, tags []string) ([]*e
 	ctx := context.Background()
 
 	if s.isAdmin {
-		log.Println("admin - get blogs by tag slugs")
 		rows, err = s.q.GetBlogsByTagSlugs(ctx, sqlc.GetBlogsByTagSlugsParams(p))
 		if err != nil {
 			return nil, 0, err
@@ -140,9 +136,7 @@ func (s *BlogService) GetBlogsByTagSlugs(limit, offset int, tags []string) ([]*e
 			return nil, 0, err
 		}
 	} else {
-		log.Println("public - get blogs by tag slugs")
 		rows, err = s.q.GetPublishedBlogsByTagSlugs(ctx, sqlc.GetPublishedBlogsByTagSlugsParams(p))
-		log.Println(rows)
 		if err != nil {
 			return nil, 0, err
 		}
@@ -153,4 +147,25 @@ func (s *BlogService) GetBlogsByTagSlugs(limit, offset int, tags []string) ([]*e
 	}
 
 	return parseBlogsTagsViewToEntity(rows), int(total), nil
+}
+
+func (s *BlogService) GetBlogBySlug(slug string) (*entity.Blog, error) {
+	var row sqlc.BlogsTagsView
+	var err error
+
+	ctx := context.Background()
+
+	if s.isAdmin {
+		row, err = s.q.GetBlogBySlug(ctx, slug)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		row, err = s.q.GetPublishedBlogBySlug(ctx, slug)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return parseBlogsTagsViewToEntity([]sqlc.BlogsTagsView{row})[0], nil
 }

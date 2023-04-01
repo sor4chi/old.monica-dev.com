@@ -6,12 +6,18 @@ package graph
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/sor4chi/portfolio-blog/server/entity"
 	"github.com/sor4chi/portfolio-blog/server/graph/model"
 	"github.com/sor4chi/portfolio-blog/server/middleware"
 	"github.com/sor4chi/portfolio-blog/server/service"
 )
+
+// Tags is the resolver for the tags field.
+func (r *blogResolver) Tags(ctx context.Context, obj *model.Blog) ([]*model.Tag, error) {
+	panic(fmt.Errorf("not implemented: Tags - tags"))
+}
 
 // Login is the resolver for the login field.
 func (r *mutationResolver) Login(ctx context.Context, password string) (*model.LoginPayload, error) {
@@ -63,8 +69,18 @@ func (r *queryResolver) Blogs(ctx context.Context, input model.BlogListInput) (*
 
 // Blog is the resolver for the blog field.
 func (r *queryResolver) Blog(ctx context.Context, slug string) (*model.Blog, error) {
-	panic("Blog is not implemented")
+	_, isAuthenticated := middleware.AuthCtxValue(ctx)
+	bs := service.NewBlogService(r.Q, isAuthenticated)
+	b, err := bs.GetBlogBySlug(slug)
+	if err != nil {
+		return nil, err
+	}
+
+	return model.NewBlogFromEntity(b), nil
 }
+
+// Blog returns BlogResolver implementation.
+func (r *Resolver) Blog() BlogResolver { return &blogResolver{r} }
 
 // Mutation returns MutationResolver implementation.
 func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
@@ -72,5 +88,6 @@ func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
+type blogResolver struct{ *Resolver }
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
