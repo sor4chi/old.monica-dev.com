@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation';
 import { serverEnv } from '@/env/server';
 import { client, gql } from '@/lib/graphql';
 import { parseMarkdownToHTML } from '@/lib/markdown';
-import { getPublishedBlogSlugs } from '@/repository/blog';
 import type { BlogArticleFragmentResponse } from '@/ui/feature/blog/atricle';
 import { BlogArticle, BlogArticleFragment } from '@/ui/feature/blog/atricle';
 import type { BlogHeroFragmentResponse } from '@/ui/feature/blog/hero';
@@ -47,10 +46,9 @@ type BlogDetailPageQueryVariables = {
   slug: string;
 };
 
-export async function generateStaticParams() {
+export async function generateStaticParams({ params }: Props) {
   try {
-    const blogSlugs = await getPublishedBlogSlugs();
-    return blogSlugs.map((slug) => slug);
+    return [];
   } catch (e) {
     return [];
   }

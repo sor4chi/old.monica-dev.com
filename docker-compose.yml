@@ -9,7 +9,6 @@ services:
       - .env
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./docker/mysql:/docker-entrypoint-initdb.d
 
   go:
     image: golang:1.20

@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "prebuild": "pnpm run prisma:generate:production",
     "build": "next build",
     "build:dev": "dotenv -e .env.development -- next build",
     "dev": "next dev",
@@ -12,18 +11,11 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "openai:generate-fixture": "dotenv -e .env -- node ./scripts/generate-fixture.js",
-    "prisma:generate:dev": "dotenv -e .env.development -- prisma generate",
-    "prisma:generate:production": "prisma generate",
-    "prisma:migrate:dev": "dotenv -e .env.development -- prisma migrate dev --name",
-    "prisma:push:prod": "dotenv -e .env.production -- prisma db push",
-    "prisma:reset--danger": "dotenv -e .env.development -- prisma db push --accept-data-loss --schema=./prisma/reset.prisma;dotenv -e .env.development -- prisma db push --accept-data-loss",
-    "prisma:studio": "dotenv -e .env.development -- prisma studio",
     "start": "next start",
     "start:dev": "dotenv -e .env.development -- next start"
   },
   "dependencies": {
     "@hookform/resolvers": "^2.9.11",
-    "@prisma/client": "^4.11.0",
     "@vanilla-extract/css": "^1.9.5",
     "@vanilla-extract/next-plugin": "^2.1.1",
     "clsx": "^1.2.1",
@@ -32,7 +24,6 @@
     "mdast": "^3.0.0",
     "mikanjs": "^1.0.14",
     "next": "13.2.3",
-    "prisma": "^4.11.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.7",
@@ -87,8 +78,5 @@
       "@vanilla-extract/next-plugin@2.1.1": "patches/@vanilla-extract__next-plugin@2.1.1.patch",
       "next@13.2.3": "patches/next@13.2.3.patch"
     }
-  },
-  "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seeds/index.ts"
   }
 }
