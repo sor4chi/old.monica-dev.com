@@ -25,7 +25,7 @@ func (q *Queries) ConnectBlogTag(ctx context.Context, arg ConnectBlogTagParams) 
 	return err
 }
 
-const createBlog = `-- name: CreateBlog :exec
+const createBlog = `-- name: CreateBlog :execresult
 
 INSERT INTO blogs (title, slug, description, content, published_at)
 VALUES (?, ?, ?, ?, ?)
@@ -40,14 +40,59 @@ type CreateBlogParams struct {
 }
 
 // -- CREATORS -- --
-func (q *Queries) CreateBlog(ctx context.Context, arg CreateBlogParams) error {
-	_, err := q.db.ExecContext(ctx, createBlog,
+func (q *Queries) CreateBlog(ctx context.Context, arg CreateBlogParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, createBlog,
 		arg.Title,
 		arg.Slug,
 		arg.Description,
 		arg.Content,
 		arg.PublishedAt,
 	)
+}
+
+const createTag = `-- name: CreateTag :execresult
+INSERT INTO tags (
+  name, slug
+) VALUES (
+  ?, ?
+)
+`
+
+type CreateTagParams struct {
+	Name string
+	Slug string
+}
+
+func (q *Queries) CreateTag(ctx context.Context, arg CreateTagParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, createTag, arg.Name, arg.Slug)
+}
+
+const deleteAllBlogs = `-- name: DeleteAllBlogs :exec
+
+DELETE FROM blogs
+`
+
+// -- DELETORS -- --
+func (q *Queries) DeleteAllBlogs(ctx context.Context) error {
+	_, err := q.db.ExecContext(ctx, deleteAllBlogs)
+	return err
+}
+
+const deleteAllBlogsTags = `-- name: DeleteAllBlogsTags :exec
+DELETE FROM blogs_tags
+`
+
+func (q *Queries) DeleteAllBlogsTags(ctx context.Context) error {
+	_, err := q.db.ExecContext(ctx, deleteAllBlogsTags)
+	return err
+}
+
+const deleteAllTags = `-- name: DeleteAllTags :exec
+DELETE FROM tags
+`
+
+func (q *Queries) DeleteAllTags(ctx context.Context) error {
+	_, err := q.db.ExecContext(ctx, deleteAllTags)
 	return err
 }
 

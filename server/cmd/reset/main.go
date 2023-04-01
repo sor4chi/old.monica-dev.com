@@ -15,7 +15,7 @@ import (
 
 func main() {
 	dsn := db.Dsn(db.NewMySQLConnectionEnv())
-	log.Println("Starting seed...")
+	log.Println("Starting reset...")
 	con, err := sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal("failed to connect db client", err)
@@ -28,7 +28,7 @@ func main() {
 
 	var wg sync.WaitGroup
 	seeds := []func(context.Context, *sqlc.Queries){
-		seed.SeedBlog,
+		seed.ResetSeedBlog,
 	}
 
 	for _, s := range seeds {
@@ -41,5 +41,5 @@ func main() {
 
 	wg.Wait()
 
-	log.Println("Finished seed.")
+	log.Println("Finished reset.")
 }

@@ -5,8 +5,8 @@ CREATE TABLE blogs (
   description varchar(255) not null comment 'blog description',
   slug varchar(255) not null unique comment 'blog slug',
   content text not null comment 'blog content',
-  created_at datetime not null comment 'blog created at',
-  updated_at datetime not null comment 'blog updated at',
+  created_at datetime not null default current_timestamp comment 'blog created at',
+  updated_at datetime not null default current_timestamp on update current_timestamp comment 'blog updated at',
   published_at datetime comment 'blog published at, null if not published'
 );
 

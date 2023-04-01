@@ -68,11 +68,32 @@ WHERE slug = ? AND published_at IS NOT NULL;
 
 -- -- CREATORS -- --
 
--- name: CreateBlog :exec
-INSERT INTO blogs (title, slug, description, content, published_at)
+-- name: CreateBlog :execresult
+INSERT INTO blogs (
+  title, slug, description, content, created_at, updated_at, published_at
+)
 VALUES (?, ?, ?, ?, ?);
 
 -- name: ConnectBlogTag :exec
 INSERT INTO blogs_tags (blog_id, tag_id)
 VALUES (?, ?);
+
+-- name: CreateTag :execresult
+INSERT INTO tags (
+  name, slug
+) VALUES (
+  ?, ?
+);
+
+
+-- -- DELETORS -- --
+
+-- name: DeleteAllBlogs :exec
+DELETE FROM blogs;
+
+-- name: DeleteAllBlogsTags :exec
+DELETE FROM blogs_tags;
+
+-- name: DeleteAllTags :exec
+DELETE FROM tags;
 
