@@ -6,7 +6,7 @@ package graph
 
 import (
 	"context"
-	"fmt"
+	"strconv"
 
 	"github.com/sor4chi/portfolio-blog/server/entity"
 	"github.com/sor4chi/portfolio-blog/server/graph/model"
@@ -16,7 +16,18 @@ import (
 
 // Tags is the resolver for the tags field.
 func (r *blogResolver) Tags(ctx context.Context, obj *model.Blog) ([]*model.Tag, error) {
-	panic(fmt.Errorf("not implemented: Tags - tags"))
+	ts := service.NewTagService(r.Q)
+
+	id, err := strconv.ParseInt(obj.ID, 10, 32)
+	if err != nil {
+		return nil, err
+	}
+	tags, err := ts.GetTagsByBlogId(ctx, int32(id))
+	if err != nil {
+		return nil, err
+	}
+
+	return model.NewTagsFromEntityList(tags), nil
 }
 
 // Login is the resolver for the login field.

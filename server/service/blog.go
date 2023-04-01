@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"strings"
+	"time"
 
 	"github.com/sor4chi/portfolio-blog/server/entity"
 	"github.com/sor4chi/portfolio-blog/server/sqlc"
@@ -28,33 +29,30 @@ func NewBlogService(q *sqlc.Queries, isAdmin bool) *BlogService {
 	}
 }
 
-func parseBlogsTagsViewToEntity(rows []sqlc.BlogsTagsView) []*entity.Blog {
-	bm := make(map[int32]*entity.Blog)
-	for _, row := range rows {
-		if _, ok := bm[row.ID]; !ok {
-			bm[row.ID] = &entity.Blog{
-				ID:          row.ID,
-				Title:       row.Title,
-				Slug:        row.Slug,
-				Description: row.Description,
-				Content:     row.Content,
-				CreatedAt:   row.CreatedAt,
-				UpdatedAt:   row.UpdatedAt,
-				PublishedAt: &row.PublishedAt.Time,
-			}
+func parseBlogsRowToEntity(row sqlc.Blog) *entity.Blog {
+	publishedAt := func() *time.Time {
+		if row.PublishedAt.Valid {
+			return &row.PublishedAt.Time
 		}
-		bm[row.ID].Tags = append(bm[row.ID].Tags, &entity.Tag{
-			ID:        row.TagID,
-			Slug:      row.TagSlug,
-			Name:      row.TagName,
-			CreatedAt: row.TagCreatedAt,
-			UpdatedAt: row.TagUpdatedAt,
-		})
-	}
+		return nil
+	}()
 
-	blogs := make([]*entity.Blog, 0, len(bm))
-	for _, blog := range bm {
-		blogs = append(blogs, blog)
+	return &entity.Blog{
+		ID:          row.ID,
+		Title:       row.Title,
+		Slug:        row.Slug,
+		Description: row.Description,
+		Content:     row.Content,
+		CreatedAt:   row.CreatedAt,
+		UpdatedAt:   row.UpdatedAt,
+		PublishedAt: publishedAt,
+	}
+}
+
+func parseBlogsRowsToEntity(rows []sqlc.Blog) []*entity.Blog {
+	blogs := make([]*entity.Blog, 0, len(rows))
+	for _, row := range rows {
+		blogs = append(blogs, parseBlogsRowToEntity(row))
 	}
 
 	return blogs
@@ -70,7 +68,7 @@ func (s *BlogService) GetBlogs(limit, offset int) ([]*entity.Blog, int, error) {
 		limit = MAX_LIMIT_PER_PAGE
 	}
 
-	var rows []sqlc.BlogsTagsView
+	var rows []sqlc.Blog
 	var total int64
 	var err error
 
@@ -100,7 +98,7 @@ func (s *BlogService) GetBlogs(limit, offset int) ([]*entity.Blog, int, error) {
 		}
 	}
 
-	return parseBlogsTagsViewToEntity(rows), int(total), nil
+	return parseBlogsRowsToEntity(rows), int(total), nil
 }
 
 type GetBlogsByTagSlugsParams struct {
@@ -114,7 +112,7 @@ func (s *BlogService) GetBlogsByTagSlugs(limit, offset int, tags []string) ([]*e
 		limit = MAX_LIMIT_PER_PAGE
 	}
 
-	var rows []sqlc.BlogsTagsView
+	var rows []sqlc.Blog
 	var total int64
 	slug := strings.Join(tags, ",")
 	var err error
@@ -146,11 +144,11 @@ func (s *BlogService) GetBlogsByTagSlugs(limit, offset int, tags []string) ([]*e
 		}
 	}
 
-	return parseBlogsTagsViewToEntity(rows), int(total), nil
+	return parseBlogsRowsToEntity(rows), int(total), nil
 }
 
 func (s *BlogService) GetBlogBySlug(slug string) (*entity.Blog, error) {
-	var row sqlc.BlogsTagsView
+	var row sqlc.Blog
 	var err error
 
 	ctx := context.Background()
@@ -167,5 +165,5 @@ func (s *BlogService) GetBlogBySlug(slug string) (*entity.Blog, error) {
 		}
 	}
 
-	return parseBlogsTagsViewToEntity([]sqlc.BlogsTagsView{row})[0], nil
+	return parseBlogsRowToEntity(row), nil
 }

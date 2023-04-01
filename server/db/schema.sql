@@ -48,28 +48,6 @@ CREATE TABLE `blogs_tags` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Temporary view structure for view `blogs_tags_view`
---
-
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `blogs_tags_view` AS SELECT
- 1 AS `id`,
- 1 AS `title`,
- 1 AS `slug`,
- 1 AS `description`,
- 1 AS `content`,
- 1 AS `created_at`,
- 1 AS `updated_at`,
- 1 AS `published_at`,
- 1 AS `tag_id`,
- 1 AS `tag_slug`,
- 1 AS `tag_name`,
- 1 AS `tag_created_at`,
- 1 AS `tag_updated_at`*/;
-SET character_set_client = @saved_cs_client;
-
---
 -- Table structure for table `schema_migrations`
 --
 
@@ -102,24 +80,6 @@ CREATE TABLE `tags` (
 --
 -- Dumping routines for database 'portfolio'
 --
-
---
--- Final view structure for view `blogs_tags_view`
---
-
-/*!50001 DROP VIEW IF EXISTS `blogs_tags_view`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`monica`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `blogs_tags_view` AS select `b`.`id` AS `id`,`b`.`title` AS `title`,`b`.`slug` AS `slug`,`b`.`description` AS `description`,`b`.`content` AS `content`,`b`.`created_at` AS `created_at`,`b`.`updated_at` AS `updated_at`,`b`.`published_at` AS `published_at`,`t`.`id` AS `tag_id`,`t`.`slug` AS `tag_slug`,`t`.`name` AS `tag_name`,`t`.`created_at` AS `tag_created_at`,`t`.`updated_at` AS `tag_updated_at` from ((`blogs` `b` join `blogs_tags` `bt` on((`b`.`id` = `bt`.`blog_id`))) join `tags` `t` on((`bt`.`tag_id` = `t`.`id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -140,6 +100,5 @@ LOCK TABLES `schema_migrations` WRITE;
 INSERT INTO `schema_migrations` (version) VALUES
   ('20230331001102'),
   ('20230331001115'),
-  ('20230331001134'),
-  ('20230331130913');
+  ('20230331001134');
 UNLOCK TABLES;

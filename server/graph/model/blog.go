@@ -7,7 +7,13 @@ import (
 )
 
 func NewBlogFromEntity(e *entity.Blog) *Blog {
-	tags := NewTagFromEntityList(e.Tags)
+	publishedAt := func() *string {
+		if e.PublishedAt != nil {
+			str := e.PublishedAt.String()
+			return &str
+		}
+		return nil
+	}()
 
 	return &Blog{
 		ID:          fmt.Sprintf("%d", e.ID),
@@ -15,16 +21,9 @@ func NewBlogFromEntity(e *entity.Blog) *Blog {
 		Slug:        e.Slug,
 		Description: e.Description,
 		Content:     e.Content,
-		Tags:        tags,
 		CreatedAt:   e.CreatedAt.String(),
 		UpdatedAt:   e.UpdatedAt.String(),
-		PublishedAt: func() *string {
-			if e.PublishedAt == nil {
-				return nil
-			}
-			s := e.PublishedAt.String()
-			return &s
-		}(),
+		PublishedAt: publishedAt,
 	}
 }
 

@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"log"
+	"math/rand"
 	"path/filepath"
 	"time"
 
@@ -20,7 +21,6 @@ var (
 	MAX_TAGS               = 3
 	ERROR_CREATE_BLOG      = "failed creating blog: %v"
 	ERROR_CONNECT_BLOG_TAG = "failed connecting blog and tag: %v"
-	ERROR_CREATE_TAG       = "failed creating tag: %v"
 	ERROR_LOAD_JSON        = "failed loading dummy data: %v"
 
 	ERROR_RESET_BLOGS = "failed reseting blogs: %v"
@@ -46,26 +46,28 @@ func SeedBlog(ctx context.Context, q *sqlc.Queries) {
 	for i := 0; i < len(dumies); i++ {
 		tags := []*entity.Tag{}
 		for _, t := range dumies[i].Tags {
+			var tagId int32
 			s := slug.Make(t)
 			res, err := q.CreateTag(ctx, sqlc.CreateTagParams{
 				Name: t,
 				Slug: s,
 			})
 			if err != nil {
-				continue
-			}
-			lastInsertId, err := res.LastInsertId()
-			if err != nil {
-				continue
+				tag, _ := q.GetTagBySlug(ctx, s)
+				tagId = tag.ID
+			} else {
+				lastInsertId, _ := res.LastInsertId()
+				tagId = int32(lastInsertId)
 			}
 			tags = append(tags, &entity.Tag{
-				ID:   int32(lastInsertId),
+				ID:   tagId,
 				Name: t,
 				Slug: s,
 			})
 		}
 
 		now := time.Now()
+		publish := rand.Float32() < 0.8
 
 		res, err := q.CreateBlog(ctx, sqlc.CreateBlogParams{
 			Title:       dumies[i].Title,
@@ -73,7 +75,8 @@ func SeedBlog(ctx context.Context, q *sqlc.Queries) {
 			Description: dumies[i].Description,
 			Content:     dumies[i].Content,
 			PublishedAt: sql.NullTime{
-				Time: now,
+				Time:  now,
+				Valid: publish,
 			},
 		})
 		if err != nil {
