@@ -22,7 +22,7 @@ type Tag {
   updatedAt: String!
 }
 
-type BlogListResult {
+type BlogList {
   data: [Blog!]!
   total: Int!
 }
@@ -34,7 +34,7 @@ input BlogListInput {
 }
 
 type Query {
-  blogs(input: BlogListInput!): BlogListResult!
+  blogs(input: BlogListInput!): BlogList!
   blog(slug: String!): Blog!
 }
 

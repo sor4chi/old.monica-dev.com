@@ -4,36 +4,17 @@ import { Button } from '../button';
 
 import * as styles from './pagination.css';
 
-import { gql } from '@/lib/graphql';
-
-export const PaginationFragment = gql`
-  fragment PaginationFragment on PageInfo {
-    hasNextPage
-    hasPreviousPage
-    startCursor
-    endCursor
-  }
-`;
-
-export type PaginationFragmentResponse = {
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-  startCursor: string;
-  endCursor: string;
-};
-
 interface Props {
   page: number;
   maxPage: number;
-  loadBefore: (startCursor: string) => void;
-  loadAfter: (endCursor: string) => void;
-  pageInfo: PaginationFragmentResponse;
+  loadBefore: () => void;
+  loadAfter: () => void;
 }
 
-export const Pagination = ({ loadAfter, loadBefore, maxPage, page, pageInfo }: Props) => (
+export const Pagination = ({ loadAfter, loadBefore, maxPage, page }: Props) => (
   <div className={styles.pagination}>
-    {pageInfo.hasPreviousPage && (
-      <Button onClick={() => loadBefore(pageInfo.startCursor)} variant="secondary">
+    {page > 1 && (
+      <Button onClick={loadBefore} variant="secondary">
         <MdArrowBackIos />
         Prev
       </Button>
@@ -43,8 +24,8 @@ export const Pagination = ({ loadAfter, loadBefore, maxPage, page, pageInfo }: P
         {page} / {maxPage}
       </span>
     )}
-    {pageInfo.hasNextPage && (
-      <Button onClick={() => loadAfter(pageInfo.endCursor)} variant="secondary">
+    {page < maxPage && (
+      <Button onClick={loadAfter} variant="secondary">
         Next
         <MdArrowForwardIos />
       </Button>

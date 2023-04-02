@@ -12,46 +12,41 @@ import { parseTwemoji } from '@/lib/twemoji';
 import { Pagination } from '@/ui/foundation/pagination';
 
 interface Props {
-  relay: BlogListFragmentResponse;
+  blogs: BlogListFragmentResponse;
   filterTags?: string[];
 }
 
-export const BlogList = ({ filterTags, relay }: Props) => {
-  const [blogRelay, setBlogRelay] = useState(relay);
+export const BlogList = ({ blogs, filterTags }: Props) => {
+  const [blogData, setBlogData] = useState(blogs.data);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    setBlogRelay(relay);
     setPage(1);
-  }, [relay]);
+  }, []);
 
-  const maxPage = Math.ceil(blogRelay.totalCount / SITE_CONFIG.BLOG_LENGTH_PER_PAGE);
+  const maxPage = Math.ceil(blogs.total / SITE_CONFIG.BLOG_LENGTH_PER_PAGE);
 
   const loadBefore = async () => {
-    const data = await client.request<BlogListQueryResponse, BlogListQueryVariables>(BlogListQuery, {
-      after: null,
-      before: blogRelay.pageInfo.startCursor,
-      first: null,
-      last: SITE_CONFIG.BLOG_LENGTH_PER_PAGE,
-      tagWhereInput: filterTags && filterTags.length > 0 ? { slugIn: filterTags } : null,
+    const res = await client.request<BlogListQueryResponse, BlogListQueryVariables>(BlogListQuery, {
+      limit: SITE_CONFIG.BLOG_LENGTH_PER_PAGE,
+      offset: page * SITE_CONFIG.BLOG_LENGTH_PER_PAGE - SITE_CONFIG.BLOG_LENGTH_PER_PAGE * 2,
+      tags: filterTags,
     });
-    setBlogRelay(data.blogs);
+    setBlogData(res.blogs.data);
     setPage(page - 1);
   };
 
   const loadAfter = async () => {
     const data = await client.request<BlogListQueryResponse, BlogListQueryVariables>(BlogListQuery, {
-      after: blogRelay.pageInfo.endCursor,
-      before: null,
-      first: SITE_CONFIG.BLOG_LENGTH_PER_PAGE,
-      last: null,
-      tagWhereInput: filterTags && filterTags.length > 0 ? { slugIn: filterTags } : null,
+      limit: SITE_CONFIG.BLOG_LENGTH_PER_PAGE,
+      offset: page * SITE_CONFIG.BLOG_LENGTH_PER_PAGE,
+      tags: filterTags,
     });
-    setBlogRelay(data.blogs);
+    setBlogData(data.blogs.data);
     setPage(page + 1);
   };
 
-  if (!blogRelay.edges.length) {
+  if (!blogData.length) {
     return (
       <div className={styles.container}>
         <p className={styles.noItems} dangerouslySetInnerHTML={{ __html: parseTwemoji('Sorry, no items found. 😭') }} />
@@ -62,18 +57,12 @@ export const BlogList = ({ filterTags, relay }: Props) => {
   return (
     <>
       <ul className={styles.container}>
-        {blogRelay.edges.map(({ node }) => (
+        {blogData.map((blog) => (
           // add timestamp to activate rendering animation
-          <BlogListCard key={node.slug + new Date().getTime()} node={node} />
+          <BlogListCard key={blog.slug + new Date().getTime()} blog={blog} />
         ))}
       </ul>
-      <Pagination
-        page={page}
-        maxPage={maxPage}
-        loadBefore={loadBefore}
-        loadAfter={loadAfter}
-        pageInfo={blogRelay.pageInfo}
-      />
+      <Pagination page={page} maxPage={maxPage} loadBefore={loadBefore} loadAfter={loadAfter} />
     </>
   );
 };

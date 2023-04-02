@@ -32,7 +32,7 @@ export type BlogListCardFragmentResponse = {
 };
 
 interface Props {
-  node: BlogListCardFragmentResponse;
+  blog: BlogListCardFragmentResponse;
 }
 
 const LINKS = {
@@ -40,15 +40,15 @@ const LINKS = {
   tag: (tag: string) => `/blog?tags=${tag}`,
 } as const;
 
-export const BlogListCard = ({ node }: Props) => (
+export const BlogListCard = ({ blog }: Props) => (
   <li className={styles.item}>
-    <time className={styles.date}>{formatYMD(node.createdAt)}</time>
-    <Link href={LINKS.blog(node.slug)} className={styles.link} passHref>
+    <time className={styles.date}>{formatYMD(blog.createdAt)}</time>
+    <Link href={LINKS.blog(blog.slug)} className={styles.link} passHref>
       <h2 className={styles.title}>
-        <Text value={node.title} />
+        <Text value={blog.title} />
       </h2>
-      <p className={styles.description}>{node.description}</p>
+      <p className={styles.description}>{blog.description}</p>
     </Link>
-    <TagList tags={node.tags} hrefGenerator={LINKS.tag} />
+    <TagList tags={blog.tags} hrefGenerator={LINKS.tag} />
   </li>
 );

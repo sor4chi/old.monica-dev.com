@@ -35,22 +35,6 @@ type BlogsTag struct {
 	TagID int32
 }
 
-type BlogsTagsView struct {
-	ID           int32
-	Title        string
-	Slug         string
-	Description  string
-	Content      string
-	CreatedAt    time.Time
-	UpdatedAt    time.Time
-	PublishedAt  sql.NullTime
-	TagID        int32
-	TagSlug      string
-	TagName      string
-	TagCreatedAt time.Time
-	TagUpdatedAt time.Time
-}
-
 type SchemaMigration struct {
 	Version string
 }

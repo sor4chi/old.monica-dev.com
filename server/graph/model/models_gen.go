@@ -23,15 +23,15 @@ type BlogInput struct {
 	Published   bool        `json:"published"`
 }
 
+type BlogList struct {
+	Data  []*Blog `json:"data"`
+	Total int     `json:"total"`
+}
+
 type BlogListInput struct {
 	Limit  int      `json:"limit"`
 	Offset int      `json:"offset"`
 	Tags   []string `json:"tags,omitempty"`
-}
-
-type BlogListResult struct {
-	Data  []*Blog `json:"data"`
-	Total int     `json:"total"`
 }
 
 type LoginPayload struct {

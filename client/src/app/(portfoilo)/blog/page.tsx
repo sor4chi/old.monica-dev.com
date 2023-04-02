@@ -24,8 +24,8 @@ export const preferredRegion = 'home';
 const BlogListPageQuery = gql`
   ${BlogListFragment}
 
-  query BlogListPageQuery($first: Int!, $tagWhereInput: [TagWhereInput!]) {
-    blogs(first: $first, orderBy: { field: CREATED_AT, direction: DESC }, where: { hasTagsWith: $tagWhereInput }) {
+  query BlogListQuery($limit: Int!, $offset: Int!, $tags: [String!]) {
+    blogs(input: { limit: $limit, offset: $offset, tags: $tags }) {
       ...BlogListFragment
     }
   }
@@ -36,17 +36,17 @@ type BlogListPageQueryResponse = {
 };
 
 type BlogListPageQueryVariables = {
-  first: number;
-  tagWhereInput: {
-    slugIn: string[];
-  } | null;
+  limit: number;
+  offset: number;
+  tags: string[];
 };
 
 async function getBlogs(tags: string[]) {
   try {
     const data = await client.request<BlogListPageQueryResponse, BlogListPageQueryVariables>(BlogListPageQuery, {
-      first: SITE_CONFIG.BLOG_LENGTH_PER_PAGE,
-      tagWhereInput: tags.length ? { slugIn: tags } : null,
+      limit: SITE_CONFIG.BLOG_LENGTH_PER_PAGE,
+      offset: 0,
+      tags,
     });
 
     return {
@@ -74,7 +74,7 @@ export default async function Blog({ searchParams }: Props) {
   return (
     <>
       <h1 className={styles.title}>Blog</h1>
-      <BlogList relay={blogs.data.blogs} filterTags={tags} />
+      <BlogList blogs={blogs.data.blogs} filterTags={tags} />
     </>
   );
 }

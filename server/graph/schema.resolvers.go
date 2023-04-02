@@ -55,7 +55,7 @@ func (r *mutationResolver) DeleteBlog(ctx context.Context, id string) (*model.Bl
 }
 
 // Blogs is the resolver for the blogs field.
-func (r *queryResolver) Blogs(ctx context.Context, input model.BlogListInput) (*model.BlogListResult, error) {
+func (r *queryResolver) Blogs(ctx context.Context, input model.BlogListInput) (*model.BlogList, error) {
 	_, isAuthenticated := middleware.AuthCtxValue(ctx)
 	bs := service.NewBlogService(r.Q, isAuthenticated)
 	var blogs []*entity.Blog
@@ -72,7 +72,7 @@ func (r *queryResolver) Blogs(ctx context.Context, input model.BlogListInput) (*
 		return nil, err
 	}
 
-	return &model.BlogListResult{
+	return &model.BlogList{
 		Total: int(total),
 		Data:  model.NewBlogsFromEntityList(blogs),
 	}, nil
