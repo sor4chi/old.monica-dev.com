@@ -56,8 +56,7 @@ func SeedBlog(ctx context.Context, q *sqlc.Queries) {
 				tag, _ := q.GetTagBySlug(ctx, s)
 				tagId = tag.ID
 			} else {
-				lastInsertId, _ := res.LastInsertId()
-				tagId = int32(lastInsertId)
+				tagId = res.ID
 			}
 			tags = append(tags, &entity.Tag{
 				ID:   tagId,
@@ -83,14 +82,13 @@ func SeedBlog(ctx context.Context, q *sqlc.Queries) {
 			log.Fatalf(ERROR_CREATE_BLOG, err)
 		}
 
-		lastInsertId, err := res.LastInsertId()
 		if err != nil {
 			log.Fatalf(ERROR_CREATE_BLOG, err)
 		}
 
 		for _, t := range tags {
 			if err := q.ConnectBlogTag(ctx, sqlc.ConnectBlogTagParams{
-				BlogID: int32(lastInsertId),
+				BlogID: int32(res.ID),
 				TagID:  t.ID,
 			}); err != nil {
 				log.Fatalf(ERROR_CONNECT_BLOG_TAG, err)

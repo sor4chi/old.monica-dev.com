@@ -25,6 +25,6 @@ func NewPostgresConnectionEnv() *PostgresConnectionEnv {
 }
 
 func Dsn(env *PostgresConnectionEnv) string {
-	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=True",
-		env.User, env.Password, env.Host, env.Port, env.DBName)
+	return fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
+		env.Host, env.Port, env.User, env.DBName, env.Password)
 }

@@ -27,12 +27,13 @@ func (q *Queries) ConnectBlogTag(ctx context.Context, arg ConnectBlogTagParams) 
 	return err
 }
 
-const createBlog = `-- name: CreateBlog :execresult
+const createBlog = `-- name: CreateBlog :one
 
 INSERT INTO blogs (
   title, slug, description, content, published_at
 )
 VALUES ($1, $2, $3, $4, $5)
+RETURNING id, title, description, slug, content, created_at, updated_at, published_at
 `
 
 type CreateBlogParams struct {
@@ -44,22 +45,34 @@ type CreateBlogParams struct {
 }
 
 // -- CREATORS -- --
-func (q *Queries) CreateBlog(ctx context.Context, arg CreateBlogParams) (sql.Result, error) {
-	return q.db.ExecContext(ctx, createBlog,
+func (q *Queries) CreateBlog(ctx context.Context, arg CreateBlogParams) (Blog, error) {
+	row := q.db.QueryRowContext(ctx, createBlog,
 		arg.Title,
 		arg.Slug,
 		arg.Description,
 		arg.Content,
 		arg.PublishedAt,
 	)
+	var i Blog
+	err := row.Scan(
+		&i.ID,
+		&i.Title,
+		&i.Description,
+		&i.Slug,
+		&i.Content,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.PublishedAt,
+	)
+	return i, err
 }
 
-const createTag = `-- name: CreateTag :execresult
+const createTag = `-- name: CreateTag :one
 INSERT INTO tags (
   name, slug
 ) VALUES (
   $1, $2
-)
+) RETURNING id, name, slug, created_at, updated_at
 `
 
 type CreateTagParams struct {
@@ -67,8 +80,17 @@ type CreateTagParams struct {
 	Slug string
 }
 
-func (q *Queries) CreateTag(ctx context.Context, arg CreateTagParams) (sql.Result, error) {
-	return q.db.ExecContext(ctx, createTag, arg.Name, arg.Slug)
+func (q *Queries) CreateTag(ctx context.Context, arg CreateTagParams) (Tag, error) {
+	row := q.db.QueryRowContext(ctx, createTag, arg.Name, arg.Slug)
+	var i Tag
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Slug,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
 }
 
 const deleteAllBlogs = `-- name: DeleteAllBlogs :exec
@@ -168,7 +190,7 @@ func (q *Queries) GetBlogs(ctx context.Context, arg GetBlogsParams) ([]Blog, err
 const getBlogsByTagSlugs = `-- name: GetBlogsByTagSlugs :many
 SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs WHERE id IN (
   SELECT blog_id FROM blogs_tags WHERE tag_id IN (
-    SELECT id FROM tags WHERE tags.slug IN ($3::text[])
+    SELECT id FROM tags WHERE tags.slug = ANY ($3::text[])
   )
 ) LIMIT $1 OFFSET $2
 `
@@ -213,7 +235,7 @@ func (q *Queries) GetBlogsByTagSlugs(ctx context.Context, arg GetBlogsByTagSlugs
 
 const getBlogsByTagSlugsCount = `-- name: GetBlogsByTagSlugsCount :one
 SELECT COUNT(*) FROM blogs_tags WHERE tag_id IN (
-  SELECT id FROM tags WHERE tags.slug IN ($1::text[])
+  SELECT id FROM tags WHERE tags.slug = ANY ($1::text[])
 )
 `
 
@@ -301,7 +323,7 @@ func (q *Queries) GetPublishedBlogs(ctx context.Context, arg GetPublishedBlogsPa
 const getPublishedBlogsByTagSlugs = `-- name: GetPublishedBlogsByTagSlugs :many
 SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs WHERE id IN (
   SELECT blog_id FROM blogs_tags WHERE tag_id IN (
-    SELECT id FROM tags WHERE tags.slug IN ($3::text[])
+    SELECT id FROM tags WHERE tags.slug = ANY ($3::text[])
   )
 ) AND published_at IS NOT NULL LIMIT $1 OFFSET $2
 `
@@ -346,7 +368,7 @@ func (q *Queries) GetPublishedBlogsByTagSlugs(ctx context.Context, arg GetPublis
 
 const getPublishedBlogsByTagSlugsCount = `-- name: GetPublishedBlogsByTagSlugsCount :one
 SELECT COUNT(*) FROM blogs_tags WHERE tag_id IN (
-  SELECT id FROM tags WHERE tags.slug IN ($1::text[])
+  SELECT id FROM tags WHERE tags.slug = ANY ($1::text[])
 ) AND blog_id IN (
   SELECT id FROM blogs WHERE published_at IS NOT NULL
 )

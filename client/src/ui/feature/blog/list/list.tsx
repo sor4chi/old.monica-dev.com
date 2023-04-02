@@ -20,10 +20,6 @@ export const BlogList = ({ blogs, filterTags }: Props) => {
   const [blogData, setBlogData] = useState(blogs.data);
   const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    setPage(1);
-  }, []);
-
   const maxPage = Math.ceil(blogs.total / SITE_CONFIG.BLOG_LENGTH_PER_PAGE);
 
   const loadBefore = async () => {
@@ -45,6 +41,10 @@ export const BlogList = ({ blogs, filterTags }: Props) => {
     setBlogData(data.blogs.data);
     setPage(page + 1);
   };
+
+  useEffect(() => {
+    setBlogData(blogs.data);
+  }, [blogs]);
 
   if (!blogData.length) {
     return (
