@@ -46,6 +46,10 @@ export const BlogList = ({ blogs, filterTags }: Props) => {
     setBlogData(blogs.data);
   }, [blogs]);
 
+  useEffect(() => {
+    setPage(1);
+  }, [filterTags]);
+
   if (!blogData.length) {
     return (
       <div className={styles.container}>
