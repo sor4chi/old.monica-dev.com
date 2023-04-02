@@ -28,14 +28,35 @@ export const tocTop = style({
 export const tocItem = style({
   fontSize: '1rem',
   lineHeight: 2,
+  position: 'relative',
 });
 
 export const tocItemLink = style({
   color: vars.color.text.secondary,
   textDecoration: 'none',
+
+  '@media': {
+    '(hover: hover)': {
+      ':hover': {
+        textDecoration: 'underline',
+      },
+    },
+  },
 });
 
 export const tocActive = style({
-  color: vars.color.accent.primary,
-  fontWeight: 700,
+  ':before': {
+    content: '""',
+    position: 'absolute',
+    top: '50%',
+    left: '-1rem',
+    transform: 'translateY(-50%)',
+    backgroundColor: vars.color.accent.primary,
+
+    width: '0.5rem',
+    height: '0.5rem',
+    clipPath: 'polygon(0 0, 100% 50%, 0 100%)',
+    // width: '2px',
+    // height: '100%',
+  },
 });
