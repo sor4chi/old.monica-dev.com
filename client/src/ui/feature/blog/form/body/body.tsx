@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { MdAdd, MdClose } from 'react-icons/md';
 import { z } from 'zod';
 
-import * as styles from './form.css';
+import * as styles from './body.css';
 
 import { useDashboardHeader } from '@/hooks';
 import { gql } from '@/lib/graphql';
