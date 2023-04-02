@@ -8,15 +8,14 @@ import { z } from 'zod';
 
 import * as styles from './form.css';
 
-import type { PutBlogResponse } from '@/app/api/blog/[slug]/route';
 import { useDashboardHeader } from '@/hooks';
+import { gql } from '@/lib/graphql';
 import { parseMarkdownToHTML } from '@/lib/markdown';
 import { Article } from '@/ui/foundation/article';
 import { Button } from '@/ui/foundation/button';
 import { TextInput } from '@/ui/foundation/textInput';
 import { Textarea } from '@/ui/foundation/textarea';
 import { Toggle } from '@/ui/foundation/toggle';
-import { customFetch } from '@/util/fetcher';
 
 const scheme = z.object({
   content: z.string().min(1, { message: '本文を入力してください' }),
@@ -36,33 +35,59 @@ type Scheme = z.infer<typeof scheme>;
 const BLOG_FORM_ID = 'blogForm';
 
 const postBlog = async (slug: string, params: Scheme & { published: boolean }) => {
-  return customFetch(`/api/blog/${slug}`, {
+  return fetch(`/api/blog/${slug}`, {
     body: JSON.stringify(params),
     method: 'POST',
   });
 };
 
 const updateBlog = async (slug: string, params: Scheme & { published: boolean }) => {
-  return customFetch<PutBlogResponse>(`/api/blog/${slug}`, {
+  return fetch(`/api/blog/${slug}`, {
     body: JSON.stringify(params),
     method: 'PUT',
   });
 };
 
+export const TagFormFragment = gql`
+  fragment TagFormFragment on Tag {
+    id
+    name
+    slug
+  }
+`;
+
+export const BlogFormFragment = gql`
+  fragment BlogFormFragment on Blog {
+    id
+    slug
+    title
+    description
+    content
+    publishedAt
+    tags {
+      ...TagFormFragment
+    }
+  }
+`;
+
+export type TagFormFragmentResponse = {
+  id: number;
+  name: string;
+  slug: string;
+};
+
+export type BlogFormFragmentResponse = {
+  id: number;
+  slug: string;
+  title: string;
+  description: string;
+  content: string;
+  publishedAt: string | null;
+  tags: TagFormFragmentResponse[];
+};
+
 interface Props {
-  blog: {
-    id: number;
-    slug: string;
-    title: string;
-    description: string;
-    content: string;
-    tags: {
-      id: number;
-      slug: string;
-      name: string;
-    }[];
-    publishedAt: Date | null;
-  };
+  blog: BlogFormFragmentResponse;
   tagOptions: {
     slug: string;
     name: string;
