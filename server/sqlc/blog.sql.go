@@ -12,21 +12,6 @@ import (
 	"github.com/lib/pq"
 )
 
-const connectBlogTag = `-- name: ConnectBlogTag :exec
-INSERT INTO blogs_tags (blog_id, tag_id)
-VALUES ($1, $2)
-`
-
-type ConnectBlogTagParams struct {
-	BlogID int32
-	TagID  int32
-}
-
-func (q *Queries) ConnectBlogTag(ctx context.Context, arg ConnectBlogTagParams) error {
-	_, err := q.db.ExecContext(ctx, connectBlogTag, arg.BlogID, arg.TagID)
-	return err
-}
-
 const createBlog = `-- name: CreateBlog :one
 
 INSERT INTO blogs (
@@ -63,32 +48,6 @@ func (q *Queries) CreateBlog(ctx context.Context, arg CreateBlogParams) (Blog, e
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.PublishedAt,
-	)
-	return i, err
-}
-
-const createTag = `-- name: CreateTag :one
-INSERT INTO tags (
-  name, slug
-) VALUES (
-  $1, $2
-) RETURNING id, name, slug, created_at, updated_at
-`
-
-type CreateTagParams struct {
-	Name string
-	Slug string
-}
-
-func (q *Queries) CreateTag(ctx context.Context, arg CreateTagParams) (Tag, error) {
-	row := q.db.QueryRowContext(ctx, createTag, arg.Name, arg.Slug)
-	var i Tag
-	err := row.Scan(
-		&i.ID,
-		&i.Name,
-		&i.Slug,
-		&i.CreatedAt,
-		&i.UpdatedAt,
 	)
 	return i, err
 }

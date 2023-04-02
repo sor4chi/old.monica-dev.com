@@ -58,17 +58,6 @@ INSERT INTO blogs (
 VALUES ($1, $2, $3, $4, $5)
 RETURNING *;
 
--- name: ConnectBlogTag :exec
-INSERT INTO blogs_tags (blog_id, tag_id)
-VALUES ($1, $2);
-
--- name: CreateTag :one
-INSERT INTO tags (
-  name, slug
-) VALUES (
-  $1, $2
-) RETURNING *;
-
 -- -- DELETORS -- --
 
 -- name: DeleteAllBlogs :exec

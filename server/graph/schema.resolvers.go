@@ -22,7 +22,7 @@ func (r *blogResolver) Tags(ctx context.Context, obj *model.Blog) ([]*model.Tag,
 	if err != nil {
 		return nil, err
 	}
-	tags, err := ts.GetTagsByBlogId(ctx, int32(id))
+	tags, err := ts.GetTagsByBlogId(int32(id))
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +41,39 @@ func (r *mutationResolver) Login(ctx context.Context, password string) (*model.L
 
 // CreateBlog is the resolver for the createBlog field.
 func (r *mutationResolver) CreateBlog(ctx context.Context, input model.BlogInput) (*model.Blog, error) {
-	panic("CreateBlog is not implemented")
+	_, isAuthenticated := middleware.AuthCtxValue(ctx)
+	bs := service.NewBlogService(r.Q, isAuthenticated)
+	ts := service.NewTagService(r.Q)
+
+	blog, err := bs.CreateBlog(
+		input.Title,
+		input.Slug,
+		input.Description,
+		input.Content,
+		input.Published,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	var tagsIds []int32
+	for _, tag := range input.Tags {
+		t, err := ts.CreateTag(&entity.Tag{
+			Slug: tag.Slug,
+			Name: tag.Name,
+		})
+		if err != nil {
+			return nil, err
+		}
+		tagsIds = append(tagsIds, t.ID)
+	}
+
+	err = ts.CreateBlogTags(blog.ID, tagsIds)
+	if err != nil {
+		return nil, err
+	}
+
+	return model.NewBlogFromEntity(blog), nil
 }
 
 // UpdateBlog is the resolver for the updateBlog field.

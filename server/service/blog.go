@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"database/sql"
 	"time"
 
 	"github.com/sor4chi/portfolio-blog/server/entity"
@@ -158,6 +159,30 @@ func (s *BlogService) GetBlogBySlug(slug string) (*entity.Blog, error) {
 		if err != nil {
 			return nil, err
 		}
+	}
+
+	return parseBlogsRowToEntity(row), nil
+}
+
+func (s *BlogService) CreateBlog(title, slug, description, content string, published bool) (*entity.Blog, error) {
+	ctx := context.Background()
+	p := sqlc.CreateBlogParams{
+		Title:       title,
+		Slug:        slug,
+		Description: description,
+		Content:     content,
+	}
+	if published {
+		now := time.Now()
+		p.PublishedAt = sql.NullTime{
+			Time:  now,
+			Valid: true,
+		}
+	}
+
+	row, err := s.q.CreateBlog(ctx, p)
+	if err != nil {
+		return nil, err
 	}
 
 	return parseBlogsRowToEntity(row), nil

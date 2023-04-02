@@ -87,7 +87,7 @@ func SeedBlog(ctx context.Context, q *sqlc.Queries) {
 		}
 
 		for _, t := range tags {
-			if err := q.ConnectBlogTag(ctx, sqlc.ConnectBlogTagParams{
+			if err := q.CreateBlogTag(ctx, sqlc.CreateBlogTagParams{
 				BlogID: int32(res.ID),
 				TagID:  t.ID,
 			}); err != nil {

@@ -9,6 +9,45 @@ import (
 	"context"
 )
 
+const createBlogTag = `-- name: CreateBlogTag :exec
+INSERT INTO blogs_tags (blog_id, tag_id)
+VALUES ($1, $2)
+`
+
+type CreateBlogTagParams struct {
+	BlogID int32
+	TagID  int32
+}
+
+func (q *Queries) CreateBlogTag(ctx context.Context, arg CreateBlogTagParams) error {
+	_, err := q.db.ExecContext(ctx, createBlogTag, arg.BlogID, arg.TagID)
+	return err
+}
+
+const createTag = `-- name: CreateTag :one
+
+INSERT INTO tags (name, slug) VALUES ($1, $2) ON CONFLICT DO NOTHING RETURNING id, name, slug, created_at, updated_at
+`
+
+type CreateTagParams struct {
+	Name string
+	Slug string
+}
+
+// -- CREATORS -- --
+func (q *Queries) CreateTag(ctx context.Context, arg CreateTagParams) (Tag, error) {
+	row := q.db.QueryRowContext(ctx, createTag, arg.Name, arg.Slug)
+	var i Tag
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Slug,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
 const getTagBySlug = `-- name: GetTagBySlug :one
 
 SELECT id, name, slug, created_at, updated_at FROM tags WHERE slug = $1
