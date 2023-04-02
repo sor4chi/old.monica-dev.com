@@ -8,11 +8,13 @@ package sqlc
 import (
 	"context"
 	"database/sql"
+
+	"github.com/lib/pq"
 )
 
 const connectBlogTag = `-- name: ConnectBlogTag :exec
 INSERT INTO blogs_tags (blog_id, tag_id)
-VALUES (?, ?)
+VALUES ($1, $2)
 `
 
 type ConnectBlogTagParams struct {
@@ -30,7 +32,7 @@ const createBlog = `-- name: CreateBlog :execresult
 INSERT INTO blogs (
   title, slug, description, content, published_at
 )
-VALUES (?, ?, ?, ?, ?)
+VALUES ($1, $2, $3, $4, $5)
 `
 
 type CreateBlogParams struct {
@@ -56,7 +58,7 @@ const createTag = `-- name: CreateTag :execresult
 INSERT INTO tags (
   name, slug
 ) VALUES (
-  ?, ?
+  $1, $2
 )
 `
 
@@ -100,7 +102,7 @@ func (q *Queries) DeleteAllTags(ctx context.Context) error {
 
 const getBlogBySlug = `-- name: GetBlogBySlug :one
 
-SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs WHERE slug = ?
+SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs WHERE slug = $1
 `
 
 // -- FINDERS -- --
@@ -122,7 +124,7 @@ func (q *Queries) GetBlogBySlug(ctx context.Context, slug string) (Blog, error) 
 
 const getBlogs = `-- name: GetBlogs :many
 
-SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs LIMIT ? OFFSET ?
+SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs LIMIT $1 OFFSET $2
 `
 
 type GetBlogsParams struct {
@@ -166,19 +168,19 @@ func (q *Queries) GetBlogs(ctx context.Context, arg GetBlogsParams) ([]Blog, err
 const getBlogsByTagSlugs = `-- name: GetBlogsByTagSlugs :many
 SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs WHERE id IN (
   SELECT blog_id FROM blogs_tags WHERE tag_id IN (
-    SELECT id FROM tags WHERE tags.slug IN (?)
+    SELECT id FROM tags WHERE tags.slug IN ($3::text[])
   )
-) LIMIT ? OFFSET ?
+) LIMIT $1 OFFSET $2
 `
 
 type GetBlogsByTagSlugsParams struct {
-	Slug   string
 	Limit  int32
 	Offset int32
+	Slugs  []string
 }
 
 func (q *Queries) GetBlogsByTagSlugs(ctx context.Context, arg GetBlogsByTagSlugsParams) ([]Blog, error) {
-	rows, err := q.db.QueryContext(ctx, getBlogsByTagSlugs, arg.Slug, arg.Limit, arg.Offset)
+	rows, err := q.db.QueryContext(ctx, getBlogsByTagSlugs, arg.Limit, arg.Offset, pq.Array(arg.Slugs))
 	if err != nil {
 		return nil, err
 	}
@@ -211,12 +213,12 @@ func (q *Queries) GetBlogsByTagSlugs(ctx context.Context, arg GetBlogsByTagSlugs
 
 const getBlogsByTagSlugsCount = `-- name: GetBlogsByTagSlugsCount :one
 SELECT COUNT(*) FROM blogs_tags WHERE tag_id IN (
-  SELECT id FROM tags WHERE tags.slug IN (?)
+  SELECT id FROM tags WHERE tags.slug IN ($1::text[])
 )
 `
 
-func (q *Queries) GetBlogsByTagSlugsCount(ctx context.Context, slug string) (int64, error) {
-	row := q.db.QueryRowContext(ctx, getBlogsByTagSlugsCount, slug)
+func (q *Queries) GetBlogsByTagSlugsCount(ctx context.Context, slugs []string) (int64, error) {
+	row := q.db.QueryRowContext(ctx, getBlogsByTagSlugsCount, pq.Array(slugs))
 	var count int64
 	err := row.Scan(&count)
 	return count, err
@@ -236,7 +238,7 @@ func (q *Queries) GetBlogsCount(ctx context.Context) (int64, error) {
 }
 
 const getPublishedBlogBySlug = `-- name: GetPublishedBlogBySlug :one
-SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs WHERE slug = ? AND published_at IS NOT NULL
+SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs WHERE slug = $1 AND published_at IS NOT NULL
 `
 
 func (q *Queries) GetPublishedBlogBySlug(ctx context.Context, slug string) (Blog, error) {
@@ -256,7 +258,7 @@ func (q *Queries) GetPublishedBlogBySlug(ctx context.Context, slug string) (Blog
 }
 
 const getPublishedBlogs = `-- name: GetPublishedBlogs :many
-SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs WHERE published_at IS NOT NULL LIMIT ? OFFSET ?
+SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs WHERE published_at IS NOT NULL LIMIT $1 OFFSET $2
 `
 
 type GetPublishedBlogsParams struct {
@@ -299,19 +301,19 @@ func (q *Queries) GetPublishedBlogs(ctx context.Context, arg GetPublishedBlogsPa
 const getPublishedBlogsByTagSlugs = `-- name: GetPublishedBlogsByTagSlugs :many
 SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs WHERE id IN (
   SELECT blog_id FROM blogs_tags WHERE tag_id IN (
-    SELECT id FROM tags WHERE tags.slug IN (?)
+    SELECT id FROM tags WHERE tags.slug IN ($3::text[])
   )
-) AND published_at IS NOT NULL LIMIT ? OFFSET ?
+) AND published_at IS NOT NULL LIMIT $1 OFFSET $2
 `
 
 type GetPublishedBlogsByTagSlugsParams struct {
-	Slug   string
 	Limit  int32
 	Offset int32
+	Slugs  []string
 }
 
 func (q *Queries) GetPublishedBlogsByTagSlugs(ctx context.Context, arg GetPublishedBlogsByTagSlugsParams) ([]Blog, error) {
-	rows, err := q.db.QueryContext(ctx, getPublishedBlogsByTagSlugs, arg.Slug, arg.Limit, arg.Offset)
+	rows, err := q.db.QueryContext(ctx, getPublishedBlogsByTagSlugs, arg.Limit, arg.Offset, pq.Array(arg.Slugs))
 	if err != nil {
 		return nil, err
 	}
@@ -344,14 +346,14 @@ func (q *Queries) GetPublishedBlogsByTagSlugs(ctx context.Context, arg GetPublis
 
 const getPublishedBlogsByTagSlugsCount = `-- name: GetPublishedBlogsByTagSlugsCount :one
 SELECT COUNT(*) FROM blogs_tags WHERE tag_id IN (
-  SELECT id FROM tags WHERE tags.slug IN (?)
+  SELECT id FROM tags WHERE tags.slug IN ($1::text[])
 ) AND blog_id IN (
   SELECT id FROM blogs WHERE published_at IS NOT NULL
 )
 `
 
-func (q *Queries) GetPublishedBlogsByTagSlugsCount(ctx context.Context, slug string) (int64, error) {
-	row := q.db.QueryRowContext(ctx, getPublishedBlogsByTagSlugsCount, slug)
+func (q *Queries) GetPublishedBlogsByTagSlugsCount(ctx context.Context, slugs []string) (int64, error) {
+	row := q.db.QueryRowContext(ctx, getPublishedBlogsByTagSlugsCount, pq.Array(slugs))
 	var count int64
 	err := row.Scan(&count)
 	return count, err

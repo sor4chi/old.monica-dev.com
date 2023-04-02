@@ -10,29 +10,19 @@ import (
 )
 
 type Blog struct {
-	// blog id
-	ID int32
-	// blog title
-	Title string
-	// blog description
+	ID          int32
+	Title       string
 	Description string
-	// blog slug
-	Slug string
-	// blog content
-	Content string
-	// blog created at
-	CreatedAt time.Time
-	// blog updated at
-	UpdatedAt time.Time
-	// blog published at, null if not published
+	Slug        string
+	Content     string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 	PublishedAt sql.NullTime
 }
 
 type BlogsTag struct {
-	// blog id
 	BlogID int32
-	// tag id
-	TagID int32
+	TagID  int32
 }
 
 type SchemaMigration struct {
@@ -40,14 +30,9 @@ type SchemaMigration struct {
 }
 
 type Tag struct {
-	// tag id
-	ID int32
-	// tag name
-	Name string
-	// tag slug
-	Slug string
-	// tag created at
+	ID        int32
+	Name      string
+	Slug      string
 	CreatedAt time.Time
-	// tag updated at
 	UpdatedAt time.Time
 }

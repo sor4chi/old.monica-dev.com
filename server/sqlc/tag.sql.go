@@ -11,7 +11,7 @@ import (
 
 const getTagBySlug = `-- name: GetTagBySlug :one
 
-SELECT id, name, slug, created_at, updated_at FROM tags WHERE slug = ?
+SELECT id, name, slug, created_at, updated_at FROM tags WHERE slug = $1
 `
 
 // -- FINDS -- --
@@ -30,7 +30,9 @@ func (q *Queries) GetTagBySlug(ctx context.Context, slug string) (Tag, error) {
 
 const getTagsByBlogId = `-- name: GetTagsByBlogId :many
 
-SELECT id, name, slug, created_at, updated_at FROM tags WHERE id IN (SELECT tag_id FROM blogs_tags WHERE blog_id = ?)
+SELECT id, name, slug, created_at, updated_at FROM tags WHERE id IN (
+    SELECT tag_id FROM blogs_tags WHERE blog_id = $1
+)
 `
 
 // -- GETTERS -- --

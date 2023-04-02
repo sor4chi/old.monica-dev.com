@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"strings"
 	"time"
 
 	"github.com/sor4chi/portfolio-blog/server/entity"
@@ -58,7 +57,7 @@ func parseBlogsRowsToEntity(rows []sqlc.Blog) []*entity.Blog {
 	return blogs
 }
 
-type GetBlogsParam struct {
+type PaginateParams struct {
 	Limit  int32
 	Offset int32
 }
@@ -72,7 +71,7 @@ func (s *BlogService) GetBlogs(limit, offset int) ([]*entity.Blog, int, error) {
 	var total int64
 	var err error
 
-	p := GetBlogsParam{
+	p := PaginateParams{
 		Limit:  int32(limit),
 		Offset: int32(offset),
 	}
@@ -101,12 +100,6 @@ func (s *BlogService) GetBlogs(limit, offset int) ([]*entity.Blog, int, error) {
 	return parseBlogsRowsToEntity(rows), int(total), nil
 }
 
-type GetBlogsByTagSlugsParams struct {
-	Slug   string
-	Limit  int32
-	Offset int32
-}
-
 func (s *BlogService) GetBlogsByTagSlugs(limit, offset int, tags []string) ([]*entity.Blog, int, error) {
 	if limit > MAX_LIMIT_PER_PAGE {
 		limit = MAX_LIMIT_PER_PAGE
@@ -114,31 +107,33 @@ func (s *BlogService) GetBlogsByTagSlugs(limit, offset int, tags []string) ([]*e
 
 	var rows []sqlc.Blog
 	var total int64
-	slug := strings.Join(tags, ",")
 	var err error
 
-	p := GetBlogsByTagSlugsParams{
-		Limit:  int32(limit),
-		Offset: int32(offset),
-		Slug:   slug,
-	}
 	ctx := context.Background()
 
 	if s.isAdmin {
-		rows, err = s.q.GetBlogsByTagSlugs(ctx, sqlc.GetBlogsByTagSlugsParams(p))
+		rows, err = s.q.GetBlogsByTagSlugs(ctx, sqlc.GetBlogsByTagSlugsParams{
+			Limit:  int32(limit),
+			Offset: int32(offset),
+			Slugs:  tags,
+		})
 		if err != nil {
 			return nil, 0, err
 		}
-		total, err = s.q.GetBlogsByTagSlugsCount(ctx, slug)
+		total, err = s.q.GetBlogsByTagSlugsCount(ctx, tags)
 		if err != nil {
 			return nil, 0, err
 		}
 	} else {
-		rows, err = s.q.GetPublishedBlogsByTagSlugs(ctx, sqlc.GetPublishedBlogsByTagSlugsParams(p))
+		rows, err = s.q.GetPublishedBlogsByTagSlugs(ctx, sqlc.GetPublishedBlogsByTagSlugsParams{
+			Limit:  int32(limit),
+			Offset: int32(offset),
+			Slugs:  tags,
+		})
 		if err != nil {
 			return nil, 0, err
 		}
-		total, err = s.q.GetPublishedBlogsByTagSlugsCount(ctx, slug)
+		total, err = s.q.GetPublishedBlogsByTagSlugsCount(ctx, tags)
 		if err != nil {
 			return nil, 0, err
 		}
