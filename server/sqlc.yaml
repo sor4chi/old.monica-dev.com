@@ -4,7 +4,7 @@ project:
 packages:
   - path: "sqlc"
     name: "sqlc"
-    engine: "mysql"
+    engine: "postgresql"
     schema: "db/schema.sql"
     queries:
       - "db/queries"

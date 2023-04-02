@@ -19,7 +19,7 @@ import (
 	sqldblogger "github.com/simukti/sqldb-logger"
 	"github.com/simukti/sqldb-logger/logadapter/zerologadapter"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq"
 )
 
 var (
@@ -40,8 +40,8 @@ var (
 
 func main() {
 	mux := http.NewServeMux()
-	dsn := db.Dsn(db.NewMySQLConnectionEnv())
-	con, err := sql.Open("mysql", dsn)
+	dsn := db.Dsn(db.NewPostgresConnectionEnv())
+	con, err := sql.Open("postgres", dsn)
 	if err != nil {
 		log.Fatal(ERROR_CONNECT_DB_CLIENT, err)
 	}

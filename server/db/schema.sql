@@ -1,104 +1,306 @@
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
 
 --
--- Table structure for table `blogs`
+-- Name: refresh_updated_at_step1(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `blogs` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'blog id',
-  `title` varchar(255) NOT NULL COMMENT 'blog title',
-  `description` varchar(255) NOT NULL COMMENT 'blog description',
-  `slug` varchar(255) NOT NULL COMMENT 'blog slug',
-  `content` text NOT NULL COMMENT 'blog content',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'blog created at',
-  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'blog updated at',
-  `published_at` datetime DEFAULT NULL COMMENT 'blog published at, null if not published',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `slug` (`slug`),
-  KEY `idx_blogs_slug_published_at` (`slug`,`published_at`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE FUNCTION public.refresh_updated_at_step1() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW.updated_at = OLD.updated_at THEN
+    NEW.updated_at := NULL;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
 
 --
--- Table structure for table `blogs_tags`
+-- Name: refresh_updated_at_step2(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `blogs_tags` (
-  `blog_id` int NOT NULL COMMENT 'blog id',
-  `tag_id` int NOT NULL COMMENT 'tag id',
-  PRIMARY KEY (`blog_id`,`tag_id`),
-  KEY `idx_blog_id_tag_id` (`blog_id`,`tag_id`),
-  KEY `fk_blogs_tags_tag_id` (`tag_id`),
-  CONSTRAINT `fk_blogs_tags_blog_id` FOREIGN KEY (`blog_id`) REFERENCES `blogs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_blogs_tags_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE FUNCTION public.refresh_updated_at_step2() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW.updated_at IS NULL THEN
+    NEW.updated_at := OLD.updated_at;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
 
 --
--- Table structure for table `schema_migrations`
+-- Name: refresh_updated_at_step3(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `schema_migrations` (
-  `version` varchar(128) NOT NULL,
-  PRIMARY KEY (`version`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE FUNCTION public.refresh_updated_at_step3() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW.updated_at IS NULL THEN
+    NEW.updated_at := CURRENT_TIMESTAMP;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
 
 --
--- Table structure for table `tags`
+-- Name: blogs; Type: TABLE; Schema: public; Owner: -
 --
 
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tags` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'tag id',
-  `name` varchar(255) NOT NULL COMMENT 'tag name',
-  `slug` varchar(255) NOT NULL COMMENT 'tag slug',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'tag created at',
-  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'tag updated at',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `slug` (`slug`),
-  KEY `idx_tags_slug` (`slug`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE TABLE public.blogs (
+    id integer NOT NULL,
+    title character varying(255) NOT NULL,
+    description character varying(255) NOT NULL,
+    slug character varying(255) NOT NULL,
+    content text NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    published_at timestamp with time zone
+);
+
 
 --
--- Dumping routines for database 'portfolio'
+-- Name: blogs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+CREATE SEQUENCE public.blogs_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
--- Dump completed
+
+--
+-- Name: blogs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.blogs_id_seq OWNED BY public.blogs.id;
+
+
+--
+-- Name: blogs_tags; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.blogs_tags (
+    blog_id integer NOT NULL,
+    tag_id integer NOT NULL
+);
+
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.schema_migrations (
+    version character varying(128) NOT NULL
+);
+
+
+--
+-- Name: tags; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tags (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    slug character varying(255) NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+--
+-- Name: tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.tags_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.tags_id_seq OWNED BY public.tags.id;
+
+
+--
+-- Name: blogs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.blogs ALTER COLUMN id SET DEFAULT nextval('public.blogs_id_seq'::regclass);
+
+
+--
+-- Name: tags id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tags ALTER COLUMN id SET DEFAULT nextval('public.tags_id_seq'::regclass);
+
+
+--
+-- Name: blogs blogs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.blogs
+    ADD CONSTRAINT blogs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: blogs blogs_slug_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.blogs
+    ADD CONSTRAINT blogs_slug_key UNIQUE (slug);
+
+
+--
+-- Name: blogs_tags blogs_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.blogs_tags
+    ADD CONSTRAINT blogs_tags_pkey PRIMARY KEY (blog_id, tag_id);
+
+
+--
+-- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: tags tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tags
+    ADD CONSTRAINT tags_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tags tags_slug_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tags
+    ADD CONSTRAINT tags_slug_key UNIQUE (slug);
+
+
+--
+-- Name: blog_id_tag_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX blog_id_tag_id_index ON public.blogs_tags USING btree (blog_id, tag_id);
+
+
+--
+-- Name: blogs_slug_published_at_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX blogs_slug_published_at_index ON public.blogs USING btree (slug, published_at);
+
+
+--
+-- Name: tags_slug_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX tags_slug_index ON public.tags USING btree (slug);
+
+
+--
+-- Name: blogs refresh_blogs_updated_at_step1; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER refresh_blogs_updated_at_step1 BEFORE UPDATE ON public.blogs FOR EACH ROW EXECUTE FUNCTION public.refresh_updated_at_step1();
+
+
+--
+-- Name: blogs refresh_blogs_updated_at_step2; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER refresh_blogs_updated_at_step2 BEFORE UPDATE OF updated_at ON public.blogs FOR EACH ROW EXECUTE FUNCTION public.refresh_updated_at_step2();
+
+
+--
+-- Name: blogs refresh_blogs_updated_at_step3; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER refresh_blogs_updated_at_step3 BEFORE UPDATE ON public.blogs FOR EACH ROW EXECUTE FUNCTION public.refresh_updated_at_step3();
+
+
+--
+-- Name: tags refresh_tags_updated_at_step1; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER refresh_tags_updated_at_step1 BEFORE UPDATE ON public.tags FOR EACH ROW EXECUTE FUNCTION public.refresh_updated_at_step1();
+
+
+--
+-- Name: tags refresh_tags_updated_at_step2; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER refresh_tags_updated_at_step2 BEFORE UPDATE OF updated_at ON public.tags FOR EACH ROW EXECUTE FUNCTION public.refresh_updated_at_step2();
+
+
+--
+-- Name: tags refresh_tags_updated_at_step3; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER refresh_tags_updated_at_step3 BEFORE UPDATE ON public.tags FOR EACH ROW EXECUTE FUNCTION public.refresh_updated_at_step3();
+
+
+--
+-- Name: blogs_tags fk_blogs_tags_blog_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.blogs_tags
+    ADD CONSTRAINT fk_blogs_tags_blog_id FOREIGN KEY (blog_id) REFERENCES public.blogs(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: blogs_tags fk_blogs_tags_tag_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.blogs_tags
+    ADD CONSTRAINT fk_blogs_tags_tag_id FOREIGN KEY (tag_id) REFERENCES public.tags(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
 
 --
 -- Dbmate schema migrations
 --
 
-LOCK TABLES `schema_migrations` WRITE;
-INSERT INTO `schema_migrations` (version) VALUES
-  ('20230331001102'),
-  ('20230331001115'),
-  ('20230331001134');
-UNLOCK TABLES;
+INSERT INTO public.schema_migrations (version) VALUES
+    ('20230331001052'),
+    ('20230331001102'),
+    ('20230331001115'),
+    ('20230331001134');

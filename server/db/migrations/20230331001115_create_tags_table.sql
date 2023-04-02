@@ -1,14 +1,24 @@
 -- migrate:up
 CREATE TABLE tags (
-  id int not null auto_increment primary key comment 'tag id',
-  name varchar(255) not null comment 'tag name',
-  slug varchar(255) not null unique comment 'tag slug',
-  created_at datetime not null default current_timestamp comment 'tag created at',
-  updated_at datetime not null default current_timestamp on update current_timestamp comment 'tag updated at'
+  id SERIAL NOT NULL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  slug VARCHAR(255) NOT NULL UNIQUE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-ALTER TABLE tags ADD INDEX idx_tags_slug (slug);
+CREATE INDEX tags_slug_index ON tags (slug);
+
+CREATE TRIGGER refresh_tags_updated_at_step1
+  BEFORE UPDATE ON tags FOR EACH ROW
+  EXECUTE PROCEDURE refresh_updated_at_step1();
+CREATE TRIGGER refresh_tags_updated_at_step2
+  BEFORE UPDATE OF updated_at ON tags FOR EACH ROW
+  EXECUTE PROCEDURE refresh_updated_at_step2();
+CREATE TRIGGER refresh_tags_updated_at_step3
+  BEFORE UPDATE ON tags FOR EACH ROW
+  EXECUTE PROCEDURE refresh_updated_at_step3();
+
 
 -- migrate:down
 DROP TABLE tags;
-

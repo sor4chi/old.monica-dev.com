@@ -1,16 +1,26 @@
 -- migrate:up
 CREATE TABLE blogs (
-  id int not null auto_increment primary key comment 'blog id',
-  title varchar(255) not null comment 'blog title',
-  description varchar(255) not null comment 'blog description',
-  slug varchar(255) not null unique comment 'blog slug',
-  content text not null comment 'blog content',
-  created_at datetime not null default current_timestamp comment 'blog created at',
-  updated_at datetime not null default current_timestamp on update current_timestamp comment 'blog updated at',
-  published_at datetime comment 'blog published at, null if not published'
+  id SERIAL NOT NULL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  description VARCHAR(255) NOT NULL,
+  slug VARCHAR(255) NOT NULL UNIQUE,
+  content TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  published_at TIMESTAMPTZ
 );
 
-ALTER TABLE blogs ADD INDEX idx_blogs_slug_published_at (slug, published_at);
+CREATE INDEX blogs_slug_published_at_index ON blogs (slug, published_at);
+
+CREATE TRIGGER refresh_blogs_updated_at_step1
+  BEFORE UPDATE ON blogs FOR EACH ROW
+  EXECUTE PROCEDURE refresh_updated_at_step1();
+CREATE TRIGGER refresh_blogs_updated_at_step2
+  BEFORE UPDATE OF updated_at ON blogs FOR EACH ROW
+  EXECUTE PROCEDURE refresh_updated_at_step2();
+CREATE TRIGGER refresh_blogs_updated_at_step3
+  BEFORE UPDATE ON blogs FOR EACH ROW
+  EXECUTE PROCEDURE refresh_updated_at_step3();
 
 -- migrate:down
 DROP TABLE blogs;

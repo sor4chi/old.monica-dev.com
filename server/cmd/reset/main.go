@@ -10,13 +10,13 @@ import (
 	"github.com/sor4chi/portfolio-blog/server/db/seed"
 	"github.com/sor4chi/portfolio-blog/server/sqlc"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq"
 )
 
 func main() {
-	dsn := db.Dsn(db.NewMySQLConnectionEnv())
+	dsn := db.Dsn(db.NewPostgresConnectionEnv())
 	log.Println("Starting reset...")
-	con, err := sql.Open("mysql", dsn)
+	con, err := sql.Open("postgres", dsn)
 	if err != nil {
 		log.Fatal("failed to connect db client", err)
 	}
