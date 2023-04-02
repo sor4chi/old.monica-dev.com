@@ -8,7 +8,7 @@ export const wrapper = style({
   flexDirection: 'column',
   alignItems: 'center',
   width: vars.size.sideMenuWidth,
-  height: '100svh',
+  height: '100dvh',
   top: 0,
   backgroundColor: vars.color.bg.secondary,
 });

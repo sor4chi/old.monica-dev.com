@@ -74,7 +74,7 @@ export const contentFullScreen = style({
   padding: CONTENT_FULL_SCREEN_PADDING,
   boxSizing: 'border-box',
   vars: assignVars(contentEditorVars, {
-    bodyHeight: `calc(100svh - ${CONTENT_EDITOR_HEADER_HEIGHT} - ${CONTENT_EDITOR_HEADER_MARGIN_BOTTOM} - ${CONTENT_FULL_SCREEN_PADDING} * 2) !important`,
+    bodyHeight: `calc(100dvh - ${CONTENT_EDITOR_HEADER_HEIGHT} - ${CONTENT_EDITOR_HEADER_MARGIN_BOTTOM} - ${CONTENT_FULL_SCREEN_PADDING} * 2) !important`,
   }),
 });
 

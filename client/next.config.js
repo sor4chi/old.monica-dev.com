@@ -9,6 +9,9 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  images: {
+    domains: ['images.unsplash.com'],
+  },
   redirects: async () => [
     {
       destination: '/blog',

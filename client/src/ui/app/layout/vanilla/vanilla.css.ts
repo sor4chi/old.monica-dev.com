@@ -3,7 +3,7 @@ import { style } from '@vanilla-extract/css';
 import { vars } from '@/style/theme.css';
 
 export const container = style({
-  minHeight: '100svh',
+  minHeight: '100dvh',
   width: '100vw',
 });
 
@@ -15,7 +15,7 @@ export const main = style({
   width: '100vw',
   '@media': {
     [`screen and (min-width: ${vars.breakpoint.mobile})`]: {
-      height: '100svh',
+      height: '100dvh',
     },
   },
 });

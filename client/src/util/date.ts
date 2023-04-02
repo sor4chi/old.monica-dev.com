@@ -1,4 +1,11 @@
 export const formatYMD = (date: Date | string) => {
+  if (typeof date === 'string') {
+    // for safari safe-date-format
+    date = date.replace(/-/g, '/'); // replace - with /
+    date = date.replace(/T/, ' '); // replace T with a space, T means time zone
+    date = date.replace(/\..+/, ''); // delete the dot and everything after, dot means milliseconds
+  }
+
   const d = new Date(date).toLocaleDateString('en-US', {
     day: 'numeric',
     month: 'long',

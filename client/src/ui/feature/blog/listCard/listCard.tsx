@@ -27,7 +27,7 @@ export type BlogListCardFragmentResponse = {
   slug: string;
   title: string;
   description: string;
-  createdAt: Date;
+  createdAt: string;
   tags: TagListFragmentResponse[];
 };
 

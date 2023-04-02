@@ -26,7 +26,7 @@ import remarkSlug from 'remark-slug';
 import { unified } from 'unified';
 
 import { Anchor } from '@/ui/foundation/anchor';
-import { Image } from '@/ui/foundation/image/image';
+import { Image } from '@/ui/foundation/image';
 
 refractor.register(refractorRust);
 refractor.register(refractorTypescript);

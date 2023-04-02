@@ -5,7 +5,7 @@ import { vars } from '@/style/theme.css';
 export const wrapper = style({
   display: 'grid',
   gridTemplateColumns: `${vars.size.sideMenuWidth} 1fr`,
-  minHeight: '100svh',
+  minHeight: '100dvh',
 });
 
 export const sideWrapper = style({

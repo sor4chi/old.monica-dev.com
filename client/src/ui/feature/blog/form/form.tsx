@@ -13,7 +13,6 @@ import { useDashboardHeader } from '@/hooks';
 import { parseMarkdownToHTML } from '@/lib/markdown';
 import { Article } from '@/ui/foundation/article';
 import { Button } from '@/ui/foundation/button';
-import { IconButton } from '@/ui/foundation/icon-button';
 import { TextInput } from '@/ui/foundation/textInput';
 import { Textarea } from '@/ui/foundation/textarea';
 import { Toggle } from '@/ui/foundation/toggle';
@@ -275,9 +274,15 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
                     return 0;
                   })
                   .map((tag) => (
-                    <IconButton key={tag.slug} icon={<MdClose />} onClick={() => handleRemoveTag(tag)}>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      key={tag.slug}
+                      icon={<MdClose />}
+                      onClick={() => handleRemoveTag(tag)}
+                    >
                       {tag.name}
-                    </IconButton>
+                    </Button>
                   ))}
               </div>
             </div>
@@ -316,9 +321,15 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
                 />
                 <div className={styles.tagList}>
                   {filteredTags.map((tag) => (
-                    <IconButton key={tag.slug} icon={<MdAdd />} onClick={() => handleSelectTag(tag)}>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      key={tag.slug}
+                      icon={<MdAdd />}
+                      onClick={() => handleSelectTag(tag)}
+                    >
                       {tag.name}
-                    </IconButton>
+                    </Button>
                   ))}
                 </div>
               </>

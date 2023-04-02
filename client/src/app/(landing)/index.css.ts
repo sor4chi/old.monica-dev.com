@@ -42,8 +42,8 @@ const navHeight = `calc(${navItemHeight} * ${navItemCount} + ${navItemVerticalPa
 })`;
 const dividerThickness = '1px';
 
-const fullProfileHeight = `calc(100svh - ${containerPadding} * 2)`;
-const withNavProfileHeight = `calc(100svh - ${containerPadding} * 2 - ${navHeight} - ${containerGap.mobile} * 2 - ${dividerThickness})`;
+const fullProfileHeight = `calc(100dvh - ${containerPadding} * 2)`;
+const withNavProfileHeight = `calc(100dvh - ${containerPadding} * 2 - ${navHeight} - ${containerGap.mobile} * 2 - ${dividerThickness})`;
 
 const shrinkAnimation = keyframes({
   '0%': { height: fullProfileHeight },

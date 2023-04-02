@@ -6,7 +6,7 @@ export const wrapper = style({
   display: 'grid',
   gridTemplateColumns: '100%',
   gridTemplateRows: '1fr auto',
-  minHeight: '100svh',
+  minHeight: '100dvh',
 });
 
 export const main = style({
