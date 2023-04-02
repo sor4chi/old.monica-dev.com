@@ -24,8 +24,8 @@ const BlogDetailPageQuery = gql`
   ${BlogHeroFragment}
   ${BlogArticleFragment}
 
-  mutation BlogDetailPageQuery($slug: String!) {
-    showBlog(slug: $slug) {
+  query BlogDetailQuery($slug: String!) {
+    blog(slug: $slug) {
       ...BlogHeroFragment
       ...BlogArticleFragment
       description
@@ -35,7 +35,7 @@ const BlogDetailPageQuery = gql`
 `;
 
 type BlogDetailPageQueryResponse = {
-  showBlog: BlogHeroFragmentResponse &
+  blog: BlogHeroFragmentResponse &
     BlogArticleFragmentResponse & {
       description: string;
       publishedAt: string;
@@ -46,20 +46,37 @@ type BlogDetailPageQueryVariables = {
   slug: string;
 };
 
-export async function generateStaticParams({ params }: Props) {
+const BlogSlugsQuery = gql`
+  query BlogSlugsQuery {
+    blogs(input: { limit: 1000, offset: 0 }) {
+      slug
+    }
+  }
+`;
+
+type BlogSlugsQueryResponse = {
+  blogs: {
+    slug: string;
+  }[];
+};
+
+export async function generateStaticParams() {
   try {
-    return [];
+    const data = await client.request<BlogSlugsQueryResponse>(BlogSlugsQuery);
+    console.log(data.blogs.map((blog) => blog.slug));
+    return data.blogs.map((blog) => blog.slug);
   } catch (e) {
     return [];
   }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const data = await client.request<BlogDetailPageQueryResponse, BlogDetailPageQueryVariables>(BlogDetailPageQuery, {
-    slug: params.slug,
-  });
-
-  const blog = data.showBlog;
+  const { blog } = await client.request<BlogDetailPageQueryResponse, BlogDetailPageQueryVariables>(
+    BlogDetailPageQuery,
+    {
+      slug: params.slug,
+    },
+  );
 
   return {
     description: blog.description,
@@ -90,11 +107,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 async function getBlog(slug: string) {
   try {
-    const data = await client.request<BlogDetailPageQueryResponse, BlogDetailPageQueryVariables>(BlogDetailPageQuery, {
-      slug,
-    });
-
-    const blog = data.showBlog;
+    const { blog } = await client.request<BlogDetailPageQueryResponse, BlogDetailPageQueryVariables>(
+      BlogDetailPageQuery,
+      {
+        slug,
+      },
+    );
 
     return {
       body: {
