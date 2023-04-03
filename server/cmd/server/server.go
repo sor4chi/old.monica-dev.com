@@ -64,9 +64,12 @@ func main() {
 		log.Fatal(ERROR_CONNECT_DB_CLIENT, err)
 	}
 
-	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
+	c := graph.Config{Resolvers: &graph.Resolver{
 		Q: client,
-	}}))
+	}}
+	c.Directives.Auth = middleware.AuthDirective
+
+	srv := handler.NewDefaultServer(graph.NewExecutableSchema(c))
 
 	if IS_DEV {
 		mux.Handle(PATH_PLAYGROUND, playground.Handler("GraphQL playground", PATH_GRAPHQL))

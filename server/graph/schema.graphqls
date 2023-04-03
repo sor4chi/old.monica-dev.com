@@ -2,6 +2,8 @@
 #
 # https://gqlgen.com/getting-started/
 
+directive @auth on FIELD_DEFINITION
+
 type Blog {
   id: ID!
   title: String!
@@ -36,6 +38,7 @@ input BlogListInput {
 type Query {
   blogs(input: BlogListInput!): BlogList!
   blog(slug: String!): Blog!
+  blogById(id: ID!): Blog! @auth
 }
 
 input BlogInput {

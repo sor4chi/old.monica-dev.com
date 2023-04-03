@@ -46,6 +46,9 @@ SELECT COUNT(*) FROM blogs_tags WHERE tag_id IN (
 -- name: GetBlogBySlug :one
 SELECT * FROM blogs WHERE slug = $1;
 
+-- name: GetBlogById :one
+SELECT * FROM blogs WHERE id = $1;
+
 -- name: GetPublishedBlogBySlug :one
 SELECT * FROM blogs WHERE slug = $1 AND published_at IS NOT NULL;
 

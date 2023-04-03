@@ -2,9 +2,11 @@ package middleware
 
 import (
 	"context"
+	"errors"
 
 	"net/http"
 
+	"github.com/99designs/gqlgen/graphql"
 	"github.com/sor4chi/portfolio-blog/server/service"
 )
 
@@ -47,4 +49,12 @@ func AuthMiddleware(next http.Handler) http.Handler {
 func AuthCtxValue(ctx context.Context) (*service.JwtCustom, bool) {
 	jwtCustom, ok := ctx.Value(AUTH_STRING).(*service.JwtCustom)
 	return jwtCustom, ok
+}
+
+func AuthDirective(ctx context.Context, obj interface{}, next graphql.Resolver) (interface{}, error) {
+	_, ok := AuthCtxValue(ctx)
+	if !ok {
+		return nil, errors.New("Unauthorized")
+	}
+	return next(ctx)
 }

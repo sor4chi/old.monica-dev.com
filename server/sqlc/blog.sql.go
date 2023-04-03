@@ -81,6 +81,26 @@ func (q *Queries) DeleteAllTags(ctx context.Context) error {
 	return err
 }
 
+const getBlogById = `-- name: GetBlogById :one
+SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs WHERE id = $1
+`
+
+func (q *Queries) GetBlogById(ctx context.Context, id int32) (Blog, error) {
+	row := q.db.QueryRowContext(ctx, getBlogById, id)
+	var i Blog
+	err := row.Scan(
+		&i.ID,
+		&i.Title,
+		&i.Description,
+		&i.Slug,
+		&i.Content,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.PublishedAt,
+	)
+	return i, err
+}
+
 const getBlogBySlug = `-- name: GetBlogBySlug :one
 
 SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs WHERE slug = $1

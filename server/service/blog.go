@@ -164,6 +164,18 @@ func (s *BlogService) GetBlogBySlug(slug string) (*entity.Blog, error) {
 	return parseBlogsRowToEntity(row), nil
 }
 
+func (s *BlogService) GetBlogById(id int32) (*entity.Blog, error) {
+
+	ctx := context.Background()
+
+	row, err := s.q.GetBlogById(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return parseBlogsRowToEntity(row), nil
+}
+
 func (s *BlogService) CreateBlog(title, slug, description, content string, published bool) (*entity.Blog, error) {
 	ctx := context.Background()
 	p := sqlc.CreateBlogParams{

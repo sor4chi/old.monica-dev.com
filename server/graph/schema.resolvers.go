@@ -122,6 +122,22 @@ func (r *queryResolver) Blog(ctx context.Context, slug string) (*model.Blog, err
 	return model.NewBlogFromEntity(b), nil
 }
 
+// BlogByID is the resolver for the blogById field.
+func (r *queryResolver) BlogByID(ctx context.Context, id string) (*model.Blog, error) {
+	_, isAuthenticated := middleware.AuthCtxValue(ctx)
+	bs := service.NewBlogService(r.Q, isAuthenticated)
+	intId, err := strconv.ParseInt(id, 10, 32)
+	if err != nil {
+		return nil, err
+	}
+	b, err := bs.GetBlogById(int32(intId))
+	if err != nil {
+		return nil, err
+	}
+
+	return model.NewBlogFromEntity(b), nil
+}
+
 // Blog returns BlogResolver implementation.
 func (r *Resolver) Blog() BlogResolver { return &blogResolver{r} }
 
