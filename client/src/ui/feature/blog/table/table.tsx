@@ -9,6 +9,7 @@ import * as styles from './table.css';
 
 import { SITE_CONFIG } from '@/constant/site';
 import { client } from '@/lib/graphql';
+import { parseTwemoji } from '@/lib/twemoji';
 import { Pagination } from '@/ui/foundation/pagination';
 import { formatYYYYMMDD } from '@/util/date';
 
@@ -61,7 +62,12 @@ export const BlogTable = ({ blogs }: Props) => {
               <td className={styles.td}>{blog.title}</td>
               <td className={styles.td}>{formatYYYYMMDD(blog.createdAt)}</td>
               <td className={styles.td}>{formatYYYYMMDD(blog.updatedAt)}</td>
-              <td className={styles.td}>{blog.publishedAt ? formatYYYYMMDD(blog.publishedAt) : '-'}</td>
+              <td
+                className={styles.td}
+                dangerouslySetInnerHTML={{
+                  __html: parseTwemoji(blog.publishedAt ? `✅ ${formatYYYYMMDD(blog.publishedAt)}` : '❌'),
+                }}
+              ></td>
               <td className={styles.td}>
                 <TagList tags={blog.tags} hrefGenerator={(tag) => `/tag/${tag}`} />
               </td>
