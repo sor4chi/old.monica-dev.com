@@ -28,7 +28,7 @@ export const input = style({
   ':focus': {
     borderColor: vars.color.accent.primary,
     outline: 'none',
-    boxShadow: `0 0 0 0.2rem ${vars.color.accent.primary}`,
+    boxShadow: `0 0 0 0.1rem ${vars.color.accent.primary}`,
   },
 });
 
