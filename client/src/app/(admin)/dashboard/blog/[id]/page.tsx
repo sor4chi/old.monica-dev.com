@@ -24,7 +24,7 @@ const BlogDetailPageQuery = gql`
 `;
 
 type BlogDetailPageQueryResponse = {
-  blog: BlogFormFragmentResponse;
+  blogById: BlogFormFragmentResponse;
 };
 
 type BlogDetailPageQueryVariables = {
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     robots: 'noindex',
-    title: `(編集中) ${res.blog.title}`,
+    title: `(編集中) ${res.blogById.title}`,
   };
 }
 
@@ -50,7 +50,7 @@ async function getData(id: string) {
         id,
       },
     );
-    return { blog: res.blog };
+    return { blog: res.blogById };
   } catch (e) {
     if (serverEnv.NODE_ENV === 'development') {
       console.log(e);

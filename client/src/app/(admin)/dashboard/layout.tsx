@@ -3,8 +3,6 @@ import type { Metadata } from 'next';
 import { DashboardHeaderProvider } from '@/hooks';
 import { DashboardLayout } from '@/ui/app/layout/dashboard';
 
-import '@/style/globals.css';
-
 export const metadata = {
   robots: 'noindex',
   title: {

@@ -9,10 +9,11 @@ export const clientSSR = new GraphQLClient(clientEnv.NEXT_PUBLIC_GQL_ENDPOINT, {
   fetch: (url: string, options: RequestInit) => {
     const cookieStore = cookies();
     const token = cookieStore.get('token');
+
     if (token) {
       options.headers = {
         ...options.headers,
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.value}`,
       };
     }
 

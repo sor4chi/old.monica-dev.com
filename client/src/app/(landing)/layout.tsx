@@ -1,4 +1,3 @@
-import '@/style/globals.css';
 import type { WebSite, WithContext } from 'schema-dts';
 
 import { SITE_CONFIG } from '@/constant/site';
