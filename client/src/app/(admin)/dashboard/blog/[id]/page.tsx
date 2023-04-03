@@ -37,7 +37,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 
   return {
-    robots: 'noindex',
     title: `(編集中) ${res.blogById.title}`,
   };
 }

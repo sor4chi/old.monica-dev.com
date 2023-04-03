@@ -30,6 +30,11 @@ export const input = style({
     outline: 'none',
     boxShadow: `0 0 0 0.1rem ${vars.color.accent.primary}`,
   },
+
+  '::placeholder': {
+    color: vars.color.text.tertiary,
+    opacity: 0.5,
+  },
 });
 
 export const error = style({

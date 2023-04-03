@@ -6,7 +6,7 @@ export { gql } from 'graphql-request';
 
 export const client = new GraphQLClient(clientEnv.NEXT_PUBLIC_GQL_ENDPOINT, {
   fetch: (url: string, options: RequestInit) => {
-    const token = localStorage.getItem('token');
+    const token = document.cookie.split('token=')[1];
     if (token) {
       options.headers = {
         ...options.headers,
