@@ -1,7 +1,7 @@
 import type { Preview } from '@storybook/react';
 import { GlobalStyle } from '../src/util/globalStyle';
 import React from 'react';
-import { StoryFn, configure } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 
 const preview: Preview = {
   parameters: {

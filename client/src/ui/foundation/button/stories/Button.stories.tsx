@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { MdThumbUp } from 'react-icons/md';
 
 import { Button } from '..';
 
-// More on how to set up stories at: https://storybook.js.org/docs/7.0/react/writing-stories/introduction
+import { Table } from './table';
+
 const meta = {
   argTypes: {
     icon: {
@@ -28,40 +30,78 @@ const meta = {
   title: 'Foundation/Button',
 } satisfies Meta<typeof Button>;
 
-// More on writing stories with args: https://storybook.js.org/docs/7.0/react/writing-stories/args
-export const Primary: Story = {
-  args: {
-    variant: 'primary',
-  },
-  render: (args) => <Button {...args}> Button </Button>,
-};
 type Story = StoryObj<typeof Button>;
 
-export const Secondary = {
+export const Default = {
   args: {
-    variant: 'secondary',
+    children: 'Default',
   },
-  render: (args) => <Button {...args}> Button </Button>,
 } satisfies Story;
 
-export const Sizes = {
-  args: {
-    size: 'sm',
+export const Variant = {
+  render: (args) => {
+    const header = ['Variant', 'Button'];
+    const rows = [
+      [
+        'Primary',
+        <Button {...args} variant="primary" key="primary">
+          Submit
+        </Button>,
+      ],
+      [
+        'Secondary',
+        <Button {...args} variant="secondary" key="secondary">
+          Submit
+        </Button>,
+      ],
+    ];
+
+    return <Table header={header} rows={rows} />;
   },
-  render: (args) => (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1rem',
-      }}
-    >
-      <Button {...args}> Small </Button>
-      <Button {...args} size="md">
-        Medium
-      </Button>
-    </div>
-  ),
+} satisfies Story;
+
+export const Size = {
+  render: (args) => {
+    const header = ['Size', 'Button'];
+    const rows = [
+      [
+        'Small',
+        <Button {...args} size="sm" key="sm">
+          Submit
+        </Button>,
+      ],
+      [
+        'Medium',
+        <Button {...args} size="md" key="md">
+          Submit
+        </Button>,
+      ],
+    ];
+
+    return <Table header={header} rows={rows} />;
+  },
+} satisfies Story;
+
+export const Icon = {
+  render: (args) => {
+    const header = ['Icon', 'Button'];
+    const rows = [
+      [
+        'With SVG',
+        <Button {...args} icon={<MdThumbUp size={20} />} key="icon">
+          Submit
+        </Button>,
+      ],
+      [
+        'With Emoji',
+        <Button {...args} icon="👍" key="emoji">
+          Submit
+        </Button>,
+      ],
+    ];
+
+    return <Table header={header} rows={rows} />;
+  },
 } satisfies Story;
 
 export default meta;

@@ -12,8 +12,8 @@ type Props = ComponentProps<'button'> & {
 export const Button = ({ children, icon, size = 'md', variant = 'primary', ...props }: Props) => {
   return (
     <button className={clsx(styles.button, styles.variant[variant], styles.size[size])} {...props}>
-      {icon}
-      {children}
+      {icon && <span className={styles.icon}>{icon}</span>}
+      <span>{children}</span>
     </button>
   );
 };

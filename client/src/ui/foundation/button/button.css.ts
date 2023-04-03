@@ -52,3 +52,9 @@ export const size = styleVariants({
     padding: '0.5rem 1rem',
   },
 });
+
+export const icon = style({
+  alignItems: 'center',
+  display: 'inline-flex',
+  justifyContent: 'center',
+});
