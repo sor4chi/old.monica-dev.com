@@ -54,6 +54,7 @@ export const expandedImage = style({
   width: '100%',
   maxWidth: '64rem',
   height: 'auto',
+  objectFit: 'contain',
   maxHeight: 'calc(100dvh - 2rem)',
   textAlign: 'center',
 });
