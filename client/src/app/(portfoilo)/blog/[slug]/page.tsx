@@ -49,22 +49,25 @@ type BlogDetailPageQueryVariables = {
 const BlogSlugsQuery = gql`
   query BlogSlugsQuery {
     blogs(input: { limit: 1000, offset: 0 }) {
-      slug
+      data {
+        slug
+      }
     }
   }
 `;
 
 type BlogSlugsQueryResponse = {
   blogs: {
-    slug: string;
-  }[];
+    data: {
+      slug: string;
+    }[];
+  };
 };
 
 export async function generateStaticParams() {
   try {
-    const data = await clientSSR.request<BlogSlugsQueryResponse>(BlogSlugsQuery);
-    console.log(data.blogs.map((blog) => blog.slug));
-    return data.blogs.map((blog) => blog.slug);
+    const res = await clientSSR.request<BlogSlugsQueryResponse>(BlogSlugsQuery);
+    return res.blogs.data;
   } catch (e) {
     return [];
   }

@@ -7,13 +7,18 @@ export { gql } from 'graphql-request';
 
 export const clientSSR = new GraphQLClient(clientEnv.NEXT_PUBLIC_GQL_ENDPOINT, {
   fetch: (url: string, options: RequestInit) => {
-    const cookieStore = cookies();
-    const token = cookieStore.get('token');
+    let token = '';
+    try {
+      const cookieStore = cookies();
+      token = cookieStore.get('token')?.value || '';
+    } catch (e) {
+      console.log(e);
+    }
 
     if (token) {
       options.headers = {
         ...options.headers,
-        Authorization: `Bearer ${token.value}`,
+        Authorization: `Bearer ${token}`,
       };
     }
 

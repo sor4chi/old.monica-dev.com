@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -42,6 +43,7 @@ export const LoginForm = () => {
   } = useForm<Schema>({
     resolver: zodResolver(schema),
   });
+  const router = useRouter();
 
   const onSubmit = async (data: Schema) => {
     try {
@@ -51,6 +53,7 @@ export const LoginForm = () => {
 
       setRequestError(null);
       document.cookie = `token=${res.login.token}; path=/`;
+      router.push('/dashboard');
     } catch (e: any) {
       setRequestError(e.response.errors[0].message);
     }
@@ -59,6 +62,7 @@ export const LoginForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
       <TextInput
+        type="password"
         label="Password"
         id="password"
         placeholder="パスワード"

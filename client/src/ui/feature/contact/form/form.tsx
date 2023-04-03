@@ -16,9 +16,9 @@ import { Textarea } from '@/ui/foundation/textarea';
 import { customFetch } from '@/util/fetcher';
 
 const scheme = z.object({
-  email: z.string().email({ message: 'Please enter a valid email address, 正しいメールアドレスを入力してください' }),
-  message: z.string().min(1, { message: 'Please enter a message, メッセージを入力してください' }),
-  name: z.string().min(1, { message: 'Please enter your name, 名前を入力してください' }),
+  email: z.string().email({ message: 'Please enter a valid email address' }),
+  message: z.string().min(1, { message: 'Please enter a message' }),
+  name: z.string().min(1, { message: 'Please enter your name' }),
 });
 
 type Scheme = z.infer<typeof scheme>;
