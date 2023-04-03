@@ -6,7 +6,7 @@ export const form = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  gap: '1rem',
+  gap: '2rem',
   width: '100%',
 });
 

@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import * as styles from './login.css';
@@ -17,6 +18,9 @@ export default async function Login() {
     <div className={styles.card}>
       <h1 className={styles.title}>Monica Portfolio</h1>
       <LoginForm />
+      <Link href="/" passHref className={styles.backLink}>
+        Back to top
+      </Link>
     </div>
   );
 }

@@ -1,14 +1,21 @@
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import { Logo } from '../logo';
 
 import * as styles from './menu.css';
 
 import { MENU_ITEM_ENTRY } from '@/constant/menu';
+import { Button } from '@/ui/foundation/button';
 
 export const Menu = () => {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const logout = () => {
+    document.cookie = document.cookie.replace(/token=[^;]+/, 'token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;');
+    router.push('/login');
+  };
 
   return (
     <>
@@ -24,6 +31,11 @@ export const Menu = () => {
               <span>{label}</span>
             </Link>
           ))}
+        </div>
+        <div className={styles.logout}>
+          <Button variant="secondary" onClick={logout}>
+            Logout
+          </Button>
         </div>
       </aside>
     </>

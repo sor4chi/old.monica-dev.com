@@ -20,7 +20,6 @@ globalStyle(`${content} h3`, {
   marginBottom: '1rem',
   padding: '0.5rem 0',
   color: vars.color.text.primary,
-  borderBottom: `1px solid ${vars.color.accent.primary}`,
 });
 
 globalStyle(`${content} h4`, {

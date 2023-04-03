@@ -68,3 +68,10 @@ export const menuItem = styleVariants({
     },
   ],
 });
+
+export const logout = style({
+  position: 'absolute',
+  bottom: '2rem',
+  left: '50%',
+  transform: 'translateX(-50%)',
+});

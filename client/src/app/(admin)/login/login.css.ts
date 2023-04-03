@@ -23,8 +23,24 @@ export const card = style({
   boxSizing: 'border-box',
   display: 'flex',
   flexDirection: 'column',
+  alignItems: 'center',
   gap: '1rem',
   width: '100%',
   maxWidth: '24rem',
   overflow: 'hidden',
+});
+
+export const backLink = style({
+  color: vars.color.text.tertiary,
+  textDecoration: 'none',
+  fontSize: '1rem',
+  width: 'fit-content',
+
+  '@media': {
+    '(hover: hover)': {
+      ':hover': {
+        textDecoration: 'underline',
+      },
+    },
+  },
 });
