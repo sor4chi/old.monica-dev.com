@@ -5,6 +5,7 @@ import { vars } from '@/style/theme.css';
 import { getOgUrl } from '@/util/og';
 
 import '@/style/globals.css';
+import { GlobalStyle } from '@/util/globalStyle';
 
 export const metadata = {
   description: SITE_CONFIG.DESCRIPTION,
@@ -72,7 +73,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <script src="/theme.js" />
       </head>
       <html lang="ja">
-        <body>{children}</body>
+        <GlobalStyle>
+          <body>{children}</body>
+        </GlobalStyle>
       </html>
     </>
   );

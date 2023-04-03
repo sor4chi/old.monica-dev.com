@@ -12,7 +12,9 @@
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "openai:generate-fixture": "dotenv -e .env -- node ./scripts/generate-fixture.js",
     "start": "next start",
-    "start:dev": "dotenv -e .env.development -- next start"
+    "start:dev": "dotenv -e .env.development -- next start",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@hookform/resolvers": "^2.9.11",
@@ -50,12 +52,20 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@storybook/addon-essentials": "^7.0.2",
+    "@storybook/addon-interactions": "^7.0.2",
+    "@storybook/addon-links": "^7.0.2",
+    "@storybook/blocks": "^7.0.2",
+    "@storybook/nextjs": "^7.0.2",
+    "@storybook/react": "^7.0.2",
+    "@storybook/testing-library": "^0.0.14-next.2",
     "@types/mdast": "^3.0.10",
     "@types/node": "18.14.6",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.54.1",
     "@typescript-eslint/parser": "^5.54.1",
+    "@vanilla-extract/webpack-plugin": "^2.2.0",
     "dotenv": "^16.0.3",
     "dotenv-cli": "^7.1.0",
     "dotenv-expand": "^10.0.0",
@@ -65,12 +75,14 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-redos": "4.5.0-beta.2",
     "eslint-plugin-sort": "^2.4.0",
+    "eslint-plugin-storybook": "^0.6.11",
     "eslint-plugin-unused-imports": "^2.0.0",
     "graphql": "^16.6.0",
     "prettier": "^2.8.4",
     "prettier-plugin-packagejson": "^2.4.3",
     "prettier-plugin-sort-json": "^1.0.0",
     "schema-dts": "^1.1.2",
+    "storybook": "^7.0.2",
     "ts-node": "^10.9.1"
   },
   "pnpm": {
