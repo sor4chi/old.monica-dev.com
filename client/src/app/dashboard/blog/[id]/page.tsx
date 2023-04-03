@@ -2,35 +2,55 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { serverEnv } from '@/env/server';
-import { getBlogBySlug, getPublishedBlogBySlug } from '@/repository/blog';
-import { getAllTags } from '@/repository/tags';
+import { clientSSR, gql } from '@/lib/graphql-ssr';
 import { BlogForm } from '@/ui/feature/blog/form';
+import { BlogFormFragment } from '@/ui/feature/blog/form/body/query';
+import type { BlogFormFragmentResponse } from '@/ui/feature/blog/form/body/query';
 
 interface Props {
   params: {
-    slug: string;
+    id: string;
   };
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const res = await getPublishedBlogBySlug(params.slug);
+const BlogDetailPageQuery = gql`
+  ${BlogFormFragment}
 
-  if (!res) {
-    return {
-      robots: 'noindex',
-    };
+  query BlogDetailQuery($id: ID!) {
+    blogById(id: $id) {
+      ...BlogFormFragment
+    }
   }
+`;
+
+type BlogDetailPageQueryResponse = {
+  blog: BlogFormFragmentResponse;
+};
+
+type BlogDetailPageQueryVariables = {
+  id: string;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const res = await clientSSR.request<BlogDetailPageQueryResponse, BlogDetailPageQueryVariables>(BlogDetailPageQuery, {
+    id: params.id,
+  });
 
   return {
     robots: 'noindex',
-    title: `(編集中) ${res.title}`,
+    title: `(編集中) ${res.blog.title}`,
   };
 }
 
-async function getData(slug: string) {
+async function getData(id: string) {
   try {
-    const [blog, tags] = await Promise.all([getBlogBySlug(slug), getAllTags()]);
-    return { blog, tagOptions: tags };
+    const res = await clientSSR.request<BlogDetailPageQueryResponse, BlogDetailPageQueryVariables>(
+      BlogDetailPageQuery,
+      {
+        id,
+      },
+    );
+    return { blog: res.blog };
   } catch (e) {
     if (serverEnv.NODE_ENV === 'development') {
       console.log(e);
@@ -43,7 +63,7 @@ async function getData(slug: string) {
 }
 
 export default async function BlogDetail({ params }: Props) {
-  const { blog, tagOptions } = await getData(params.slug);
+  const { blog } = await getData(params.id);
 
   if (!blog) {
     notFound();
@@ -51,7 +71,7 @@ export default async function BlogDetail({ params }: Props) {
 
   return (
     <>
-      <BlogForm blog={blog} tagOptions={tagOptions} />
+      <BlogForm blog={blog} tagOptions={[]} />
     </>
   );
 }

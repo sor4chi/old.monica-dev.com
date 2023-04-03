@@ -1,258 +1,31 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { clsx } from 'clsx';
-import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { MdAdd, MdClose } from 'react-icons/md';
-import { z } from 'zod';
+import { useState } from 'react';
+
+import { BLOG_FORM_ID, useBlogForm } from '../use-blog-form';
 
 import * as styles from './body.css';
 
-import { useDashboardHeader } from '@/hooks';
-import { gql } from '@/lib/graphql';
 import { parseMarkdownToHTML } from '@/lib/markdown';
 import { Article } from '@/ui/foundation/article';
-import { Button } from '@/ui/foundation/button';
 import { TextInput } from '@/ui/foundation/textInput';
 import { Textarea } from '@/ui/foundation/textarea';
 import { Toggle } from '@/ui/foundation/toggle';
 
-const scheme = z.object({
-  content: z.string().min(1, { message: '本文を入力してください' }),
-  description: z.string().min(1, { message: '説明を入力してください' }),
-  slug: z.string().regex(/^[a-z0-9-]+$/, { message: 'スラッグは半角英数字とハイフンのみで入力してください' }),
-  tags: z.array(
-    z.object({
-      name: z.string().min(1, { message: 'タグを入力してください' }),
-      slug: z.string().regex(/^[a-z0-9-]+$/, { message: 'スラッグは半角英数字とハイフンのみで入力してください' }),
-    }),
-  ),
-  title: z.string().min(1, { message: 'タイトルを入力してください' }),
-});
-
-type Scheme = z.infer<typeof scheme>;
-
-const BLOG_FORM_ID = 'blogForm';
-
-const postBlog = async (slug: string, params: Scheme & { published: boolean }) => {
-  return fetch(`/api/blog/${slug}`, {
-    body: JSON.stringify(params),
-    method: 'POST',
-  });
-};
-
-const updateBlog = async (slug: string, params: Scheme & { published: boolean }) => {
-  return fetch(`/api/blog/${slug}`, {
-    body: JSON.stringify(params),
-    method: 'PUT',
-  });
-};
-
-export const TagFormFragment = gql`
-  fragment TagFormFragment on Tag {
-    id
-    name
-    slug
-  }
-`;
-
-export const BlogFormFragment = gql`
-  fragment BlogFormFragment on Blog {
-    id
-    slug
-    title
-    description
-    content
-    publishedAt
-    tags {
-      ...TagFormFragment
-    }
-  }
-`;
-
-export type TagFormFragmentResponse = {
-  id: number;
-  name: string;
-  slug: string;
-};
-
-export type BlogFormFragmentResponse = {
-  id: number;
-  slug: string;
-  title: string;
-  description: string;
-  content: string;
-  publishedAt: string | null;
-  tags: TagFormFragmentResponse[];
-};
-
-interface Props {
-  blog: BlogFormFragmentResponse;
-  tagOptions: {
-    slug: string;
-    name: string;
-  }[];
-}
-
-const removeBlogFromLocalStorageById = (id: number) => {
-  const blogForm = localStorage.getItem('blogForm');
-  if (blogForm) {
-    const parsed = JSON.parse(blogForm);
-    const filtered = parsed.filter((blog: { id: number }) => blog.id !== id);
-    localStorage.setItem('blogForm', JSON.stringify(filtered));
-  }
-};
-
-const updateBlogFromLocalStorageById = (id: number, data: Scheme) => {
-  const blogForm = localStorage.getItem('blogForm');
-  if (blogForm) {
-    const parsed = JSON.parse(blogForm);
-    const filtered = parsed.filter((blog: { id: number }) => blog.id !== id);
-    const updated = [...filtered, { id, ...data }];
-    localStorage.setItem('blogForm', JSON.stringify(updated));
-  } else {
-    localStorage.setItem('blogForm', JSON.stringify([{ id, ...data }]));
-  }
-};
-
-const getBlogFromLocalStorageById = (id: number) => {
-  const blogForm = localStorage.getItem('blogForm');
-  if (blogForm) {
-    const parsed = JSON.parse(blogForm);
-    const filtered = parsed.filter((blog: { id: number }) => blog.id === id);
-    return filtered[0];
-  }
-};
-
-export const BlogForm = ({ blog, tagOptions }: Props) => {
-  const router = useRouter();
-  const {
-    formState: { errors },
-    getValues,
-    register,
-    setValue,
-    watch,
-  } = useForm<Scheme>({
-    resolver: zodResolver(scheme),
-  });
-  const formData = watch();
+export const BlogFormBody = () => {
   const [contentEditorOptions, setContentEditorOptions] = useState({
     fullscreen: false,
     preview: false,
   });
-  const [showTagInput, setShowTagInput] = useState(false);
-  const [searchTagInput, setSearchTagInput] = useState('');
-  const [isPublished, setIsPublished] = useState(blog.publishedAt !== null);
-  const [addTagInput, setAddTagInput] = useState({
-    name: '',
-    slug: '',
-  });
-  const { setDashboardHeaderContent } = useDashboardHeader();
 
-  const onSubmitButtonClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    const data = getValues();
-    const newBlog = await updateBlog(blog.slug, {
-      ...data,
-      published: isPublished,
-    });
-    if (newBlog) {
-      setValue('tags', newBlog.tags);
-      router.push(`/dashboard/blog/${newBlog.slug}`);
-      removeBlogFromLocalStorageById(blog.id);
-    }
-  };
-
-  const handleChange = () => {
-    updateBlogFromLocalStorageById(blog.id, formData);
-  };
-
-  const handleAddTag = () => {
-    const tags = getValues('tags');
-    const newTag = {
-      name: addTagInput.name,
-      slug: addTagInput.slug,
-    };
-    const newTags = [...tags, newTag];
-    setValue('tags', newTags);
-    updateBlogFromLocalStorageById(blog.id, { ...formData, tags: newTags });
-    setAddTagInput({
-      name: '',
-      slug: '',
-    });
-    setShowTagInput(false);
-  };
-
-  const handleSelectTag = (tag: { name: string; slug: string }) => {
-    const newTags = [...getValues('tags'), tag];
-    setValue('tags', newTags);
-    updateBlogFromLocalStorageById(blog.id, { ...formData, tags: newTags });
-  };
-
-  const handleRemoveTag = (tag: { name: string; slug: string }) => {
-    const newTags = getValues('tags').filter((t: { name: string; slug: string }) => t.slug !== tag.slug);
-    setValue('tags', newTags);
-    updateBlogFromLocalStorageById(blog.id, { ...formData, tags: newTags });
-  };
-
-  useEffect(() => {
-    const data = getBlogFromLocalStorageById(blog.id);
-    if (data) {
-      setValue('title', data.title);
-      setValue('description', data.description);
-      setValue('content', data.content);
-      setValue('tags', data.tags);
-      setValue('slug', data.slug);
-    } else {
-      setValue('title', blog.title);
-      setValue('description', blog.description);
-      setValue('content', blog.content);
-      setValue('tags', blog.tags);
-      setValue('slug', blog.slug);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    setDashboardHeaderContent(
-      <>
-        <Toggle
-          label="公開する"
-          id="toggle-publish"
-          onChange={() => setIsPublished(!isPublished)}
-          checked={isPublished}
-        />
-        <Button type="submit" form={BLOG_FORM_ID} onClick={onSubmitButtonClick}>
-          Save
-        </Button>
-      </>,
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPublished]);
-
-  const filteredTags = useMemo(() => {
-    if (Object.values(searchTagInput).some((v) => v === '')) {
-      return [];
-    }
-    return tagOptions
-      .filter((tag) => tag.name.toLowerCase().includes(searchTagInput.toLowerCase()))
-      .filter((tag) => {
-        const tags = formData.tags || [];
-        return !tags.some((t) => t.slug === tag.slug);
-      })
-      .sort((a, b) => {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
-      });
-  }, [searchTagInput, tagOptions, formData.tags]);
+  const { form } = useBlogForm();
+  const {
+    formState: { errors },
+    getValues,
+    register,
+  } = form;
 
   return (
-    <form className={styles.form} onChange={handleChange} id={BLOG_FORM_ID}>
+    <form className={styles.form} id={BLOG_FORM_ID}>
       <section className={styles.metaArea}>
         <TextInput
           label="Title"
@@ -275,92 +48,6 @@ export const BlogForm = ({ blog, tagOptions }: Props) => {
           {...register('slug')}
           error={errors.slug?.message}
         />
-        <div className={styles.tagEditor}>
-          <div>
-            <div className={styles.contentHeader}>
-              <label className={styles.tagEditorLabel}>Tags</label>
-              <Toggle
-                id="toggle-show-tag-input"
-                label="タグを追加"
-                checked={showTagInput}
-                onChange={() => setShowTagInput(!showTagInput)}
-              />
-            </div>
-            <div>
-              <div className={styles.tagList}>
-                {(getValues('tags') || [])
-                  .sort((a, b) => {
-                    if (a.name < b.name) {
-                      return -1;
-                    }
-                    if (a.name > b.name) {
-                      return 1;
-                    }
-                    return 0;
-                  })
-                  .map((tag) => (
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      key={tag.slug}
-                      icon={<MdClose />}
-                      onClick={() => handleRemoveTag(tag)}
-                    >
-                      {tag.name}
-                    </Button>
-                  ))}
-              </div>
-            </div>
-          </div>
-          <div className={styles.tagSetting}>
-            {showTagInput ? (
-              <>
-                <div className={styles.tagInputs}>
-                  <TextInput
-                    label="Slug"
-                    id="slug"
-                    placeholder="スラッグ（半角英数字とハイフンのみ）"
-                    value={addTagInput.slug}
-                    onChange={(e) => setAddTagInput({ ...addTagInput, slug: e.target.value })}
-                  />
-                  <TextInput
-                    label="Name"
-                    id="name"
-                    placeholder="名前"
-                    value={addTagInput.name}
-                    onChange={(e) => setAddTagInput({ ...addTagInput, name: e.target.value })}
-                  />
-                  <Button type="button" onClick={handleAddTag}>
-                    追加
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <>
-                <TextInput
-                  label="Search Tag"
-                  id="search-tag"
-                  placeholder="タグを検索・追加"
-                  value={searchTagInput}
-                  onChange={(e) => setSearchTagInput(e.target.value)}
-                />
-                <div className={styles.tagList}>
-                  {filteredTags.map((tag) => (
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      key={tag.slug}
-                      icon={<MdAdd />}
-                      onClick={() => handleSelectTag(tag)}
-                    >
-                      {tag.name}
-                    </Button>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-        </div>
       </section>
       <section className={clsx(styles.contentEditor, contentEditorOptions.fullscreen && styles.contentFullScreen)}>
         <div className={styles.contentHeader}>
