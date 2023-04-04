@@ -7,7 +7,7 @@ import type { BlogListFragmentResponse, BlogListQueryResponse, BlogListQueryVari
 import { BlogListQuery } from './query';
 
 import { SITE_CONFIG } from '@/constant/site';
-import { client } from '@/lib/graphql';
+import { clientInBrowser } from '@/lib/graphql';
 import { parseTwemoji } from '@/lib/twemoji';
 import { Pagination } from '@/ui/foundation/pagination';
 
@@ -23,7 +23,7 @@ export const BlogList = ({ blogs, filterTags }: Props) => {
   const maxPage = Math.ceil(blogs.total / SITE_CONFIG.BLOG_LENGTH_PER_PAGE);
 
   const loadBefore = async () => {
-    const res = await client.request<BlogListQueryResponse, BlogListQueryVariables>(BlogListQuery, {
+    const res = await clientInBrowser.request<BlogListQueryResponse, BlogListQueryVariables>(BlogListQuery, {
       limit: SITE_CONFIG.BLOG_LENGTH_PER_PAGE,
       offset: page * SITE_CONFIG.BLOG_LENGTH_PER_PAGE - SITE_CONFIG.BLOG_LENGTH_PER_PAGE * 2,
       tags: filterTags,
@@ -33,7 +33,7 @@ export const BlogList = ({ blogs, filterTags }: Props) => {
   };
 
   const loadAfter = async () => {
-    const data = await client.request<BlogListQueryResponse, BlogListQueryVariables>(BlogListQuery, {
+    const data = await clientInBrowser.request<BlogListQueryResponse, BlogListQueryVariables>(BlogListQuery, {
       limit: SITE_CONFIG.BLOG_LENGTH_PER_PAGE,
       offset: page * SITE_CONFIG.BLOG_LENGTH_PER_PAGE,
       tags: filterTags,
@@ -60,6 +60,7 @@ export const BlogList = ({ blogs, filterTags }: Props) => {
 
   return (
     <>
+      {blogs.total}
       <ul className={styles.container}>
         {blogData.map((blog) => (
           // add timestamp to activate rendering animation

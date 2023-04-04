@@ -2,10 +2,10 @@ import type { Metadata } from 'next';
 
 import { SITE_CONFIG } from '@/constant/site';
 import { vars } from '@/style/theme.css';
+import { GlobalStyle } from '@/util/globalStyle';
 import { getOgUrl } from '@/util/og';
 
 import '@/style/globals.css';
-import { GlobalStyle } from '@/util/globalStyle';
 
 export const metadata = {
   description: SITE_CONFIG.DESCRIPTION,

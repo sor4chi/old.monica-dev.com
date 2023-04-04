@@ -30,5 +30,16 @@ services:
     working_dir: /app
     command: go run ./cmd/server
 
+  node:
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    command: sh -c "pnpm build && pnpm start"
+
 volumes:
   postgres_data:

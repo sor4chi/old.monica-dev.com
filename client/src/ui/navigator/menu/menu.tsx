@@ -6,15 +6,25 @@ import { Logo } from '../logo';
 import * as styles from './menu.css';
 
 import { MENU_ITEM_ENTRY } from '@/constant/menu';
+import { clientEnv } from '@/env/client';
 import { Button } from '@/ui/foundation/button';
 
 export const Menu = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const logout = () => {
-    alert('logout');
-    router.push('/login');
+  const logout = async () => {
+    const res = await fetch(clientEnv.NEXT_PUBLIC_GQL_ENDPOINT.replace('/query', '/logout'), {
+      credentials: 'include',
+      method: 'POST',
+      mode: 'no-cors',
+    });
+
+    if (res.ok) {
+      router.push('/login');
+    } else {
+      console.error('logout failed');
+    }
   };
 
   return (

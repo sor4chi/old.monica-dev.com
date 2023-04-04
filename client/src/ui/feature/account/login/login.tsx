@@ -6,6 +6,7 @@ import { z } from 'zod';
 
 import * as styles from './login.css';
 
+import { clientEnv } from '@/env/client';
 import { Button } from '@/ui/foundation/button';
 import { TextInput } from '@/ui/foundation/textInput';
 
@@ -27,7 +28,7 @@ export const LoginForm = () => {
   const router = useRouter();
 
   const onSubmit = async (data: Schema) => {
-    const res = await fetch('/login', {
+    const res = await fetch(clientEnv.NEXT_PUBLIC_GQL_ENDPOINT.replace('/query', '/login'), {
       body: JSON.stringify({
         password: data.password,
       }),
@@ -36,10 +37,10 @@ export const LoginForm = () => {
         'Content-Type': 'application/json',
       },
       method: 'POST',
-      mode: 'cors',
+      mode: 'no-cors',
     });
 
-    if (res.status === 200) {
+    if (res.ok) {
       setRequestError(null);
       router.push('/dashboard');
     } else {

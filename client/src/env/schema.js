@@ -15,6 +15,7 @@ const serverSchema = z.object({
  */
 const clientSchema = z.object({
   NEXT_PUBLIC_GQL_ENDPOINT: z.string().url(),
+  NEXT_PUBLIC_SERVER_GQL_ENDPOINT: z.string().url(),
   NEXT_PUBLIC_SITE_NAME: z.string(),
   NEXT_PUBLIC_SITE_URL: z.string().url(),
 });
@@ -25,6 +26,7 @@ const clientSchema = z.object({
  */
 const clientEnv = {
   NEXT_PUBLIC_GQL_ENDPOINT: process.env.NEXT_PUBLIC_GQL_ENDPOINT,
+  NEXT_PUBLIC_SERVER_GQL_ENDPOINT: process.env.NEXT_PUBLIC_SERVER_GQL_ENDPOINT,
   NEXT_PUBLIC_SITE_NAME: process.env.NEXT_PUBLIC_SITE_NAME,
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
 };
