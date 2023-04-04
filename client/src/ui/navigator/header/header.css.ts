@@ -78,3 +78,9 @@ export const navigationLink = style({
     },
   },
 });
+
+export const left = style({
+  alignItems: 'center',
+  display: 'flex',
+  gap: '1rem',
+});

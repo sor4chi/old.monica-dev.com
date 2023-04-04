@@ -1,10 +1,10 @@
 import Link from 'next/link';
 
 import { Logo } from '../logo';
+import { ThemeSwitch } from '../themeSwitch';
 
 import * as styles from './header.css';
-
-import { ThemeSwitch } from '@/ui/navigator/themeSwitch';
+import { Navigation } from './navigation';
 
 export const Header = () => {
   return (
@@ -13,26 +13,10 @@ export const Header = () => {
         <Link href="/" passHref aria-label="jump to top page">
           <Logo />
         </Link>
-        <nav>
-          <ul className={styles.navigationList}>
-            <li className={styles.navigationListItem}>
-              <Link href="/about" passHref className={styles.navigationLink}>
-                About
-              </Link>
-            </li>
-            <li className={styles.navigationListItem}>
-              <Link href="/blog" passHref className={styles.navigationLink}>
-                Blog
-              </Link>
-            </li>
-            <li className={styles.navigationListItem}>
-              <Link href="/contact" passHref className={styles.navigationLink}>
-                Contact
-              </Link>
-            </li>
-            <ThemeSwitch />
-          </ul>
-        </nav>
+        <div className={styles.left}>
+          <Navigation />
+          <ThemeSwitch />
+        </div>
       </div>
       <hr className={styles.divider} />
     </header>
