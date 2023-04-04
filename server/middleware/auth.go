@@ -10,51 +10,53 @@ import (
 	"github.com/sor4chi/portfolio-blog/server/service"
 )
 
-type authString string
+type AuthCtx struct {
+	Username *string
+	W        *http.ResponseWriter
+}
 
-var AUTH_STRING = authString("auth")
+type AuthCtxKey string
+
+var AUTH_CTX_KEY = AuthCtxKey("auth")
 
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		auth := r.Header.Get("Authorization")
-
-		if auth == "" {
+		sessionId := service.GetSessionID(r.Header)
+		if sessionId == "" {
+			ctx := context.WithValue(r.Context(), AUTH_CTX_KEY, &AuthCtx{
+				Username: nil,
+				W:        &w,
+			})
+			r = r.WithContext(ctx)
 			next.ServeHTTP(w, r)
 			return
 		}
+		username := service.Sessions[sessionId]
 
-		bearer := "bearer "
-		if len(auth) < len(bearer) {
+		if username == "" {
 			http.Error(w, "Invalid token", http.StatusForbidden)
 			return
 		}
 
-		token := auth[len(bearer):]
-
-		validate, err := service.JwtValidate(token)
-		if err != nil || !validate.Valid {
-			http.Error(w, "Invalid token", http.StatusForbidden)
-			return
-		}
-
-		customClaim, _ := validate.Claims.(*service.JwtCustom)
-
-		ctx := context.WithValue(r.Context(), AUTH_STRING, customClaim)
+		ctx := context.WithValue(r.Context(), AUTH_CTX_KEY, &AuthCtx{
+			Username: &username,
+			W:        &w,
+		})
 
 		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r)
 	})
 }
 
-func AuthCtxValue(ctx context.Context) (*service.JwtCustom, bool) {
-	jwtCustom, ok := ctx.Value(AUTH_STRING).(*service.JwtCustom)
-	return jwtCustom, ok
+func AuthCtxValue(ctx context.Context) (*AuthCtx, bool) {
+	authCtx, ok := ctx.Value(AUTH_CTX_KEY).(*AuthCtx)
+	return authCtx, ok
 }
 
 func AuthDirective(ctx context.Context, obj interface{}, next graphql.Resolver) (interface{}, error) {
-	_, ok := AuthCtxValue(ctx)
-	if !ok {
-		return nil, errors.New("Unauthorized")
+	authCtx, _ := AuthCtxValue(ctx)
+	if authCtx.Username == nil {
+		return nil, errors.New("unauthorized")
 	}
 	return next(ctx)
 }

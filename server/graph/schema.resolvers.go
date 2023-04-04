@@ -6,12 +6,14 @@ package graph
 
 import (
 	"context"
+	"net/http"
 	"strconv"
 
 	"github.com/sor4chi/portfolio-blog/server/entity"
 	"github.com/sor4chi/portfolio-blog/server/graph/model"
 	"github.com/sor4chi/portfolio-blog/server/middleware"
 	"github.com/sor4chi/portfolio-blog/server/service"
+	"github.com/sor4chi/portfolio-blog/server/util"
 )
 
 // Tags is the resolver for the tags field.
@@ -32,17 +34,34 @@ func (r *blogResolver) Tags(ctx context.Context, obj *model.Blog) ([]*model.Tag,
 
 // Login is the resolver for the login field.
 func (r *mutationResolver) Login(ctx context.Context, password string) (*model.LoginPayload, error) {
+	authCtx, _ := middleware.AuthCtxValue(ctx)
 	res, err := service.UserLogin(ctx, password)
+	if err != nil {
+		return &model.LoginPayload{
+			Success: false,
+			Message: err.Error(),
+		}, nil
+	}
+
+	cookie := http.Cookie{
+		Name:     "session_id",
+		Value:    res.SessionId,
+		HttpOnly: true,
+		Secure:   util.GetEnv("ENV", "development") == "production",
+	}
+
+	http.SetCookie(*authCtx.W, &cookie)
 
 	return &model.LoginPayload{
-		Token: res.Token,
-	}, err
+		Success: true,
+		Message: "Login success",
+	}, nil
 }
 
 // CreateBlog is the resolver for the createBlog field.
 func (r *mutationResolver) CreateBlog(ctx context.Context, input model.BlogInput) (*model.Blog, error) {
-	_, isAuthenticated := middleware.AuthCtxValue(ctx)
-	bs := service.NewBlogService(r.Q, isAuthenticated)
+	authCtx, _ := middleware.AuthCtxValue(ctx)
+	bs := service.NewBlogService(r.Q, authCtx.Username != nil)
 	ts := service.NewTagService(r.Q)
 
 	blog, err := bs.CreateBlog(
@@ -88,8 +107,8 @@ func (r *mutationResolver) DeleteBlog(ctx context.Context, id string) (*model.Bl
 
 // Blogs is the resolver for the blogs field.
 func (r *queryResolver) Blogs(ctx context.Context, input model.BlogListInput) (*model.BlogList, error) {
-	_, isAuthenticated := middleware.AuthCtxValue(ctx)
-	bs := service.NewBlogService(r.Q, isAuthenticated)
+	authCtx, _ := middleware.AuthCtxValue(ctx)
+	bs := service.NewBlogService(r.Q, authCtx.Username != nil)
 	var blogs []*entity.Blog
 	var total int
 	var err error
@@ -112,8 +131,8 @@ func (r *queryResolver) Blogs(ctx context.Context, input model.BlogListInput) (*
 
 // Blog is the resolver for the blog field.
 func (r *queryResolver) Blog(ctx context.Context, slug string) (*model.Blog, error) {
-	_, isAuthenticated := middleware.AuthCtxValue(ctx)
-	bs := service.NewBlogService(r.Q, isAuthenticated)
+	authCtx, _ := middleware.AuthCtxValue(ctx)
+	bs := service.NewBlogService(r.Q, authCtx.Username != nil)
 	b, err := bs.GetBlogBySlug(slug)
 	if err != nil {
 		return nil, err
@@ -124,8 +143,8 @@ func (r *queryResolver) Blog(ctx context.Context, slug string) (*model.Blog, err
 
 // BlogByID is the resolver for the blogById field.
 func (r *queryResolver) BlogByID(ctx context.Context, id string) (*model.Blog, error) {
-	_, isAuthenticated := middleware.AuthCtxValue(ctx)
-	bs := service.NewBlogService(r.Q, isAuthenticated)
+	authCtx, _ := middleware.AuthCtxValue(ctx)
+	bs := service.NewBlogService(r.Q, authCtx.Username != nil)
 	intId, err := strconv.ParseInt(id, 10, 32)
 	if err != nil {
 		return nil, err

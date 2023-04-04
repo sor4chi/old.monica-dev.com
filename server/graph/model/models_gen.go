@@ -35,7 +35,8 @@ type BlogListInput struct {
 }
 
 type LoginPayload struct {
-	Token string `json:"token"`
+	Success bool   `json:"success"`
+	Message string `json:"message"`
 }
 
 type Tag struct {

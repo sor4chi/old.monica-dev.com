@@ -56,7 +56,8 @@ input TagInput {
 }
 
 type LoginPayload {
-  token: String!
+  success: Boolean!
+  message: String!
 }
 
 type Mutation {

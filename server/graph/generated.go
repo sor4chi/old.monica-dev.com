@@ -65,7 +65,8 @@ type ComplexityRoot struct {
 	}
 
 	LoginPayload struct {
-		Token func(childComplexity int) int
+		Message func(childComplexity int) int
+		Success func(childComplexity int) int
 	}
 
 	Mutation struct {
@@ -197,12 +198,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.BlogList.Total(childComplexity), true
 
-	case "LoginPayload.token":
-		if e.complexity.LoginPayload.Token == nil {
+	case "LoginPayload.message":
+		if e.complexity.LoginPayload.Message == nil {
 			break
 		}
 
-		return e.complexity.LoginPayload.Token(childComplexity), true
+		return e.complexity.LoginPayload.Message(childComplexity), true
+
+	case "LoginPayload.success":
+		if e.complexity.LoginPayload.Success == nil {
+			break
+		}
+
+		return e.complexity.LoginPayload.Success(childComplexity), true
 
 	case "Mutation.createBlog":
 		if e.complexity.Mutation.CreateBlog == nil {
@@ -1093,8 +1101,8 @@ func (ec *executionContext) fieldContext_BlogList_total(ctx context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _LoginPayload_token(ctx context.Context, field graphql.CollectedField, obj *model.LoginPayload) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_LoginPayload_token(ctx, field)
+func (ec *executionContext) _LoginPayload_success(ctx context.Context, field graphql.CollectedField, obj *model.LoginPayload) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_LoginPayload_success(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -1107,7 +1115,51 @@ func (ec *executionContext) _LoginPayload_token(ctx context.Context, field graph
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Token, nil
+		return obj.Success, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_LoginPayload_success(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "LoginPayload",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _LoginPayload_message(ctx context.Context, field graphql.CollectedField, obj *model.LoginPayload) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_LoginPayload_message(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Message, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1124,7 +1176,7 @@ func (ec *executionContext) _LoginPayload_token(ctx context.Context, field graph
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_LoginPayload_token(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_LoginPayload_message(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "LoginPayload",
 		Field:      field,
@@ -1176,8 +1228,10 @@ func (ec *executionContext) fieldContext_Mutation_login(ctx context.Context, fie
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "token":
-				return ec.fieldContext_LoginPayload_token(ctx, field)
+			case "success":
+				return ec.fieldContext_LoginPayload_success(ctx, field)
+			case "message":
+				return ec.fieldContext_LoginPayload_message(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type LoginPayload", field.Name)
 		},
@@ -4069,9 +4123,16 @@ func (ec *executionContext) _LoginPayload(ctx context.Context, sel ast.Selection
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("LoginPayload")
-		case "token":
+		case "success":
 
-			out.Values[i] = ec._LoginPayload_token(ctx, field, obj)
+			out.Values[i] = ec._LoginPayload_success(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "message":
+
+			out.Values[i] = ec._LoginPayload_message(ctx, field, obj)
 
 			if out.Values[i] == graphql.Null {
 				invalids++

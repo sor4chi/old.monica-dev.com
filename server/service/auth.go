@@ -5,42 +5,29 @@ import (
 	"errors"
 
 	"github.com/sor4chi/portfolio-blog/server/util"
-	"golang.org/x/crypto/bcrypt"
 )
-
-type User struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
 
 var (
 	password = util.GetEnv("ADMIN_PASSWORD", "") // password must be encrypted by bcrypt
 )
 
-func checkPasswordHash(password string, hash string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	return err == nil
-}
-
 type LoginResponse struct {
-	Token string `json:"token"`
+	SessionId string `json:"session_id"`
 }
 
-func UserLogin(ctx context.Context, p string) (LoginResponse, error) {
+func UserLogin(ctx context.Context, p string) (*LoginResponse, error) {
 	if password == "" {
-		return LoginResponse{}, errors.New("internal error")
+		return nil, errors.New("internal error")
 	}
 
-	if !checkPasswordHash(p, password) {
-		return LoginResponse{}, errors.New("invalid password")
+	if !CompareHashPassword(password, p) {
+		return nil, errors.New("invalid password")
 	}
 
-	token, err := JwtGenerate()
-	if err != nil {
-		return LoginResponse{}, err
-	}
+	sessionId := GenerateRandomString(32)
+	Sessions[sessionId] = "admin"
 
-	return LoginResponse{
-		Token: token,
+	return &LoginResponse{
+		SessionId: sessionId,
 	}, nil
 }

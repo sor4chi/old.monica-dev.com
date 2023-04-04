@@ -4,13 +4,11 @@ go 1.19
 
 require (
 	github.com/99designs/gqlgen v0.17.27
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/lib/pq v1.10.7
 	github.com/rs/zerolog v1.29.0
 	github.com/simukti/sqldb-logger v0.0.0-20230108155151-646c1a075551
 	github.com/simukti/sqldb-logger/logadapter/zerologadapter v0.0.0-20230108155151-646c1a075551
 	github.com/vektah/gqlparser/v2 v2.5.1
-	golang.org/x/crypto v0.7.0
 )
 
 require (
@@ -29,6 +27,7 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/urfave/cli/v2 v2.24.4 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
+	golang.org/x/crypto v0.7.0
 	golang.org/x/mod v0.8.0 // indirect
 	golang.org/x/sys v0.6.0 // indirect
 	golang.org/x/text v0.8.0 // indirect
