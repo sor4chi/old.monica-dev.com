@@ -32,7 +32,6 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
-
 	if !CompareHashPassword(password, param.Password) {
 		http.Error(w, "Invalid password", http.StatusUnauthorized)
 		return
@@ -49,5 +48,20 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 		SameSite: http.SameSiteNoneMode,
 	}
 	http.SetCookie(w, &cookie)
+	w.WriteHeader(http.StatusOK)
+}
+
+func UserLogout(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "OPTIONS" {
+		return
+	}
+	cookie, err := r.Cookie("session_id")
+	if err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+	delete(Sessions, cookie.Value)
+	cookie.MaxAge = -1
+	http.SetCookie(w, cookie)
 	w.WriteHeader(http.StatusOK)
 }

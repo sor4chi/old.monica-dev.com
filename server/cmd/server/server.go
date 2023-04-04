@@ -38,6 +38,7 @@ var (
 	PATH_PLAYGROUND = "/"
 	PATH_GRAPHQL    = "/query"
 	LOGIN_PATH      = "/login"
+	LOGOUT_PATH     = "/logout"
 )
 
 func main() {
@@ -83,6 +84,7 @@ func main() {
 
 	mux.Handle(PATH_GRAPHQL, mm.Middleware(srv))
 	mux.HandleFunc(LOGIN_PATH, service.UserLogin)
+	mux.HandleFunc(LOGOUT_PATH, service.UserLogout)
 
 	log.Println("listening on", SERVER_PORT)
 	log.Fatal(http.ListenAndServe(SERVER_PORT, mux))

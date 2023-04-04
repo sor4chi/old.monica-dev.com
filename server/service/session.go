@@ -9,11 +9,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var (
-	ERR_INVALID_TOKEN = "Invalid token"
-	ERR_INVALID_CLAIM = "Invalid claim"
-)
-
 var Sessions = map[string]string{}
 var SessionIDKey = "session_id"
 
