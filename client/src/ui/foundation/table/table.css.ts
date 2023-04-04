@@ -47,6 +47,11 @@ export const tr = style({
   ':last-child': {
     borderBottom: 0,
   },
+});
+
+export const trClickable = style({
+  cursor: 'pointer',
+
   '@media': {
     '(hover: hover)': {
       ':hover': {
@@ -54,10 +59,6 @@ export const tr = style({
       },
     },
   },
-});
-
-export const trClickable = style({
-  cursor: 'pointer',
 });
 
 export const td = style({

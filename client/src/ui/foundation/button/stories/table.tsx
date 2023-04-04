@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 
+import { FT } from '../../table';
+
 type TableRow = ReactNode[];
 
 interface Props {
@@ -9,23 +11,23 @@ interface Props {
 
 export const Table = ({ header, rows }: Props) => {
   return (
-    <table>
-      <thead>
-        <tr>
+    <FT.Table>
+      <FT.Head>
+        <FT.Row>
           {header.map((cell, i) => (
-            <th key={i}>{cell}</th>
+            <FT.Header key={i}>{cell}</FT.Header>
           ))}
-        </tr>
-      </thead>
-      <tbody>
+        </FT.Row>
+      </FT.Head>
+      <FT.Body>
         {rows.map((row, i) => (
-          <tr key={i}>
+          <FT.Row key={i}>
             {row.map((cell, j) => (
-              <td key={j}>{cell}</td>
+              <FT.Data key={j}>{cell}</FT.Data>
             ))}
-          </tr>
+          </FT.Row>
         ))}
-      </tbody>
-    </table>
+      </FT.Body>
+    </FT.Table>
   );
 };
