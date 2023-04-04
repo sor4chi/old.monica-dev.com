@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { memo } from 'react';
 
 import * as styles from './table.css';
@@ -8,20 +8,36 @@ interface Props {
   children: ReactNode;
 }
 
-type TRProps = Props & {
-  onClick?: () => void;
-};
-
-const _Table = ({ children }: Props) => <table className={styles.table}>{children}</table>;
-const _THead = ({ children }: Props) => <thead className={styles.thead}>{children}</thead>;
-const _TBody = ({ children }: Props) => <tbody className={styles.tbody}>{children}</tbody>;
-const _TR = ({ children, onClick }: TRProps) => (
-  <tr className={clsx(styles.tr, onClick && styles.trClickable)} onClick={onClick}>
+const _Table = ({ children, ...rest }: Props & ComponentProps<'table'>) => (
+  <table className={styles.table} {...rest}>
+    {children}
+  </table>
+);
+const _THead = ({ children, ...rest }: Props & ComponentProps<'thead'>) => (
+  <thead className={styles.thead} {...rest}>
+    {children}
+  </thead>
+);
+const _TBody = ({ children, ...rest }: Props & ComponentProps<'tbody'>) => (
+  <tbody className={styles.tbody} {...rest}>
+    {children}
+  </tbody>
+);
+const _TR = ({ children, onClick, ...rest }: Props & ComponentProps<'tr'>) => (
+  <tr className={clsx(styles.tr, onClick && styles.trClickable)} onClick={onClick} {...rest}>
     {children}
   </tr>
 );
-const _TH = ({ children }: Props) => <th className={styles.th}>{children}</th>;
-const _TD = ({ children }: Props) => <td className={styles.td}>{children}</td>;
+const _TH = ({ children, ...rest }: Props & ComponentProps<'th'>) => (
+  <th className={styles.th} {...rest}>
+    {children}
+  </th>
+);
+const _TD = ({ children, ...rest }: Props & ComponentProps<'td'>) => (
+  <td className={styles.td} {...rest}>
+    {children}
+  </td>
+);
 
 export const FT = {
   Body: memo(_TBody),

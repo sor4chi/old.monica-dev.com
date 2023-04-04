@@ -14,8 +14,7 @@ interface Props {
 export const Pagination = ({ loadAfter, loadBefore, maxPage, page }: Props) => (
   <div className={styles.pagination}>
     {page > 1 && (
-      <Button onClick={loadBefore} variant="secondary">
-        <MdArrowBackIos />
+      <Button onClick={loadBefore} variant="secondary" icon={<MdArrowBackIos />} iconPosition="left">
         Prev
       </Button>
     )}
@@ -25,9 +24,8 @@ export const Pagination = ({ loadAfter, loadBefore, maxPage, page }: Props) => (
       </span>
     )}
     {page < maxPage && (
-      <Button onClick={loadAfter} variant="secondary">
+      <Button onClick={loadAfter} variant="secondary" icon={<MdArrowForwardIos />} iconPosition="right">
         Next
-        <MdArrowForwardIos />
       </Button>
     )}
   </div>
