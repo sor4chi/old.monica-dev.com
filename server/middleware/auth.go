@@ -12,7 +12,6 @@ import (
 
 type AuthCtx struct {
 	Username *string
-	W        *http.ResponseWriter
 }
 
 type AuthCtxKey string
@@ -25,7 +24,6 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		if sessionId == "" {
 			ctx := context.WithValue(r.Context(), AUTH_CTX_KEY, &AuthCtx{
 				Username: nil,
-				W:        &w,
 			})
 			r = r.WithContext(ctx)
 			next.ServeHTTP(w, r)
@@ -40,7 +38,6 @@ func AuthMiddleware(next http.Handler) http.Handler {
 
 		ctx := context.WithValue(r.Context(), AUTH_CTX_KEY, &AuthCtx{
 			Username: &username,
-			W:        &w,
 		})
 
 		r = r.WithContext(ctx)

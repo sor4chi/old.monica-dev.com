@@ -6,14 +6,12 @@ package graph
 
 import (
 	"context"
-	"net/http"
 	"strconv"
 
 	"github.com/sor4chi/portfolio-blog/server/entity"
 	"github.com/sor4chi/portfolio-blog/server/graph/model"
 	"github.com/sor4chi/portfolio-blog/server/middleware"
 	"github.com/sor4chi/portfolio-blog/server/service"
-	"github.com/sor4chi/portfolio-blog/server/util"
 )
 
 // Tags is the resolver for the tags field.
@@ -30,32 +28,6 @@ func (r *blogResolver) Tags(ctx context.Context, obj *model.Blog) ([]*model.Tag,
 	}
 
 	return model.NewTagsFromEntityList(tags), nil
-}
-
-// Login is the resolver for the login field.
-func (r *mutationResolver) Login(ctx context.Context, password string) (*model.LoginPayload, error) {
-	authCtx, _ := middleware.AuthCtxValue(ctx)
-	res, err := service.UserLogin(ctx, password)
-	if err != nil {
-		return &model.LoginPayload{
-			Success: false,
-			Message: err.Error(),
-		}, nil
-	}
-
-	cookie := http.Cookie{
-		Name:     "session_id",
-		Value:    res.SessionId,
-		HttpOnly: true,
-		Secure:   util.GetEnv("ENV", "development") == "production",
-	}
-
-	http.SetCookie(*authCtx.W, &cookie)
-
-	return &model.LoginPayload{
-		Success: true,
-		Message: "Login success",
-	}, nil
 }
 
 // CreateBlog is the resolver for the createBlog field.

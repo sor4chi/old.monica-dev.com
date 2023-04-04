@@ -12,6 +12,7 @@ import (
 	"github.com/sor4chi/portfolio-blog/server/db"
 	"github.com/sor4chi/portfolio-blog/server/graph"
 	"github.com/sor4chi/portfolio-blog/server/middleware"
+	"github.com/sor4chi/portfolio-blog/server/service"
 	"github.com/sor4chi/portfolio-blog/server/sqlc"
 	"github.com/sor4chi/portfolio-blog/server/util"
 
@@ -36,6 +37,7 @@ var (
 var (
 	PATH_PLAYGROUND = "/"
 	PATH_GRAPHQL    = "/query"
+	LOGIN_PATH      = "/login"
 )
 
 func main() {
@@ -80,6 +82,7 @@ func main() {
 	mm.Use(middleware.CorsMiddleware)
 
 	mux.Handle(PATH_GRAPHQL, mm.Middleware(srv))
+	mux.HandleFunc(LOGIN_PATH, service.UserLogin)
 
 	log.Println("listening on", SERVER_PORT)
 	log.Fatal(http.ListenAndServe(SERVER_PORT, mux))

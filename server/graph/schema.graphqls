@@ -55,13 +55,7 @@ input TagInput {
   slug: String!
 }
 
-type LoginPayload {
-  success: Boolean!
-  message: String!
-}
-
 type Mutation {
-  login(password: String!): LoginPayload!
   createBlog(input: BlogInput!): Blog!
   updateBlog(id: ID!, input: BlogInput!): Blog!
   deleteBlog(id: ID!): Blog!

@@ -34,11 +34,6 @@ type BlogListInput struct {
 	Tags   []string `json:"tags,omitempty"`
 }
 
-type LoginPayload struct {
-	Success bool   `json:"success"`
-	Message string `json:"message"`
-}
-
 type Tag struct {
 	ID        string `json:"id"`
 	Name      string `json:"name"`
