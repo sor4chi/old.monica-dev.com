@@ -2,8 +2,9 @@ import { style, styleVariants } from '@vanilla-extract/css';
 
 import { vars } from '@/style/theme.css';
 
+const BUTTON_BORDER_WIDTH = '0.125rem';
+
 export const button = style({
-  padding: '0.5rem 1rem',
   borderRadius: '0.5rem',
   fontSize: '1rem',
   cursor: 'pointer',
@@ -19,12 +20,15 @@ export const variant = styleVariants({
   primary: {
     color: vars.color.text.primary,
     backgroundColor: vars.color.accent.secondary,
-    border: 'none',
+    borderWidth: BUTTON_BORDER_WIDTH,
+    borderStyle: 'solid',
+    borderColor: vars.color.accent.secondary,
 
     '@media': {
       '(hover: hover)': {
         ':hover': {
           backgroundColor: vars.color.accent.primary,
+          borderColor: vars.color.accent.primary,
         },
       },
     },
@@ -32,12 +36,15 @@ export const variant = styleVariants({
   secondary: {
     color: vars.color.text.primary,
     backgroundColor: vars.color.bg.primary,
-    border: `2px solid ${vars.color.accent.secondary}`,
+    borderWidth: BUTTON_BORDER_WIDTH,
+    borderStyle: 'solid',
+    borderColor: vars.color.accent.secondary,
 
     '@media': {
       '(hover: hover)': {
         ':hover': {
           backgroundColor: vars.color.bg.secondary,
+          borderColor: vars.color.accent.primary,
         },
       },
     },
