@@ -1,17 +1,35 @@
 import { useRouter } from 'next/navigation';
+import type { ReactNode } from 'react';
 import { useState } from 'react';
 
 import { TagList } from '../tagList';
 
-import type { BlogTableFragmentResponse, BlogTableQueryResponse, BlogTableQueryVariables } from './query';
+import type {
+  BlogTableFragmentResponse,
+  BlogTableQueryResponse,
+  BlogTableQueryVariables,
+  BlogTableRowFragmentResponse,
+} from './query';
 import { BlogTableQuery } from './query';
-import * as styles from './table.css';
 
 import { SITE_CONFIG } from '@/constant/site';
 import { client } from '@/lib/graphql';
-import { parseTwemoji } from '@/lib/twemoji';
 import { Pagination } from '@/ui/foundation/pagination';
+import { FT } from '@/ui/foundation/table';
 import { formatYYYYMMDD } from '@/util/date';
+
+const TABLE_ROW = ['title', 'createdAt', 'updatedAt', 'publishedAt', 'tags'] as const;
+const getTableRowFromBlog = (blog: BlogTableRowFragmentResponse) => {
+  const MAP = {
+    createdAt: formatYYYYMMDD(blog.createdAt),
+    publishedAt: blog.publishedAt ? `✅ ${formatYYYYMMDD(blog.publishedAt)}` : '❌',
+    tags: <TagList tags={blog.tags} hrefGenerator={(tag) => `/dashboard/blog?tag=${tag}`} />,
+    title: blog.title,
+    updatedAt: formatYYYYMMDD(blog.updatedAt),
+  } satisfies Record<(typeof TABLE_ROW)[number], ReactNode>;
+
+  return TABLE_ROW.map((row) => <FT.Data key={row}>{MAP[row]}</FT.Data>);
+};
 
 interface Props {
   blogs: BlogTableFragmentResponse;
@@ -46,35 +64,22 @@ export const BlogTable = ({ blogs }: Props) => {
 
   return (
     <>
-      <table className={styles.table}>
-        <thead className={styles.thead}>
-          <tr className={styles.tr}>
-            <th className={styles.th}>title</th>
-            <th className={styles.th}>createdAt</th>
-            <th className={styles.th}>updatedAt</th>
-            <th className={styles.th}>publishedAt</th>
-            <th className={styles.th}>tags</th>
-          </tr>
-        </thead>
-        <tbody className={styles.tbody}>
+      <FT.Table>
+        <FT.Head>
+          <FT.Row>
+            {TABLE_ROW.map((row) => (
+              <FT.Header key={row}>{row}</FT.Header>
+            ))}
+          </FT.Row>
+        </FT.Head>
+        <FT.Body>
           {blogData.map((blog) => (
-            <tr key={blog.id} className={styles.tr} onClick={() => router.push(`/dashboard/blog/${blog.id}`)}>
-              <td className={styles.td}>{blog.title}</td>
-              <td className={styles.td}>{formatYYYYMMDD(blog.createdAt)}</td>
-              <td className={styles.td}>{formatYYYYMMDD(blog.updatedAt)}</td>
-              <td
-                className={styles.td}
-                dangerouslySetInnerHTML={{
-                  __html: parseTwemoji(blog.publishedAt ? `✅ ${formatYYYYMMDD(blog.publishedAt)}` : '❌'),
-                }}
-              ></td>
-              <td className={styles.td}>
-                <TagList tags={blog.tags} hrefGenerator={(tag) => `/tag/${tag}`} />
-              </td>
-            </tr>
+            <FT.Row key={blog.id} onClick={() => router.push(`/dashboard/blog/${blog.id}`)}>
+              {getTableRowFromBlog(blog)}
+            </FT.Row>
           ))}
-        </tbody>
-      </table>
+        </FT.Body>
+      </FT.Table>
       <Pagination page={page} maxPage={maxPage} loadBefore={loadBefore} loadAfter={loadAfter} />
     </>
   );

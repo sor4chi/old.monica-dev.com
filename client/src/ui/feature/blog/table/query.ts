@@ -3,33 +3,42 @@ import { TagListFragment } from '../tagList';
 
 import { gql } from '@/lib/graphql';
 
-export const BlogTableFragment = gql`
+export const BlogTableRowFragment = gql`
   ${TagListFragment}
+  fragment BlogTableRowFragment on Blog {
+    id
+    title
+    createdAt
+    updatedAt
+    publishedAt
+    tags {
+      ...TagListFragment
+    }
+  }
+`;
+
+export type BlogTableRowFragmentResponse = {
+  id: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  tags: TagListFragmentResponse[];
+};
+
+export const BlogTableFragment = gql`
+  ${BlogTableRowFragment}
 
   fragment BlogTableFragment on BlogList {
     data {
-      id
-      title
-      createdAt
-      updatedAt
-      publishedAt
-      tags {
-        ...TagListFragment
-      }
+      ...BlogTableRowFragment
     }
     total
   }
 `;
 
 export type BlogTableFragmentResponse = {
-  data: {
-    id: string;
-    title: string;
-    createdAt: string;
-    updatedAt: string;
-    publishedAt: string;
-    tags: TagListFragmentResponse[];
-  }[];
+  data: BlogTableRowFragmentResponse[];
   total: number;
 };
 
