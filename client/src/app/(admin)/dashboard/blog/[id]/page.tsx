@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { serverEnv } from '@/env/server';
-import { clientSSR, gql } from '@/lib/graphql-ssr';
+import { client, gql } from '@/lib/graphql';
 import { BlogForm } from '@/ui/feature/blog/form';
 import { BlogFormFragment } from '@/ui/feature/blog/form/body/query';
 import type { BlogFormFragmentResponse } from '@/ui/feature/blog/form/body/query';
@@ -32,7 +32,7 @@ type BlogDetailPageQueryVariables = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const res = await clientSSR.request<BlogDetailPageQueryResponse, BlogDetailPageQueryVariables>(BlogDetailPageQuery, {
+  const res = await client.request<BlogDetailPageQueryResponse, BlogDetailPageQueryVariables>(BlogDetailPageQuery, {
     id: params.id,
   });
 
@@ -43,12 +43,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 async function getData(id: string) {
   try {
-    const res = await clientSSR.request<BlogDetailPageQueryResponse, BlogDetailPageQueryVariables>(
-      BlogDetailPageQuery,
-      {
-        id,
-      },
-    );
+    const res = await client.request<BlogDetailPageQueryResponse, BlogDetailPageQueryVariables>(BlogDetailPageQuery, {
+      id,
+    });
     return { blog: res.blogById };
   } catch (e) {
     if (serverEnv.NODE_ENV === 'development') {

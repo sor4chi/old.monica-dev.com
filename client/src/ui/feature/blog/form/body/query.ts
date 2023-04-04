@@ -1,4 +1,4 @@
-import { gql } from '@/lib/graphql-ssr';
+import { gql } from '@/lib/graphql';
 
 export const TagFormFragment = gql`
   fragment TagFormFragment on Tag {

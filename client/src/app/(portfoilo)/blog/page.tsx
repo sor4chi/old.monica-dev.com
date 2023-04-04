@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import * as styles from './blog.css';
 
 import { SITE_CONFIG } from '@/constant/site';
-import { clientSSR, gql } from '@/lib/graphql-ssr';
+import { client, gql } from '@/lib/graphql';
 import { BlogList } from '@/ui/feature/blog/list';
 import type { BlogListFragmentResponse } from '@/ui/feature/blog/list/query';
 import { BlogListFragment } from '@/ui/feature/blog/list/query';
@@ -43,7 +43,7 @@ type BlogListPageQueryVariables = {
 
 async function getBlogs(tags: string[]) {
   try {
-    const data = await clientSSR.request<BlogListPageQueryResponse, BlogListPageQueryVariables>(BlogListPageQuery, {
+    const data = await client.request<BlogListPageQueryResponse, BlogListPageQueryVariables>(BlogListPageQuery, {
       limit: SITE_CONFIG.BLOG_LENGTH_PER_PAGE,
       offset: 0,
       tags,

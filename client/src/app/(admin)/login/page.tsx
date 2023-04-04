@@ -8,9 +8,9 @@ import { LoginForm } from '@/ui/feature/account/login';
 
 export default async function Login() {
   const cookieStore = cookies();
-  const token = cookieStore.get('token');
+  const sessionId = cookieStore.get('session_id');
 
-  if (token) {
+  if (sessionId) {
     redirect('/dashboard');
   }
 

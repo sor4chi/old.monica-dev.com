@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 import { SITE_CONFIG } from '@/constant/site';
-import { clientSSR, gql } from '@/lib/graphql-ssr';
+import { client, gql } from '@/lib/graphql';
 import { BlogTable } from '@/ui/feature/blog/table';
 import type { BlogTableFragmentResponse } from '@/ui/feature/blog/table/query';
 import { BlogTableFragment } from '@/ui/feature/blog/table/query';
@@ -37,7 +37,7 @@ type BlogListPageQueryVariables = {
 };
 
 async function getData(tags: string[]) {
-  const res = await clientSSR.request<BlogListPageQueryResponse, BlogListPageQueryVariables>(BlogListPageQuery, {
+  const res = await client.request<BlogListPageQueryResponse, BlogListPageQueryVariables>(BlogListPageQuery, {
     limit: SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE,
     offset: 0,
     tags,

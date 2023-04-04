@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { serverEnv } from '@/env/server';
-import { clientSSR, gql } from '@/lib/graphql-ssr';
+import { client, gql } from '@/lib/graphql';
 import { parseMarkdownToHTML } from '@/lib/markdown';
 import type { BlogArticleFragmentResponse } from '@/ui/feature/blog/atricle';
 import { BlogArticle, BlogArticleFragment } from '@/ui/feature/blog/atricle';
@@ -66,7 +66,7 @@ type BlogSlugsQueryResponse = {
 
 export async function generateStaticParams() {
   try {
-    const res = await clientSSR.request<BlogSlugsQueryResponse>(BlogSlugsQuery);
+    const res = await client.request<BlogSlugsQueryResponse>(BlogSlugsQuery);
     return res.blogs.data;
   } catch (e) {
     return [];
@@ -74,7 +74,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { blog } = await clientSSR.request<BlogDetailPageQueryResponse, BlogDetailPageQueryVariables>(
+  const { blog } = await client.request<BlogDetailPageQueryResponse, BlogDetailPageQueryVariables>(
     BlogDetailPageQuery,
     {
       slug: params.slug,
@@ -110,7 +110,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 async function getBlog(slug: string) {
   try {
-    const { blog } = await clientSSR.request<BlogDetailPageQueryResponse, BlogDetailPageQueryVariables>(
+    const { blog } = await client.request<BlogDetailPageQueryResponse, BlogDetailPageQueryVariables>(
       BlogDetailPageQuery,
       {
         slug,

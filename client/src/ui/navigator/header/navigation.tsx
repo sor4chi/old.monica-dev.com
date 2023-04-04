@@ -6,7 +6,7 @@ import * as styles from './header.css';
 
 export const Navigation = () => {
   const cookieStore = cookies();
-  const token = cookieStore.get('token');
+  const sessionId = cookieStore.get('session_id');
 
   return (
     <nav>
@@ -26,7 +26,7 @@ export const Navigation = () => {
             Contact
           </Link>
         </li>
-        {token && (
+        {sessionId && (
           <li className={styles.navigationListItem}>
             <Link href="/dashboard" passHref className={styles.navigationLink}>
               Dashboard <MdOpenInNew />

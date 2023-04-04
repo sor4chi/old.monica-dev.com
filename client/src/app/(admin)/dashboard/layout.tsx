@@ -15,9 +15,9 @@ export const metadata = {
 
 export default function PortfolioLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = cookies();
-  const token = cookieStore.get('token');
+  const sessionId = cookieStore.get('session_id');
 
-  if (!token) {
+  if (!sessionId) {
     redirect('/login');
   }
 

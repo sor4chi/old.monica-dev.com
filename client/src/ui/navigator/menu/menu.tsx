@@ -13,7 +13,7 @@ export const Menu = () => {
   const router = useRouter();
 
   const logout = () => {
-    document.cookie = document.cookie.replace(/token=[^;]+/, 'token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;');
+    alert('logout');
     router.push('/login');
   };
 
