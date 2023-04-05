@@ -9,6 +9,7 @@ services:
       - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    mem_limit: 512m
 
   go:
     image: golang:1.20
@@ -29,6 +30,7 @@ services:
       - postgres
     working_dir: /app
     command: go run ./cmd/server
+    mem_limit: 512m
 
   node:
     ports:
@@ -36,10 +38,12 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules
+    environment:
+      - WATCHPACK_POLLING=true
     build:
       context: ./client
       dockerfile: Dockerfile
-    command: sh -c "pnpm build && pnpm start"
+    command: pnpm dev
 
 volumes:
   postgres_data:
