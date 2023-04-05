@@ -12,15 +12,15 @@ import { parseTwemoji } from '@/lib/twemoji';
 import { Pagination } from '@/ui/foundation/pagination';
 
 interface Props {
-  blogs: BlogListFragmentResponse;
+  initialBlog: BlogListFragmentResponse;
   filterTags?: string[];
 }
 
-export const BlogList = ({ blogs, filterTags }: Props) => {
-  const [blogData, setBlogData] = useState(blogs.data);
+export const BlogList = ({ filterTags, initialBlog }: Props) => {
+  const [blog, setBlog] = useState(initialBlog);
   const [page, setPage] = useState(1);
 
-  const maxPage = Math.ceil(blogs.total / SITE_CONFIG.BLOG_LENGTH_PER_PAGE);
+  const maxPage = Math.ceil(blog.total / SITE_CONFIG.BLOG_LENGTH_PER_PAGE);
 
   const loadBefore = async () => {
     const res = await clientInBrowser.request<BlogListQueryResponse, BlogListQueryVariables>(BlogListQuery, {
@@ -28,7 +28,7 @@ export const BlogList = ({ blogs, filterTags }: Props) => {
       offset: page * SITE_CONFIG.BLOG_LENGTH_PER_PAGE - SITE_CONFIG.BLOG_LENGTH_PER_PAGE * 2,
       tags: filterTags,
     });
-    setBlogData(res.blogs.data);
+    setBlog(res.blogs);
     setPage(page - 1);
   };
 
@@ -38,19 +38,19 @@ export const BlogList = ({ blogs, filterTags }: Props) => {
       offset: page * SITE_CONFIG.BLOG_LENGTH_PER_PAGE,
       tags: filterTags,
     });
-    setBlogData(data.blogs.data);
+    setBlog(data.blogs);
     setPage(page + 1);
   };
 
   useEffect(() => {
-    setBlogData(blogs.data);
-  }, [blogs]);
+    setBlog(initialBlog);
+  }, [initialBlog]);
 
   useEffect(() => {
     setPage(1);
   }, [filterTags]);
 
-  if (!blogData.length) {
+  if (!blog.data.length) {
     return (
       <div className={styles.container}>
         <p className={styles.noItems} dangerouslySetInnerHTML={{ __html: parseTwemoji('Sorry, no items found. 😭') }} />
@@ -60,9 +60,8 @@ export const BlogList = ({ blogs, filterTags }: Props) => {
 
   return (
     <>
-      {blogs.total}
       <ul className={styles.container}>
-        {blogData.map((blog) => (
+        {blog.data.map((blog) => (
           // add timestamp to activate rendering animation
           <BlogListCard key={blog.slug + new Date().getTime()} blog={blog} />
         ))}
