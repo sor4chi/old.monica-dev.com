@@ -37,11 +37,13 @@ export const LoginForm = () => {
         'Content-Type': 'application/json',
       },
       method: 'POST',
-      mode: 'no-cors',
     });
+
+    console.log(res);
 
     if (res.ok) {
       setRequestError(null);
+      console.log('login success');
       router.push('/dashboard');
     } else {
       setRequestError('パスワードが違います');

@@ -17,7 +17,6 @@ export const Menu = () => {
     const res = await fetch(clientEnv.NEXT_PUBLIC_GQL_ENDPOINT.replace('/query', '/logout'), {
       credentials: 'include',
       method: 'POST',
-      mode: 'no-cors',
     });
 
     if (res.ok) {
