@@ -5,14 +5,10 @@ import * as styles from './index.css';
 
 import { SocialList } from '@/ui/feature/account/socialList';
 import { Logo } from '@/ui/navigator/logo';
-import { ThemeSwitch } from '@/ui/navigator/themeSwitch';
 
 export default function Home() {
   return (
     <div className={styles.container}>
-      <div className={styles.themeSwitchContainer}>
-        <ThemeSwitch />
-      </div>
       <div className={styles.profile}>
         <Image
           src="/icon.webp"

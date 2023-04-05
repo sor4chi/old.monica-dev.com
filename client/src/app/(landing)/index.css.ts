@@ -27,12 +27,6 @@ export const container = style({
   },
 });
 
-export const themeSwitchContainer = style({
-  position: 'absolute',
-  right: '1rem',
-  top: '1rem',
-});
-
 const navItemCount = 3;
 const navItemHeight = '2rem';
 const navItemVerticalPadding = '0.5rem';

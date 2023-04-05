@@ -74,7 +74,7 @@ export default async function Blog({ searchParams }: Props) {
   return (
     <>
       <h1 className={styles.title}>Blog</h1>
-      <BlogList blogs={blogs.data.blogs} filterTags={tags} />
+      <BlogList initialBlog={blogs.data.blogs} filterTags={tags} />
     </>
   );
 }
