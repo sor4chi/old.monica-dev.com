@@ -12,10 +12,6 @@ var (
 	// IS_DEV   = util.GetEnv("ENV", "production") == "development"
 )
 
-type LoginResponse struct {
-	SessionId string `json:"session_id"`
-}
-
 func UserLogin(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "OPTIONS" {
 		return
@@ -49,6 +45,8 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 	}
 	http.SetCookie(w, &cookie)
 	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/text")
+	w.Write([]byte("OK"))
 }
 
 func UserLogout(w http.ResponseWriter, r *http.Request) {

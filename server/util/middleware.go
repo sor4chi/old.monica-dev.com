@@ -2,7 +2,7 @@ package util
 
 import "net/http"
 
-type Middleware func(http.Handler) http.Handler
+type Middleware func(http.HandlerFunc) http.HandlerFunc
 
 type MiddlewareManager struct {
 	middlewares []Middleware
@@ -20,10 +20,14 @@ func (m *MiddlewareManager) Use(middleware Middleware) {
 
 func (m *MiddlewareManager) Middleware(handler http.Handler) http.Handler {
 	for _, middleware := range m.middlewares {
-		handler = middleware(handler)
+		handler = middleware(handler.ServeHTTP)
 	}
 	return handler
 }
 
-
-
+func (m *MiddlewareManager) MiddlewareFunc(handler http.HandlerFunc) http.HandlerFunc {
+	for _, middleware := range m.middlewares {
+		handler = middleware(handler)
+	}
+	return handler
+}

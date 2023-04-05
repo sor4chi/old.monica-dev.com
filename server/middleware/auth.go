@@ -17,14 +17,24 @@ type AuthCtx struct {
 type AuthCtxKey string
 
 var AUTH_CTX_KEY = AuthCtxKey("auth")
+var deleteCookie = &http.Cookie{
+	Name:     "session_id",
+	Value:    "",
+	HttpOnly: true,
+	Secure:   true,
+	SameSite: http.SameSiteNoneMode,
+	MaxAge:   -1,
+}
 
-func AuthMiddleware(next http.Handler) http.Handler {
+func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		sessionId := service.GetSessionID(r.Header)
+
 		if sessionId == "" {
 			ctx := context.WithValue(r.Context(), AUTH_CTX_KEY, &AuthCtx{
 				Username: nil,
 			})
+			http.SetCookie(w, deleteCookie)
 			r = r.WithContext(ctx)
 			next.ServeHTTP(w, r)
 			return
@@ -33,7 +43,12 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		username := service.Sessions[sessionId]
 
 		if username == "" {
-			http.Error(w, "Invalid token", http.StatusForbidden)
+			ctx := context.WithValue(r.Context(), AUTH_CTX_KEY, &AuthCtx{
+				Username: nil,
+			})
+			http.SetCookie(w, deleteCookie)
+			r = r.WithContext(ctx)
+			next.ServeHTTP(w, r)
 			return
 		}
 

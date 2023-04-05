@@ -79,12 +79,13 @@ func main() {
 	}
 
 	mm := util.NewMiddlewareManager()
-	mm.Use(middleware.AuthMiddleware)
 	mm.Use(middleware.CorsMiddleware)
 
+	mux.Handle(LOGIN_PATH, mm.MiddlewareFunc(service.UserLogin))
+	mux.Handle(LOGOUT_PATH, mm.MiddlewareFunc(service.UserLogout))
+
+	mm.Use(middleware.AuthMiddleware)
 	mux.Handle(PATH_GRAPHQL, mm.Middleware(srv))
-	mux.HandleFunc(LOGIN_PATH, service.UserLogin)
-	mux.HandleFunc(LOGOUT_PATH, service.UserLogout)
 
 	log.Println("listening on", SERVER_PORT)
 	log.Fatal(http.ListenAndServe(SERVER_PORT, mux))
