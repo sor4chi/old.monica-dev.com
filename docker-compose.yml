@@ -29,7 +29,7 @@ services:
     depends_on:
       - postgres
     working_dir: /app
-    command: go run ./cmd/server
+    command: go run main.go
     mem_limit: 512m
 
   node:
