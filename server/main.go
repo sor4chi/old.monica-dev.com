@@ -43,7 +43,7 @@ var (
 
 func main() {
 	mux := http.NewServeMux()
-	dsn := db.DsnFromUrl(util.GetEnv("DATABASE_URL", ""))
+	dsn := db.DsnFromUrl(util.GetEnvStrict("DATABASE_URL"))
 	con, err := sql.Open("postgres", dsn)
 	if err != nil {
 		log.Fatal(ERROR_CONNECT_DB_CLIENT, err)
@@ -88,4 +88,3 @@ func main() {
 	log.Println("listening on", SERVER_PORT)
 	log.Fatal(http.ListenAndServe(SERVER_PORT, mux))
 }
-

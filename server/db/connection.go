@@ -2,8 +2,8 @@ package db
 
 import (
 	"fmt"
-
-	"github.com/sor4chi/portfolio-blog/server/util"
+	"log"
+	"regexp"
 )
 
 type PostgresConnectionEnv struct {
@@ -14,17 +14,23 @@ type PostgresConnectionEnv struct {
 	Password string
 }
 
-func NewPostgresConnectionEnv() *PostgresConnectionEnv {
-	return &PostgresConnectionEnv{
-		Host:     util.GetEnv("POSTGRES_HOST", "postgres"),
-		Port:     util.GetEnv("POSTGRES_PORT", "5432"),
-		User:     util.GetEnv("POSTGRES_USER", "monica"),
-		DBName:   util.GetEnv("POSTGRES_DATABASE", "portfolio"),
-		Password: util.GetEnv("POSTGRES_PASSWORD", "dev"),
-	}
-}
-
 func Dsn(env *PostgresConnectionEnv) string {
 	return fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
 		env.Host, env.Port, env.User, env.DBName, env.Password)
+}
+
+func DsnFromUrl(databaseUrl string) string {
+	re := regexp.MustCompile(`postgres:\/\/(?P<user>[^:]+):(?P<password>[^@]+)@(?P<host>[^:]+):(?P<port>[^/]+)\/(?P<dbname>[^?]+)`)
+	match := re.FindStringSubmatch(databaseUrl)
+	if len(match) == 0 {
+		log.Fatal("failed to parse database url")
+	}
+	env := &PostgresConnectionEnv{
+		Host:     match[3],
+		Port:     match[4],
+		User:     match[1],
+		DBName:   match[5],
+		Password: match[2],
+	}
+	return Dsn(env)
 }

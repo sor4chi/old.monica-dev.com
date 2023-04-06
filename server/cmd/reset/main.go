@@ -9,12 +9,13 @@ import (
 	"github.com/sor4chi/portfolio-blog/server/db"
 	"github.com/sor4chi/portfolio-blog/server/db/seed"
 	"github.com/sor4chi/portfolio-blog/server/sqlc"
+	"github.com/sor4chi/portfolio-blog/server/util"
 
 	_ "github.com/lib/pq"
 )
 
 func main() {
-	dsn := db.Dsn(db.NewPostgresConnectionEnv())
+	dsn := db.DsnFromUrl(util.GetEnvStrict("DATABASE_URL"))
 	log.Println("Starting reset...")
 	con, err := sql.Open("postgres", dsn)
 	if err != nil {
