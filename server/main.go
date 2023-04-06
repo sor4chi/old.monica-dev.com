@@ -43,7 +43,7 @@ var (
 
 func main() {
 	mux := http.NewServeMux()
-	dsn := db.Dsn(db.NewPostgresConnectionEnv())
+	dsn := db.DsnFromUrl(util.GetEnv("DATABASE_URL", ""))
 	con, err := sql.Open("postgres", dsn)
 	if err != nil {
 		log.Fatal(ERROR_CONNECT_DB_CLIENT, err)
@@ -74,9 +74,7 @@ func main() {
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(c))
 
-	if IS_DEV {
-		mux.Handle(PATH_PLAYGROUND, playground.Handler("GraphQL playground", PATH_GRAPHQL))
-	}
+	mux.Handle(PATH_PLAYGROUND, playground.Handler("GraphQL playground", PATH_GRAPHQL))
 
 	mm := util.NewMiddlewareManager()
 	mm.Use(middleware.CorsMiddleware)
@@ -90,3 +88,4 @@ func main() {
 	log.Println("listening on", SERVER_PORT)
 	log.Fatal(http.ListenAndServe(SERVER_PORT, mux))
 }
+
