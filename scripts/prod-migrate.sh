@@ -1,5 +1,5 @@
 FILE_DIR=$(dirname "$0")
-cd $FILE_DIR/..
+cd $FILE_DIR/server
 
 FORWARDING_PORT=5433
 
