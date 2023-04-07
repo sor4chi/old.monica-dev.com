@@ -111,7 +111,7 @@ export const ContactForm = () => {
       <Textarea
         label="Message"
         id="message"
-        placeholder="I would like to ask you about ... (EN) 〇〇の件でお伺いしたいです (JP)"
+        placeholder="Hello, Monica!"
         style={{ resize: 'none' }}
         rows={5}
         {...register('message')}
