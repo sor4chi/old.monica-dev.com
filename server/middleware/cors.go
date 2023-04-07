@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	ALLOW_ORIGIN_REGEX = util.GetEnv("ALLOW_ORIGIN_REGEX", "^http://localhost:3000(.?)$")
+	ALLOW_ORIGIN_REGEX = util.GetEnv("ALLOW_ORIGIN_REGEX", "^http://localhost:3000$")
 )
 
 func CorsMiddleware(next http.HandlerFunc) http.HandlerFunc {

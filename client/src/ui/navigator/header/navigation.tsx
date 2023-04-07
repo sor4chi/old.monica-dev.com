@@ -1,3 +1,4 @@
+'use client';
 import Link from 'next/link';
 import { MdOpenInNew } from 'react-icons/md';
 
