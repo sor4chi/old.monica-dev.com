@@ -39,6 +39,7 @@ var (
 	PATH_GRAPHQL    = "/query"
 	LOGIN_PATH      = "/login"
 	LOGOUT_PATH     = "/logout"
+	ME_PATH         = "/me"
 )
 
 func main() {
@@ -81,6 +82,7 @@ func main() {
 
 	mux.Handle(LOGIN_PATH, mm.MiddlewareFunc(service.UserLogin))
 	mux.Handle(LOGOUT_PATH, mm.MiddlewareFunc(service.UserLogout))
+	mux.Handle(ME_PATH, mm.MiddlewareFunc(service.UserMe))
 
 	mm.Use(middleware.AuthMiddleware)
 	mux.Handle(PATH_GRAPHQL, mm.Middleware(srv))
