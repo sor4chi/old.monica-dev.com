@@ -1,68 +1,37 @@
-import { useRouter } from 'next/navigation';
-import type { ReactNode } from 'react';
-import { useState } from 'react';
-
-import { TagList } from '../tagList';
-
-import type {
-  BlogTableFragmentResponse,
-  BlogTableQueryResponse,
-  BlogTableQueryVariables,
-  BlogTableRowFragmentResponse,
-} from './query';
-import { BlogTableQuery } from './query';
+import type { BlogTableRowFragmentResponse } from './row';
+import { BlogTableRow, BlogTableRowFragment } from './row';
+import { TABLE_ROW } from './statics';
 
 import { SITE_CONFIG } from '@/constant/site';
-import { client } from '@/lib/graphql';
+import { gql } from '@/lib/graphql';
 import { Pagination } from '@/ui/foundation/pagination';
 import { FT } from '@/ui/foundation/table';
-import { formatDateNumeric } from '@/util/date';
 
-const TABLE_ROW = ['title', 'createdAt', 'updatedAt', 'publishedAt', 'tags'] as const;
-type TableRowKeys = (typeof TABLE_ROW)[number];
+export const BlogTableFragment = gql`
+  ${BlogTableRowFragment}
 
-const getTableRowFromBlog = (blog: BlogTableRowFragmentResponse) => {
-  const MAP = {
-    createdAt: formatDateNumeric(blog.createdAt),
-    publishedAt: blog.publishedAt ? `✅ ${formatDateNumeric(blog.publishedAt)}` : '❌',
-    tags: <TagList tags={blog.tags} hrefGenerator={(tag) => `/dashboard/blog?tag=${tag}`} />,
-    title: blog.title,
-    updatedAt: formatDateNumeric(blog.updatedAt),
-  } satisfies Record<TableRowKeys, ReactNode>;
+  fragment BlogTableFragment on BlogList {
+    data {
+      ...BlogTableRowFragment
+    }
+    total
+  }
+`;
 
-  return TABLE_ROW.map((row) => <FT.Data key={row}>{MAP[row]}</FT.Data>);
+export type BlogTableFragmentResponse = {
+  data: BlogTableRowFragmentResponse[];
+  total: number;
 };
 
 interface Props {
   blogs: BlogTableFragmentResponse;
+  page: number;
+  loadBefore: () => void;
+  loadAfter: () => void;
 }
 
-export const BlogTable = ({ blogs }: Props) => {
-  const router = useRouter();
-  const [blogData, setBlogData] = useState(blogs.data);
-  const [page, setPage] = useState(1);
-
+export const BlogTable = ({ blogs, loadAfter, loadBefore, page }: Props) => {
   const maxPage = Math.ceil(blogs.total / SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE);
-
-  const loadBefore = async () => {
-    const res = await client.request<BlogTableQueryResponse, BlogTableQueryVariables>(BlogTableQuery, {
-      limit: SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE,
-      offset: page * SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE - SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE * 2,
-      tags: [],
-    });
-    setBlogData(res.blogs.data);
-    setPage(page - 1);
-  };
-
-  const loadAfter = async () => {
-    const data = await client.request<BlogTableQueryResponse, BlogTableQueryVariables>(BlogTableQuery, {
-      limit: SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE,
-      offset: page * SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE,
-      tags: [],
-    });
-    setBlogData(data.blogs.data);
-    setPage(page + 1);
-  };
 
   return (
     <>
@@ -75,10 +44,8 @@ export const BlogTable = ({ blogs }: Props) => {
           </FT.Row>
         </FT.Head>
         <FT.Body>
-          {blogData.map((blog) => (
-            <FT.Row key={blog.id} onClick={() => router.push(`/dashboard/blog/${blog.id}`)}>
-              {getTableRowFromBlog(blog)}
-            </FT.Row>
+          {blogs.data.map((blog) => (
+            <BlogTableRow key={blog.id} blog={blog} />
           ))}
         </FT.Body>
       </FT.Table>
