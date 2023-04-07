@@ -3,6 +3,7 @@ package service
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/sor4chi/portfolio-blog/server/util"
 )
@@ -42,6 +43,8 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: true,
 		Secure:   true,
 		SameSite: http.SameSiteNoneMode,
+		Expires:  time.Now().Add(24 * time.Hour),
+		Path:     "/",
 	}
 	http.SetCookie(w, &cookie)
 	w.WriteHeader(http.StatusOK)
