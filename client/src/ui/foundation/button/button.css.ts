@@ -14,21 +14,27 @@ export const button = style({
   alignItems: 'center',
   gap: '0.5rem',
   boxSizing: 'border-box',
+  transition: 'background-color 0.2s ease-in-out, border-color 0.2s ease-in-out',
+
+  ':focus-visible': {
+    outline: `2px solid ${vars.color.accent.primary}`,
+    outlineOffset: '2px',
+  },
 });
 
 export const variant = styleVariants({
   primary: {
-    color: vars.color.text.primary,
-    backgroundColor: vars.color.accent.secondary,
+    color: 'white', // fixed for contrast a11y
+    backgroundColor: vars.color.accent.primary,
+    borderColor: vars.color.accent.primary,
     borderWidth: BUTTON_BORDER_WIDTH,
     borderStyle: 'solid',
-    borderColor: vars.color.accent.secondary,
 
     '@media': {
       '(hover: hover)': {
         ':hover': {
-          backgroundColor: vars.color.accent.primary,
-          borderColor: vars.color.accent.primary,
+          backgroundColor: vars.color.accent.secondary,
+          borderColor: vars.color.accent.secondary,
         },
       },
     },

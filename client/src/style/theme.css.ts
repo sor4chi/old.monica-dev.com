@@ -31,10 +31,10 @@ createGlobalTheme('.light', colorVars, {
     tertiary: '#4f5b67',
   },
   accent: {
-    primary: '#a093c7',
+    primary: '#b8aed8',
     primaryRGB: '160, 147, 199',
-    secondary: '#d0c9e6',
-    secondaryRGB: '208, 201, 230',
+    secondary: '#cec6ea',
+    secondaryRGB: '183, 174, 214',
   },
   social: {
     twitter: '#1da1f2',
