@@ -74,6 +74,7 @@ type ComplexityRoot struct {
 		Blog     func(childComplexity int, slug string) int
 		BlogByID func(childComplexity int, id string) int
 		Blogs    func(childComplexity int, input model.BlogListInput) int
+		Tags     func(childComplexity int) int
 	}
 
 	Tag struct {
@@ -97,6 +98,7 @@ type QueryResolver interface {
 	Blogs(ctx context.Context, input model.BlogListInput) (*model.BlogList, error)
 	Blog(ctx context.Context, slug string) (*model.Blog, error)
 	BlogByID(ctx context.Context, id string) (*model.Blog, error)
+	Tags(ctx context.Context) ([]*model.Tag, error)
 }
 
 type executableSchema struct {
@@ -262,6 +264,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Blogs(childComplexity, args["input"].(model.BlogListInput)), true
+
+	case "Query.tags":
+		if e.complexity.Query.Tags == nil {
+			break
+		}
+
+		return e.complexity.Query.Tags(childComplexity), true
 
 	case "Tag.createdAt":
 		if e.complexity.Tag.CreatedAt == nil {
@@ -1565,6 +1574,62 @@ func (ec *executionContext) fieldContext_Query_blogById(ctx context.Context, fie
 	if fc.Args, err = ec.field_Query_blogById_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_tags(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_tags(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Tags(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Tag)
+	fc.Result = res
+	return ec.marshalNTag2ᚕᚖgithubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐTagᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_tags(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Tag_id(ctx, field)
+			case "name":
+				return ec.fieldContext_Tag_name(ctx, field)
+			case "slug":
+				return ec.fieldContext_Tag_slug(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Tag_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Tag_updatedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Tag", field.Name)
+		},
 	}
 	return fc, nil
 }
@@ -4108,6 +4173,29 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_blogById(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx, innerFunc)
+			}
+
+			out.Concurrently(i, func() graphql.Marshaler {
+				return rrm(innerCtx)
+			})
+		case "tags":
+			field := field
+
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_tags(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}

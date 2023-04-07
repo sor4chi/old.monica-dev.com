@@ -129,6 +129,17 @@ func (r *queryResolver) BlogByID(ctx context.Context, id string) (*model.Blog, e
 	return model.NewBlogFromEntity(b), nil
 }
 
+// Tags is the resolver for the tags field.
+func (r *queryResolver) Tags(ctx context.Context) ([]*model.Tag, error) {
+	ts := service.NewTagService(r.Q)
+	tags, err := ts.GetTags()
+	if err != nil {
+		return nil, err
+	}
+
+	return model.NewTagsFromEntityList(tags), nil
+}
+
 // Blog returns BlogResolver implementation.
 func (r *Resolver) Blog() BlogResolver { return &blogResolver{r} }
 

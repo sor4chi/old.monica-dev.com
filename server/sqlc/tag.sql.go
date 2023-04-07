@@ -67,6 +67,39 @@ func (q *Queries) GetTagBySlug(ctx context.Context, slug string) (Tag, error) {
 	return i, err
 }
 
+const getTags = `-- name: GetTags :many
+SELECT id, name, slug, created_at, updated_at FROM tags
+`
+
+func (q *Queries) GetTags(ctx context.Context) ([]Tag, error) {
+	rows, err := q.db.QueryContext(ctx, getTags)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Tag
+	for rows.Next() {
+		var i Tag
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Slug,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getTagsByBlogId = `-- name: GetTagsByBlogId :many
 
 SELECT id, name, slug, created_at, updated_at FROM tags WHERE id IN (

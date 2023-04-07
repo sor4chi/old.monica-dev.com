@@ -33,6 +33,15 @@ func parseTagsRowsToEntity(rows []sqlc.Tag) []*entity.Tag {
 	return tags
 }
 
+func (s *TagService) GetTags() ([]*entity.Tag, error) {
+	ctx := context.Background()
+	rows, err := s.q.GetTags(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return parseTagsRowsToEntity(rows), nil
+}
+
 func (s *TagService) GetTagsByBlogId(blogID int32) ([]*entity.Tag, error) {
 	ctx := context.Background()
 	rows, err := s.q.GetTagsByBlogId(ctx, blogID)

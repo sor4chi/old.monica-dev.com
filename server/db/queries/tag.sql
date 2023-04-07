@@ -5,6 +5,9 @@ SELECT * FROM tags WHERE id IN (
     SELECT tag_id FROM blogs_tags WHERE blog_id = $1
 );
 
+-- name: GetTags :many
+SELECT * FROM tags;
+
 -- -- FINDS -- --
 
 -- name: GetTagBySlug :one
