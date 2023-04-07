@@ -25,6 +25,7 @@ export const textarea = style({
   backgroundClip: 'padding-box',
   transition: 'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
   outline: `1px solid ${vars.color.bg.tertiary}`,
+  fontFamily: 'inherit',
 
   ':focus': {
     borderColor: vars.color.accent.primary,
