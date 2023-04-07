@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 
 import { DashboardHeaderProvider } from '@/hooks';
 import { DashboardLayout } from '@/ui/app/layout/dashboard';
@@ -15,11 +14,13 @@ export const metadata = {
 
 export default function PortfolioLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = cookies();
-  const sessionId = cookieStore.get('session_id');
+  const sessions = cookieStore.getAll();
 
-  if (!sessionId) {
-    redirect('/login');
-  }
+  console.log(sessions);
+
+  // if (!sessions) {
+  //   redirect('/login');
+  // }
 
   return (
     <DashboardHeaderProvider>
