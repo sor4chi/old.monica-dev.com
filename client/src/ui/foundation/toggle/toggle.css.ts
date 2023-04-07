@@ -1,4 +1,4 @@
-import { style, styleVariants } from '@vanilla-extract/css';
+import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
 
 import { vars } from '@/style/theme.css';
 
@@ -11,6 +11,17 @@ export const wrapper = style({
   display: 'flex',
   alignItems: 'center',
   gap: '0.5rem',
+});
+
+export const label = styleVariants({
+  on: {
+    color: vars.color.text.primary,
+    transition: 'color 0.2s ease-in-out',
+  },
+  off: {
+    color: vars.color.text.tertiary,
+    transition: 'color 0.2s ease-in-out',
+  },
 });
 
 const baseToggle = style({
@@ -33,7 +44,7 @@ export const toggle = styleVariants({
   off: [
     baseToggle,
     {
-      backgroundColor: vars.color.text.tertiary,
+      backgroundColor: vars.color.bg.secondary,
     },
   ],
 });
@@ -45,7 +56,7 @@ const baseToggleCursor = style({
   position: 'absolute',
   top: TOGGLE_PADDING,
   transition: 'transform 0.2s ease-in-out',
-  backgroundColor: vars.color.text.primary,
+  backgroundColor: vars.color.bg.primary,
 });
 
 export const toggleCursor = styleVariants({
@@ -64,5 +75,13 @@ export const toggleCursor = styleVariants({
 });
 
 export const input = style({
-  display: 'none',
+  position: 'absolute',
+  opacity: 0,
+  pointerEvents: 'none',
+});
+
+globalStyle(`${input}:focus + ${baseToggle}`, {
+  // boxShadow: `0 0 0 0.2rem ${vars.color.accent.primary}`,
+  outline: `2px solid ${vars.color.accent.primary}`,
+  outlineOffset: '2px',
 });

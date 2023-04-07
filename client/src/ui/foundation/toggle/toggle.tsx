@@ -10,7 +10,7 @@ type Props = ComponentProps<'input'> & {
 export const Toggle = ({ ...props }: Props) => {
   return (
     <label className={styles.wrapper} htmlFor={props.id} aria-label={props.label}>
-      {props.label}
+      <span className={styles.label[props.checked ? 'on' : 'off']}>{props.label}</span>
       <input className={styles.input} type="checkbox" {...props} id={props.id} />
       <span className={styles.toggle[props.checked ? 'on' : 'off']}>
         <span className={styles.toggleCursor[props.checked ? 'on' : 'off']}></span>
