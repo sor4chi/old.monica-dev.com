@@ -15,11 +15,13 @@ export const metadata = {
 
 export default function PortfolioLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = cookies();
-  const sessionId = cookieStore.get('session_id');
+  const sessions = cookieStore.getAll();
 
-  if (!sessionId) {
-    redirect('/login');
-  }
+  console.log(sessions);
+
+  // if (!sessions) {
+  //   redirect('/login');
+  // }
 
   return (
     <DashboardHeaderProvider>
