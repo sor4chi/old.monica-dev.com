@@ -1,15 +1,15 @@
 import type { Metadata } from 'next';
 
-import { BlogsManagement } from '@/ui/feature/blog/management';
+import { BlogAdmin } from '@/ui/feature/blog/admin';
 
 export const metadata = {
   title: 'Blogs',
 } satisfies Metadata;
 
-export default async function BlogManagement() {
+export default async function BlogAdminPage() {
   return (
     <>
-      <BlogsManagement />
+      <BlogAdmin />
     </>
   );
 }

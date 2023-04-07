@@ -6,27 +6,27 @@ import { BlogTable, BlogTableFragment } from '../table';
 import { SITE_CONFIG } from '@/constant/site';
 import { clientInBrowser, gql } from '@/lib/graphql';
 
-export const BlogManagementQuery = gql`
+export const BlogAdminQuery = gql`
   ${BlogTableFragment}
 
-  query BlogTableQuery($limit: Int!, $offset: Int!, $tags: [String!]) {
+  query BlogAdminQuery($limit: Int!, $offset: Int!, $tags: [String!]) {
     blogs(input: { limit: $limit, offset: $offset, tags: $tags }) {
       ...BlogTableFragment
     }
   }
 `;
 
-export type BlogsManagementQueryResponse = {
+export type BlogAdminQueryResponse = {
   blogs: BlogTableFragmentResponse;
 };
 
-export type BlogsManagementQueryVariables = {
+export type BlogAdminQueryVariables = {
   limit: number;
   offset: number;
   tags?: string[];
 };
 
-export const BlogsManagement = () => {
+export const BlogAdmin = () => {
   const [blogs, setBlogs] = useState<BlogTableFragmentResponse | undefined>(undefined);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -34,7 +34,7 @@ export const BlogsManagement = () => {
   const loadBefore = async () => {
     setLoading(true);
     const res = await clientInBrowser
-      .request<BlogsManagementQueryResponse, BlogsManagementQueryVariables>(BlogManagementQuery, {
+      .request<BlogAdminQueryResponse, BlogAdminQueryVariables>(BlogAdminQuery, {
         limit: SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE,
         offset: page * SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE - SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE * 2,
         tags: [],
@@ -49,7 +49,7 @@ export const BlogsManagement = () => {
   const loadAfter = async () => {
     setLoading(true);
     const res = await clientInBrowser
-      .request<BlogsManagementQueryResponse, BlogsManagementQueryVariables>(BlogManagementQuery, {
+      .request<BlogAdminQueryResponse, BlogAdminQueryVariables>(BlogAdminQuery, {
         limit: SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE,
         offset: page * SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE,
         tags: [],
