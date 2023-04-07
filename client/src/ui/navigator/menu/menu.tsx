@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
 import { Logo } from '../logo';
+import { ThemeSwitch } from '../themeSwitch';
 
 import * as styles from './menu.css';
 
@@ -29,10 +30,10 @@ export const Menu = () => {
   return (
     <>
       <aside className={styles.wrapper}>
-        <div className={styles.logoContainer}>
+        <Link className={styles.logoContainer} passHref href="/">
           <Logo />
           Monica.log
-        </div>
+        </Link>
         <div className={styles.menu}>
           {MENU_ITEM_ENTRY.map(([label, { ActiveIcon, DefaultIcon, isActive, link }]) => (
             <Link className={styles.menuItem[isActive(pathname) ? 'active' : 'default']} key={label} href={link}>
@@ -41,7 +42,8 @@ export const Menu = () => {
             </Link>
           ))}
         </div>
-        <div className={styles.logout}>
+        <div className={styles.footer}>
+          <ThemeSwitch />
           <Button variant="secondary" onClick={logout}>
             Logout
           </Button>
