@@ -17,7 +17,8 @@ export const item = style({
   '@media': {
     '(hover: hover)': {
       ':hover': {
-        color: vars.color.text.secondary,
+        color: vars.color.accent.primary,
+        textDecoration: 'underline',
       },
     },
   },

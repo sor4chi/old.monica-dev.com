@@ -19,7 +19,7 @@ interface Props {
 
 export const BlogForm = ({ blog, tagOptions: _ }: Props) => {
   const [isPublished, setIsPublished] = useState(false);
-  const { setDashboardHeaderContent } = useDashboardHeader();
+  const { setDashboardHeaderContent, setTitle } = useDashboardHeader();
   const { form } = useBlogEditor();
   const { setValue } = form;
 
@@ -34,6 +34,7 @@ export const BlogForm = ({ blog, tagOptions: _ }: Props) => {
   useEffect(() => {
     if (blog) {
       setBlogToForm(blog);
+      setTitle(blog.title);
       setIsPublished(blog.publishedAt !== null);
     }
   }, [blog]);
