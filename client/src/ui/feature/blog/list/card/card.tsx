@@ -1,9 +1,9 @@
 import Link from 'next/link';
 
-import type { TagListFragmentResponse } from '../tagList';
-import { TagList, TagListFragment } from '../tagList';
+import type { TagListFragmentResponse } from '../../tagList';
+import { TagList, TagListFragment } from '../../tagList';
 
-import * as styles from './listCard.css';
+import * as styles from './card.css';
 
 import { gql } from '@/lib/graphql';
 import { Tag } from '@/ui/foundation/tag';

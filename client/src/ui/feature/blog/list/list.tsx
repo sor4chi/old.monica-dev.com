@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { BlogListCard } from '../listCard';
-
+import { BlogListCard } from './card';
 import * as styles from './list.css';
 import type { BlogListFragmentResponse, BlogListQueryResponse, BlogListQueryVariables } from './query';
 import { BlogListQuery } from './query';

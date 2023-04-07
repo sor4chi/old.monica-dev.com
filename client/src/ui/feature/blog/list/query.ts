@@ -1,5 +1,5 @@
-import type { BlogListCardFragmentResponse } from '../listCard';
-import { BlogListCardFragment } from '../listCard';
+import type { BlogListCardFragmentResponse } from './card';
+import { BlogListCardFragment } from './card';
 
 import { gql } from '@/lib/graphql';
 
