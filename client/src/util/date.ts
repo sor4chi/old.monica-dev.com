@@ -1,0 +1,40 @@
+export const formatYMD = (date: Date | string) => {
+  if (typeof date === 'string') {
+    // for safari safe-date-format
+    date = date.replace(/-/g, '/'); // replace - with /
+    date = date.replace(/T/, ' '); // replace T with a space, T means time zone
+    date = date.replace(/\..+/, ''); // delete the dot and everything after, dot means milliseconds
+  }
+
+  const d = new Date(date).toLocaleDateString('en-US', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+  return d;
+};
+
+/**
+ * Format date to YYYY.MM.DD
+ * @param date
+ * @returns YYYY.MM.DD(string)
+ */
+export const formatYYYYMMDD = (date: Date | string) => {
+  const d = new Date(date).toLocaleDateString('en-US', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+  return d.split('/').reverse().join('.');
+};
+
+export const formatYYYYMMDDHHMM = (date: Date | string) => {
+  const d = new Date(date).toLocaleDateString('ja-JP', {
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+  return d;
+};

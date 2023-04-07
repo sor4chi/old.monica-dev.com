@@ -173,7 +173,7 @@ ${injectionText}
   }
 };
 
-const fixturePath = './prisma/seeds/fixture/blogs.json';
+const fixturePath = '../server/db/seed/fixtures/blogs.json';
 
 (async () => {
   await Promise.all(

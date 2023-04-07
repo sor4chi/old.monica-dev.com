@@ -1,0 +1,62 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+directive @auth on FIELD_DEFINITION
+
+type Blog {
+  id: ID!
+  title: String!
+  slug: String!
+  description: String!
+  content: String!
+  tags: [Tag!]!
+  createdAt: String!
+  updatedAt: String!
+  publishedAt: String
+}
+
+type Tag {
+  id: ID!
+  name: String!
+  slug: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type BlogList {
+  data: [Blog!]!
+  total: Int!
+}
+
+input BlogListInput {
+  limit: Int!
+  offset: Int!
+  tags: [String!]
+}
+
+type Query {
+  blogs(input: BlogListInput!): BlogList!
+  blog(slug: String!): Blog!
+  blogById(id: ID!): Blog! @auth
+}
+
+input BlogInput {
+  title: String!
+  slug: String!
+  description: String!
+  content: String!
+  tags: [TagInput!]!
+  published: Boolean!
+}
+
+input TagInput {
+  name: String!
+  slug: String!
+}
+
+type Mutation {
+  createBlog(input: BlogInput!): Blog!
+  updateBlog(id: ID!, input: BlogInput!): Blog!
+  deleteBlog(id: ID!): Blog!
+}
