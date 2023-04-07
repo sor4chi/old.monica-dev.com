@@ -1,6 +1,6 @@
 import type { BlogTableRowFragmentResponse } from './row';
-import { BlogTableRow, BlogTableRowFragment } from './row';
-import { TABLE_ROW } from './statics';
+import { BlogTableRow, BlogTableRowFragment, BlogTableRowSkeleton } from './row';
+import { TABLE_ROW_WITH_RATIO, TABLE_ROWS, TOTAL_RATIO } from './statics';
 
 import { SITE_CONFIG } from '@/constant/site';
 import { gql } from '@/lib/graphql';
@@ -24,32 +24,38 @@ export type BlogTableFragmentResponse = {
 };
 
 interface Props {
-  blogs: BlogTableFragmentResponse;
+  blogs?: BlogTableFragmentResponse;
   page: number;
   loadBefore: () => void;
   loadAfter: () => void;
+  loading: boolean;
 }
 
-export const BlogTable = ({ blogs, loadAfter, loadBefore, page }: Props) => {
-  const maxPage = Math.ceil(blogs.total / SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE);
-
+export const BlogTable = ({ blogs, loadAfter, loadBefore, loading, page }: Props) => {
   return (
     <>
       <FT.Table>
         <FT.Head>
           <FT.Row>
-            {TABLE_ROW.map((row) => (
-              <FT.Header key={row}>{row}</FT.Header>
+            {TABLE_ROWS.map((row) => (
+              <FT.Header key={row} style={{ width: `${(TABLE_ROW_WITH_RATIO[row] / TOTAL_RATIO) * 100}%` }}>
+                {row}
+              </FT.Header>
             ))}
           </FT.Row>
         </FT.Head>
         <FT.Body>
-          {blogs.data.map((blog) => (
-            <BlogTableRow key={blog.id} blog={blog} />
-          ))}
+          {loading || blogs === undefined
+            ? new Array(SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE).fill(0).map((_, i) => <BlogTableRowSkeleton key={i} />)
+            : blogs.data.map((blog) => <BlogTableRow key={blog.id} blog={blog} />)}
         </FT.Body>
       </FT.Table>
-      <Pagination page={page} maxPage={maxPage} loadBefore={loadBefore} loadAfter={loadAfter} />
+      <Pagination
+        page={page}
+        maxPage={blogs ? Math.ceil(blogs.total / SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE) : 1}
+        loadBefore={loadBefore}
+        loadAfter={loadAfter}
+      />
     </>
   );
 };

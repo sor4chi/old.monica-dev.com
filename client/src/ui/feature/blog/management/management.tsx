@@ -26,53 +26,49 @@ export type BlogsManagementQueryVariables = {
   tags?: string[];
 };
 
-const fetchBlogs = async () => {
-  const res = await clientInBrowser.request<BlogsManagementQueryResponse, BlogsManagementQueryVariables>(
-    BlogManagementQuery,
-    {
-      limit: 10,
-      offset: 0,
-      tags: [],
-    },
-  );
-  return res.blogs;
-};
-
 export const BlogsManagement = () => {
-  const [blogs, setBlogs] = useState<BlogTableFragmentResponse | null>(null);
-  const [page, setPage] = useState(1);
+  const [blogs, setBlogs] = useState<BlogTableFragmentResponse | undefined>(undefined);
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   const loadBefore = async () => {
-    const res = await clientInBrowser.request<BlogsManagementQueryResponse, BlogsManagementQueryVariables>(
-      BlogManagementQuery,
-      {
+    setLoading(true);
+    const res = await clientInBrowser
+      .request<BlogsManagementQueryResponse, BlogsManagementQueryVariables>(BlogManagementQuery, {
         limit: SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE,
         offset: page * SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE - SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE * 2,
         tags: [],
-      },
-    );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
     setBlogs(res.blogs);
     setPage(page - 1);
   };
 
   const loadAfter = async () => {
-    const res = await clientInBrowser.request<BlogsManagementQueryResponse, BlogsManagementQueryVariables>(
-      BlogManagementQuery,
-      {
+    setLoading(true);
+    const res = await clientInBrowser
+      .request<BlogsManagementQueryResponse, BlogsManagementQueryVariables>(BlogManagementQuery, {
         limit: SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE,
         offset: page * SITE_CONFIG.BLOG_TABLE_ITEM_PER_PAGE,
         tags: [],
-      },
-    );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
     setBlogs(res.blogs);
     setPage(page + 1);
   };
 
   useEffect(() => {
-    fetchBlogs().then((blogs) => {
-      setBlogs(blogs);
-    });
+    loadAfter();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <>{blogs && <BlogTable page={page} loadBefore={loadBefore} loadAfter={loadAfter} blogs={blogs} />}</>;
+  return (
+    <>
+      <BlogTable page={page} loadBefore={loadBefore} loadAfter={loadAfter} blogs={blogs} loading={loading} />
+    </>
+  );
 };

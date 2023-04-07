@@ -4,7 +4,9 @@ import type { ReactNode } from 'react';
 import type { TagListFragmentResponse } from '../../tagList';
 import { TagList, TagListFragment } from '../../tagList';
 import type { TableRowKeys } from '../statics';
-import { TABLE_ROW } from '../statics';
+import { TABLE_ROWS } from '../statics';
+
+import * as styles from './row.css';
 
 import { gql } from '@/lib/graphql';
 import { FT } from '@/ui/foundation/table';
@@ -43,7 +45,7 @@ const getTableRowFromBlog = (blog: BlogTableRowFragmentResponse) => {
     updatedAt: formatDateNumeric(blog.updatedAt),
   } satisfies Record<TableRowKeys, ReactNode>;
 
-  return TABLE_ROW.map((row) => <FT.Data key={row}>{MAP[row]}</FT.Data>);
+  return TABLE_ROWS.map((row) => <FT.Data key={row}>{MAP[row]}</FT.Data>);
 };
 
 interface Props {
@@ -56,6 +58,18 @@ export const BlogTableRow = ({ blog }: Props) => {
   return (
     <FT.Row key={blog.id} onClick={() => router.push(`/dashboard/blog/${blog.id}`)}>
       {getTableRowFromBlog(blog)}
+    </FT.Row>
+  );
+};
+
+export const BlogTableRowSkeleton = () => {
+  return (
+    <FT.Row>
+      {TABLE_ROWS.map((row) => (
+        <FT.Data key={row}>
+          <div className={styles.skeletonStyle} />
+        </FT.Data>
+      ))}
     </FT.Row>
   );
 };
