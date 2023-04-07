@@ -3,9 +3,9 @@ import { notFound } from 'next/navigation';
 
 import { serverEnv } from '@/env/server';
 import { client, gql } from '@/lib/graphql';
-import { BlogForm } from '@/ui/feature/blog/form';
-import { BlogFormFragment } from '@/ui/feature/blog/form/body/query';
-import type { BlogFormFragmentResponse } from '@/ui/feature/blog/form/body/query';
+import { BlogForm } from '@/ui/feature/blog/editor/form';
+import { BlogFormFragment } from '@/ui/feature/blog/editor/form/body/query';
+import type { BlogFormFragmentResponse } from '@/ui/feature/blog/editor/form/body/query';
 
 interface Props {
   params: {
