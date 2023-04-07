@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
 
+import { BLOG_FORM_ID, useBlogEditor } from '../use-blog-editor';
+
 import { BlogFormBody } from './body';
 import type { BlogFormFragmentResponse } from './body/query';
-import { BLOG_FORM_ID, BlogFormProvider } from './use-blog-form';
 
 import { useDashboardHeader } from '@/hooks';
 import { Button } from '@/ui/foundation/button';
 import { Toggle } from '@/ui/foundation/toggle';
 
 interface Props {
-  blog: BlogFormFragmentResponse;
+  blog?: BlogFormFragmentResponse;
   tagOptions: {
     slug: string;
     name: string;
@@ -17,8 +18,25 @@ interface Props {
 }
 
 export const BlogForm = ({ blog, tagOptions: _ }: Props) => {
-  const [isPublished, setIsPublished] = useState(blog.publishedAt !== null);
+  const [isPublished, setIsPublished] = useState(false);
   const { setDashboardHeaderContent } = useDashboardHeader();
+  const { form } = useBlogEditor();
+  const { setValue } = form;
+
+  const setBlogToForm = (blog: BlogFormFragmentResponse) => {
+    setValue('content', blog.content);
+    setValue('description', blog.description);
+    setValue('slug', blog.slug);
+    setValue('tags', blog.tags);
+    setValue('title', blog.title);
+  };
+
+  useEffect(() => {
+    if (blog) {
+      setBlogToForm(blog);
+      setIsPublished(blog.publishedAt !== null);
+    }
+  }, [blog]);
 
   const onSubmitButtonClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -49,9 +67,5 @@ export const BlogForm = ({ blog, tagOptions: _ }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPublished]);
 
-  return (
-    <BlogFormProvider>
-      <BlogFormBody />
-    </BlogFormProvider>
-  );
+  return <BlogFormBody />;
 };

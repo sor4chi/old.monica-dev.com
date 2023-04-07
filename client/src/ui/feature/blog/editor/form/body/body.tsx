@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 import { useState } from 'react';
 
-import { BLOG_FORM_ID, useBlogForm } from '../use-blog-form';
+import { BLOG_FORM_ID, useBlogEditor } from '../../use-blog-editor';
 
 import * as styles from './body.css';
 
@@ -17,12 +17,14 @@ export const BlogFormBody = () => {
     preview: false,
   });
 
-  const { form } = useBlogForm();
+  const { form } = useBlogEditor();
   const {
     formState: { errors },
-    getValues,
     register,
+    watch,
   } = form;
+
+
 
   return (
     <form className={styles.form} id={BLOG_FORM_ID}>
@@ -82,7 +84,7 @@ export const BlogFormBody = () => {
             error={errors.content?.message}
           />
           <div className={styles.preview[contentEditorOptions.preview ? 'show' : 'hide']}>
-            <Article content={parseMarkdownToHTML(getValues('content') || '').content} />
+            <Article content={parseMarkdownToHTML(watch('content')).content} />
           </div>
         </div>
       </section>

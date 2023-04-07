@@ -21,17 +21,17 @@ const schema = z.object({
 
 type Schema = z.infer<typeof schema>;
 
-type IBlogFormContext = {
+type IBlogEditorContext = {
   form: UseFormReturn<Schema>;
 };
 
-const [useBlogForm, SetBlogFormProvider] = createCtx<IBlogFormContext>();
+const [useBlogEditor, SetBlogEditorProvider] = createCtx<IBlogEditorContext>();
 
-export { useBlogForm };
+export { useBlogEditor };
 
 export const BLOG_FORM_ID = 'blogForm';
 
-const useBlogFormCtx = (): IBlogFormContext => {
+const useBlogEditorCtx = (): IBlogEditorContext => {
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
   });
@@ -45,7 +45,7 @@ interface Props {
   children: ReactNode;
 }
 
-export const BlogFormProvider = ({ children }: Props) => {
-  const BlogForm = useBlogFormCtx();
-  return <SetBlogFormProvider value={BlogForm}>{children}</SetBlogFormProvider>;
+export const BlogEditorProvider = ({ children }: Props) => {
+  const BlogEditor = useBlogEditorCtx();
+  return <SetBlogEditorProvider value={BlogEditor}>{children}</SetBlogEditorProvider>;
 };

@@ -55,8 +55,18 @@ interface Props {
 export const BlogTableRow = ({ blog }: Props) => {
   const router = useRouter();
 
+  const handleClick = () => {
+    router.push(`/dashboard/blog/${blog.id}`);
+  };
+
+  const handleEnter = (event: React.KeyboardEvent<HTMLTableRowElement>) => {
+    if (event.key === 'Enter') {
+      handleClick();
+    }
+  };
+
   return (
-    <FT.Row key={blog.id} onClick={() => router.push(`/dashboard/blog/${blog.id}`)}>
+    <FT.Row key={blog.id} onClick={handleClick} onKeyPress={handleEnter} tabIndex={0} area-label={blog.title}>
       {getTableRowFromBlog(blog)}
     </FT.Row>
   );

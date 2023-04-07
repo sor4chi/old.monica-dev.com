@@ -4,6 +4,7 @@ export const colorVars = createThemeContract({
   bg: {
     primary: '',
     secondary: '',
+    tertiary: '',
   },
   text: {
     primary: '',
