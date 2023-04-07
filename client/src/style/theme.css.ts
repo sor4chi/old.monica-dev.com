@@ -23,6 +23,7 @@ createGlobalTheme('.light', colorVars, {
   bg: {
     primary: '#ffffff',
     secondary: '#EDF2F7',
+    tertiary: '#dde6f0',
   },
   text: {
     primary: '#1F262D',
@@ -46,6 +47,7 @@ createGlobalTheme('.dark', colorVars, {
   bg: {
     primary: '#1F262D',
     secondary: '#2F3A45',
+    tertiary: '#3F5267',
   },
   text: {
     primary: '#EDF2F7',

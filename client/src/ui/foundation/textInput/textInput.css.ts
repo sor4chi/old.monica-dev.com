@@ -24,11 +24,12 @@ export const input = style({
   backgroundColor: vars.color.bg.secondary,
   backgroundClip: 'padding-box',
   transition: 'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
+  outline: `1px solid ${vars.color.bg.tertiary}`,
 
   ':focus': {
     borderColor: vars.color.accent.primary,
     outline: 'none',
-    boxShadow: `0 0 0 0.1rem ${vars.color.accent.primary}`,
+    boxShadow: `0 0 0 0.2rem ${vars.color.accent.primary}`,
   },
 
   '::placeholder': {
