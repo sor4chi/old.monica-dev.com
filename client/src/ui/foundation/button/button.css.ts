@@ -35,7 +35,7 @@ export const variant = styleVariants({
   },
   secondary: {
     color: vars.color.text.primary,
-    backgroundColor: vars.color.bg.primary,
+    backgroundColor: vars.color.bg.secondary,
     borderWidth: BUTTON_BORDER_WIDTH,
     borderStyle: 'solid',
     borderColor: vars.color.accent.secondary,
@@ -43,7 +43,7 @@ export const variant = styleVariants({
     '@media': {
       '(hover: hover)': {
         ':hover': {
-          backgroundColor: vars.color.bg.secondary,
+          backgroundColor: vars.color.bg.tertiary,
           borderColor: vars.color.accent.primary,
         },
       },

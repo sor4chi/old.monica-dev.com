@@ -6,8 +6,8 @@ import { LoginForm } from '@/ui/feature/account/login';
 
 export default async function Login() {
   return (
-    <div className={styles.card}>
-      <h1 className={styles.title}>Monica Portfolio</h1>
+    <div className={styles.wrapper}>
+      <h1 className={styles.title}>Login</h1>
       <LoginForm />
       <Link href="/" passHref className={styles.backLink}>
         Back to top
