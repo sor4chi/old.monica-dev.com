@@ -7,7 +7,7 @@ import * as styles from './hero.css';
 
 import { gql } from '@/lib/graphql';
 import { Text } from '@/ui/foundation/text';
-import { formatYYYYMMDD } from '@/util/date';
+import { formatDateNumeric } from '@/util/date';
 
 export const BlogHeroFragment = gql`
   ${TagListFragment}
@@ -42,11 +42,11 @@ export const BlogHero = ({ blog }: Props) => {
       <div className={styles.meta}>
         <div className={styles.metaItem}>
           <span className={styles.metaLabel}>Created at</span>
-          <span>{formatYYYYMMDD(blog.createdAt)}</span>
+          <span>{formatDateNumeric(blog.createdAt)}</span>
         </div>
         <div className={styles.metaItem}>
           <span className={styles.metaLabel}>Updated at</span>
-          <span>{formatYYYYMMDD(blog.updatedAt)}</span>
+          <span>{formatDateNumeric(blog.updatedAt)}</span>
         </div>
         <div className={clsx(styles.metaItem, styles.tagList)}>
           <span className={styles.metaLabel}>Tags</span>

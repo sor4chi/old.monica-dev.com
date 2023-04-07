@@ -16,17 +16,19 @@ import { SITE_CONFIG } from '@/constant/site';
 import { client } from '@/lib/graphql';
 import { Pagination } from '@/ui/foundation/pagination';
 import { FT } from '@/ui/foundation/table';
-import { formatYYYYMMDD } from '@/util/date';
+import { formatDateNumeric } from '@/util/date';
 
 const TABLE_ROW = ['title', 'createdAt', 'updatedAt', 'publishedAt', 'tags'] as const;
+type TableRowKeys = (typeof TABLE_ROW)[number];
+
 const getTableRowFromBlog = (blog: BlogTableRowFragmentResponse) => {
   const MAP = {
-    createdAt: formatYYYYMMDD(blog.createdAt),
-    publishedAt: blog.publishedAt ? `✅ ${formatYYYYMMDD(blog.publishedAt)}` : '❌',
+    createdAt: formatDateNumeric(blog.createdAt),
+    publishedAt: blog.publishedAt ? `✅ ${formatDateNumeric(blog.publishedAt)}` : '❌',
     tags: <TagList tags={blog.tags} hrefGenerator={(tag) => `/dashboard/blog?tag=${tag}`} />,
     title: blog.title,
-    updatedAt: formatYYYYMMDD(blog.updatedAt),
-  } satisfies Record<(typeof TABLE_ROW)[number], ReactNode>;
+    updatedAt: formatDateNumeric(blog.updatedAt),
+  } satisfies Record<TableRowKeys, ReactNode>;
 
   return TABLE_ROW.map((row) => <FT.Data key={row}>{MAP[row]}</FT.Data>);
 };

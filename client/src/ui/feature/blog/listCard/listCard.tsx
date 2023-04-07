@@ -8,7 +8,7 @@ import * as styles from './listCard.css';
 import { gql } from '@/lib/graphql';
 import { Tag } from '@/ui/foundation/tag';
 import { Text } from '@/ui/foundation/text';
-import { formatYMD } from '@/util/date';
+import { formatDateEn } from '@/util/date';
 
 export const BlogListCardFragment = gql`
   ${TagListFragment}
@@ -45,7 +45,7 @@ const LINKS = {
 
 export const BlogListCard = ({ blog }: Props) => (
   <li className={styles.item}>
-    <time className={styles.date}>{formatYMD(blog.createdAt)}</time>
+    <time className={styles.date}>{formatDateEn(blog.createdAt)}</time>
     <Link href={LINKS.blog(blog.slug)} className={styles.link} passHref>
       <h2 className={styles.title}>
         <Text value={blog.title} />
