@@ -25,9 +25,12 @@ export const tocTop = style({
   padding: '0 !important',
 });
 
+const TOC_ITEM_LINE_HEIGHT = '1.5rem';
+
 export const tocItem = style({
   fontSize: '1rem',
-  lineHeight: 2,
+  lineHeight: TOC_ITEM_LINE_HEIGHT,
+  marginBottom: '0.5rem',
   position: 'relative',
 });
 
@@ -48,7 +51,7 @@ export const tocActive = style({
   ':before': {
     content: '""',
     position: 'absolute',
-    top: '50%',
+    top: `calc(${TOC_ITEM_LINE_HEIGHT} / 2)`,
     left: '-1rem',
     transform: 'translateY(-50%)',
     backgroundColor: vars.color.accent.primary,

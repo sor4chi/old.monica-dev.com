@@ -53,7 +53,7 @@ createGlobalTheme('.dark', colorVars, {
     tertiary: '#b2b9c6',
   },
   accent: {
-    primary: '#708db3',
+    primary: '#859fc2',
     secondary: '#627fa8',
   },
   social: {

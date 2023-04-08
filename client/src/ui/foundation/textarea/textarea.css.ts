@@ -4,7 +4,6 @@ import { vars } from '@/style/theme.css';
 
 export const wrapper = style({
   width: '100%',
-  display: 'flex',
 });
 
 export const label = style({
