@@ -6,7 +6,6 @@ import { TagList, TagListFragment } from '../../tagList';
 import * as styles from './card.css';
 
 import { gql } from '@/lib/graphql';
-import { Tag } from '@/ui/foundation/tag';
 import { Text } from '@/ui/foundation/text';
 import { formatDateEn } from '@/util/date';
 
@@ -18,7 +17,6 @@ export const BlogListCardFragment = gql`
     title
     description
     createdAt
-    publishedAt
     tags {
       ...TagListFragment
     }
@@ -30,7 +28,6 @@ export type BlogListCardFragmentResponse = {
   title: string;
   description: string;
   createdAt: string;
-  publishedAt: string;
   tags: TagListFragmentResponse[];
 };
 
@@ -49,7 +46,6 @@ export const BlogListCard = ({ blog }: Props) => (
     <Link href={LINKS.blog(blog.slug)} className={styles.link} passHref>
       <h2 className={styles.title}>
         <Text value={blog.title} />
-        {!blog.publishedAt && <Tag variant="danger">Draft</Tag>}
       </h2>
       <p className={styles.description}>{blog.description}</p>
     </Link>

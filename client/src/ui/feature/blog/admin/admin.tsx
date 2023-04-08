@@ -10,7 +10,7 @@ export const BlogAdminQuery = gql`
   ${BlogTableFragment}
 
   query BlogAdminQuery($limit: Int!, $offset: Int!, $tags: [String!]) {
-    blogs(input: { limit: $limit, offset: $offset, tags: $tags }) {
+    blogs: blogsAll(input: { limit: $limit, offset: $offset, tags: $tags }) {
       ...BlogTableFragment
     }
   }
