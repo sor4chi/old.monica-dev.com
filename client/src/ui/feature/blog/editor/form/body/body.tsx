@@ -98,7 +98,7 @@ export const BlogEditorFormBody = ({ tagsOptions }: Props) => {
           <div className={styles.contentEditorOptions}>
             <Toggle
               id="toggle-fullscreen"
-              label="フルスクリーンで編集"
+              label="Fullscreen"
               checked={contentEditorOptions.fullscreen}
               onChange={() =>
                 setContentEditorOptions({ ...contentEditorOptions, fullscreen: !contentEditorOptions.fullscreen })
@@ -106,7 +106,7 @@ export const BlogEditorFormBody = ({ tagsOptions }: Props) => {
             />
             <Toggle
               id="toggle-show-preview"
-              label="プレビューを表示"
+              label="Preview"
               checked={contentEditorOptions.preview}
               onChange={() =>
                 setContentEditorOptions({ ...contentEditorOptions, preview: !contentEditorOptions.preview })

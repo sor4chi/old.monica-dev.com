@@ -34,9 +34,10 @@ type BlogDetailPageQueryVariables = {
 
 interface Props {
   id?: string;
+  mode: 'create' | 'edit';
 }
 
-export const BlogEditor = ({ id }: Props) => {
+export const BlogEditor = ({ id, mode }: Props) => {
   const [blog, setBlog] = useState<BlogEditorFormFragmentResponse | undefined>(undefined);
   const [tagsOptions, setTagsOptions] = useState<BlogEditorFormTagFragmentResponse[]>([]);
 
@@ -61,7 +62,7 @@ export const BlogEditor = ({ id }: Props) => {
 
   return (
     <BlogEditorProvider>
-      <BlogEditorForm blog={blog} tagsOptions={tagsOptions} />
+      <BlogEditorForm blog={blog} tagsOptions={tagsOptions} mode={mode} />
     </BlogEditorProvider>
   );
 };

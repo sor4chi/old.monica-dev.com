@@ -15,7 +15,7 @@ export const metadata = {
 export default async function BlogDetail({ params }: Props) {
   return (
     <>
-      <BlogEditor id={params.id} />
+      <BlogEditor id={params.id} mode="edit" />
     </>
   );
 }

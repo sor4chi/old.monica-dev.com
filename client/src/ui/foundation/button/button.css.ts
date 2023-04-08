@@ -7,6 +7,7 @@ const BUTTON_BORDER_WIDTH = '0.125rem';
 export const button = style({
   borderRadius: '0.5rem',
   fontSize: '1rem',
+  lineHeight: '1.25rem',
   cursor: 'pointer',
   width: 'fit-content',
   whiteSpace: 'nowrap',
@@ -15,6 +16,7 @@ export const button = style({
   gap: '0.5rem',
   boxSizing: 'border-box',
   transition: 'background-color 0.2s ease-in-out, border-color 0.2s ease-in-out',
+  padding: '0.5rem 1rem',
 
   ':focus-visible': {
     outline: `2px solid ${vars.color.accent.primary}`,
