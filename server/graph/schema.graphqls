@@ -38,6 +38,7 @@ input BlogListInput {
 type Query {
   blogs(input: BlogListInput!): BlogList!
   blog(slug: String!): Blog!
+  blogsAll(input: BlogListInput!): BlogList! @auth
   blogById(id: ID!): Blog! @auth
   tags: [Tag!]!
 }
