@@ -20,4 +20,5 @@ export const colorVars = createThemeContract({
     github: '',
   },
   error: '',
+  success: '',
 });

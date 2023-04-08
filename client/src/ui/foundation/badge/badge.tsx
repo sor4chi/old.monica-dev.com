@@ -4,7 +4,7 @@ import * as styles from './badge.css';
 
 interface Props {
   children: ReactNode;
-  variant?: 'info' | 'danger';
+  variant?: 'success' | 'danger';
 }
 
-export const Badge = ({ children, variant = 'info' }: Props) => <span className={styles.badge[variant]}>{children}</span>;
+export const Badge = ({ children, variant = 'success' }: Props) => <span className={styles.badge[variant]}>{children}</span>;

@@ -40,7 +40,7 @@ export type BlogTableRowFragmentResponse = {
 const getTableRowFromBlog = (blog: BlogTableRowFragmentResponse) => {
   const MAP = {
     createdAt: formatDateNumeric(blog.createdAt),
-    publishedAt: blog.publishedAt ? <Badge variant="info">Published</Badge> : <Badge variant="danger">Draft</Badge>,
+    status: blog.publishedAt ? <Badge variant="success">Published</Badge> : <Badge variant="danger">Draft</Badge>,
     tags: <TagList tags={blog.tags} hrefGenerator={(tag) => `/dashboard/blog?tag=${tag}`} />,
     title: blog.title,
     updatedAt: formatDateNumeric(blog.updatedAt),

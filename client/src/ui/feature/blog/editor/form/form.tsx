@@ -62,7 +62,7 @@ export const BlogEditorForm = ({ blog, mode, tagsOptions }: Props) => {
     setDashboardHeaderContent(
       <>
         {mode === 'edit' && blog?.publishedAt && (
-          <Link href={`/blog/${blog.slug}`} passHref className={styles.link}>
+          <Link href={`/blog/${blog.slug}`} passHref className={styles.link} target="_blank">
             View
             <MdOpenInNew className={styles.linkIcon} />
           </Link>

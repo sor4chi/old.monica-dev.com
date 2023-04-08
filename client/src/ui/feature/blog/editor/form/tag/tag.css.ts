@@ -10,6 +10,7 @@ export const container = style({
 export const tags = style({
   display: 'flex',
   alignItems: 'center',
+  alignContent: 'flex-start',
   gap: '0.5rem',
   flexWrap: 'wrap',
   height: '12rem',

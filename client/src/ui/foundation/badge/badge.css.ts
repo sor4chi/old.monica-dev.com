@@ -9,7 +9,7 @@ const baseBadge = style({
   borderRadius: '0.25rem',
   fontSize: '1em',
   lineHeight: 1,
-  color: vars.color.text.primary,
+  color: 'white', // fixed for contrast a11y
   backgroundColor: vars.color.error,
   whiteSpace: 'nowrap',
   userSelect: 'none',
@@ -22,10 +22,10 @@ export const badge = styleVariants({
       backgroundColor: vars.color.error,
     },
   ],
-  info: [
+  success: [
     baseBadge,
     {
-      backgroundColor: vars.color.accent.secondary,
+      backgroundColor: vars.color.success,
     },
   ],
 });

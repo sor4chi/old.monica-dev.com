@@ -38,7 +38,7 @@ export const BlogEditorFormTag = ({ tagsOptions }: Props) => {
     <div className={styles.container}>
       <label className={styles.label}>Tags</label>
       <div className={styles.tags}>
-        {tagsOptions.map((tag) => (
+        {tagsOptions.slice(10,19).map((tag) => (
           <Checkbox
             key={tag.slug}
             label={tag.name}

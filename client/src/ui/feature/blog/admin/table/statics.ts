@@ -1,9 +1,9 @@
-export const TABLE_ROWS = ['title', 'tags', 'createdAt', 'updatedAt', 'publishedAt'] as const;
+export const TABLE_ROWS = ['status', 'title', 'tags', 'createdAt', 'updatedAt'] as const;
 export type TableRowKeys = (typeof TABLE_ROWS)[number];
 
 export const TABLE_ROW_WITH_RATIO = {
   createdAt: 1,
-  publishedAt: 1,
+  status: 1,
   tags: 3,
   title: 3,
   updatedAt: 1,
