@@ -3873,7 +3873,7 @@ func (ec *executionContext) unmarshalInputBlogInput(ctx context.Context, obj int
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"title", "slug", "description", "content", "tags", "published"}
+	fieldsInOrder := [...]string{"title", "slug", "description", "content", "tagIds", "published"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -3912,11 +3912,11 @@ func (ec *executionContext) unmarshalInputBlogInput(ctx context.Context, obj int
 			if err != nil {
 				return it, err
 			}
-		case "tags":
+		case "tagIds":
 			var err error
 
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tags"))
-			it.Tags, err = ec.unmarshalNTagInput2ᚕᚖgithubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐTagInputᚄ(ctx, v)
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tagIds"))
+			it.TagIds, err = ec.unmarshalNID2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -4851,6 +4851,38 @@ func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.Selec
 	return res
 }
 
+func (ec *executionContext) unmarshalNID2ᚕstringᚄ(ctx context.Context, v interface{}) ([]string, error) {
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]string, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNID2string(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalNID2ᚕstringᚄ(ctx context.Context, sel ast.SelectionSet, v []string) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	for i := range v {
+		ret[i] = ec.marshalNID2string(ctx, sel, v[i])
+	}
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
 func (ec *executionContext) unmarshalNInt2int(ctx context.Context, v interface{}) (int, error) {
 	res, err := graphql.UnmarshalInt(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -4933,28 +4965,6 @@ func (ec *executionContext) marshalNTag2ᚖgithubᚗcomᚋsor4chiᚋportfolioᚑ
 		return graphql.Null
 	}
 	return ec._Tag(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalNTagInput2ᚕᚖgithubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐTagInputᚄ(ctx context.Context, v interface{}) ([]*model.TagInput, error) {
-	var vSlice []interface{}
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
-	var err error
-	res := make([]*model.TagInput, len(vSlice))
-	for i := range vSlice {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNTagInput2ᚖgithubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐTagInput(ctx, vSlice[i])
-		if err != nil {
-			return nil, err
-		}
-	}
-	return res, nil
-}
-
-func (ec *executionContext) unmarshalNTagInput2ᚖgithubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐTagInput(ctx context.Context, v interface{}) (*model.TagInput, error) {
-	res, err := ec.unmarshalInputTagInput(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalN__Directive2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐDirective(ctx context.Context, sel ast.SelectionSet, v introspection.Directive) graphql.Marshaler {

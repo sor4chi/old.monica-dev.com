@@ -45,19 +45,16 @@ func (r *mutationResolver) CreateBlog(ctx context.Context, input model.BlogInput
 		return nil, err
 	}
 
-	var tagsIds []int32
-	for _, tag := range input.Tags {
-		t, err := ts.CreateTag(&entity.Tag{
-			Slug: tag.Slug,
-			Name: tag.Name,
-		})
+	var tagIds []int32
+	for _, id := range input.TagIds {
+		intId, err := strconv.ParseInt(id, 10, 32)
 		if err != nil {
 			return nil, err
 		}
-		tagsIds = append(tagsIds, t.ID)
+		tagIds = append(tagIds, int32(intId))
 	}
 
-	err = ts.CreateBlogTags(blog.ID, tagsIds)
+	err = ts.CreateBlogTags(blog.ID, tagIds)
 	if err != nil {
 		return nil, err
 	}

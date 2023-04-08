@@ -48,7 +48,7 @@ input BlogInput {
   slug: String!
   description: String!
   content: String!
-  tags: [TagInput!]!
+  tagIds: [ID!]!
   published: Boolean!
 }
 

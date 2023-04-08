@@ -15,12 +15,12 @@ type Blog struct {
 }
 
 type BlogInput struct {
-	Title       string      `json:"title"`
-	Slug        string      `json:"slug"`
-	Description string      `json:"description"`
-	Content     string      `json:"content"`
-	Tags        []*TagInput `json:"tags"`
-	Published   bool        `json:"published"`
+	Title       string   `json:"title"`
+	Slug        string   `json:"slug"`
+	Description string   `json:"description"`
+	Content     string   `json:"content"`
+	TagIds      []string `json:"tagIds"`
+	Published   bool     `json:"published"`
 }
 
 type BlogList struct {
