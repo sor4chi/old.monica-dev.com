@@ -64,7 +64,7 @@ export const Toc = ({ toc }: { toc: TocItemProps[] }) => {
   return (
     <section className={styles.toc}>
       <p className={styles.tocTitle}>目次</p>
-      {toc.length === 0 && <p>目次はありません</p>}
+      {toc.length === 0 && <p>見出しがありません</p>}
       {toc.map((toc) => (
         <TocItem {...toc} key={toc.value} />
       ))}
