@@ -1,6 +1,9 @@
 import { clsx } from 'clsx';
 import { useState } from 'react';
+import type { Control } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 
+import type { BlogFormSchema } from '../../use-blog-editor';
 import { BLOG_FORM_ID, useBlogEditor } from '../../use-blog-editor';
 import { BlogEditorFormTag } from '../tag';
 
@@ -59,9 +62,9 @@ export const BlogEditorFormBody = ({ tagsOptions }: Props) => {
 
   const { form } = useBlogEditor();
   const {
+    control,
     formState: { errors },
     register,
-    watch,
   } = form;
 
   return (
@@ -123,10 +126,19 @@ export const BlogEditorFormBody = ({ tagsOptions }: Props) => {
             error={errors.content?.message}
           />
           <div className={styles.preview[contentEditorOptions.preview ? 'show' : 'hide']}>
-            <Article content={parseMarkdownToHTML(watch('content')).content} />
+            <BlogContentPreview control={control} />
           </div>
         </div>
       </section>
     </form>
   );
+};
+
+const BlogContentPreview = ({ control }: { control: Control<BlogFormSchema> }) => {
+  const content = useWatch({
+    control,
+    name: 'content',
+  });
+
+  return <Article content={parseMarkdownToHTML(content).content} />;
 };
