@@ -1,4 +1,5 @@
 import type { ComponentProps } from 'react';
+import { forwardRef, memo } from 'react';
 
 import * as styles from './toggle.css';
 
@@ -7,14 +8,20 @@ type Props = ComponentProps<'input'> & {
   id: string;
 };
 
-export const Toggle = ({ ...props }: Props) => {
+const _Toggle = forwardRef<HTMLInputElement, Props>(({ id, label, ...props }, ref) => {
   return (
-    <label className={styles.wrapper} htmlFor={props.id} aria-label={props.label}>
-      <span className={styles.label[props.checked ? 'on' : 'off']}>{props.label}</span>
-      <input className={styles.input} type="checkbox" {...props} id={props.id} />
-      <span className={styles.toggle[props.checked ? 'on' : 'off']}>
-        <span className={styles.toggleCursor[props.checked ? 'on' : 'off']}></span>
+    <label htmlFor={id}>
+      <input className={styles.input} type="checkbox" {...props} id={id} ref={ref} />
+      <span className={styles.toggleWrapper}>
+        <span className={styles.label}>{label}</span>
+        <span className={styles.toggle}>
+          <span className={styles.toggleCursor}></span>
+        </span>
       </span>
     </label>
   );
-};
+});
+
+_Toggle.displayName = 'Toggle';
+
+export const Toggle = memo(_Toggle);
