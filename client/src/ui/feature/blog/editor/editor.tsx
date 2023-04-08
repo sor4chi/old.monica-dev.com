@@ -32,17 +32,34 @@ type BlogDetailPageQueryVariables = {
   id: string;
 };
 
+const BlogCreatePageQuery = gql`
+  ${BlogEditorFormTagFragment}
+
+  query BlogCreateQuery {
+    tags: tags {
+      ...BlogEditorFormTagFragment
+    }
+  }
+`;
+
+type BlogCreatePageQueryResponse = {
+  tags: BlogEditorFormTagFragmentResponse[];
+  blog: undefined;
+};
+
 interface Props {
   id?: string;
-  mode: 'create' | 'edit';
 }
 
-export const BlogEditor = ({ id, mode }: Props) => {
+export const BlogEditor = ({ id }: Props) => {
   const [blog, setBlog] = useState<BlogEditorFormFragmentResponse | undefined>(undefined);
   const [tagsOptions, setTagsOptions] = useState<BlogEditorFormTagFragmentResponse[]>([]);
 
-  const fetches = async () => {
-    if (!id) return;
+  const fetches = async (): Promise<BlogDetailPageQueryResponse | BlogCreatePageQueryResponse> => {
+    if (!id) {
+      const res = await clientInBrowser.request<BlogCreatePageQueryResponse>(BlogCreatePageQuery);
+      return res;
+    }
     const res = await clientInBrowser.request<BlogDetailPageQueryResponse, BlogDetailPageQueryVariables>(
       BlogDetailPageQuery,
       {
@@ -62,7 +79,7 @@ export const BlogEditor = ({ id, mode }: Props) => {
 
   return (
     <BlogEditorProvider>
-      <BlogEditorForm blog={blog} tagsOptions={tagsOptions} mode={mode} />
+      <BlogEditorForm blog={blog} tagsOptions={tagsOptions} mode={id ? 'edit' : 'create'} />
     </BlogEditorProvider>
   );
 };

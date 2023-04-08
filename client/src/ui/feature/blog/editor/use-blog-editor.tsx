@@ -15,10 +15,10 @@ const schema = z.object({
   title: z.string().min(1, { message: 'タイトルを入力してください' }),
 });
 
-type Schema = z.infer<typeof schema>;
+export type BlogFormSchema = z.infer<typeof schema>;
 
 type IBlogEditorContext = {
-  form: UseFormReturn<Schema>;
+  form: UseFormReturn<BlogFormSchema>;
 };
 
 const [useBlogEditor, SetBlogEditorProvider] = createCtx<IBlogEditorContext>();
@@ -28,7 +28,7 @@ export { useBlogEditor };
 export const BLOG_FORM_ID = 'blogForm';
 
 const useBlogEditorCtx = (): IBlogEditorContext => {
-  const form = useForm<Schema>({
+  const form = useForm<BlogFormSchema>({
     resolver: zodResolver(schema),
   });
 

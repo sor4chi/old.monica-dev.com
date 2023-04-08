@@ -18,9 +18,13 @@ export const Breadcrumb = ({ last }: Props) => {
         link += `/${segment}`;
         return (
           <Fragment key={i}>
-            <Link className={styles.item} href={link}>
-              {i === segments.length - 1 && last ? last : segment}
-            </Link>
+            {i === segments.length - 1 ? (
+              <span className={styles.itemText}>{last || segment}</span>
+            ) : (
+              <Link className={styles.itemLink} href={link}>
+                {segment}
+              </Link>
+            )}
             {i < segments.length - 1 && <span className={styles.separator}>/</span>}
           </Fragment>
         );

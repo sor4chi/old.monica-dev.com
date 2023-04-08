@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useEffect } from 'react';
+import { useWatch } from 'react-hook-form';
 import { MdOpenInNew } from 'react-icons/md';
 
 import { BLOG_FORM_ID, useBlogEditor } from '../use-blog-editor';
@@ -22,7 +23,7 @@ interface Props {
 export const BlogEditorForm = ({ blog, mode, tagsOptions }: Props) => {
   const { setDashboardHeaderContent, setTitle } = useDashboardHeader();
   const { form } = useBlogEditor();
-  const { getValues, register, setValue } = form;
+  const { control, getValues, register, setValue } = form;
 
   useEffect(() => {
     if (!blog) return;
@@ -37,6 +38,19 @@ export const BlogEditorForm = ({ blog, mode, tagsOptions }: Props) => {
     setValue('isPublished', blog.publishedAt !== null);
     setTitle(blog.title);
   }, [blog, setValue, setTitle]);
+
+  const title = useWatch({
+    control,
+    name: 'title',
+  });
+
+  useEffect(() => {
+    setTitle(title);
+
+    return () => {
+      setTitle('');
+    };
+  }, [title, setTitle]);
 
   const onSubmitButtonClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();

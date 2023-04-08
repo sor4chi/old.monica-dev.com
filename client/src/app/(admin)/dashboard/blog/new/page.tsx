@@ -2,20 +2,14 @@ import type { Metadata } from 'next';
 
 import { BlogEditor } from '@/ui/feature/blog/editor';
 
-interface Props {
-  params: {
-    id: string;
-  };
-}
-
 export const metadata = {
-  title: 'Blogs - Edit',
+  title: 'Blogs - Create',
 } satisfies Metadata;
 
-export default async function BlogDetail({ params }: Props) {
+export default async function BlogDetail() {
   return (
     <>
-      <BlogEditor id={params.id} />
+      <BlogEditor />
     </>
   );
 }
