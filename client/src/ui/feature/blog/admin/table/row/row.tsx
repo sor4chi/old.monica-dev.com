@@ -1,8 +1,8 @@
 import { useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
 
-import type { TagListFragmentResponse } from '../../tagList';
-import { TagList, TagListFragment } from '../../tagList';
+import type { TagListFragmentResponse } from '../../../tagList';
+import { TagList, TagListFragment } from '../../../tagList';
 import type { TableRowKeys } from '../statics';
 import { TABLE_ROWS } from '../statics';
 

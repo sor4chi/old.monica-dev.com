@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import type { BlogTableFragmentResponse } from '../table';
-import { BlogTable, BlogTableFragment } from '../table';
+import type { BlogTableFragmentResponse } from './table';
+import { BlogTable, BlogTableFragment } from './table';
 
 import { SITE_CONFIG } from '@/constant/site';
 import { clientInBrowser, gql } from '@/lib/graphql';
@@ -63,7 +63,7 @@ export const BlogAdmin = () => {
 
   useEffect(() => {
     loadAfter();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
