@@ -79,7 +79,8 @@ export const BlogEditor = ({ id }: Props) => {
 
   return (
     <BlogEditorProvider>
-      <BlogEditorForm blog={blog} tagsOptions={tagsOptions} mode={id ? 'edit' : 'create'} />
+      <BlogEditorForm blog={blog} setBlog={setBlog}
+       tagsOptions={tagsOptions} />
     </BlogEditorProvider>
   );
 };

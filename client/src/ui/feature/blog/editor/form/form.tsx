@@ -31,24 +31,45 @@ type BlogCreateMutationResponse = {
   blog: BlogEditorFormFragmentResponse;
 };
 
+type BlogInput = {
+  content: string;
+  description: string;
+  published: boolean;
+  slug: string;
+  tagIds: number[];
+  title: string;
+};
+
 type BlogCreateMutationVariables = {
-  input: {
-    content: string;
-    description: string;
-    slug: string;
-    tagIds: number[];
-    title: string;
-    published: boolean;
-  };
+  input: BlogInput;
+};
+
+const BlogUpdateMutation = gql`
+  ${BlogEditorFormFragment}
+
+  mutation BlogUpdateMutation($id: ID!, $input: BlogInput!) {
+    blog: updateBlog(id: $id, input: $input) {
+      ...BlogEditorFormFragment
+    }
+  }
+`;
+
+type BlogUpdateMutationResponse = {
+  blog: BlogEditorFormFragmentResponse;
+};
+
+type BlogUpdateMutationVariables = {
+  id: number;
+  input: BlogInput;
 };
 
 interface Props {
   blog?: BlogEditorFormFragmentResponse;
+  setBlog: (blog: BlogEditorFormFragmentResponse) => void;
   tagsOptions: BlogEditorFormTagFragmentResponse[];
-  mode: 'create' | 'edit';
 }
 
-export const BlogEditorForm = ({ blog, mode, tagsOptions }: Props) => {
+export const BlogEditorForm = ({ blog, setBlog, tagsOptions }: Props) => {
   const { setDashboardHeaderContent, setTitle } = useDashboardHeader();
   const { form } = useBlogEditor();
   const { control, register, setValue } = form;
@@ -90,8 +111,8 @@ export const BlogEditorForm = ({ blog, mode, tagsOptions }: Props) => {
   }, [title, setTitle]);
 
   const onSubmit = async (data: BlogFormSchema) => {
-    if (mode === 'create') {
-      const response = await clientInBrowser.request<BlogCreateMutationResponse, BlogCreateMutationVariables>(
+    if (!blog) {
+      const res = await clientInBrowser.request<BlogCreateMutationResponse, BlogCreateMutationVariables>(
         BlogCreateMutation,
         {
           input: {
@@ -104,14 +125,31 @@ export const BlogEditorForm = ({ blog, mode, tagsOptions }: Props) => {
           },
         },
       );
-      router.push(`/dashboard/blog/${response.blog.id}`);
+      router.push(`/dashboard/blog/${res.blog.id}`);
+      return;
     }
+    const res = await clientInBrowser.request<BlogUpdateMutationResponse, BlogUpdateMutationVariables>(
+      BlogUpdateMutation,
+      {
+        id: blog.id,
+        input: {
+          content: data.content,
+          description: data.description,
+          published: data.isPublished,
+          slug: data.slug,
+          tagIds: data.tagIds,
+          title: data.title,
+        },
+      },
+    );
+
+    setBlog(res.blog);
   };
 
   useEffect(() => {
     setDashboardHeaderContent(
       <>
-        {mode === 'edit' && blog?.publishedAt && (
+        {blog?.publishedAt && (
           <Link href={`/blog/${blog.slug}`} passHref className={styles.link} target="_blank">
             View
             <MdOpenInNew className={styles.linkIcon} />
@@ -119,7 +157,7 @@ export const BlogEditorForm = ({ blog, mode, tagsOptions }: Props) => {
         )}
         <Toggle label="Publish" id="toggle-publish" {...register('isPublished')} />
         <Button type="submit" form={BLOG_FORM_ID}>
-          {mode === 'create' ? 'Create' : 'Update'}
+          {blog ? 'Update' : 'Create'}
         </Button>
       </>,
     );
