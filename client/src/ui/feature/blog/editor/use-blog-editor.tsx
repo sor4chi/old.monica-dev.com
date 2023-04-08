@@ -11,7 +11,10 @@ const schema = z.object({
   description: z.string().min(1, { message: '説明を入力してください' }),
   isPublished: z.boolean(),
   slug: z.string().regex(/^[a-z0-9-]+$/, { message: 'スラッグは半角英数字とハイフンのみで入力してください' }),
-  tagIds: z.array(z.number()),
+  tagIds: z.preprocess((value) => {
+    if (!Array.isArray(value)) return [];
+    return value.map((v) => Number(v));
+  }, z.array(z.number())),
   title: z.string().min(1, { message: 'タイトルを入力してください' }),
 });
 

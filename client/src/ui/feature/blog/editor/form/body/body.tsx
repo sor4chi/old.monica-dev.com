@@ -26,8 +26,6 @@ export const BlogEditorFormFragment = gql`
     publishedAt
     tags {
       id
-      name
-      slug
     }
   }
 `;
@@ -41,8 +39,6 @@ export type BlogEditorFormFragmentResponse = {
   publishedAt: string | null;
   tags: {
     id: number;
-    name: string;
-    slug: string;
   }[];
 };
 
@@ -52,9 +48,10 @@ interface Props {
     slug: string;
     name: string;
   }[];
+  onSubmit: (data: BlogFormSchema) => void;
 }
 
-export const BlogEditorFormBody = ({ tagsOptions }: Props) => {
+export const BlogEditorFormBody = ({ onSubmit, tagsOptions }: Props) => {
   const [contentEditorOptions, setContentEditorOptions] = useState({
     fullscreen: false,
     preview: false,
@@ -64,11 +61,13 @@ export const BlogEditorFormBody = ({ tagsOptions }: Props) => {
   const {
     control,
     formState: { errors },
+    handleSubmit,
     register,
   } = form;
 
   return (
-    <form className={styles.form} id={BLOG_FORM_ID}>
+    <form className={styles.form} id={BLOG_FORM_ID} onSubmit={handleSubmit(onSubmit)}>
+      {JSON.stringify(errors.tagIds)}
       <section className={styles.metaArea}>
         <TextInput
           label="Title"
