@@ -23,12 +23,10 @@ export const input = style({
   color: vars.color.text.primary,
   backgroundColor: vars.color.bg.secondary,
   backgroundClip: 'padding-box',
-  transition: 'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
+  transition: 'outline 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out',
   outline: `1px solid ${vars.color.bg.tertiary}`,
 
   ':focus': {
-    borderColor: vars.color.accent.primary,
-    outline: 'none',
     boxShadow: `0 0 0 0.2rem ${vars.color.accent.primary}`,
   },
 

@@ -13,9 +13,7 @@ export const colorVars = createThemeContract({
   },
   accent: {
     primary: '',
-    primaryRGB: '',
     secondary: '',
-    secondaryRGB: '',
   },
   social: {
     twitter: '',

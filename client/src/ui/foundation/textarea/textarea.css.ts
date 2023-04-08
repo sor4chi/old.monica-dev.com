@@ -23,12 +23,11 @@ export const textarea = style({
   color: vars.color.text.primary,
   backgroundColor: vars.color.bg.secondary,
   backgroundClip: 'padding-box',
-  transition: 'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
+  transition: 'outline 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out',
   outline: `1px solid ${vars.color.bg.tertiary}`,
   fontFamily: 'inherit',
 
   ':focus': {
-    borderColor: vars.color.accent.primary,
     boxShadow: `0 0 0 0.2rem ${vars.color.accent.primary}`,
   },
 

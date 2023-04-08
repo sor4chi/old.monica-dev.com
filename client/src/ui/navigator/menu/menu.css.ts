@@ -11,6 +11,7 @@ export const wrapper = style({
   height: '100dvh',
   top: 0,
   backgroundColor: vars.color.bg.secondary,
+  transition: 'background-color 0.2s ease-in-out',
 });
 
 export const logoContainer = style({
