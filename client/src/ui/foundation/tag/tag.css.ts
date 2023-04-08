@@ -7,12 +7,11 @@ const baseTag = style({
   padding: '0.25rem 0.5rem',
   margin: '0 0.5rem',
   borderRadius: '0.25rem',
-  fontSize: '0.75em',
+  fontSize: '1em',
   lineHeight: 1,
   color: vars.color.text.primary,
   backgroundColor: vars.color.error,
   whiteSpace: 'nowrap',
-  verticalAlign: 'middle',
   userSelect: 'none',
 });
 

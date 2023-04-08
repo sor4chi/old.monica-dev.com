@@ -10,6 +10,7 @@ import * as styles from './row.css';
 
 import { gql } from '@/lib/graphql';
 import { FT } from '@/ui/foundation/table';
+import { Tag } from '@/ui/foundation/tag';
 import { formatDateNumeric } from '@/util/date';
 
 export const BlogTableRowFragment = gql`
@@ -39,7 +40,7 @@ export type BlogTableRowFragmentResponse = {
 const getTableRowFromBlog = (blog: BlogTableRowFragmentResponse) => {
   const MAP = {
     createdAt: formatDateNumeric(blog.createdAt),
-    publishedAt: blog.publishedAt ? `✅ ${formatDateNumeric(blog.publishedAt)}` : '❌',
+    publishedAt: blog.publishedAt ? <Tag variant="info">Published</Tag> : <Tag variant="danger">Draft</Tag>,
     tags: <TagList tags={blog.tags} hrefGenerator={(tag) => `/dashboard/blog?tag=${tag}`} />,
     title: blog.title,
     updatedAt: formatDateNumeric(blog.updatedAt),
