@@ -350,3 +350,44 @@ func (q *Queries) GetPublishedBlogsCount(ctx context.Context) (int64, error) {
 	err := row.Scan(&count)
 	return count, err
 }
+
+const updateBlog = `-- name: UpdateBlog :one
+
+UPDATE blogs
+SET title = $1, slug = $2, description = $3, content = $4, published_at = $5
+WHERE id = $6
+RETURNING id, title, description, slug, content, created_at, updated_at, published_at
+`
+
+type UpdateBlogParams struct {
+	Title       string
+	Slug        string
+	Description string
+	Content     string
+	PublishedAt sql.NullTime
+	ID          int32
+}
+
+// -- UPDATERS -- --
+func (q *Queries) UpdateBlog(ctx context.Context, arg UpdateBlogParams) (Blog, error) {
+	row := q.db.QueryRowContext(ctx, updateBlog,
+		arg.Title,
+		arg.Slug,
+		arg.Description,
+		arg.Content,
+		arg.PublishedAt,
+		arg.ID,
+	)
+	var i Blog
+	err := row.Scan(
+		&i.ID,
+		&i.Title,
+		&i.Description,
+		&i.Slug,
+		&i.Content,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.PublishedAt,
+	)
+	return i, err
+}

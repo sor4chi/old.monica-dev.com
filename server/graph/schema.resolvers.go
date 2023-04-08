@@ -64,7 +64,46 @@ func (r *mutationResolver) CreateBlog(ctx context.Context, input model.BlogInput
 
 // UpdateBlog is the resolver for the updateBlog field.
 func (r *mutationResolver) UpdateBlog(ctx context.Context, id string, input model.BlogInput) (*model.Blog, error) {
-	panic("UpdateBlog is not implemented")
+	bs := service.NewBlogService(r.Q)
+	ts := service.NewTagService(r.Q)
+
+	intId, err := strconv.ParseInt(id, 10, 32)
+	if err != nil {
+		return nil, err
+	}
+
+	blog, err := bs.UpdateBlog(
+		int32(intId),
+		input.Title,
+		input.Slug,
+		input.Description,
+		input.Content,
+		input.Published,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	err = ts.DeleteBlogTagByBlogId(blog.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	var tagIds []int32
+	for _, id := range input.TagIds {
+		intId, err := strconv.ParseInt(id, 10, 32)
+		if err != nil {
+			return nil, err
+		}
+		tagIds = append(tagIds, int32(intId))
+	}
+
+	err = ts.CreateBlogTags(blog.ID, tagIds)
+	if err != nil {
+		return nil, err
+	}
+
+	return model.NewBlogFromEntity(blog), nil
 }
 
 // DeleteBlog is the resolver for the deleteBlog field.

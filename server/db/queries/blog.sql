@@ -57,6 +57,14 @@ INSERT INTO blogs (
 VALUES ($1, $2, $3, $4, $5)
 RETURNING *;
 
+-- -- UPDATERS -- --
+
+-- name: UpdateBlog :one
+UPDATE blogs
+SET title = $1, slug = $2, description = $3, content = $4, published_at = $5
+WHERE id = $6
+RETURNING *;
+
 -- -- DELETORS -- --
 
 -- name: DeleteAllBlogs :exec

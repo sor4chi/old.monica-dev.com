@@ -78,3 +78,12 @@ func (s *TagService) CreateBlogTags(blogID int32, tagIDs []int32) error {
 	}
 	return nil
 }
+
+func (s *TagService) DeleteBlogTagByBlogId(blogID int32) error {
+	ctx := context.Background()
+	err := s.q.DeleteBlogTagsByBlogId(ctx, blogID)
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -21,3 +21,8 @@ INSERT INTO tags (name, slug) VALUES ($1, $2) ON CONFLICT DO NOTHING RETURNING *
 -- name: CreateBlogTag :exec
 INSERT INTO blogs_tags (blog_id, tag_id)
 VALUES ($1, $2);
+
+-- -- DELETORS -- --
+
+-- name: DeleteBlogTagsByBlogId :exec
+DELETE FROM blogs_tags WHERE blog_id = $1;

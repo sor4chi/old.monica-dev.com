@@ -197,3 +197,33 @@ func (s *BlogService) CreateBlog(title, slug, description, content string, publi
 
 	return parseBlogsRowToEntity(row), nil
 }
+
+func (s *BlogService) UpdateBlog(id int32, title, slug, description, content string, published bool) (*entity.Blog, error) {
+	before, err := s.GetBlogById(id)
+	if err != nil {
+		return nil, err
+	}
+
+	ctx := context.Background()
+	p := sqlc.UpdateBlogParams{
+		ID:          id,
+		Title:       title,
+		Slug:        slug,
+		Description: description,
+		Content:     content,
+	}
+	if before.PublishedAt == nil && published {
+		now := time.Now()
+		p.PublishedAt = sql.NullTime{
+			Time:  now,
+			Valid: true,
+		}
+	}
+
+	row, err := s.q.UpdateBlog(ctx, p)
+	if err != nil {
+		return nil, err
+	}
+
+	return parseBlogsRowToEntity(row), nil
+}
