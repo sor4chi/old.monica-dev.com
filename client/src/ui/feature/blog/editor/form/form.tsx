@@ -31,7 +31,7 @@ export const BlogEditorForm = ({ blog, mode, tagsOptions }: Props) => {
     setValue('description', blog.description);
     setValue('slug', blog.slug);
     setValue(
-      'tags',
+      'tagIds',
       blog.tags.map((tag) => tag.id),
     );
     setValue('title', blog.title);
