@@ -1,10 +1,13 @@
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import type { BlogTableFragmentResponse } from './table';
 import { BlogTable, BlogTableFragment } from './table';
 
 import { SITE_CONFIG } from '@/constant/site';
+import { useDashboardHeader } from '@/hooks';
 import { clientInBrowser, gql } from '@/lib/graphql';
+import { Button } from '@/ui/foundation/button';
 
 export const BlogAdminQuery = gql`
   ${BlogTableFragment}
@@ -30,6 +33,8 @@ export const BlogAdmin = () => {
   const [blogs, setBlogs] = useState<BlogTableFragmentResponse | undefined>(undefined);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const { setDashboardHeaderContent } = useDashboardHeader();
 
   const loadBefore = async () => {
     setLoading(true);
@@ -63,6 +68,7 @@ export const BlogAdmin = () => {
 
   useEffect(() => {
     loadAfter();
+    setDashboardHeaderContent(<Button onClick={() => router.push('/dashboard/blog/new')}>New</Button>);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

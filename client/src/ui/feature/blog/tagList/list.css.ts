@@ -22,4 +22,12 @@ export const link = style({
   fontWeight: 700,
   whiteSpace: 'nowrap',
   verticalAlign: 'sub',
+
+  '@media': {
+    '(hover: hover)': {
+      ':hover': {
+        textDecoration: 'underline',
+      },
+    },
+  },
 });

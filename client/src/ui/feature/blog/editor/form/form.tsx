@@ -59,6 +59,10 @@ export const BlogEditorForm = ({ blog, mode, tagsOptions }: Props) => {
         </Button>
       </>,
     );
+
+    return () => {
+      setDashboardHeaderContent(null);
+    };
   }, [blog]);
 
   return <BlogEditorFormBody tagsOptions={tagsOptions} />;
