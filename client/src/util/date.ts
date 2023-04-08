@@ -36,12 +36,13 @@ export const formatDateEn = (date: Date | string) => {
  */
 export const formatDateNumeric = (date: Date | string) => {
   date = getSafelyDate(date);
-  const d = new Date(date).toLocaleDateString('en-US', {
+  const tmp = new Date(date).toLocaleDateString('en-US', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
   });
-  return d.split('/').reverse().join('.');
+  const [m, d, y] = tmp.split('/');
+  return `${y}.${m}.${d}`;
 };
 
 /**
