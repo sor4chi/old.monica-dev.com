@@ -28,15 +28,12 @@ export const variant = styleVariants({
   primary: {
     color: 'white', // fixed for contrast a11y
     backgroundColor: vars.color.accent.primary,
-    borderColor: vars.color.accent.primary,
-    borderWidth: BUTTON_BORDER_WIDTH,
-    borderStyle: 'solid',
+    border: 'none',
 
     '@media': {
       '(hover: hover)': {
         ':hover': {
           backgroundColor: vars.color.accent.secondary,
-          borderColor: vars.color.accent.secondary,
         },
       },
     },
