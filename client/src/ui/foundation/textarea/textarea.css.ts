@@ -4,6 +4,7 @@ import { vars } from '@/style/theme.css';
 
 export const wrapper = style({
   width: '100%',
+  display: 'flex',
 });
 
 export const label = style({
@@ -16,15 +17,15 @@ export const textarea = style({
   width: '100%',
   boxSizing: 'border-box',
   padding: '0.5rem 1rem',
-  border: 'none',
   borderRadius: '0.25rem',
   fontSize: '1rem',
   lineHeight: '1.5',
   color: vars.color.text.primary,
   backgroundColor: vars.color.bg.secondary,
   backgroundClip: 'padding-box',
-  transition: 'outline 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out',
-  outline: `1px solid ${vars.color.bg.tertiary}`,
+  transition: 'border 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out',
+  border: `1px solid ${vars.color.bg.tertiary}`,
+  outline: 'none',
   fontFamily: 'inherit',
 
   ':focus': {

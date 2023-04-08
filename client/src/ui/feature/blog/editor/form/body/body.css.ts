@@ -21,7 +21,7 @@ export const contentEditorVars = createThemeContract({
 
 export const contentEditor = style({
   vars: assignVars(contentEditorVars, {
-    bodyHeight: '60vh',
+    bodyHeight: '35rem',
   }),
 });
 
