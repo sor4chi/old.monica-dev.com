@@ -10,12 +10,7 @@ const schema = z.object({
   content: z.string().min(1, { message: '本文を入力してください' }),
   description: z.string().min(1, { message: '説明を入力してください' }),
   slug: z.string().regex(/^[a-z0-9-]+$/, { message: 'スラッグは半角英数字とハイフンのみで入力してください' }),
-  tags: z.array(
-    z.object({
-      name: z.string(),
-      slug: z.string().regex(/^[a-z0-9-]+$/, { message: 'スラッグは半角英数字とハイフンのみで入力してください' }),
-    }),
-  ),
+  tags: z.array(z.number()),
   title: z.string().min(1, { message: 'タイトルを入力してください' }),
 });
 

@@ -1,24 +1,31 @@
 import { useEffect, useState } from 'react';
 
-import { BlogForm } from './form';
-import type { BlogFormFragmentResponse } from './form/body/query';
-import { BlogFormFragment } from './form/body/query';
+import { BlogEditorForm } from './form';
+import type { BlogEditorFormFragmentResponse } from './form/body';
+import { BlogEditorFormFragment } from './form/body';
+import type { BlogEditorFormTagFragmentResponse } from './form/tag';
+import { BlogEditorFormTagFragment } from './form/tag';
 import { BlogEditorProvider } from './use-blog-editor';
 
 import { clientInBrowser, gql } from '@/lib/graphql';
 
 const BlogDetailPageQuery = gql`
-  ${BlogFormFragment}
+  ${BlogEditorFormFragment}
+  ${BlogEditorFormTagFragment}
 
   query BlogDetailQuery($id: ID!) {
-    blogById(id: $id) {
-      ...BlogFormFragment
+    blog: blogById(id: $id) {
+      ...BlogEditorFormFragment
+    }
+    tags: tags {
+      ...BlogEditorFormTagFragment
     }
   }
 `;
 
 type BlogDetailPageQueryResponse = {
-  blogById: BlogFormFragmentResponse;
+  blog: BlogEditorFormFragmentResponse;
+  tags: BlogEditorFormTagFragmentResponse[];
 };
 
 type BlogDetailPageQueryVariables = {
@@ -30,9 +37,10 @@ interface Props {
 }
 
 export const BlogEditor = ({ id }: Props) => {
-  const [blog, setBlog] = useState<BlogFormFragmentResponse | undefined>(undefined);
+  const [blog, setBlog] = useState<BlogEditorFormFragmentResponse | undefined>(undefined);
+  const [tagsOptions, setTagsOptions] = useState<BlogEditorFormTagFragmentResponse[]>([]);
 
-  const fetchBlogById = async () => {
+  const fetches = async () => {
     if (!id) return;
     const res = await clientInBrowser.request<BlogDetailPageQueryResponse, BlogDetailPageQueryVariables>(
       BlogDetailPageQuery,
@@ -40,19 +48,20 @@ export const BlogEditor = ({ id }: Props) => {
         id,
       },
     );
-    return res.blogById;
+    return res;
   };
 
   useEffect(() => {
-    fetchBlogById().then((blog) => {
-      setBlog(blog);
+    fetches().then((res) => {
+      setBlog(res?.blog);
+      setTagsOptions(res?.tags || []);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <BlogEditorProvider>
-      <BlogForm blog={blog} tagOptions={[]} />
+      <BlogEditorForm blog={blog} tagsOptions={tagsOptions} />
     </BlogEditorProvider>
   );
 };

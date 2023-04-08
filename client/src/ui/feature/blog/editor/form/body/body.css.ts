@@ -15,40 +15,6 @@ export const metaArea = style({
   gap: '1rem',
 });
 
-export const tagEditor = style({
-  gridRow: '1 / 4',
-  gridColumn: '2 / 3',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '1rem',
-});
-
-export const tagSetting = style({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '1rem',
-});
-
-export const tagEditorLabel = style({
-  color: vars.color.text.secondary,
-  marginBottom: '0.5rem',
-  display: 'inline-block',
-});
-
-export const tagInputs = style({
-  display: 'flex',
-  gap: '1rem',
-  alignItems: 'flex-end',
-});
-
-export const tagList = style({
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: '0.5rem',
-  maxHeight: '2.5rem',
-  overflowY: 'auto',
-});
-
 export const contentEditorVars = createThemeContract({
   bodyHeight: null,
 });

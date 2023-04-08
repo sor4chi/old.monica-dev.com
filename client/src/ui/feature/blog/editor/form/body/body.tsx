@@ -2,16 +2,56 @@ import { clsx } from 'clsx';
 import { useState } from 'react';
 
 import { BLOG_FORM_ID, useBlogEditor } from '../../use-blog-editor';
+import { BlogEditorFormTag } from '../tag';
 
 import * as styles from './body.css';
 
+import { gql } from '@/lib/graphql';
 import { parseMarkdownToHTML } from '@/lib/markdown';
 import { Article } from '@/ui/foundation/article';
 import { TextInput } from '@/ui/foundation/textInput';
 import { Textarea } from '@/ui/foundation/textarea';
 import { Toggle } from '@/ui/foundation/toggle';
 
-export const BlogFormBody = () => {
+export const BlogEditorFormFragment = gql`
+  fragment BlogEditorFormFragment on Blog {
+    id
+    slug
+    title
+    description
+    content
+    publishedAt
+    tags {
+      id
+      name
+      slug
+    }
+  }
+`;
+
+export type BlogEditorFormFragmentResponse = {
+  id: number;
+  slug: string;
+  title: string;
+  description: string;
+  content: string;
+  publishedAt: string | null;
+  tags: {
+    id: number;
+    name: string;
+    slug: string;
+  }[];
+};
+
+interface Props {
+  tagsOptions: {
+    id: number;
+    slug: string;
+    name: string;
+  }[];
+}
+
+export const BlogEditorFormBody = ({ tagsOptions }: Props) => {
   const [contentEditorOptions, setContentEditorOptions] = useState({
     fullscreen: false,
     preview: false,
@@ -23,8 +63,6 @@ export const BlogFormBody = () => {
     register,
     watch,
   } = form;
-
-
 
   return (
     <form className={styles.form} id={BLOG_FORM_ID}>
@@ -50,6 +88,7 @@ export const BlogFormBody = () => {
           {...register('slug')}
           error={errors.slug?.message}
         />
+        <BlogEditorFormTag tagsOptions={tagsOptions} />
       </section>
       <section className={clsx(styles.contentEditor, contentEditorOptions.fullscreen && styles.contentFullScreen)}>
         <div className={styles.contentHeader}>
