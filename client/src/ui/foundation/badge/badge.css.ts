@@ -2,7 +2,7 @@ import { style, styleVariants } from '@vanilla-extract/css';
 
 import { vars } from '@/style/theme.css';
 
-const baseTag = style({
+const baseBadge = style({
   display: 'inline-block',
   padding: '0.25rem 0.5rem',
   margin: '0 0.5rem',
@@ -15,15 +15,15 @@ const baseTag = style({
   userSelect: 'none',
 });
 
-export const tag = styleVariants({
+export const badge = styleVariants({
   danger: [
-    baseTag,
+    baseBadge,
     {
       backgroundColor: vars.color.error,
     },
   ],
   info: [
-    baseTag,
+    baseBadge,
     {
       backgroundColor: vars.color.accent.secondary,
     },
