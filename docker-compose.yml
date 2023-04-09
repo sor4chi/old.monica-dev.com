@@ -20,6 +20,8 @@ services:
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - ENV=${ENV}
       - JWT_SECRET=${JWT_SECRET}
+      - REVALIDATE_SECRET=${REVALIDATE_SECRET}
+      - CLIENT_URL=${CLIENT_URL}
     volumes:
       - ./server:/app
     depends_on:
@@ -39,7 +41,7 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    command: pnpm dev
+    command: sh -c "pnpm build && pnpm start"
 
 volumes:
   postgres_data:

@@ -3,18 +3,18 @@ package service
 import (
 	"context"
 	"database/sql"
+	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/sor4chi/portfolio-blog/server/entity"
 	"github.com/sor4chi/portfolio-blog/server/sqlc"
+	"github.com/sor4chi/portfolio-blog/server/util"
 )
 
 const (
 	MAX_LIMIT_PER_PAGE = 30
-	PUBLIC_FILTER      = "published_at IS NOT NULL"
-	TABLE_BLOG         = "blogs"
-	TABLE_BLOG_TAGS    = "blog_tags"
-	TABLE_TAGS         = "tags"
+	REVALIDATE_URL     = "/api/revalidate/blog"
 )
 
 type BlogService struct {
@@ -238,4 +238,15 @@ func (s *BlogService) UpdateBlog(id int32, title, slug, description, content str
 	}
 
 	return parseBlogsRowToEntity(row), nil
+}
+
+func (s *BlogService) RevalidateBlog(slug string) error {
+	clientUrl := util.GetEnv("CLIENT_URL", "http://localhost:3000")
+	url := fmt.Sprintf("%s%s?slug=%s", clientUrl, REVALIDATE_URL, slug)
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	return nil
 }

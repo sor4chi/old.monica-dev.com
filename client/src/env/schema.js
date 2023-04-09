@@ -7,6 +7,7 @@ const { z } = require('zod');
 const serverSchema = z.object({
   DISCORD_WEBHOOK_URL: z.string().url(),
   NODE_ENV: z.enum(['development', 'test', 'production']),
+  REVALIDATE_SECRET: z.string(),
 });
 
 /**

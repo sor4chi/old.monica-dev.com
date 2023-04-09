@@ -59,6 +59,11 @@ func (r *mutationResolver) CreateBlog(ctx context.Context, input model.BlogInput
 		return nil, err
 	}
 
+	err = bs.RevalidateBlog(blog.Slug)
+	if err != nil {
+		return nil, err
+	}
+
 	return model.NewBlogFromEntity(blog), nil
 }
 
@@ -99,6 +104,11 @@ func (r *mutationResolver) UpdateBlog(ctx context.Context, id string, input mode
 	}
 
 	err = ts.CreateBlogTags(blog.ID, tagIds)
+	if err != nil {
+		return nil, err
+	}
+
+	err = bs.RevalidateBlog(blog.Slug)
 	if err != nil {
 		return nil, err
 	}
