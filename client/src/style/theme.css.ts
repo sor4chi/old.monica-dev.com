@@ -24,9 +24,9 @@ createGlobalTheme('.light', colorVars, {
   error: '#e27878',
   success: '#8bae79',
   shadow: {
-    sm: '0 0.1rem 0.5rem rgba(0, 0, 0, 0.25)',
-    md: '0 0.1rem 1rem rgba(0, 0, 0, 0.25)',
-    lg: '0 0.1rem 2rem rgba(0, 0, 0, 0.25)',
+    sm: '0 0.125rem 0.25rem rgba(31, 38, 45, 0.25)',
+    md: '0 0.125rem 0.5rem rgba(31, 38, 45, 0.25)',
+    lg: '0 0.125rem 1rem rgba(31, 38, 45, 0.25)',
   },
 });
 
@@ -52,9 +52,9 @@ createGlobalTheme('.dark', colorVars, {
   error: '#e27878',
   success: '#8bae79',
   shadow: {
-    sm: '0 0.1rem 0.5rem rgba(0, 0, 0, 0.25)',
-    md: '0 0.1rem 1rem rgba(0, 0, 0, 0.25)',
-    lg: '0 0.1rem 2rem rgba(0, 0, 0, 0.25)',
+    sm: '0 0.125rem 0.25rem rgba(237, 242, 247, 0.25)',
+    md: '0 0.125rem 0.5rem rgba(237, 242, 247, 0.25)',
+    lg: '0 0.125rem 1rem rgba(237, 242, 247, 0.25)',
   },
 });
 
