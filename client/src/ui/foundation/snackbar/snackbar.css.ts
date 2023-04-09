@@ -26,7 +26,7 @@ const slidein = keyframes({
 });
 
 export const snackbar = style({
-  padding: '0.5rem',
+  padding: '1rem',
   border: `1px solid ${vars.color.bg.tertiary}`,
   backgroundColor: vars.color.bg.secondary,
   borderRadius: '0.25rem',
