@@ -8,7 +8,7 @@ import * as styles from './tag.css';
 
 import { gql } from '@/lib/graphql';
 import { Button } from '@/ui/foundation/button';
-import { Checkbox } from '@/ui/foundation/checkbox/checkbox';
+import { Checkbox } from '@/ui/foundation/checkbox';
 
 export const BlogEditorFormTagFragment = gql`
   fragment BlogEditorFormTagFragment on Tag {
