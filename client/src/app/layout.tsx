@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 
 import { SITE_CONFIG } from '@/constant/site';
 import { vars } from '@/style/theme.css';
+import { Modifier } from '@/ui/app/modifier';
+import { Provider } from '@/ui/app/provider';
 import { GlobalStyle } from '@/util/globalStyle';
 import { getOgUrl } from '@/util/og';
 
@@ -74,7 +76,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <html lang="ja">
         <GlobalStyle>
-          <body>{children}</body>
+          <body>
+            <Provider>
+              <Modifier>{children}</Modifier>
+            </Provider>
+          </body>
         </GlobalStyle>
       </html>
     </>

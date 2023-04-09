@@ -21,4 +21,9 @@ export const colorVars = createThemeContract({
   },
   error: '',
   success: '',
+  shadow: {
+    sm: '',
+    md: '',
+    lg: '',
+  },
 });

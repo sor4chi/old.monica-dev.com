@@ -12,7 +12,8 @@ import type { BlogEditorFormFragmentResponse } from './body';
 import * as styles from './form.css';
 import type { BlogEditorFormTagFragmentResponse } from './tag';
 
-import { useDashboardHeader } from '@/hooks';
+import { ROUTES } from '@/constant/route';
+import { useDashboardHeader, useSnackbar } from '@/hooks';
 import { clientInBrowser, gql } from '@/lib/graphql';
 import { Button } from '@/ui/foundation/button';
 import { Toggle } from '@/ui/foundation/toggle';
@@ -74,6 +75,7 @@ export const BlogEditorForm = ({ blog, setBlog, tagsOptions }: Props) => {
   const { form } = useBlogEditor();
   const { control, register, setValue } = form;
   const router = useRouter();
+  const { snack } = useSnackbar();
 
   const setBlogFields = useCallback(
     (blog: BlogEditorFormFragmentResponse) => {
@@ -125,7 +127,17 @@ export const BlogEditorForm = ({ blog, setBlog, tagsOptions }: Props) => {
           },
         },
       );
-      router.push(`/dashboard/blog/${res.blog.id}`);
+      snack(`「${res.blog.title} created!`, {
+        action: !!res.blog.publishedAt
+          ? {
+              label: 'View',
+              onClick: () => {
+                router.push(ROUTES.BLOG_ARTICLE(res.blog.slug));
+              },
+            }
+          : undefined,
+      });
+      router.push(ROUTES.DASHBOARD_BLOG_EDIT(res.blog.id));
       return;
     }
     const res = await clientInBrowser.request<BlogUpdateMutationResponse, BlogUpdateMutationVariables>(
@@ -142,7 +154,16 @@ export const BlogEditorForm = ({ blog, setBlog, tagsOptions }: Props) => {
         },
       },
     );
-
+    snack(`「${res.blog.title}」updated!`, {
+      action: !!res.blog.publishedAt
+        ? {
+            label: 'View',
+            onClick: () => {
+              router.push(ROUTES.BLOG_ARTICLE(res.blog.slug));
+            },
+          }
+        : undefined,
+    });
     setBlog(res.blog);
   };
 
