@@ -67,7 +67,7 @@ export const BlogTableRow = ({ blog }: Props) => {
   };
 
   return (
-    <FT.Row key={blog.id} onClick={handleClick} onKeyPress={handleEnter} tabIndex={0} area-label={blog.title}>
+    <FT.Row key={blog.id} onClick={handleClick} onKeyPress={handleEnter} tabIndex={0} aria-label={blog.title}>
       {getTableRowFromBlog(blog)}
     </FT.Row>
   );
