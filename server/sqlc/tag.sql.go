@@ -48,6 +48,17 @@ func (q *Queries) CreateTag(ctx context.Context, arg CreateTagParams) (Tag, erro
 	return i, err
 }
 
+const deleteBlogTagsByBlogId = `-- name: DeleteBlogTagsByBlogId :exec
+
+DELETE FROM blogs_tags WHERE blog_id = $1
+`
+
+// -- DELETORS -- --
+func (q *Queries) DeleteBlogTagsByBlogId(ctx context.Context, blogID int32) error {
+	_, err := q.db.ExecContext(ctx, deleteBlogTagsByBlogId, blogID)
+	return err
+}
+
 const getTagBySlug = `-- name: GetTagBySlug :one
 
 SELECT id, name, slug, created_at, updated_at FROM tags WHERE slug = $1
@@ -65,6 +76,39 @@ func (q *Queries) GetTagBySlug(ctx context.Context, slug string) (Tag, error) {
 		&i.UpdatedAt,
 	)
 	return i, err
+}
+
+const getTags = `-- name: GetTags :many
+SELECT id, name, slug, created_at, updated_at FROM tags
+`
+
+func (q *Queries) GetTags(ctx context.Context) ([]Tag, error) {
+	rows, err := q.db.QueryContext(ctx, getTags)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Tag
+	for rows.Next() {
+		var i Tag
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Slug,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const getTagsByBlogId = `-- name: GetTagsByBlogId :many

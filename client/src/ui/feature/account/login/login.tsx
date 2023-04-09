@@ -7,6 +7,7 @@ import { z } from 'zod';
 import * as styles from './login.css';
 
 import { clientEnv } from '@/env/client';
+import { useSession } from '@/hooks';
 import { Button } from '@/ui/foundation/button';
 import { TextInput } from '@/ui/foundation/textInput';
 
@@ -26,6 +27,12 @@ export const LoginForm = () => {
     resolver: zodResolver(schema),
   });
   const router = useRouter();
+  const authState = useSession();
+
+  if (authState === 'authenticated') {
+    router.push('/dashboard');
+    return null;
+  }
 
   const onSubmit = async (data: Schema) => {
     const res = await fetch(clientEnv.NEXT_PUBLIC_GQL_ENDPOINT.replace('/query', '/login'), {
@@ -39,11 +46,8 @@ export const LoginForm = () => {
       method: 'POST',
     });
 
-    console.log(res);
-
     if (res.ok) {
       setRequestError(null);
-      console.log('login success');
       router.push('/dashboard');
     } else {
       setRequestError('パスワードが違います');

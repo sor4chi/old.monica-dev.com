@@ -11,6 +11,7 @@ export const wrapper = style({
   height: '100dvh',
   top: 0,
   backgroundColor: vars.color.bg.secondary,
+  transition: 'background-color 0.2s ease-in-out',
 });
 
 export const logoContainer = style({
@@ -21,6 +22,8 @@ export const logoContainer = style({
   fontWeight: 700,
   fontSize: '1.2rem',
   height: vars.size.headerHeight,
+  textDecoration: 'none',
+  color: vars.color.text.primary,
 });
 
 export const menu = style({
@@ -69,9 +72,13 @@ export const menuItem = styleVariants({
   ],
 });
 
-export const logout = style({
+export const footer = style({
   position: 'absolute',
   bottom: '2rem',
   left: '50%',
   transform: 'translateX(-50%)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '1rem',
 });

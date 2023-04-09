@@ -6,7 +6,7 @@ import { useDashboardHeader, useSession } from '@/hooks';
 import { Breadcrumb } from '@/ui/foundation/breadcrumb';
 
 export const DashboardHeader = () => {
-  const { dashboardHeaderContent } = useDashboardHeader();
+  const { dashboardHeaderContent, title } = useDashboardHeader();
   const authState = useSession();
   const router = useRouter();
 
@@ -17,7 +17,7 @@ export const DashboardHeader = () => {
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <Breadcrumb />
+        <Breadcrumb last={title} />
         <div className={styles.content}>{dashboardHeaderContent}</div>
       </div>
       <hr className={styles.divider} />

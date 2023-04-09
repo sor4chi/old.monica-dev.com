@@ -10,7 +10,6 @@ import (
 
 	"github.com/sor4chi/portfolio-blog/server/entity"
 	"github.com/sor4chi/portfolio-blog/server/graph/model"
-	"github.com/sor4chi/portfolio-blog/server/middleware"
 	"github.com/sor4chi/portfolio-blog/server/service"
 )
 
@@ -32,8 +31,7 @@ func (r *blogResolver) Tags(ctx context.Context, obj *model.Blog) ([]*model.Tag,
 
 // CreateBlog is the resolver for the createBlog field.
 func (r *mutationResolver) CreateBlog(ctx context.Context, input model.BlogInput) (*model.Blog, error) {
-	authCtx, _ := middleware.AuthCtxValue(ctx)
-	bs := service.NewBlogService(r.Q, authCtx.Username != nil)
+	bs := service.NewBlogService(r.Q)
 	ts := service.NewTagService(r.Q)
 
 	blog, err := bs.CreateBlog(
@@ -47,19 +45,16 @@ func (r *mutationResolver) CreateBlog(ctx context.Context, input model.BlogInput
 		return nil, err
 	}
 
-	var tagsIds []int32
-	for _, tag := range input.Tags {
-		t, err := ts.CreateTag(&entity.Tag{
-			Slug: tag.Slug,
-			Name: tag.Name,
-		})
+	var tagIds []int32
+	for _, id := range input.TagIds {
+		intId, err := strconv.ParseInt(id, 10, 32)
 		if err != nil {
 			return nil, err
 		}
-		tagsIds = append(tagsIds, t.ID)
+		tagIds = append(tagIds, int32(intId))
 	}
 
-	err = ts.CreateBlogTags(blog.ID, tagsIds)
+	err = ts.CreateBlogTags(blog.ID, tagIds)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +64,46 @@ func (r *mutationResolver) CreateBlog(ctx context.Context, input model.BlogInput
 
 // UpdateBlog is the resolver for the updateBlog field.
 func (r *mutationResolver) UpdateBlog(ctx context.Context, id string, input model.BlogInput) (*model.Blog, error) {
-	panic("UpdateBlog is not implemented")
+	bs := service.NewBlogService(r.Q)
+	ts := service.NewTagService(r.Q)
+
+	intId, err := strconv.ParseInt(id, 10, 32)
+	if err != nil {
+		return nil, err
+	}
+
+	blog, err := bs.UpdateBlog(
+		int32(intId),
+		input.Title,
+		input.Slug,
+		input.Description,
+		input.Content,
+		input.Published,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	err = ts.DeleteBlogTagByBlogId(blog.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	var tagIds []int32
+	for _, id := range input.TagIds {
+		intId, err := strconv.ParseInt(id, 10, 32)
+		if err != nil {
+			return nil, err
+		}
+		tagIds = append(tagIds, int32(intId))
+	}
+
+	err = ts.CreateBlogTags(blog.ID, tagIds)
+	if err != nil {
+		return nil, err
+	}
+
+	return model.NewBlogFromEntity(blog), nil
 }
 
 // DeleteBlog is the resolver for the deleteBlog field.
@@ -77,18 +111,32 @@ func (r *mutationResolver) DeleteBlog(ctx context.Context, id string) (*model.Bl
 	panic("DeleteBlog is not implemented")
 }
 
+// CreateTag is the resolver for the createTag field.
+func (r *mutationResolver) CreateTag(ctx context.Context, input model.TagInput) (*model.Tag, error) {
+	ts := service.NewTagService(r.Q)
+
+	tag, err := ts.CreateTag(&entity.Tag{
+		Name: input.Name,
+		Slug: input.Slug,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return model.NewTagFromEntity(tag), nil
+}
+
 // Blogs is the resolver for the blogs field.
 func (r *queryResolver) Blogs(ctx context.Context, input model.BlogListInput) (*model.BlogList, error) {
-	authCtx, _ := middleware.AuthCtxValue(ctx)
-	bs := service.NewBlogService(r.Q, authCtx.Username != nil)
+	bs := service.NewBlogService(r.Q)
 	var blogs []*entity.Blog
 	var total int
 	var err error
 
 	if len(input.Tags) > 0 {
-		blogs, total, err = bs.GetBlogsByTagSlugs(input.Limit, input.Offset, input.Tags)
+		blogs, total, err = bs.GetPublishedBlogsByTagSlugs(input.Limit, input.Offset, input.Tags)
 	} else {
-		blogs, total, err = bs.GetBlogs(input.Limit, input.Offset)
+		blogs, total, err = bs.GetPublishedBlogs(input.Limit, input.Offset)
 	}
 
 	if err != nil {
@@ -103,9 +151,8 @@ func (r *queryResolver) Blogs(ctx context.Context, input model.BlogListInput) (*
 
 // Blog is the resolver for the blog field.
 func (r *queryResolver) Blog(ctx context.Context, slug string) (*model.Blog, error) {
-	authCtx, _ := middleware.AuthCtxValue(ctx)
-	bs := service.NewBlogService(r.Q, authCtx.Username != nil)
-	b, err := bs.GetBlogBySlug(slug)
+	bs := service.NewBlogService(r.Q)
+	b, err := bs.GetPublishedBlogBySlug(slug)
 	if err != nil {
 		return nil, err
 	}
@@ -113,10 +160,32 @@ func (r *queryResolver) Blog(ctx context.Context, slug string) (*model.Blog, err
 	return model.NewBlogFromEntity(b), nil
 }
 
+// BlogsAll is the resolver for the blogsAll field.
+func (r *queryResolver) BlogsAll(ctx context.Context, input model.BlogListInput) (*model.BlogList, error) {
+	bs := service.NewBlogService(r.Q)
+	var blogs []*entity.Blog
+	var total int
+	var err error
+
+	if len(input.Tags) > 0 {
+		blogs, total, err = bs.GetAllBlogsByTagSlugs(input.Limit, input.Offset, input.Tags)
+	} else {
+		blogs, total, err = bs.GetAllBlogs(input.Limit, input.Offset)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.BlogList{
+		Total: int(total),
+		Data:  model.NewBlogsFromEntityList(blogs),
+	}, nil
+}
+
 // BlogByID is the resolver for the blogById field.
 func (r *queryResolver) BlogByID(ctx context.Context, id string) (*model.Blog, error) {
-	authCtx, _ := middleware.AuthCtxValue(ctx)
-	bs := service.NewBlogService(r.Q, authCtx.Username != nil)
+	bs := service.NewBlogService(r.Q)
 	intId, err := strconv.ParseInt(id, 10, 32)
 	if err != nil {
 		return nil, err
@@ -127,6 +196,17 @@ func (r *queryResolver) BlogByID(ctx context.Context, id string) (*model.Blog, e
 	}
 
 	return model.NewBlogFromEntity(b), nil
+}
+
+// Tags is the resolver for the tags field.
+func (r *queryResolver) Tags(ctx context.Context) ([]*model.Tag, error) {
+	ts := service.NewTagService(r.Q)
+	tags, err := ts.GetTags()
+	if err != nil {
+		return nil, err
+	}
+
+	return model.NewTagsFromEntityList(tags), nil
 }
 
 // Blog returns BlogResolver implementation.

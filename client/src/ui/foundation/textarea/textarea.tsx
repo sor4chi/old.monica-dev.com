@@ -1,6 +1,7 @@
 import type { ComponentPropsWithoutRef } from 'react';
 import { forwardRef } from 'react';
 
+import { INDENT_SIZE, TAB_KEY } from './constants';
 import * as styles from './textarea.css';
 
 type Props = ComponentPropsWithoutRef<'textarea'> & {
@@ -11,6 +12,16 @@ type Props = ComponentPropsWithoutRef<'textarea'> & {
   resize?: boolean;
   height?: string;
   rows?: number;
+};
+const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  if (e.key === TAB_KEY) {
+    e.preventDefault();
+    const target = e.target as HTMLTextAreaElement;
+    const start = target.selectionStart;
+    const end = target.selectionEnd;
+    target.value = `${target.value.substring(0, start)}${' '.repeat(INDENT_SIZE)}${target.value.substring(end)}`;
+    target.selectionStart = target.selectionEnd = start + 1;
+  }
 };
 
 export const Textarea = forwardRef<HTMLTextAreaElement, Props>(
@@ -29,6 +40,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, Props>(
           ref={ref}
           style={{ height, resize: resize ? 'vertical' : 'none' }}
           rows={rows}
+          onKeyDown={onKeyDown}
         />
         {error && <p className={styles.error}>{error}</p>}
       </div>

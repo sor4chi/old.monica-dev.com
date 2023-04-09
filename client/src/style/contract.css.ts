@@ -4,6 +4,7 @@ export const colorVars = createThemeContract({
   bg: {
     primary: '',
     secondary: '',
+    tertiary: '',
   },
   text: {
     primary: '',
@@ -12,13 +13,17 @@ export const colorVars = createThemeContract({
   },
   accent: {
     primary: '',
-    primaryRGB: '',
     secondary: '',
-    secondaryRGB: '',
   },
   social: {
     twitter: '',
     github: '',
   },
   error: '',
+  success: '',
+  shadow: {
+    sm: '',
+    md: '',
+    lg: '',
+  },
 });

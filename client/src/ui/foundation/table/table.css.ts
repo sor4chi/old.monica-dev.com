@@ -6,7 +6,7 @@ export const table = style({
   width: '100%',
   borderCollapse: 'collapse',
   borderSpacing: 0,
-  border: `1px solid ${vars.color.bg.secondary}`,
+  border: `1px solid ${vars.color.bg.tertiary}`,
   borderRadius: '0.5rem',
   overflow: 'hidden',
   backgroundColor: vars.color.bg.primary,
@@ -23,6 +23,7 @@ export const table = style({
 export const thead = style({
   backgroundColor: vars.color.bg.secondary,
   color: vars.color.text.secondary,
+  transition: 'background-color 0.2s ease-in-out',
 });
 
 export const th = style({
@@ -36,6 +37,7 @@ export const th = style({
 });
 
 export const tbody = style({
+  transition: 'background-color 0.2s ease-in-out',
   backgroundColor: vars.color.bg.primary,
   color: vars.color.text.primary,
 });
@@ -67,5 +69,5 @@ export const td = style({
   textAlign: 'inherit',
   fontSize: '0.875rem',
   fontWeight: 400,
-  lineHeight: 1.5,
+  lineHeight: '1.5rem',
 });

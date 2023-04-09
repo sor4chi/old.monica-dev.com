@@ -16,19 +16,18 @@ export const input = style({
   width: '100%',
   boxSizing: 'border-box',
   padding: '0.5rem 1rem',
-  border: 'none',
   borderRadius: '0.25rem',
   fontSize: '1rem',
   lineHeight: '1.5',
   color: vars.color.text.primary,
   backgroundColor: vars.color.bg.secondary,
   backgroundClip: 'padding-box',
-  transition: 'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
+  transition: 'border 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out',
+  border: `1px solid ${vars.color.bg.tertiary}`,
+  outline: 'none',
 
   ':focus': {
-    borderColor: vars.color.accent.primary,
-    outline: 'none',
-    boxShadow: `0 0 0 0.1rem ${vars.color.accent.primary}`,
+    boxShadow: `0 0 0 0.2rem ${vars.color.accent.primary}`,
   },
 
   '::placeholder': {

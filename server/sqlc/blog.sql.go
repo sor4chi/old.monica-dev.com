@@ -81,10 +81,127 @@ func (q *Queries) DeleteAllTags(ctx context.Context) error {
 	return err
 }
 
+const getAllBlogs = `-- name: GetAllBlogs :many
+
+SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs LIMIT $1 OFFSET $2
+`
+
+type GetAllBlogsParams struct {
+	Limit  int32
+	Offset int32
+}
+
+// -- GETTERS -- --
+func (q *Queries) GetAllBlogs(ctx context.Context, arg GetAllBlogsParams) ([]Blog, error) {
+	rows, err := q.db.QueryContext(ctx, getAllBlogs, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Blog
+	for rows.Next() {
+		var i Blog
+		if err := rows.Scan(
+			&i.ID,
+			&i.Title,
+			&i.Description,
+			&i.Slug,
+			&i.Content,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.PublishedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getAllBlogsByTagSlugs = `-- name: GetAllBlogsByTagSlugs :many
+SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs WHERE id IN (
+  SELECT blog_id FROM blogs_tags WHERE tag_id IN (
+    SELECT id FROM tags WHERE tags.slug = ANY ($3::text[])
+  )
+) LIMIT $1 OFFSET $2
+`
+
+type GetAllBlogsByTagSlugsParams struct {
+	Limit  int32
+	Offset int32
+	Slugs  []string
+}
+
+func (q *Queries) GetAllBlogsByTagSlugs(ctx context.Context, arg GetAllBlogsByTagSlugsParams) ([]Blog, error) {
+	rows, err := q.db.QueryContext(ctx, getAllBlogsByTagSlugs, arg.Limit, arg.Offset, pq.Array(arg.Slugs))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Blog
+	for rows.Next() {
+		var i Blog
+		if err := rows.Scan(
+			&i.ID,
+			&i.Title,
+			&i.Description,
+			&i.Slug,
+			&i.Content,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.PublishedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getAllBlogsByTagSlugsCount = `-- name: GetAllBlogsByTagSlugsCount :one
+SELECT COUNT(*) FROM blogs_tags WHERE tag_id IN (
+  SELECT id FROM tags WHERE tags.slug = ANY ($1::text[])
+)
+`
+
+func (q *Queries) GetAllBlogsByTagSlugsCount(ctx context.Context, slugs []string) (int64, error) {
+	row := q.db.QueryRowContext(ctx, getAllBlogsByTagSlugsCount, pq.Array(slugs))
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
+const getAllBlogsCount = `-- name: GetAllBlogsCount :one
+
+SELECT COUNT(*) FROM blogs
+`
+
+// -- COUNTERS -- --
+func (q *Queries) GetAllBlogsCount(ctx context.Context) (int64, error) {
+	row := q.db.QueryRowContext(ctx, getAllBlogsCount)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const getBlogById = `-- name: GetBlogById :one
+
 SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs WHERE id = $1
 `
 
+// -- FINDERS -- --
 func (q *Queries) GetBlogById(ctx context.Context, id int32) (Blog, error) {
 	row := q.db.QueryRowContext(ctx, getBlogById, id)
 	var i Blog
@@ -99,143 +216,6 @@ func (q *Queries) GetBlogById(ctx context.Context, id int32) (Blog, error) {
 		&i.PublishedAt,
 	)
 	return i, err
-}
-
-const getBlogBySlug = `-- name: GetBlogBySlug :one
-
-SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs WHERE slug = $1
-`
-
-// -- FINDERS -- --
-func (q *Queries) GetBlogBySlug(ctx context.Context, slug string) (Blog, error) {
-	row := q.db.QueryRowContext(ctx, getBlogBySlug, slug)
-	var i Blog
-	err := row.Scan(
-		&i.ID,
-		&i.Title,
-		&i.Description,
-		&i.Slug,
-		&i.Content,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-		&i.PublishedAt,
-	)
-	return i, err
-}
-
-const getBlogs = `-- name: GetBlogs :many
-
-SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs LIMIT $1 OFFSET $2
-`
-
-type GetBlogsParams struct {
-	Limit  int32
-	Offset int32
-}
-
-// -- GETTERS -- --
-func (q *Queries) GetBlogs(ctx context.Context, arg GetBlogsParams) ([]Blog, error) {
-	rows, err := q.db.QueryContext(ctx, getBlogs, arg.Limit, arg.Offset)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	var items []Blog
-	for rows.Next() {
-		var i Blog
-		if err := rows.Scan(
-			&i.ID,
-			&i.Title,
-			&i.Description,
-			&i.Slug,
-			&i.Content,
-			&i.CreatedAt,
-			&i.UpdatedAt,
-			&i.PublishedAt,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
-const getBlogsByTagSlugs = `-- name: GetBlogsByTagSlugs :many
-SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs WHERE id IN (
-  SELECT blog_id FROM blogs_tags WHERE tag_id IN (
-    SELECT id FROM tags WHERE tags.slug = ANY ($3::text[])
-  )
-) LIMIT $1 OFFSET $2
-`
-
-type GetBlogsByTagSlugsParams struct {
-	Limit  int32
-	Offset int32
-	Slugs  []string
-}
-
-func (q *Queries) GetBlogsByTagSlugs(ctx context.Context, arg GetBlogsByTagSlugsParams) ([]Blog, error) {
-	rows, err := q.db.QueryContext(ctx, getBlogsByTagSlugs, arg.Limit, arg.Offset, pq.Array(arg.Slugs))
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	var items []Blog
-	for rows.Next() {
-		var i Blog
-		if err := rows.Scan(
-			&i.ID,
-			&i.Title,
-			&i.Description,
-			&i.Slug,
-			&i.Content,
-			&i.CreatedAt,
-			&i.UpdatedAt,
-			&i.PublishedAt,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
-const getBlogsByTagSlugsCount = `-- name: GetBlogsByTagSlugsCount :one
-SELECT COUNT(*) FROM blogs_tags WHERE tag_id IN (
-  SELECT id FROM tags WHERE tags.slug = ANY ($1::text[])
-)
-`
-
-func (q *Queries) GetBlogsByTagSlugsCount(ctx context.Context, slugs []string) (int64, error) {
-	row := q.db.QueryRowContext(ctx, getBlogsByTagSlugsCount, pq.Array(slugs))
-	var count int64
-	err := row.Scan(&count)
-	return count, err
-}
-
-const getBlogsCount = `-- name: GetBlogsCount :one
-
-SELECT COUNT(*) FROM blogs
-`
-
-// -- COUNTERS -- --
-func (q *Queries) GetBlogsCount(ctx context.Context) (int64, error) {
-	row := q.db.QueryRowContext(ctx, getBlogsCount)
-	var count int64
-	err := row.Scan(&count)
-	return count, err
 }
 
 const getPublishedBlogBySlug = `-- name: GetPublishedBlogBySlug :one
@@ -369,4 +349,45 @@ func (q *Queries) GetPublishedBlogsCount(ctx context.Context) (int64, error) {
 	var count int64
 	err := row.Scan(&count)
 	return count, err
+}
+
+const updateBlog = `-- name: UpdateBlog :one
+
+UPDATE blogs
+SET title = $1, slug = $2, description = $3, content = $4, published_at = $5
+WHERE id = $6
+RETURNING id, title, description, slug, content, created_at, updated_at, published_at
+`
+
+type UpdateBlogParams struct {
+	Title       string
+	Slug        string
+	Description string
+	Content     string
+	PublishedAt sql.NullTime
+	ID          int32
+}
+
+// -- UPDATERS -- --
+func (q *Queries) UpdateBlog(ctx context.Context, arg UpdateBlogParams) (Blog, error) {
+	row := q.db.QueryRowContext(ctx, updateBlog,
+		arg.Title,
+		arg.Slug,
+		arg.Description,
+		arg.Content,
+		arg.PublishedAt,
+		arg.ID,
+	)
+	var i Blog
+	err := row.Scan(
+		&i.ID,
+		&i.Title,
+		&i.Description,
+		&i.Slug,
+		&i.Content,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.PublishedAt,
+	)
+	return i, err
 }

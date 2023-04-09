@@ -1,12 +1,9 @@
 -- -- GETTERS -- --
 
--- name: GetBlogs :many
+-- name: GetAllBlogs :many
 SELECT * FROM blogs LIMIT $1 OFFSET $2;
 
--- name: GetPublishedBlogs :many
-SELECT * FROM blogs WHERE published_at IS NOT NULL LIMIT $1 OFFSET $2;
-
--- name: GetBlogsByTagSlugs :many
+-- name: GetAllBlogsByTagSlugs :many
 SELECT * FROM blogs WHERE id IN (
   SELECT blog_id FROM blogs_tags WHERE tag_id IN (
     SELECT id FROM tags WHERE tags.slug = ANY (@slugs::text[])
@@ -20,19 +17,21 @@ SELECT * FROM blogs WHERE id IN (
   )
 ) AND published_at IS NOT NULL LIMIT $1 OFFSET $2;
 
+-- name: GetPublishedBlogs :many
+SELECT * FROM blogs WHERE published_at IS NOT NULL LIMIT $1 OFFSET $2;
 
 -- -- COUNTERS -- --
 
--- name: GetBlogsCount :one
+-- name: GetAllBlogsCount :one
 SELECT COUNT(*) FROM blogs;
 
--- name: GetPublishedBlogsCount :one
-SELECT COUNT(*) FROM blogs WHERE published_at IS NOT NULL;
-
--- name: GetBlogsByTagSlugsCount :one
+-- name: GetAllBlogsByTagSlugsCount :one
 SELECT COUNT(*) FROM blogs_tags WHERE tag_id IN (
   SELECT id FROM tags WHERE tags.slug = ANY (@slugs::text[])
 );
+
+-- name: GetPublishedBlogsCount :one
+SELECT COUNT(*) FROM blogs WHERE published_at IS NOT NULL;
 
 -- name: GetPublishedBlogsByTagSlugsCount :one
 SELECT COUNT(*) FROM blogs_tags WHERE tag_id IN (
@@ -42,9 +41,6 @@ SELECT COUNT(*) FROM blogs_tags WHERE tag_id IN (
 );
 
 -- -- FINDERS -- --
-
--- name: GetBlogBySlug :one
-SELECT * FROM blogs WHERE slug = $1;
 
 -- name: GetBlogById :one
 SELECT * FROM blogs WHERE id = $1;
@@ -59,6 +55,14 @@ INSERT INTO blogs (
   title, slug, description, content, published_at
 )
 VALUES ($1, $2, $3, $4, $5)
+RETURNING *;
+
+-- -- UPDATERS -- --
+
+-- name: UpdateBlog :one
+UPDATE blogs
+SET title = $1, slug = $2, description = $3, content = $4, published_at = $5
+WHERE id = $6
 RETURNING *;
 
 -- -- DELETORS -- --

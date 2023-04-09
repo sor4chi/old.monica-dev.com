@@ -4,7 +4,11 @@ import { Fragment } from 'react';
 
 import * as styles from './breadcrumb.css';
 
-export const Breadcrumb = () => {
+interface Props {
+  last?: string;
+}
+
+export const Breadcrumb = ({ last }: Props) => {
   const segments = useSelectedLayoutSegments();
   let link = '/dashboard';
 
@@ -14,9 +18,13 @@ export const Breadcrumb = () => {
         link += `/${segment}`;
         return (
           <Fragment key={i}>
-            <Link className={styles.item} href={link}>
-              {segment}
-            </Link>
+            {i === segments.length - 1 ? (
+              <span className={styles.itemText}>{last || segment}</span>
+            ) : (
+              <Link className={styles.itemLink} href={link}>
+                {segment}
+              </Link>
+            )}
             {i < segments.length - 1 && <span className={styles.separator}>/</span>}
           </Fragment>
         );

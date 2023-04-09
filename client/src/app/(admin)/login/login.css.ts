@@ -15,10 +15,7 @@ export const title = style({
   textAlign: 'center',
 });
 
-export const card = style({
-  borderRadius: '0.5rem',
-  backgroundColor: vars.color.bg.primary,
-  border: `1px solid ${vars.color.bg.secondary}`,
+export const wrapper = style({
   padding: '1rem',
   boxSizing: 'border-box',
   display: 'flex',

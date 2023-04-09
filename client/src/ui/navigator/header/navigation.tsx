@@ -1,12 +1,13 @@
-import { cookies } from 'next/headers';
+'use client';
 import Link from 'next/link';
-import { MdOpenInNew } from 'react-icons/md';
+import { MdDashboard } from 'react-icons/md';
 
 import * as styles from './header.css';
 
+import { useSession } from '@/hooks';
+
 export const Navigation = () => {
-  const cookieStore = cookies();
-  const sessionId = cookieStore.get('session_id');
+  const authState = useSession();
 
   return (
     <nav>
@@ -26,10 +27,11 @@ export const Navigation = () => {
             Contact
           </Link>
         </li>
-        {sessionId && (
+        {authState === 'authenticated' && (
           <li className={styles.navigationListItem}>
             <Link href="/dashboard" passHref className={styles.navigationLink}>
-              Dashboard <MdOpenInNew />
+              <MdDashboard className={styles.navigationLinkIcon} />
+              Dashboard
             </Link>
           </li>
         )}

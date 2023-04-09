@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { serverEnv } from '@/env/server';
-import { formatYYYYMMDDHHMM } from '@/util/date';
+import { formatDateFullNumeric } from '@/util/date';
 
 const allowedOrigins = [serverEnv.NODE_ENV === 'development' && 'http://localhost:3000', 'https://monica-dev.com'];
 
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
         email,
         message,
         name,
-        time: formatYYYYMMDDHHMM(new Date().toString()),
+        time: formatDateFullNumeric(new Date().toString()),
       }),
     }),
     headers: {

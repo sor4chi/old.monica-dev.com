@@ -38,7 +38,9 @@ input BlogListInput {
 type Query {
   blogs(input: BlogListInput!): BlogList!
   blog(slug: String!): Blog!
+  blogsAll(input: BlogListInput!): BlogList! @auth
   blogById(id: ID!): Blog! @auth
+  tags: [Tag!]!
 }
 
 input BlogInput {
@@ -46,7 +48,7 @@ input BlogInput {
   slug: String!
   description: String!
   content: String!
-  tags: [TagInput!]!
+  tagIds: [ID!]!
   published: Boolean!
 }
 
@@ -56,7 +58,8 @@ input TagInput {
 }
 
 type Mutation {
-  createBlog(input: BlogInput!): Blog!
-  updateBlog(id: ID!, input: BlogInput!): Blog!
-  deleteBlog(id: ID!): Blog!
+  createBlog(input: BlogInput!): Blog! @auth
+  updateBlog(id: ID!, input: BlogInput!): Blog! @auth
+  deleteBlog(id: ID!): Blog! @auth
+  createTag(input: TagInput!): Tag! @auth
 }
