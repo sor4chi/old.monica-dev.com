@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 
+import { MODAL_ID } from '@/constant/id';
 import { Snackbars } from '@/ui/foundation/snackbar/snackbar';
 
 interface Props {
@@ -11,6 +12,7 @@ export const Modifier = ({ children }: Props) => {
     <>
       {children}
       <Snackbars />
+      <div id={MODAL_ID}></div>
     </>
   );
 };
