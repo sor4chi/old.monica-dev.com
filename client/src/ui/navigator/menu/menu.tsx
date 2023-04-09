@@ -11,7 +11,7 @@ import { clientEnv } from '@/env/client';
 import { Button } from '@/ui/foundation/button';
 
 export const Menu = () => {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? '';
   const router = useRouter();
 
   const logout = async () => {
