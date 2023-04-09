@@ -111,6 +111,21 @@ func (r *mutationResolver) DeleteBlog(ctx context.Context, id string) (*model.Bl
 	panic("DeleteBlog is not implemented")
 }
 
+// CreateTag is the resolver for the createTag field.
+func (r *mutationResolver) CreateTag(ctx context.Context, input model.TagInput) (*model.Tag, error) {
+	ts := service.NewTagService(r.Q)
+
+	tag, err := ts.CreateTag(&entity.Tag{
+		Name: input.Name,
+		Slug: input.Slug,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return model.NewTagFromEntity(tag), nil
+}
+
 // Blogs is the resolver for the blogs field.
 func (r *queryResolver) Blogs(ctx context.Context, input model.BlogListInput) (*model.BlogList, error) {
 	bs := service.NewBlogService(r.Q)
