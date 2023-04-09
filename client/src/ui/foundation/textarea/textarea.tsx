@@ -13,20 +13,19 @@ type Props = ComponentPropsWithoutRef<'textarea'> & {
   height?: string;
   rows?: number;
 };
+const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  if (e.key === TAB_KEY) {
+    e.preventDefault();
+    const target = e.target as HTMLTextAreaElement;
+    const start = target.selectionStart;
+    const end = target.selectionEnd;
+    target.value = `${target.value.substring(0, start)}${' '.repeat(INDENT_SIZE)}${target.value.substring(end)}`;
+    target.selectionStart = target.selectionEnd = start + 1;
+  }
+};
 
 export const Textarea = forwardRef<HTMLTextAreaElement, Props>(
   ({ error, height, id, label, placeholder, resize, rows, ...props }, ref) => {
-    const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      if (e.key === TAB_KEY) {
-        e.preventDefault();
-        const target = e.target as HTMLTextAreaElement;
-        const start = target.selectionStart;
-        const end = target.selectionEnd;
-        target.value = `${target.value.substring(0, start)}${' '.repeat(INDENT_SIZE)}${target.value.substring(end)}`;
-        target.selectionStart = target.selectionEnd = start + 1;
-      }
-    };
-
     return (
       <div className={styles.wrapper}>
         {label && (
