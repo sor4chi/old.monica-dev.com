@@ -1,5 +1,7 @@
 import { keyframes, style } from '@vanilla-extract/css';
 
+import { vars } from '@/style/theme.css';
+
 export const skeletonAnimation = keyframes({
   '0%': {
     backgroundPosition: '100% 50%',
@@ -9,8 +11,8 @@ export const skeletonAnimation = keyframes({
   },
 });
 
-const light = '#ffffff';
-const dark = '#c8cad0';
+const light = vars.color.bg.primary;
+const dark = vars.color.bg.secondary;
 
 export const skeletonStyle = style({
   background: `linear-gradient(90deg, ${dark} 30%, ${light} 50%, ${dark} 70%)`,
