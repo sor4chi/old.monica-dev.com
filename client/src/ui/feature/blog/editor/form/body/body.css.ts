@@ -70,6 +70,7 @@ const basePreview = style({
   overflowX: 'hidden',
   overflowY: 'auto',
   transition: 'width 0.2s ease-in-out, opacity 0.2s ease-in-out, margin-left 0.2s ease-in-out',
+  borderRadius: '0.25rem',
 });
 
 export const preview = styleVariants({

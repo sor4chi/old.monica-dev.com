@@ -117,7 +117,7 @@ globalStyle(`${content} .remark-code-title`, {
   fontSize: '0.75rem',
   color: vars.color.text.secondary,
   padding: '0.5rem 1rem',
-  background: '#2e3236',
+  background: vars.color.bg.secondary,
   borderRadius: '0.25rem 0.25rem 0 0',
   width: 'fit-content',
   position: 'relative',
