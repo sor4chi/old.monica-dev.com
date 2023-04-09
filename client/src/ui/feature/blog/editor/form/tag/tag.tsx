@@ -1,8 +1,13 @@
+import { lazy, useEffect, useState } from 'react';
+import { IoIosAdd } from 'react-icons/io';
+
 import { useBlogEditor } from '../../use-blog-editor';
 
+const EditorFormTagCreate = lazy(() => import('./create'));
 import * as styles from './tag.css';
 
 import { gql } from '@/lib/graphql';
+import { Button } from '@/ui/foundation/button';
 import { Checkbox } from '@/ui/foundation/checkbox/checkbox';
 
 export const BlogEditorFormTagFragment = gql`
@@ -26,6 +31,12 @@ interface Props {
 export const BlogEditorFormTag = ({ tagsOptions }: Props) => {
   const { form } = useBlogEditor();
   const { register } = form;
+  const [isCreateNew, setIsCreateNew] = useState(false);
+  const [tagsOptionsState, setTagsOptionsState] = useState(tagsOptions);
+
+  useEffect(() => {
+    setTagsOptionsState(tagsOptions);
+  }, [tagsOptions]);
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     const parent = e.target.parentElement;
@@ -38,7 +49,14 @@ export const BlogEditorFormTag = ({ tagsOptions }: Props) => {
     <div className={styles.container}>
       <label className={styles.label}>Tags</label>
       <div className={styles.tags}>
-        {tagsOptions.map((tag) => (
+        {isCreateNew && (
+          <EditorFormTagCreate
+            setTagsOptionsState={setTagsOptionsState}
+            isCreateNew={isCreateNew}
+            setIsCreateNew={setIsCreateNew}
+          />
+        )}
+        {tagsOptionsState.map((tag) => (
           <Checkbox
             key={tag.slug}
             label={tag.name}
@@ -49,6 +67,16 @@ export const BlogEditorFormTag = ({ tagsOptions }: Props) => {
           />
         ))}
       </div>
+      <Button
+        // not to submit the form
+        type="button"
+        icon={<IoIosAdd size={24} />}
+        onClick={() => setIsCreateNew(true)}
+        variant="secondary"
+        size="sm"
+      >
+        New Tag
+      </Button>
     </div>
   );
 };

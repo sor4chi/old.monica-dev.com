@@ -1,2 +1,2 @@
-export * from "./tag";
-
+'use client';
+export * from './tag';

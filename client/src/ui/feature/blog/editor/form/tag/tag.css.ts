@@ -5,6 +5,9 @@ import { vars } from '@/style/theme.css';
 export const container = style({
   gridRow: '1 / 4',
   gridColumn: '2 / 3',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-end',
 });
 
 export const tags = style({
@@ -13,12 +16,12 @@ export const tags = style({
   alignContent: 'flex-start',
   gap: '0.5rem',
   flexWrap: 'wrap',
-  height: '12rem',
+  height: '10rem',
   overflow: 'auto',
-  padding: '0.5rem',
+  margin: '0.5rem 0',
 });
 
 export const label = style({
   color: vars.color.text.secondary,
-  display: 'inline-block',
+  width: '100%',
 });
