@@ -212,14 +212,26 @@ func (s *BlogService) UpdateBlog(id int32, title, slug, description, content str
 		Description: description,
 		Content:     content,
 	}
-	if before.PublishedAt == nil && published {
-		now := time.Now()
+	func() {
+		if !published {
+			p.PublishedAt = sql.NullTime{
+				Valid: false,
+			}
+			return
+		}
+		if before.PublishedAt == nil {
+			now := time.Now()
+			p.PublishedAt = sql.NullTime{
+				Time:  now,
+				Valid: true,
+			}
+			return
+		}
 		p.PublishedAt = sql.NullTime{
-			Time:  now,
+			Time:  *before.PublishedAt,
 			Valid: true,
 		}
-	}
-
+	}()
 	row, err := s.q.UpdateBlog(ctx, p)
 	if err != nil {
 		return nil, err
