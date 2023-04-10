@@ -39,6 +39,7 @@ var (
 	PATH_GRAPHQL    = "/query"
 	LOGIN_PATH      = "/login"
 	LOGOUT_PATH     = "/logout"
+	UPLOAD_PATH     = "/upload"
 	ME_PATH         = "/me"
 )
 
@@ -85,6 +86,8 @@ func main() {
 	mux.Handle(ME_PATH, mm.MiddlewareFunc(service.UserMe))
 
 	mm.Use(middleware.AuthMiddleware)
+	mux.Handle(UPLOAD_PATH, mm.MiddlewareFunc(service.Upload))
+
 	mux.Handle(PATH_GRAPHQL, mm.Middleware(srv))
 
 	log.Println("listening on", SERVER_PORT)
