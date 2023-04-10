@@ -17,8 +17,10 @@ export const tags = style({
   gap: '0.5rem',
   flexWrap: 'wrap',
   height: '10rem',
-  overflow: 'auto',
+  overflowY: 'scroll',
   margin: '0.5rem 0',
+  padding: '0.25rem',
+  boxSizing: 'border-box',
   width: '100%',
 });
 

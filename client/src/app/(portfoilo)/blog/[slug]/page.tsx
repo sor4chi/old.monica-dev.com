@@ -139,10 +139,6 @@ async function getBlog(slug: string) {
 export default async function BlogDetail({ params }: Props) {
   const blog = await getBlog(params.slug);
 
-  if (!blog) {
-    notFound();
-  }
-
   return (
     <>
       <BlogHero blog={blog.meta} />

@@ -11,7 +11,7 @@ export const sidebar = style({
   width: '15rem',
   flexShrink: 0,
   display: 'flex',
-  gap: '2rem',
+  gap: '1rem',
 
   '@media': {
     [`screen and (max-width: ${vars.breakpoint.mobile})`]: {

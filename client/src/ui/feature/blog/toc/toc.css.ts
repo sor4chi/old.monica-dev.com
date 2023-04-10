@@ -8,11 +8,18 @@ export const toc = style({
   height: 'fit-content',
 });
 
+export const tocList = style({
+  height: '70vh',
+  overflowY: 'auto',
+  paddingLeft: '1rem',
+});
+
 export const tocTitle = style({
   fontSize: '1.25rem',
   fontWeight: 400,
   marginBottom: '1rem',
   marginTop: 0,
+  paddingLeft: '1rem',
 });
 
 export const tocWrapper = style({
