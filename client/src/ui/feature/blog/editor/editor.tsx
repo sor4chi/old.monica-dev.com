@@ -8,6 +8,7 @@ import { BlogEditorFormTagFragment } from './form/tag';
 import { BlogEditorProvider } from './use-blog-editor';
 
 import { clientInBrowser, gql } from '@/lib/graphql';
+import './_.css'; // hard code, vanilla-extract x next.js 13 cant load css in client side
 
 const BlogDetailPageQuery = gql`
   ${BlogEditorFormFragment}
