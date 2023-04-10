@@ -6,7 +6,7 @@ import * as styles from './button.css';
 type Props = ComponentProps<'button'> & {
   icon?: ReactNode;
   iconPosition?: 'left' | 'right';
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'tertiary';
   size?: 'sm' | 'md';
 };
 

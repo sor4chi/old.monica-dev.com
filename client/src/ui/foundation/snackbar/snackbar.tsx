@@ -29,7 +29,7 @@ const Snackbar = ({ action, message }: SnackbarProps) => {
     <div className={styles.snackbar}>
       {message}
       {action && (
-        <Button onClick={action.onClick} variant="secondary" size="sm">
+        <Button onClick={action.onClick} variant="tertiary" size="sm">
           {action.label}
         </Button>
       )}

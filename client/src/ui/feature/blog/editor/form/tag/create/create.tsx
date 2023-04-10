@@ -87,7 +87,7 @@ export const EditorFormTagCreate = ({ isCreateNew, setIsCreateNew, setTagsOption
         title="New Tag"
         footer={
           <>
-            <Button variant="secondary" onClick={() => setIsCreateNew(false)}>
+            <Button variant="tertiary" onClick={() => setIsCreateNew(false)}>
               Cancel
             </Button>
             <Button onClick={() => handleSubmit(form)}>Create</Button>

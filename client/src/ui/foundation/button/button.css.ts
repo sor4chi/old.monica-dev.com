@@ -54,6 +54,19 @@ export const variant = styleVariants({
       },
     },
   },
+  tertiary: {
+    color: vars.color.text.tertiary,
+    backgroundColor: 'transparent',
+    border: 'none',
+
+    '@media': {
+      '(hover: hover)': {
+        ':hover': {
+          backgroundColor: vars.color.bg.secondary,
+        },
+      },
+    },
+  },
 });
 
 export const size = styleVariants({
