@@ -112,6 +112,40 @@ globalStyle(`${content} .token.entity`, {
   cursor: 'help',
 });
 
+globalStyle(`${content} .code-line`, {
+  display: 'block',
+  paddingLeft: '16px',
+  paddingRight: '16px',
+  marginLeft: '-16px',
+  marginRight: '-16px',
+  borderLeft: '4px solid #00000000',
+});
+
+globalStyle(`${content} .code-line.inserted`, {
+  backgroundColor: '#a3be8c33',
+});
+
+globalStyle(`${content} .code-line.deleted`, {
+  backgroundColor: '#bf616a33',
+});
+
+globalStyle(`${content} .code-line.line-number::before`, {
+  display: 'inline-block',
+  width: '1rem',
+  textAlign: 'right',
+  marginRight: '16px',
+  marginLeft: '-8px',
+  color: '#9CA3AF',
+  content: 'attr(line)',
+});
+
+globalStyle(`${content} .code-line.highlight-line`, {
+  marginLeft: '-16px',
+  marginRight: '-16px',
+  backgroundColor: '#ffffff11',
+  borderLeft: `4px solid ${vars.color.accent.primary}` /* Set highlight accent border color */,
+});
+
 globalStyle(`${content} .remark-code-title`, {
   display: 'block',
   fontSize: '0.75rem',
