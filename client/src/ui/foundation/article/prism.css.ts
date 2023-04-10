@@ -119,6 +119,7 @@ globalStyle(`${content} .code-line`, {
   marginLeft: '-16px',
   marginRight: '-16px',
   borderLeft: '4px solid #00000000',
+  width: 'fit-content',
 });
 
 globalStyle(`${content} .code-line.inserted`, {
