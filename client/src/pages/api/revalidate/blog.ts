@@ -9,8 +9,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const slug = req.query.slug as string;
 
+  console.log(`Revalidating: ${slug}`);
+
   try {
-    console.log(`Revalidating: ${slug}`);
     await res.revalidate(`/blog/${slug}`);
     return res.json({ revalidated: true });
   } catch (err) {
