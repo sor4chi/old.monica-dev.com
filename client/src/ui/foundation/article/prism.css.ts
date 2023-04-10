@@ -23,6 +23,7 @@ globalStyle(`${content} code[class*="language-"], pre[class*="language-"]`, {
   hyphens: 'none',
   display: 'block',
   width: 'fit-content',
+  minWidth: '100%',
 });
 
 const preBorderRadius = '0.5rem';
