@@ -21,6 +21,8 @@ globalStyle(`${content} code[class*="language-"], pre[class*="language-"]`, {
   MozHyphens: 'none',
   msHyphens: 'none',
   hyphens: 'none',
+  display: 'block',
+  width: 'fit-content',
 });
 
 const preBorderRadius = '0.5rem';
@@ -30,6 +32,8 @@ globalStyle(`${content} pre[class*="language-"]`, {
   margin: 0,
   overflow: 'auto',
   borderRadius: preBorderRadius,
+  width: '100%',
+  boxSizing: 'border-box',
 });
 
 const preBg = '#2E3440';
@@ -119,7 +123,6 @@ globalStyle(`${content} .code-line`, {
   marginLeft: '-16px',
   marginRight: '-16px',
   borderLeft: '4px solid #00000000',
-  width: 'fit-content',
 });
 
 globalStyle(`${content} .code-line.inserted`, {
