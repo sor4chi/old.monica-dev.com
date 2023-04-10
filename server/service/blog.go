@@ -242,7 +242,7 @@ func (s *BlogService) UpdateBlog(id int32, title, slug, description, content str
 
 func (s *BlogService) RevalidateBlog(slug string) error {
 	clientUrl := util.GetEnv("CLIENT_URL", "http://localhost:3000")
-	url := fmt.Sprintf("%s%s?slug=%s", clientUrl, REVALIDATE_URL, slug)
+	url := fmt.Sprintf("%s%s?slug=%s&secret=%s", clientUrl, REVALIDATE_URL, slug, util.GetEnvStrict("REVALIDATE_SECRET"))
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
