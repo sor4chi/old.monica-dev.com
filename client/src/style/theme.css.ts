@@ -20,6 +20,7 @@ createGlobalTheme('.light', colorVars, {
   social: {
     twitter: '#1da1f2',
     github: '#111111',
+    facebook: '#3b5998',
   },
   error: '#e27878',
   success: '#8bae79',
@@ -48,6 +49,7 @@ createGlobalTheme('.dark', colorVars, {
   social: {
     twitter: '#1da1f2',
     github: '#ffffff',
+    facebook: '#3b5998',
   },
   error: '#e27878',
   success: '#8bae79',

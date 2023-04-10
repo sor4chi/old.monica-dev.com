@@ -1,24 +1,22 @@
--- -- GETTERS -- --
-
 -- name: GetAllBlogs :many
-SELECT * FROM blogs LIMIT $1 OFFSET $2;
+SELECT * FROM blogs ORDER BY created_at DESC LIMIT $1 OFFSET $2;
 
 -- name: GetAllBlogsByTagSlugs :many
 SELECT * FROM blogs WHERE id IN (
   SELECT blog_id FROM blogs_tags WHERE tag_id IN (
     SELECT id FROM tags WHERE tags.slug = ANY (@slugs::text[])
   )
-) LIMIT $1 OFFSET $2;
+) ORDER BY created_at DESC LIMIT $1 OFFSET $2;
 
 -- name: GetPublishedBlogsByTagSlugs :many
 SELECT * FROM blogs WHERE id IN (
   SELECT blog_id FROM blogs_tags WHERE tag_id IN (
     SELECT id FROM tags WHERE tags.slug = ANY (@slugs::text[])
   )
-) AND published_at IS NOT NULL LIMIT $1 OFFSET $2;
+) AND published_at IS NOT NULL ORDER BY published_at DESC LIMIT $1 OFFSET $2;
 
 -- name: GetPublishedBlogs :many
-SELECT * FROM blogs WHERE published_at IS NOT NULL LIMIT $1 OFFSET $2;
+SELECT * FROM blogs WHERE published_at IS NOT NULL ORDER BY published_at DESC LIMIT $1 OFFSET $2;
 
 -- -- COUNTERS -- --
 

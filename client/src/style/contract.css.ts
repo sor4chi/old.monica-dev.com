@@ -18,6 +18,7 @@ export const colorVars = createThemeContract({
   social: {
     twitter: '',
     github: '',
+    facebook: '',
   },
   error: '',
   success: '',

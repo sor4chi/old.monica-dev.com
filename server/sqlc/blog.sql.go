@@ -82,8 +82,7 @@ func (q *Queries) DeleteAllTags(ctx context.Context) error {
 }
 
 const getAllBlogs = `-- name: GetAllBlogs :many
-
-SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs LIMIT $1 OFFSET $2
+SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs ORDER BY created_at DESC LIMIT $1 OFFSET $2
 `
 
 type GetAllBlogsParams struct {
@@ -91,7 +90,6 @@ type GetAllBlogsParams struct {
 	Offset int32
 }
 
-// -- GETTERS -- --
 func (q *Queries) GetAllBlogs(ctx context.Context, arg GetAllBlogsParams) ([]Blog, error) {
 	rows, err := q.db.QueryContext(ctx, getAllBlogs, arg.Limit, arg.Offset)
 	if err != nil {
@@ -129,7 +127,7 @@ SELECT id, title, description, slug, content, created_at, updated_at, published_
   SELECT blog_id FROM blogs_tags WHERE tag_id IN (
     SELECT id FROM tags WHERE tags.slug = ANY ($3::text[])
   )
-) LIMIT $1 OFFSET $2
+) ORDER BY created_at DESC LIMIT $1 OFFSET $2
 `
 
 type GetAllBlogsByTagSlugsParams struct {
@@ -239,7 +237,7 @@ func (q *Queries) GetPublishedBlogBySlug(ctx context.Context, slug string) (Blog
 }
 
 const getPublishedBlogs = `-- name: GetPublishedBlogs :many
-SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs WHERE published_at IS NOT NULL LIMIT $1 OFFSET $2
+SELECT id, title, description, slug, content, created_at, updated_at, published_at FROM blogs WHERE published_at IS NOT NULL ORDER BY published_at DESC LIMIT $1 OFFSET $2
 `
 
 type GetPublishedBlogsParams struct {
@@ -284,7 +282,7 @@ SELECT id, title, description, slug, content, created_at, updated_at, published_
   SELECT blog_id FROM blogs_tags WHERE tag_id IN (
     SELECT id FROM tags WHERE tags.slug = ANY ($3::text[])
   )
-) AND published_at IS NOT NULL LIMIT $1 OFFSET $2
+) AND published_at IS NOT NULL ORDER BY published_at DESC LIMIT $1 OFFSET $2
 `
 
 type GetPublishedBlogsByTagSlugsParams struct {
