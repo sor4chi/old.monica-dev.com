@@ -19,6 +19,7 @@ export const tags = style({
   height: '10rem',
   overflow: 'auto',
   margin: '0.5rem 0',
+  width: '100%',
 });
 
 export const label = style({
