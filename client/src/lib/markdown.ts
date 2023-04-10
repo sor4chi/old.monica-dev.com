@@ -5,6 +5,7 @@ import refractorDiff from 'refractor/lang/diff';
 import refractorGo from 'refractor/lang/go';
 import refractorJava from 'refractor/lang/java';
 import refractorJavascript from 'refractor/lang/javascript';
+import refractorJson from 'refractor/lang/json';
 import refractorPython from 'refractor/lang/python';
 import refractorRust from 'refractor/lang/rust';
 import refractorTypescript from 'refractor/lang/typescript';
@@ -38,6 +39,7 @@ refractor.register(refractorC);
 refractor.register(refractorCpp);
 refractor.register(refractorGo);
 refractor.register(refractorDiff);
+refractor.register(refractorJson);
 
 const rehypePrism = rehypePrismGenerator(refractor);
 
