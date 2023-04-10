@@ -1,6 +1,7 @@
 import { createElement, Fragment } from 'react';
 import refractorC from 'refractor/lang/c';
 import refractorCpp from 'refractor/lang/cpp';
+import refractorDiff from 'refractor/lang/diff';
 import refractorGo from 'refractor/lang/go';
 import refractorJava from 'refractor/lang/java';
 import refractorJavascript from 'refractor/lang/javascript';
@@ -36,6 +37,8 @@ refractor.register(refractorJava);
 refractor.register(refractorC);
 refractor.register(refractorCpp);
 refractor.register(refractorGo);
+refractor.register(refractorDiff);
+
 const rehypePrism = rehypePrismGenerator(refractor);
 
 interface TocItem {
