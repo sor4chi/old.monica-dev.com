@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { Control } from 'react-hook-form';
 import { useWatch } from 'react-hook-form';
 
@@ -139,5 +139,7 @@ const BlogContentPreview = ({ control }: { control: Control<BlogFormSchema> }) =
     name: 'content',
   });
 
-  return <Article content={parseMarkdownToHTML(content).content} />;
+  const parsedContent = useMemo(() => parseMarkdownToHTML(content).content, [content]);
+
+  return <Article content={parsedContent} />;
 };
