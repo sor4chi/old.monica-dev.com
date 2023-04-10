@@ -12,6 +12,10 @@ export const label = style({
   display: 'inline-block',
 });
 
+export const textareaWrapper = style({
+  position: 'relative',
+});
+
 export const textarea = style({
   width: '100%',
   boxSizing: 'border-box',
@@ -35,6 +39,23 @@ export const textarea = style({
     color: vars.color.text.tertiary,
     opacity: 0.5,
   },
+});
+
+export const dragOver = style({
+  border: `1px dashed ${vars.color.accent.primary}`,
+  opacity: 0.3,
+});
+
+export const dragOverText = style({
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  color: vars.color.text.secondary,
+  fontSize: '1.5rem',
+  fontWeight: 700,
+  userSelect: 'none',
+  pointerEvents: 'none',
 });
 
 export const error = style({

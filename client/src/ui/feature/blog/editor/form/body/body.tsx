@@ -9,6 +9,7 @@ import { BlogEditorFormTag } from '../tag';
 
 import * as styles from './body.css';
 
+import { clientEnv } from '@/env/client';
 import { gql } from '@/lib/graphql';
 import { parseMarkdownToHTML } from '@/lib/markdown';
 import { Article } from '@/ui/foundation/article';
@@ -50,6 +51,18 @@ interface Props {
   }[];
   onSubmit: (data: BlogFormSchema) => void;
 }
+
+const handleFileDrop = async (file: File) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  const res = await fetch(clientEnv.NEXT_PUBLIC_GQL_ENDPOINT.replace('/query', '/upload'), {
+    body: formData,
+    credentials: 'include',
+    method: 'POST',
+  });
+  const data = await res.json();
+  return data.url;
+};
 
 export const BlogEditorFormBody = ({ onSubmit, tagsOptions }: Props) => {
   const [contentEditorOptions, setContentEditorOptions] = useState({
@@ -123,6 +136,7 @@ export const BlogEditorFormBody = ({ onSubmit, tagsOptions }: Props) => {
             height={styles.contentEditorVars.bodyHeight}
             {...register('content')}
             error={errors.content?.message}
+            onFileDrop={handleFileDrop}
           />
           <div className={styles.preview[contentEditorOptions.preview ? 'show' : 'hide']}>
             <BlogContentPreview control={control} />

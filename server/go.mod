@@ -13,12 +13,14 @@ require (
 
 require (
 	github.com/gosimple/unidecode v1.0.1 // indirect
+	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect
 )
 
 require (
 	github.com/agnivade/levenshtein v1.1.1 // indirect
+	github.com/aws/aws-sdk-go v1.44.239
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/gosimple/slug v1.13.1
