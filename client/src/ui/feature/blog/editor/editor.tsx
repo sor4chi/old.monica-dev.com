@@ -35,7 +35,7 @@ type BlogDetailPageQueryVariables = {
 const BlogCreatePageQuery = gql`
   ${BlogEditorFormTagFragment}
 
-  query BlogCreateQuery {
+  query GetTagsQuery {
     tags: tags {
       ...BlogEditorFormTagFragment
     }
@@ -79,8 +79,7 @@ export const BlogEditor = ({ id }: Props) => {
 
   return (
     <BlogEditorProvider>
-      <BlogEditorForm blog={blog} setBlog={setBlog}
-       tagsOptions={tagsOptions} />
+      <BlogEditorForm blog={blog} setBlog={setBlog} tagsOptions={tagsOptions} />
     </BlogEditorProvider>
   );
 };
