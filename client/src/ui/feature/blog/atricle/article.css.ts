@@ -10,8 +10,6 @@ export const detail = style({
 export const sidebar = style({
   width: '15rem',
   flexShrink: 0,
-  display: 'flex',
-  gap: '1rem',
 
   '@media': {
     [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
@@ -20,12 +18,20 @@ export const sidebar = style({
   },
 });
 
+export const sidebarInner = style({
+  position: 'sticky',
+  top: `calc(${vars.size.headerHeight} + 1rem)`,
+  height: 'fit-content',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '1rem',
+});
+
 export const sidebarDivider = style({
   margin: 0,
   height: '70vh',
-  width: 1,
   border: 'none',
-  background: vars.color.bg.secondary,
+  borderRight: `1px solid ${vars.color.bg.secondary}`,
   position: 'sticky',
   top: `calc(${vars.size.headerHeight} + 1rem)`,
 });

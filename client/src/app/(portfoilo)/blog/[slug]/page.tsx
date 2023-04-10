@@ -124,6 +124,7 @@ async function getBlog(slug: string) {
       meta: {
         createdAt: blog.createdAt,
         description: blog.description,
+        id: blog.id,
         publishedAt: blog.publishedAt,
         tags: blog.tags,
         title: blog.title,
@@ -142,7 +143,7 @@ export default async function BlogDetail({ params }: Props) {
   return (
     <>
       <BlogHero blog={blog.meta} />
-      <BlogArticle content={blog.body.content} toc={blog.body.toc} />
+      <BlogArticle id={blog.meta.id} title={blog.meta.title} content={blog.body.content} toc={blog.body.toc} />
     </>
   );
 }
