@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FaEdit, FaFacebook, FaTwitter } from 'react-icons/fa';
 
+import type { BlogShareFragmentResponse } from './query';
 import * as styles from './share.css';
 
 import { ROUTES } from '@/constant/route';
@@ -18,12 +19,9 @@ const facebookShareUrl = (url: string) => {
   return `https://www.facebook.com/share.php?u=${encodeURIComponent(url)}`;
 };
 
-interface Props {
-  id: number;
-  title: string;
-}
+type Props = BlogShareFragmentResponse;
 
-export const Share = ({ id, title }: Props) => {
+export const BlogShare = ({ id, title }: Props) => {
   const state = useSession();
   const router = useRouter();
 

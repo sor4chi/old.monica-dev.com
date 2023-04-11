@@ -1,4 +1,6 @@
-import { Share } from '../share';
+import { BlogShare } from '../share';
+import type { BlogShareFragmentResponse } from '../share/query';
+import { BlogShareFragment } from '../share/query';
 import type { TocItemProps } from '../toc';
 import { Toc } from '../toc';
 
@@ -8,25 +10,23 @@ import { gql } from '@/lib/graphql';
 import { Article } from '@/ui/foundation/article';
 
 export const BlogArticleFragment = gql`
+  ${BlogShareFragment}
+
   fragment BlogArticleFragment on Blog {
-    id
     title
     content
+    ...BlogShareFragment
   }
 `;
 
 export type BlogArticleFragmentResponse = {
-  id: number;
   title: string;
   content: string;
-};
+} & BlogShareFragmentResponse;
 
-interface Props {
-  id: number;
-  title: string;
-  content: string;
+type Props = {
   toc: TocItemProps[];
-}
+} & BlogArticleFragmentResponse;
 
 export const BlogArticle = ({ content, id, title, toc }: Props) => {
   return (
@@ -36,7 +36,7 @@ export const BlogArticle = ({ content, id, title, toc }: Props) => {
       <aside className={styles.sidebar}>
         <div className={styles.sidebarInner}>
           <Toc toc={toc} />
-          <Share id={id} title={title} />
+          <BlogShare id={id} title={title} />
         </div>
       </aside>
     </section>
