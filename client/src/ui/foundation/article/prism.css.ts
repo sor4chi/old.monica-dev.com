@@ -21,7 +21,6 @@ globalStyle(`${content} code[class*="language-"], pre[class*="language-"]`, {
   MozHyphens: 'none',
   msHyphens: 'none',
   hyphens: 'none',
-  display: 'block',
   width: 'fit-content',
   minWidth: '100%',
 });
@@ -125,6 +124,7 @@ globalStyle(`${content} .code-line`, {
   marginLeft: '-16px',
   marginRight: '-16px',
   borderLeft: '4px solid #00000000',
+  fontSize: '14px !important',
 });
 
 globalStyle(`${content} .code-line.inserted`, {
@@ -154,7 +154,6 @@ globalStyle(`${content} .code-line.highlight-line`, {
 
 globalStyle(`${content} .remark-code-title`, {
   display: 'block',
-  fontSize: '0.75rem',
   color: vars.color.text.secondary,
   padding: '0.5rem 1rem',
   background: vars.color.bg.secondary,
