@@ -1,1 +1,2 @@
-export * from "./article"
+'use client';
+export * from './article';

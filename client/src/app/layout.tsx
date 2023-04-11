@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 
 import { SITE_CONFIG } from '@/constant/site';
 import { vars } from '@/style/theme.css';
@@ -82,6 +83,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </Provider>
           </body>
         </GlobalStyle>
+        <Script src="https://platform.twitter.com/widgets.js" strategy="lazyOnload" />
       </html>
     </>
   );

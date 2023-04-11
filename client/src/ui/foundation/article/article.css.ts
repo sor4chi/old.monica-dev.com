@@ -106,11 +106,24 @@ globalStyle(`${content} em`, {
   margin: '0 0.25rem',
 });
 
-globalStyle(`${content} blockquote`, {
+globalStyle(`${content} blockquote:not(.twitter-tweet)`, {
   borderLeft: `0.25rem solid ${vars.color.accent.primary}`,
   padding: '0 1rem',
   margin: '1rem 0',
   color: vars.color.text.tertiary,
+});
+
+globalStyle(`${content} .tweet-embed`, {
+  width: '100%',
+  margin: '1rem 0',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+});
+
+globalStyle(`${content} .twitter-tweet`, {
+  margin: 0,
+  maxWidth: '30rem !important',
 });
 
 globalStyle(`${content} :not(pre) > code`, {

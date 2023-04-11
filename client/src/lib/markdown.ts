@@ -27,6 +27,8 @@ import remarkRehype from 'remark-rehype';
 import remarkSlug from 'remark-slug';
 import { unified } from 'unified';
 
+import remarkCustomDirectives from './rehype/directive';
+
 import { Anchor } from '@/ui/foundation/anchor';
 import { Image } from '@/ui/foundation/image';
 
@@ -61,7 +63,8 @@ const mdHtmlProcessor = unified()
   .use(remarkSlug) // [mdast -> mdast] Headingにid付与（Toc Anchor用）
   .use(remarkGfm) // [mdast -> mdast] table等の拡張md記法変換
   .use(remarkMath) // [mdast -> mdast] mathブロックを変換
-  .use(remarkDirective) // [mdast -> mdast] messageブロックを変換
+  .use(remarkDirective) // [mdast -> mdast] directiveブロックを変換
+  .use(remarkCustomDirectives) // [mdast -> mdast] directiveブロックを拡張
   .use(remarkCodeTitle) // [mdast -> mdast] codeブロックへタイトル等の構文拡張
   .use(remarkRehype) // [mdast -> hast ] mdast(Markdown抽象構文木)をhast(HTML抽象構文木)に変換
   .use(rehypeKatex) // [mdast -> hast ] mathブロックをkatex.jsに対応
