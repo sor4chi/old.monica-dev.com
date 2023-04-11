@@ -70,6 +70,7 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 	file.Read(body)
 	url, err := uploadFile(sess, BUCKET, key, body)
 	if err != nil {
+		log.Println(err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
