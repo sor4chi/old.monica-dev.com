@@ -35,6 +35,7 @@ globalStyle(`${content} pre[class*="language-"]`, {
   borderRadius: preBorderRadius,
   width: '100%',
   boxSizing: 'border-box',
+  boxShadow: vars.color.shadow.md,
 });
 
 const preBg = '#2E3440';

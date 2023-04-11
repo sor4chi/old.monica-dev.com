@@ -16,6 +16,7 @@ export const image = style({
   overflow: 'hidden',
   boxSizing: 'border-box',
   cursor: 'pointer',
+  filter: `drop-shadow(${vars.color.shadow.sm})`,
 });
 
 export const expanded = style({

@@ -24,11 +24,6 @@ createGlobalTheme('.light', colorVars, {
   },
   error: '#e27878',
   success: '#8bae79',
-  shadow: {
-    sm: '0 0.125rem 0.25rem rgba(31, 38, 45, 0.25)',
-    md: '0 0.125rem 0.5rem rgba(31, 38, 45, 0.25)',
-    lg: '0 0.125rem 1rem rgba(31, 38, 45, 0.25)',
-  },
 });
 
 createGlobalTheme('.dark', colorVars, {
@@ -53,15 +48,17 @@ createGlobalTheme('.dark', colorVars, {
   },
   error: '#e27878',
   success: '#8bae79',
-  shadow: {
-    sm: '0 0.125rem 0.25rem rgba(237, 242, 247, 0.25)',
-    md: '0 0.125rem 0.5rem rgba(237, 242, 247, 0.25)',
-    lg: '0 0.125rem 1rem rgba(237, 242, 247, 0.25)',
-  },
 });
 
 export const vars = {
-  color: colorVars,
+  color: {
+    ...colorVars,
+    shadow: {
+      sm: '0 0.25rem 0.25rem rgba(31, 38, 45, 0.25)',
+      md: '0 0.25rem 0.5rem rgba(31, 38, 45, 0.25)',
+      lg: '0 0.25rem 1rem rgba(31, 38, 45, 0.25)',
+    },
+  },
   size: {
     containerMaxWidth: '64rem',
     headerHeight: '4rem',
