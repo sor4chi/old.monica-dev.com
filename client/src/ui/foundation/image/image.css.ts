@@ -1,5 +1,7 @@
 import { style } from '@vanilla-extract/css';
 
+import { vars } from '@/style/theme.css';
+
 export const imageContainer = style({
   position: 'relative',
   width: '100%',
@@ -57,4 +59,5 @@ export const expandedImage = style({
   objectFit: 'contain',
   maxHeight: 'calc(100dvh - 2rem)',
   textAlign: 'center',
+  boxShadow: vars.color.shadow.lg,
 });
