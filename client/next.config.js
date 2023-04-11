@@ -10,7 +10,11 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    domains: ['images.unsplash.com', 'monica-log-dev.s3.ap-northeast-1.amazonaws.com'],
+    domains: [
+      'images.unsplash.com',
+      'monica-log-dev.s3.ap-northeast-1.amazonaws.com',
+      'monica-log.s3.ap-northeast-1.amazonaws.com',
+    ],
   },
   redirects: async () => [
     {
