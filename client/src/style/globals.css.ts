@@ -13,6 +13,11 @@ globalStyle('body', {
   accentColor: vars.color.accent.primary,
 });
 
+globalStyle('*::selection', {
+  backgroundColor: vars.color.accent.primary,
+  color: vars.color.text.primary,
+});
+
 globalStyle('html', {
   scrollPaddingTop: '5rem',
   scrollBehavior: 'smooth',
