@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import NextImage from 'next/image';
 import type { ComponentProps } from 'react';
 import { useEffect, useState } from 'react';
@@ -8,10 +9,12 @@ import * as styles from './image.css';
 import { useClickOutside } from '@/hooks';
 import { Button } from '@/ui/foundation/button';
 
-type Props = ComponentProps<'img'>;
+type Props = ComponentProps<'img'> & {
+  nextImage?: boolean;
+};
 
-export const Image = (props: Props) => {
-  const { alt, src } = props;
+const _Image = (props: Props) => {
+  const { alt, nextImage = false, src } = props;
   const [isExpanded, setIsExpanded] = useState(false);
 
   const ref = useClickOutside(() => {
@@ -28,7 +31,19 @@ export const Image = (props: Props) => {
 
   const img = (
     <span className={styles.imageContainer}>
-      <NextImage alt={alt || ''} src={src || ''} fill className={styles.image} onClick={() => setIsExpanded(true)} />
+      {nextImage ? (
+        <NextImage alt={alt || ''} src={src || ''} fill className={styles.image} onClick={() => setIsExpanded(true)} />
+      ) : (
+        <>
+          {/* eslint-disable @next/next/no-img-element */}
+          <img
+            alt={alt || ''}
+            src={src || ''}
+            className={clsx(styles.image, styles.imageFill)}
+            onClick={() => setIsExpanded(true)}
+          />
+        </>
+      )}
     </span>
   );
 
@@ -53,3 +68,6 @@ export const Image = (props: Props) => {
     </>
   );
 };
+
+export const UnOptimizedImage = (props: Props) => <_Image {...props} />;
+export const OptimizedImage = (props: Props) => <_Image {...props} nextImage />;

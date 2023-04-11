@@ -28,7 +28,7 @@ import remarkSlug from 'remark-slug';
 import { unified } from 'unified';
 
 import { Anchor } from '@/ui/foundation/anchor';
-import { Image } from '@/ui/foundation/image';
+import { OptimizedImage, UnOptimizedImage } from '@/ui/foundation/image';
 
 refractor.register(refractorRust);
 refractor.register(refractorTypescript);
@@ -84,7 +84,7 @@ export const parseMarkdownToHTML = (mdContent: string) => {
   };
 };
 
-export const parseHTMLToReactJSX = (htmlContent: string) => {
+export const parseHTMLToReactJSX = (htmlContent: string, imgOptimize = true) => {
   const processor = unified()
     .use(rehypeParse, {
       fragment: true,
@@ -94,7 +94,7 @@ export const parseHTMLToReactJSX = (htmlContent: string) => {
     .use(rehypeReact, {
       components: {
         a: Anchor,
-        img: Image,
+        img: imgOptimize ? OptimizedImage : UnOptimizedImage,
       },
       createElement,
       Fragment,

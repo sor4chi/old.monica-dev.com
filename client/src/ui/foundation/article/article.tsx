@@ -8,8 +8,9 @@ import { parseTwemoji } from '@/lib/twemoji';
 interface Props {
   /**contentはHTML(String)であり、sanitizeされていることを前提とする**/
   content: string;
+  imgOptimize: boolean;
 }
 
-export const Article = ({ content }: Props) => {
-  return <article className={styles.content}>{parseHTMLToReactJSX(parseTwemoji(content))}</article>;
+export const Article = ({ content, imgOptimize }: Props) => {
+  return <article className={styles.content}>{parseHTMLToReactJSX(parseTwemoji(content), imgOptimize)}</article>;
 };

@@ -31,7 +31,7 @@ interface Props {
 export const BlogArticle = ({ content, id, title, toc }: Props) => {
   return (
     <section className={styles.detail}>
-      <Article content={content} />
+      <Article content={content} imgOptimize />
       <hr className={styles.sidebarDivider} />
       <aside className={styles.sidebar}>
         <div className={styles.sidebarInner}>

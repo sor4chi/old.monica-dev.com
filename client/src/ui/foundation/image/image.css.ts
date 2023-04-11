@@ -16,6 +16,11 @@ export const image = style({
   cursor: 'pointer',
 });
 
+export const imageFill = style({
+  width: '100%',
+  height: '100%',
+});
+
 export const expanded = style({
   position: 'fixed',
   top: 0,
