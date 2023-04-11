@@ -120,6 +120,7 @@ globalStyle(`${content} :not(pre) > code`, {
   color: vars.color.text.secondary,
   borderRadius: '0.25rem',
   margin: '0.25rem',
+  display: 'inline-block',
 });
 
 globalStyle(`${content} .twemoji`, {
