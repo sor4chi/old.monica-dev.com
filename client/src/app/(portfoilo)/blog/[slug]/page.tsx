@@ -18,6 +18,7 @@ interface Props {
 
 // force-static for ISR, because static page for SEO
 export const dynamic = 'force-static';
+export const revalidate = 'force-cache';
 
 const BlogDetailPageQuery = gql`
   ${BlogHeroFragment}
