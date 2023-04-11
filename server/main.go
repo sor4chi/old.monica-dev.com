@@ -76,7 +76,9 @@ func main() {
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(c))
 
-	mux.Handle(PATH_PLAYGROUND, playground.Handler("GraphQL playground", PATH_GRAPHQL))
+	if IS_DEV {
+		mux.Handle(PATH_PLAYGROUND, playground.Handler("GraphQL playground", PATH_GRAPHQL))
+	}
 
 	mm := util.NewMiddlewareManager()
 	mm.Use(middleware.CorsMiddleware)
