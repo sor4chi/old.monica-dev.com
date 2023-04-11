@@ -93,4 +93,10 @@ export const sidebarDivider = style({
   background: vars.color.bg.secondary,
   position: 'sticky',
   top: `calc(${vars.size.headerHeight} + 1rem)`,
+
+  '@media': {
+    [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
+      display: 'none',
+    },
+  },
 });
