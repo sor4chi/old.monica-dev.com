@@ -16,6 +16,7 @@ import { Article } from '@/ui/foundation/article';
 import { TextInput } from '@/ui/foundation/textInput';
 import { Textarea } from '@/ui/foundation/textarea';
 import { Toggle } from '@/ui/foundation/toggle';
+import { debounce } from '@/util/debounce';
 
 export const BlogEditorFormFragment = gql`
   fragment BlogEditorFormFragment on Blog {
@@ -153,7 +154,15 @@ const BlogContentPreview = ({ control }: { control: Control<BlogFormSchema> }) =
     name: 'content',
   });
 
-  const parsedContent = useMemo(() => parseMarkdownToHTML(content).content, [content]);
+  const [parsedContent, setParsedContent] = useState('');
+
+  useMemo(() => {
+    const debounced = debounce(() => {
+      setParsedContent(parseMarkdownToHTML(content).content);
+    }, 500);
+    debounced();
+    return () => debounced.cancel();
+  }, [content]);
 
   return <Article content={parsedContent} />;
 };
