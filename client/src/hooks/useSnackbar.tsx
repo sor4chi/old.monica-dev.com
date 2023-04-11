@@ -3,24 +3,25 @@ import { useState } from 'react';
 
 import { createCtx } from '@/util/context';
 
+type SnackbarAction = {
+  label: string;
+  onClick: () => void;
+};
+
 type SnackOption = {
-  action: {
-    label: string;
-    onClick: () => void;
-  };
+  action: SnackbarAction;
   duration: number;
+};
+
+type MessageQueue = {
+  message: string;
+  key: string;
+  action?: SnackbarAction;
 };
 
 type ISnackbarContext = {
   snack: (message: string, option?: Partial<SnackOption>) => void;
-  messagesQueue: {
-    message: string;
-    key: string;
-    action?: {
-      label: string;
-      onClick: () => void;
-    };
-  }[];
+  messagesQueue: MessageQueue[];
 };
 
 const [useSnackbar, SetSnackbarProvider] = createCtx<ISnackbarContext>();
@@ -28,16 +29,7 @@ const [useSnackbar, SetSnackbarProvider] = createCtx<ISnackbarContext>();
 export { useSnackbar };
 
 const useSnackbarCtx = (): ISnackbarContext => {
-  const [messagesQueue, setMessagesQueue] = useState<
-    {
-      message: string;
-      key: string;
-      action?: {
-        label: string;
-        onClick: () => void;
-      };
-    }[]
-  >([]);
+  const [messagesQueue, setMessagesQueue] = useState<MessageQueue[]>([]);
 
   const snack = (message: string, option?: Partial<SnackOption>) => {
     const action = option?.action;
