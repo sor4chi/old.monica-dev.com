@@ -155,5 +155,5 @@ const BlogContentPreview = ({ control }: { control: Control<BlogFormSchema> }) =
 
   const parsedContent = useMemo(() => parseMarkdownToHTML(content).content, [content]);
 
-  return <Article content={parsedContent} imgOptimize={false} />;
+  return <Article content={parsedContent} />;
 };
