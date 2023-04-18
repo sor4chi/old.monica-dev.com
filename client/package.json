@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
+    "build-storybook": "storybook build",
     "build:dev": "dotenv -e .env.development -- next build",
     "dev": "next dev",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,json}'",
@@ -13,20 +14,19 @@
     "openai:generate-fixture": "dotenv -e .env -- node ./scripts/generate-fixture.js",
     "start": "next start",
     "start:dev": "dotenv -e .env.development -- next start",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "storybook": "storybook dev -p 6006"
   },
   "dependencies": {
     "@hookform/resolvers": "^2.9.11",
     "@vanilla-extract/css": "^1.9.5",
-    "@vanilla-extract/next-plugin": "^2.1.1",
+    "@vanilla-extract/next-plugin": "^2.1.2",
     "clsx": "^1.2.1",
     "encoding": "^0.1.13",
     "graphql-request": "^5.2.0",
     "katex": "^0.16.4",
     "mdast": "^3.0.0",
     "mikanjs": "^1.0.14",
-    "next": "13.2.3",
+    "next": "13.3.1-canary.11",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.7",
@@ -85,11 +85,5 @@
     "schema-dts": "^1.1.2",
     "storybook": "^7.0.2",
     "ts-node": "^10.9.1"
-  },
-  "pnpm": {
-    "patchedDependencies": {
-      "@vanilla-extract/next-plugin@2.1.1": "patches/@vanilla-extract__next-plugin@2.1.1.patch",
-      "next@13.2.3": "patches/next@13.2.3.patch"
-    }
   }
 }
