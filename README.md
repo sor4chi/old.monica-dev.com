@@ -1,6 +1,6 @@
 # Portfolio / Blog
 
-[MY PORTFOLIO](https://portfolio-blog-sor4chi.com)
+[MY PORTFOLIO](https://portfolio-blog-sor4chi.vercel.app)
 
 ## Description
 
