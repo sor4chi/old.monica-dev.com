@@ -11,15 +11,15 @@ import { parseTwemoji } from '@/lib/twemoji';
 import { Pagination } from '@/ui/foundation/pagination';
 
 interface Props {
-  initialBlog: BlogListFragmentResponse;
+  blogsInfo: BlogListFragmentResponse;
   filterTags?: string[];
 }
 
-export const BlogList = ({ filterTags, initialBlog }: Props) => {
-  const [blog, setBlog] = useState(initialBlog);
+export const BlogList = ({ blogsInfo: _blogsInfo, filterTags }: Props) => {
+  const [blogsInfo, setBlog] = useState(_blogsInfo);
   const [page, setPage] = useState(1);
 
-  const maxPage = Math.ceil(blog.total / SITE_CONFIG.BLOG_LENGTH_PER_PAGE);
+  const maxPage = Math.ceil(blogsInfo.total / SITE_CONFIG.BLOG_LENGTH_PER_PAGE);
 
   const loadBefore = async () => {
     const res = await clientInBrowser.request<BlogListQueryResponse, BlogListQueryVariables>(BlogListQuery, {
@@ -42,14 +42,14 @@ export const BlogList = ({ filterTags, initialBlog }: Props) => {
   };
 
   useEffect(() => {
-    setBlog(initialBlog);
-  }, [initialBlog]);
+    setBlog(_blogsInfo);
+  }, [_blogsInfo]);
 
   useEffect(() => {
     setPage(1);
   }, [filterTags]);
 
-  if (!blog.data.length) {
+  if (!blogsInfo.data.length) {
     return (
       <div className={styles.container}>
         <p className={styles.noItems} dangerouslySetInnerHTML={{ __html: parseTwemoji('Sorry, no items found. 😭') }} />
@@ -60,7 +60,7 @@ export const BlogList = ({ filterTags, initialBlog }: Props) => {
   return (
     <>
       <ul className={styles.container}>
-        {blog.data.map((blog) => (
+        {blogsInfo.data.map((blog) => (
           // add timestamp to activate rendering animation
           <BlogListCard key={blog.slug + new Date().getTime()} blog={blog} />
         ))}
