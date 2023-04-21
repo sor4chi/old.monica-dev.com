@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { FaEdit, FaFacebook, FaTwitter } from 'react-icons/fa';
+import { FaArrowUp, FaEdit, FaFacebook, FaTwitter } from 'react-icons/fa';
 
 import type { BlogShareFragmentResponse } from './query';
 import * as styles from './share.css';
@@ -27,6 +27,9 @@ export const BlogShare = ({ id, title }: Props) => {
 
   return (
     <div className={styles.shares}>
+      <a href="#" className={styles.social}>
+        <FaArrowUp color={vars.color.text.tertiary} />
+      </a>
       <Link
         href={twitterShareUrl(SITE_CONFIG.URL, title)}
         aria-label="Share on Twitter"

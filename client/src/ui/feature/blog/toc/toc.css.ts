@@ -5,7 +5,7 @@ import { vars } from '@/style/theme.css';
 export const tocList = style({
   height: '70vh',
   overflowY: 'auto',
-  paddingLeft: '1rem',
+  padding: '0 1rem',
 });
 
 export const tocTitle = style({

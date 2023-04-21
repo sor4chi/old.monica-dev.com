@@ -8,6 +8,7 @@ import * as styles from './article.css';
 
 import { gql } from '@/lib/graphql';
 import { Article } from '@/ui/foundation/article';
+import { Divider } from '@/ui/foundation/divider';
 
 export const BlogArticleFragment = gql`
   ${BlogShareFragment}
@@ -32,9 +33,11 @@ export const BlogArticle = ({ content, id, title, toc }: Props) => {
   return (
     <section className={styles.detail}>
       <Article content={content} />
-      <hr className={styles.sidebarDivider} />
       <aside className={styles.sidebar}>
-        <div className={styles.sidebarInner}>
+        <div className={styles.dividerContainer}>
+          <Divider direction="vertical" />
+        </div>
+        <div className={styles.itemContainer}>
           <Toc toc={toc} />
           <BlogShare id={id} title={title} />
         </div>

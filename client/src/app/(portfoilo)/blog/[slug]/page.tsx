@@ -8,6 +8,7 @@ import type { BlogArticleFragmentResponse } from '@/ui/feature/blog/atricle';
 import { BlogArticle, BlogArticleFragment } from '@/ui/feature/blog/atricle';
 import type { BlogHeroFragmentResponse } from '@/ui/feature/blog/hero';
 import { BlogHero, BlogHeroFragment } from '@/ui/feature/blog/hero';
+import { Divider } from '@/ui/foundation/divider';
 import { getOgUrl } from '@/util/og';
 
 interface Props {
