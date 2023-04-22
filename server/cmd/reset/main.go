@@ -30,6 +30,7 @@ func main() {
 	var wg sync.WaitGroup
 	seeds := []func(context.Context, *sqlc.Queries){
 		seed.ResetSeedBlog,
+		seed.ResetSeedTimeline,
 	}
 
 	for _, s := range seeds {

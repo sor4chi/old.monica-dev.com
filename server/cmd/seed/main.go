@@ -30,6 +30,7 @@ func main() {
 	var wg sync.WaitGroup
 	seeds := []func(context.Context, *sqlc.Queries){
 		seed.SeedBlog,
+		seed.SeedTimeline,
 	}
 
 	for _, s := range seeds {
