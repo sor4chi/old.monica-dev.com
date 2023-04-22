@@ -1,13 +1,18 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
+import * as styles from './detail.css';
+
 import { serverEnv } from '@/env/server';
 import { client, gql } from '@/lib/graphql';
 import { parseMarkdownToHTML } from '@/lib/markdown';
-import type { BlogArticleFragmentResponse } from '@/ui/feature/blog/atricle';
-import { BlogArticle, BlogArticleFragment } from '@/ui/feature/blog/atricle';
 import type { BlogHeroFragmentResponse } from '@/ui/feature/blog/hero';
 import { BlogHero, BlogHeroFragment } from '@/ui/feature/blog/hero';
+import { BlogShare } from '@/ui/feature/blog/share';
+import type { BlogShareFragmentResponse } from '@/ui/feature/blog/share/query';
+import { BlogShareFragment } from '@/ui/feature/blog/share/query';
+import { Toc } from '@/ui/feature/blog/toc';
+import { Article } from '@/ui/foundation/article';
 import { Divider } from '@/ui/foundation/divider';
 import { getOgUrl } from '@/util/og';
 
@@ -23,12 +28,14 @@ export const dynamic = 'force-static',
 
 const BlogDetailPageQuery = gql`
   ${BlogHeroFragment}
-  ${BlogArticleFragment}
+  ${BlogShareFragment}
 
   query BlogDetailQuery($slug: String!) {
     blog(slug: $slug) {
       ...BlogHeroFragment
-      ...BlogArticleFragment
+      ...BlogShareFragment
+      title
+      content
       description
       publishedAt
     }
@@ -37,10 +44,12 @@ const BlogDetailPageQuery = gql`
 
 type BlogDetailPageQueryResponse = {
   blog: BlogHeroFragmentResponse &
-    BlogArticleFragmentResponse & {
-      description: string;
-      publishedAt: string;
-    };
+  BlogShareFragmentResponse & {
+    title: string;
+    content: string;
+    description: string;
+    publishedAt: string;
+  };
 };
 
 type BlogDetailPageQueryVariables = {
@@ -144,7 +153,20 @@ export default async function BlogDetail({ params }: Props) {
   return (
     <>
       <BlogHero blog={blog.meta} />
-      <BlogArticle id={blog.meta.id} title={blog.meta.title} content={blog.body.content} toc={blog.body.toc} />
+      {/* <BlogArticle id={blog.meta.id} title={blog.meta.title} content={blog.body.content} toc={blog.body.toc} /> */}
+      <section className={styles.detail}>
+        <Article content={blog.body.content} />
+        <aside className={styles.sidebar}>
+          <div className={styles.dividerContainer}>
+            <Divider direction="vertical" />
+          </div>
+          <div className={styles.itemContainer}>
+            <Toc toc={blog.body.toc} />
+            <BlogShare id={blog.meta.id} title={blog.meta.title} />
+          </div>
+        </aside>
+      </section>
+      <Divider />
     </>
   );
 }

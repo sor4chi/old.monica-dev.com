@@ -15,6 +15,12 @@ export const social = style({
   background: 'transparent',
   transition: 'opacity 0.2s ease-in-out, background 0.2s ease-in-out',
   borderRadius: '999px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '2rem',
+  height: '2rem',
+  boxSizing: 'border-box',
 
   '@media': {
     '(hover: hover)': {

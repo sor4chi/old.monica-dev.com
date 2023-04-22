@@ -28,7 +28,7 @@ export const BlogShare = ({ id, title }: Props) => {
   return (
     <div className={styles.shares}>
       <a href="#" className={styles.social}>
-        <FaArrowUp color={vars.color.text.tertiary} />
+        <FaArrowUp color={vars.color.text.tertiary} size={16} />
       </a>
       <Link
         href={twitterShareUrl(SITE_CONFIG.URL, title)}
