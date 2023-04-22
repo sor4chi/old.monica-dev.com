@@ -36,3 +36,11 @@ type Tag struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
+
+type Timeline struct {
+	ID            int32
+	Title         string
+	RelatedBlogID sql.NullInt32
+	Category      int32
+	Date          time.Time
+}

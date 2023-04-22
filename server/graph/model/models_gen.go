@@ -46,3 +46,12 @@ type TagInput struct {
 	Name string `json:"name"`
 	Slug string `json:"slug"`
 }
+
+type Timeline struct {
+	ID            string  `json:"id"`
+	Title         string  `json:"title"`
+	RelatedBlogID *string `json:"relatedBlogId,omitempty"`
+	Blog          *Blog   `json:"blog,omitempty"`
+	Category      string  `json:"category"`
+	Date          string  `json:"date"`
+}
