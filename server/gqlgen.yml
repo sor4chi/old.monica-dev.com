@@ -65,3 +65,7 @@ models:
     fields:
       tags:
         resolver: true
+  Timeline:
+    fields:
+      blog:
+        resolver: true
