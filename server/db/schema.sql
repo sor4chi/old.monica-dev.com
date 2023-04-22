@@ -156,10 +156,9 @@ ALTER SEQUENCE public.tags_id_seq OWNED BY public.tags.id;
 CREATE TABLE public.timelines (
     id integer NOT NULL,
     title text NOT NULL,
-    content text NOT NULL,
+    related_blog_id integer,
     category integer NOT NULL,
-    from_date timestamp with time zone NOT NULL,
-    to_date timestamp with time zone NOT NULL
+    date timestamp with time zone NOT NULL
 );
 
 
@@ -328,6 +327,14 @@ CREATE TRIGGER refresh_tags_updated_at_step2 BEFORE UPDATE OF updated_at ON publ
 --
 
 CREATE TRIGGER refresh_tags_updated_at_step3 BEFORE UPDATE ON public.tags FOR EACH ROW EXECUTE FUNCTION public.refresh_updated_at_step3();
+
+
+--
+-- Name: blogs_tags blogs_tags_blog_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.blogs_tags
+    ADD CONSTRAINT blogs_tags_blog_id_fkey FOREIGN KEY (blog_id) REFERENCES public.blogs(id);
 
 
 --
