@@ -17,15 +17,29 @@ const judgeTheme = (): Theme => {
 export const ThemeSwitch = () => {
   const switchTheme = () => {
     const before = judgeTheme();
+    const tweets = document.querySelectorAll('[data-tweet-id]');
+
     if (before === 'light') {
       localStorage.setItem('theme', 'dark');
       document.documentElement.classList.add('dark');
       document.documentElement.classList.remove('light');
+      tweets.forEach((tweet) => {
+        const src = tweet.getAttribute('src');
+        if (src) {
+          tweet.setAttribute('src', src.replace('theme=light', 'theme=dark'));
+        }
+      });
     }
     if (before === 'dark') {
       localStorage.setItem('theme', 'light');
       document.documentElement.classList.add('light');
       document.documentElement.classList.remove('dark');
+      tweets.forEach((tweet) => {
+        const src = tweet.getAttribute('src');
+        if (src) {
+          tweet.setAttribute('src', src.replace('theme=dark', 'theme=light'));
+        }
+      });
     }
   };
 

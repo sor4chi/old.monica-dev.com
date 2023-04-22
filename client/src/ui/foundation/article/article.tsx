@@ -18,6 +18,11 @@ export const Article = ({ content }: Props) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-expect-error
     window.twttr && window.twttr.widgets.load();
+    const tweets = document.querySelectorAll('blockquote.twitter-tweet');
+    const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    tweets.forEach((tweet) => {
+      tweet.setAttribute('data-theme', theme);
+    });
   }, [content]);
 
   return <article className={styles.content}>{parseHTMLToReactJSX(parseTwemoji(content))}</article>;
