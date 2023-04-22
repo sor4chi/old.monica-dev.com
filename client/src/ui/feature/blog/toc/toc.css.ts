@@ -3,7 +3,8 @@ import { style } from '@vanilla-extract/css';
 import { vars } from '@/style/theme.css';
 
 export const tocList = style({
-  height: '70vh',
+  maxHeight: '70vh',
+  height: 'fit-content',
   overflowY: 'auto',
   padding: '0 1rem',
 });

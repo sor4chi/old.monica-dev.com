@@ -8,11 +8,14 @@ import { client, gql } from '@/lib/graphql';
 import { parseMarkdownToHTML } from '@/lib/markdown';
 import type { BlogHeroFragmentResponse } from '@/ui/feature/blog/hero';
 import { BlogHero, BlogHeroFragment } from '@/ui/feature/blog/hero';
+import type { BlogsRecommendQueryResponse, BlogsRecommendQueryVariables } from '@/ui/feature/blog/recommend/recommend';
+import { BlogsRecommend, BlogsRecommendQuery } from '@/ui/feature/blog/recommend/recommend';
 import { BlogShare } from '@/ui/feature/blog/share';
 import type { BlogShareFragmentResponse } from '@/ui/feature/blog/share/query';
 import { BlogShareFragment } from '@/ui/feature/blog/share/query';
 import { Toc } from '@/ui/feature/blog/toc';
 import { Article } from '@/ui/foundation/article';
+import { Breadcrumb } from '@/ui/foundation/breadcrumb';
 import { Divider } from '@/ui/foundation/divider';
 import { getOgUrl } from '@/util/og';
 
@@ -44,12 +47,12 @@ const BlogDetailPageQuery = gql`
 
 type BlogDetailPageQueryResponse = {
   blog: BlogHeroFragmentResponse &
-  BlogShareFragmentResponse & {
-    title: string;
-    content: string;
-    description: string;
-    publishedAt: string;
-  };
+    BlogShareFragmentResponse & {
+      title: string;
+      content: string;
+      description: string;
+      publishedAt: string;
+    };
 };
 
 type BlogDetailPageQueryVariables = {
@@ -126,6 +129,12 @@ async function getBlog(slug: string) {
         slug,
       },
     );
+    const { blogs } = await client.request<BlogsRecommendQueryResponse, BlogsRecommendQueryVariables>(
+      BlogsRecommendQuery,
+      {
+        tags: blog.tags.map((tag) => tag.slug),
+      },
+    );
 
     return {
       body: {
@@ -140,6 +149,7 @@ async function getBlog(slug: string) {
         title: blog.title,
         updatedAt: blog.updatedAt,
       },
+      recommends: blogs.data,
     };
   } catch (e) {
     console.error(e);
@@ -166,7 +176,10 @@ export default async function BlogDetail({ params }: Props) {
           </div>
         </aside>
       </section>
-      <Divider />
+      <Divider margin=".5rem 0" />
+      <h2>Related Blogs</h2>
+      <BlogsRecommend id={blog.meta.id} recommends={blog.recommends} />
+      <Breadcrumb />
     </>
   );
 }
