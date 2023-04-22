@@ -7,6 +7,7 @@ const _divider = style({
   backgroundColor: vars.color.bg.secondary,
   border: 'none',
   top: `calc(${vars.size.headerHeight} + 1rem)`,
+  transition: 'background-color 0.2s ease-in-out',
 });
 
 export const divider = styleVariants({
