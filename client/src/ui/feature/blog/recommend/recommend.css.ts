@@ -27,6 +27,12 @@ export const empty = style({
 
 export const item = style({
   width: `calc((100% - ${CONTAINER_GAP}) / 2)`,
+
+  '@media': {
+    [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
+      width: '100%',
+    },
+  },
 });
 
 export const link = style({
