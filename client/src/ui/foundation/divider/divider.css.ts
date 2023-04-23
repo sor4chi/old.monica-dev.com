@@ -9,13 +9,15 @@ const _divider = style({
   transition: 'background-color 0.2s ease-in-out',
 });
 
+export const DIVIDER_MARGIN = '0.5rem';
+
 export const divider = styleVariants({
   vertical: [
     _divider,
     {
       height: '100%',
       width: '1px',
-      margin: '0 0.5rem',
+      margin: `0 ${DIVIDER_MARGIN}`,
     },
   ],
   horizontal: [
@@ -23,7 +25,7 @@ export const divider = styleVariants({
     {
       width: '100%',
       height: '1px',
-      margin: '0.5rem 0',
+      margin: `${DIVIDER_MARGIN} 0`,
     },
   ],
 });
