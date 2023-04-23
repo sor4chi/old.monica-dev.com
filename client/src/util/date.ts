@@ -64,3 +64,39 @@ export const formatDateFullNumeric = (date: Date | string) => {
   });
   return d;
 };
+
+/**
+ * Format date to How past from now
+ * @param date
+ * @returns string
+ * @example
+ * 2020-01-01 -> 1 year ago
+ * 2020-01-01T00:00:00 -> 1 year ago
+ */
+export const formatDateToHowPastFromNow = (date: Date | string) => {
+  const now = new Date();
+  date = getSafelyDate(date);
+  const diff = now.getTime() - date.getTime();
+  const diffMin = diff / (1000 * 60);
+  const diffHour = diff / (1000 * 60 * 60);
+  const diffDay = diff / (1000 * 60 * 60 * 24);
+  const diffMonth = diffDay / 30;
+  const diffYear = diffMonth / 12;
+
+  if (diffYear >= 1) {
+    return `${Math.floor(diffYear)} year${Math.floor(diffYear) > 1 ? 's' : ''} ago`;
+  }
+  if (diffMonth >= 1) {
+    return `${Math.floor(diffMonth)} month${Math.floor(diffMonth) > 1 ? 's' : ''} ago`;
+  }
+  if (diffDay >= 1) {
+    return `${Math.floor(diffDay)} day${Math.floor(diffDay) > 1 ? 's' : ''} ago`;
+  }
+  if (diffHour >= 1) {
+    return `${Math.floor(diffHour)} hour${Math.floor(diffHour) > 1 ? 's' : ''} ago`;
+  }
+  if (diffMin >= 1) {
+    return `${Math.floor(diffMin)} minute${Math.floor(diffMin) > 1 ? 's' : ''} ago`;
+  }
+  return 'just now';
+};
