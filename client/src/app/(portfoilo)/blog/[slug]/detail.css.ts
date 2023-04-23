@@ -4,7 +4,7 @@ import { vars } from '@/style/theme.css';
 
 export const detail = style({
   display: 'flex',
-  gap: '2rem',
+  gap: '1rem',
 });
 
 export const sidebar = style({

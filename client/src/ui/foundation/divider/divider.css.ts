@@ -3,7 +3,6 @@ import { style, styleVariants } from '@vanilla-extract/css';
 import { vars } from '@/style/theme.css';
 
 const _divider = style({
-  margin: 0,
   backgroundColor: vars.color.bg.secondary,
   border: 'none',
   top: `calc(${vars.size.headerHeight} + 1rem)`,
@@ -16,6 +15,7 @@ export const divider = styleVariants({
     {
       height: '100%',
       width: '1px',
+      margin: '0 0.5rem',
     },
   ],
   horizontal: [
@@ -23,6 +23,7 @@ export const divider = styleVariants({
     {
       width: '100%',
       height: '1px',
+      margin: '0.5rem 0',
     },
   ],
 });

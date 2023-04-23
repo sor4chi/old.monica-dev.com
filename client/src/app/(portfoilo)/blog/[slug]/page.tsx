@@ -176,7 +176,7 @@ export default async function BlogDetail({ params }: Props) {
           </div>
         </aside>
       </section>
-      <Divider margin=".5rem 0" />
+      <Divider />
       <h2>Related Blogs</h2>
       <BlogsRecommend id={blog.meta.id} recommends={blog.recommends} />
       <Breadcrumb />
