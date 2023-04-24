@@ -1,4 +1,4 @@
-const getSafelyDate = (date: Date | string) => {
+export const getSafelyDate = (date: Date | string) => {
   if (typeof date === 'string') {
     // for safari safe-date-format
     date = date.replace(/-/g, '/'); // replace - with /

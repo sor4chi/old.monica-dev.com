@@ -4,6 +4,7 @@ import * as styles from './timeline.css';
 
 import { Checkbox } from '@/ui/foundation/checkbox';
 import { TimelineList } from '@/ui/foundation/timeline';
+import { getSafelyDate } from '@/util/date';
 
 const TABS = [
   {
@@ -104,7 +105,7 @@ export const Timeline = () => {
   const [checkedCategories, setCheckedCategories] = useState(categories);
   const filteredTabs = TABS.filter((tab) => checkedCategories.includes(tab.category));
   const tabsSplitByYear = filteredTabs.reduce((acc, cur) => {
-    const year = new Date(cur.date).getFullYear();
+    const year = getSafelyDate(cur.date).getFullYear();
     if (!acc[year]) {
       acc[year] = [];
     }
