@@ -1,6 +1,5 @@
 import { clsx } from 'clsx';
 import Link from 'next/link';
-import { FaArrowRight } from 'react-icons/fa';
 
 import { Card } from '../card';
 
@@ -78,7 +77,6 @@ export const TimelineItem = ({ additional, blog, category, date, isLast, link, t
         <Card padding="no">
           <Link className={styles.timelineItemInner} href={`/blog/${blog.slug}`} passHref>
             <h3 className={styles.timelineItemTitle}>{displayTitle}</h3>
-            {blog && <FaArrowRight className={styles.timelineItemIcon} />}
           </Link>
         </Card>
       )}

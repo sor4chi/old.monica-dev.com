@@ -5,6 +5,7 @@ export const wrapper = style({
   width: '100%',
   margin: '0 auto',
   padding: '0 1rem',
+  boxSizing: 'border-box',
 });
 
 export const section = style({
