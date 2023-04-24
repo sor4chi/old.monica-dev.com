@@ -23,8 +23,10 @@ export const TabContent = ({ activeTab, tabs }: Props) => {
             key={tab.id}
             className={styles.tabContentItem}
             style={{
+              height: tab.id === activeTab ? 'auto' : 0,
               opacity: tab.id === activeTab ? 1 : 0,
             }}
+            data-tab-id={tab.id}
           >
             {tab.content}
           </div>

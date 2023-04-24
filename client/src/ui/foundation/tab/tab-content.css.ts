@@ -15,5 +15,6 @@ export const tabContent = style({
 
 export const tabContentItem = style({
   width: '100%',
+  height: 'max-content',
   transition: 'opacity 0.2s ease-in-out',
 });
