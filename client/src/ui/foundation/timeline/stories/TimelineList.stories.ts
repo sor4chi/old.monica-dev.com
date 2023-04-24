@@ -23,7 +23,7 @@ export const Default = {
           slug: 'blog-title',
           title: 'これは技術ブログのタイトルです',
         },
-        category: 'unknown',
+        category: 'other',
         date: '2021-01-01',
         title: 'Timeline List Title',
       },
