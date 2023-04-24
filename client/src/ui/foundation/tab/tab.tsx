@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 
 import { Divider } from '../divider';
 
@@ -13,7 +13,6 @@ interface Props {
 
 const _Tab = ({ name, onChange, tabs }: Props) => {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
-  const tabListRef = useRef<HTMLDivElement>(null);
   const activeMarkerRef = useRef<HTMLDivElement>(null);
   const [activeMarker, setActiveMarker] = useState<{
     left: number;
@@ -37,15 +36,9 @@ const _Tab = ({ name, onChange, tabs }: Props) => {
     }, styles.ACTIVE_MARKER_ANIMATION_DELAY * 1000);
   };
 
-  useEffect(() => {
-    if (tabListRef.current) {
-      setActiveMarkerByEl(tabListRef.current.children[0] as HTMLElement, false);
-    }
-  }, []);
-
   return (
     <div>
-      <div className={styles.tabList} ref={tabListRef}>
+      <div className={styles.tabList}>
         {tabs.map((tab) => (
           <label
             key={tab.id}
