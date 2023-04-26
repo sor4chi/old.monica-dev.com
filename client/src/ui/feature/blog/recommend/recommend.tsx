@@ -46,7 +46,7 @@ export const BlogsRecommend = ({ id, recommends }: Props) => {
       {recommendBlogs.length === 0 && <p className={styles.empty}>No recommend blogs</p>}
       {recommendBlogs.map((blog, i) => (
         <div key={blog.id} className={styles.item}>
-          <Card>
+          <Card padding="no">
             <Link href={`/blog/${blog.slug}`} passHref className={styles.link}>
               {i % 2 === 0 && <IoIosArrowBack className={styles.arrow} size={24} />}
               <div className={styles.content}>
