@@ -122,7 +122,7 @@ globalStyle(`${content} a:hover`, {
 });
 
 globalStyle(`${content} strong`, {
-  fontWeight: 700,
+  fontWeight: 500,
   color: vars.color.text.primary,
   margin: '0 0.25rem',
 });

@@ -1,5 +1,7 @@
 import { globalStyle, style } from '@vanilla-extract/css';
 
+import { vars } from '@/style/theme.css';
+
 export const skills = style({
   display: 'flex',
   flexWrap: 'wrap',
@@ -7,6 +9,7 @@ export const skills = style({
   justifyContent: 'center',
   marginTop: '1rem',
   marginBottom: '3rem',
+  color: vars.color.text.secondary,
 });
 
 export const skill = style({});
