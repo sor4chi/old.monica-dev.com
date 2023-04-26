@@ -24,4 +24,5 @@ export const section = style({
 
 export const year = style({
   margin: '0 0 .5rem',
+  fontWeight: 500,
 });
