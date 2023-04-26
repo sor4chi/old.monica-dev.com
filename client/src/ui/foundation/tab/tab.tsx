@@ -36,9 +36,22 @@ const _Tab = ({ name, onChange, tabs }: Props) => {
     }, styles.ACTIVE_MARKER_ANIMATION_DELAY * 1000);
   };
 
+  const hideActiveMarker = () => {
+    activeMarkerRef.current?.classList.add(styles.activeMarkerFadeout);
+    setTimeout(() => {
+      setActiveMarker(null);
+      activeMarkerRef.current?.classList.remove(styles.activeMarkerFadeout);
+    }, styles.ACTIVE_MARKER_ANIMATION_DELAY * 1000);
+  };
+
   return (
     <div>
-      <div className={styles.tabList}>
+      <div
+        className={styles.tabList}
+        onMouseLeave={() => {
+          hideActiveMarker();
+        }}
+      >
         {tabs.map((tab) => (
           <label
             key={tab.id}
@@ -47,9 +60,6 @@ const _Tab = ({ name, onChange, tabs }: Props) => {
               if (e.currentTarget) {
                 setActiveMarkerByEl(e.currentTarget, activeMarker !== null);
               }
-            }}
-            onMouseLeave={() => {
-              setActiveMarker(null);
             }}
           >
             <input

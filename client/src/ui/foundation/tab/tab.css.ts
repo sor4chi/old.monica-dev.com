@@ -1,4 +1,4 @@
-import { globalStyle, style } from '@vanilla-extract/css';
+import { globalStyle, keyframes, style } from '@vanilla-extract/css';
 
 import { DIVIDER_MARGIN } from '../divider/divider.css';
 
@@ -7,6 +7,7 @@ import { vars } from '@/style/theme.css';
 export const tabList = style({
   display: 'flex',
   position: 'relative',
+  width: 'fit-content',
 });
 
 export const tabItem = style({
@@ -48,6 +49,7 @@ globalStyle(`${tabInput}:checked + ${tabLabel}:before`, {
   width: '100%',
   height: '1px',
   backgroundColor: vars.color.text.primary,
+  pointerEvents: 'none',
 });
 
 export const activeMarker = style({
@@ -70,4 +72,20 @@ export const ACTIVE_MARKER_ANIMATION_DELAY = 0.1;
 
 export const activeMarkerAnimation = style({
   transition: `all ${ACTIVE_MARKER_ANIMATION_DELAY}s ease-in-out`,
+});
+
+const activeMarkerFadeoutKF = keyframes({
+  from: {
+    opacity: 1,
+  },
+  to: {
+    opacity: 0,
+  },
+});
+
+export const activeMarkerFadeout = style({
+  animationName: activeMarkerFadeoutKF,
+  animationDuration: `${ACTIVE_MARKER_ANIMATION_DELAY}s`,
+  animationFillMode: 'forwards',
+  animationTimingFunction: 'ease-in-out',
 });
