@@ -7,29 +7,56 @@ export const content = style({
   minWidth: 0,
 });
 
+globalStyle(`${content} > *:first-child`, {
+  marginTop: '0 !important',
+});
+
 globalStyle(`${content} h2`, {
+  fontSize: '1.5rem',
   margin: 0,
+  marginTop: '3rem',
   marginBottom: '1rem',
   padding: '0.5rem 0',
   color: vars.color.text.primary,
-  borderBottom: `1px solid ${vars.color.accent.primary}`,
+  fontWeight: 500,
+  borderBottom: `1px solid ${vars.color.bg.secondary}`,
 });
 
 globalStyle(`${content} h3`, {
+  fontSize: '1.3rem',
   margin: 0,
+  marginTop: '2rem',
   marginBottom: '1rem',
   padding: '0.5rem 0',
   color: vars.color.text.primary,
+  fontWeight: 500,
+});
+
+globalStyle(`${content} h4, h5, h6`, {
+  margin: 0,
+  marginTop: '1rem',
+  marginBottom: '1rem',
+  padding: '0.5rem 0',
+  color: vars.color.text.primary,
+  fontWeight: 500,
 });
 
 globalStyle(`${content} h4`, {
-  margin: 0,
-  marginBottom: '1rem',
-  padding: '0.5rem 0',
-  color: vars.color.text.primary,
+  fontSize: '1.1rem',
+});
+
+globalStyle(`${content} h5`, {
+  fontSize: '1rem',
+});
+
+globalStyle(`${content} h6`, {
+  fontSize: '0.9rem',
 });
 
 globalStyle(`${content} p`, {
+  margin: 0,
+  marginTop: '1rem',
+  marginBottom: '1rem',
   color: vars.color.text.secondary,
 });
 
