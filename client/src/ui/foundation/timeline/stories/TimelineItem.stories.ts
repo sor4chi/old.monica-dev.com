@@ -4,23 +4,11 @@ import { TimelineItem } from '..';
 
 const meta = {
   argTypes: {
-    additional: {
-      control: { type: 'text' },
+    isLast: {
+      control: { type: 'boolean' },
     },
-    blog: {
-      control: { type: 'text' },
-    },
-    category: {
-      control: { type: 'text' },
-    },
-    date: {
-      control: { type: 'text' },
-    },
-    link: {
-      control: { type: 'text' },
-    },
-    title: {
-      control: { type: 'text' },
+    timelineItem: {
+      control: { type: 'object' },
     },
   },
   component: TimelineItem,
@@ -41,56 +29,62 @@ const baseArgs = {
 
 export const Default = {
   args: {
-    ...baseArgs,
-    category: 'Category',
+    timelineItem: {
+      ...baseArgs,
+      category: 'Category',
+    },
   },
 } satisfies Story;
 
 export const Work = {
   args: {
-    ...baseArgs,
-    category: 'work',
+    timelineItem: {
+      ...baseArgs,
+      category: 'work',
+    },
   },
 } satisfies Story;
 
 export const Education = {
   args: {
-    ...baseArgs,
-    category: 'education',
+    timelineItem: {
+      ...baseArgs,
+      category: 'education',
+    },
   },
 } satisfies Story;
 
-export const Blog = {
-  args: {
-    ...baseArgs,
-    additional: 'monica-dev.com',
-    category: 'blog',
-    link: 'https://monica-dev.com',
-  },
-} satisfies Story;
+// export const Blog = {
+//   args: {
+//     ...baseArgs,
+//     additional: 'monica-dev.com',
+//     category: 'blog',
+//     link: 'https://monica-dev.com',
+//   },
+// } satisfies Story;
 
-export const Product = {
-  args: {
-    ...baseArgs,
-    additional: 'pazcal.net',
-    category: 'product',
-  },
-} satisfies Story;
+// export const Product = {
+//   args: {
+//     ...baseArgs,
+//     additional: 'pazcal.net',
+//     category: 'product',
+//   },
+// } satisfies Story;
 
-export const Award = {
-  args: {
-    ...baseArgs,
-    additional: 'Web Speed Hackathon 2023',
-    category: 'award',
-  },
-} satisfies Story;
+// export const Award = {
+//   args: {
+//     ...baseArgs,
+//     additional: 'Web Speed Hackathon 2023',
+//     category: 'award',
+//   },
+// } satisfies Story;
 
-export const BlogOptional = {
-  args: {
-    ...baseArgs,
-    blog: undefined,
-    category: 'blog',
-  },
-} satisfies Story;
+// export const BlogOptional = {
+//   args: {
+//     ...baseArgs,
+//     blog: undefined,
+//     category: 'blog',
+//   },
+// } satisfies Story;
 
 export default meta;

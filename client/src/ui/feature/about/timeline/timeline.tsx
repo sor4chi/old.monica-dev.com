@@ -2,9 +2,24 @@ import { useState } from 'react';
 
 import * as styles from './timeline.css';
 
+import { gql } from '@/lib/graphql';
 import { Checkbox } from '@/ui/foundation/checkbox';
-import { TimelineList } from '@/ui/foundation/timeline';
+import type { TimelineListFragmentResponse } from '@/ui/foundation/timeline';
+import { TimelineList, TimelineListFragment } from '@/ui/foundation/timeline';
 import { getSafelyDate } from '@/util/date';
+
+export const AboutTimelineFragment = gql`
+  ${TimelineListFragment}
+
+  fragment AboutTimelineFragment on About {
+    timelines {
+      ...TimelineListFragment
+    }
+  }
+`;
+export type AboutTimelineFragmentResponse = {
+  timelines: TimelineListFragmentResponse[];
+};
 
 const TABS = [
   {
