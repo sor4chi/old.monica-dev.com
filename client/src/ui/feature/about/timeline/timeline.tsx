@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import * as styles from './timeline.css';
 
+import { TIMELINE_CATEGORIES } from '@/constant/timeline';
 import { gql } from '@/lib/graphql';
 import { Checkbox } from '@/ui/foundation/checkbox';
 import type { TimelineListFragmentResponse } from '@/ui/foundation/timeline';
@@ -136,7 +137,7 @@ export const Timeline = () => {
           {categories.map((category) => (
             <Checkbox
               key={category}
-              label={category}
+              label={TIMELINE_CATEGORIES[category] ? `${TIMELINE_CATEGORIES[category].emoji} ${category}` : category}
               id={category}
               checked={checkedCategories.includes(category)}
               onChange={(e) => {

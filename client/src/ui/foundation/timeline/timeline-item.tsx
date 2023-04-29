@@ -5,6 +5,7 @@ import { Card } from '../card';
 
 import * as styles from './timeline-item.css';
 
+import { TIMELINE_CATEGORIES } from '@/constant/timeline';
 import { gql } from '@/lib/graphql';
 import { parseTwemoji } from '@/lib/twemoji';
 import { formatDateToHowPastFromNow } from '@/util/date';
@@ -36,28 +37,10 @@ interface Props {
   timelineItem: TimelineItemFragmentResponse;
 }
 
-const KNOWN_CATEGORIES: Record<string, { emoji: string; template?: string }> = {
-  award: {
-    emoji: '🏆',
-  },
-  blog: {
-    emoji: '📝',
-  },
-  education: {
-    emoji: '🎓',
-  },
-  product: {
-    emoji: '🎉',
-  },
-  work: {
-    emoji: '💼',
-  },
-};
-
 export const TimelineItem = ({ isLast, timelineItem }: Props) => {
   const { blog, category, date, title } = timelineItem;
-  const isKnownCategory = KNOWN_CATEGORIES.hasOwnProperty(category);
-  const emoji = isKnownCategory ? KNOWN_CATEGORIES[category].emoji : '';
+  const isKnownCategory = TIMELINE_CATEGORIES.hasOwnProperty(category);
+  const emoji = isKnownCategory ? TIMELINE_CATEGORIES[category].emoji : '';
   const displayTitle = category === 'blog' ? blog?.title : title;
   return (
     <div className={styles.timelineItem}>
