@@ -28,6 +28,7 @@ export const Default = {
         title: 'Timeline List Title',
       },
       {
+        blog: null,
         category: 'award',
         date: '2021-01-01',
         title: 'Timeline List Title',
@@ -42,6 +43,7 @@ export const Default = {
         title: 'Timeline List Title',
       },
       {
+        blog: null,
         category: 'education',
         date: '2021-01-01',
         title: 'Timeline List Title',
@@ -56,6 +58,7 @@ export const Default = {
         title: 'Timeline List Title',
       },
       {
+        blog: null,
         category: 'work',
         date: '2021-01-01',
         title: 'Timeline List Title',
