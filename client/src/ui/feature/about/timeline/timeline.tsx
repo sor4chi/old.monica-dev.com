@@ -112,7 +112,6 @@ export const Timeline = () => {
   // extract categories from TABS, but 'other' category must be the end of the array
   const categories = TABS.reduce((acc, cur) => {
     if (!acc.includes(cur.category)) {
-      console.log(cur.category);
       return cur.category === 'other' ? [...acc, cur.category] : [cur.category, ...acc];
     }
     return acc;
