@@ -29,6 +29,15 @@ type BlogList {
   total: Int!
 }
 
+type Timeline {
+  id: ID!
+  title: String!
+  relatedBlogId: ID
+  blog: Blog
+  category: String!
+  date: String!
+}
+
 input BlogListInput {
   limit: Int!
   offset: Int!
@@ -41,6 +50,7 @@ type Query {
   blogsAll(input: BlogListInput!): BlogList! @auth
   blogById(id: ID!): Blog! @auth
   tags: [Tag!]!
+  timelines: [Timeline!]!
 }
 
 input BlogInput {

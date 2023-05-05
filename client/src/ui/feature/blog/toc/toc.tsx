@@ -53,9 +53,7 @@ const TocItem = ({ children, data, depth, value }: TocItemProps) => {
           {value}
         </a>
       </li>
-      {children.map((child) => (
-        <TocItem {...child} key={child.value} />
-      ))}
+      {depth <= 2 && children.map((child) => <TocItem {...child} key={child.value} />)}
     </ul>
   );
 };

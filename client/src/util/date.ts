@@ -1,9 +1,10 @@
-const getSafelyDate = (date: Date | string) => {
+export const getSafelyDate = (date: Date | string) => {
   if (typeof date === 'string') {
     // for safari safe-date-format
     date = date.replace(/-/g, '/'); // replace - with /
     date = date.replace(/T/, ' '); // replace T with a space, T means time zone
     date = date.replace(/\..+/, ''); // delete the dot and everything after, dot means milliseconds
+    date = date.split(' ').slice(0, 2).join(' '); // delete the time zone
   }
   return new Date(date);
 };
@@ -63,4 +64,40 @@ export const formatDateFullNumeric = (date: Date | string) => {
     year: 'numeric',
   });
   return d;
+};
+
+/**
+ * Format date to How past from now
+ * @param date
+ * @returns string
+ * @example
+ * 2020-01-01 -> 1 year ago
+ * 2020-01-01T00:00:00 -> 1 year ago
+ */
+export const formatDateToHowPastFromNow = (date: Date | string) => {
+  const now = new Date();
+  date = getSafelyDate(date);
+  const diff = now.getTime() - date.getTime();
+  const diffMin = diff / (1000 * 60);
+  const diffHour = diff / (1000 * 60 * 60);
+  const diffDay = diff / (1000 * 60 * 60 * 24);
+  const diffMonth = diffDay / 30;
+  const diffYear = diffMonth / 12;
+
+  if (diffYear >= 1) {
+    return formatDateEn(date);
+  }
+  if (diffMonth >= 1) {
+    return `${Math.floor(diffMonth)} month${Math.floor(diffMonth) > 1 ? 's' : ''} ago`;
+  }
+  if (diffDay >= 1) {
+    return `${Math.floor(diffDay)} day${Math.floor(diffDay) > 1 ? 's' : ''} ago`;
+  }
+  if (diffHour >= 1) {
+    return `${Math.floor(diffHour)} hour${Math.floor(diffHour) > 1 ? 's' : ''} ago`;
+  }
+  if (diffMin >= 1) {
+    return `${Math.floor(diffMin)} minute${Math.floor(diffMin) > 1 ? 's' : ''} ago`;
+  }
+  return 'just now';
 };

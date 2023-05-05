@@ -221,6 +221,39 @@ func (r *queryResolver) Tags(ctx context.Context) ([]*model.Tag, error) {
 	return model.NewTagsFromEntityList(tags), nil
 }
 
+// Timelines is the resolver for the timelines field.
+func (r *queryResolver) Timelines(ctx context.Context) ([]*model.Timeline, error) {
+	ts := service.NewTimelineService(r.Q)
+	timelines, err := ts.GetTimelines()
+	if err != nil {
+		return nil, err
+	}
+
+	return model.NewTimelinesFromEntityList(timelines), nil
+}
+
+// Blog is the resolver for the blog field.
+func (r *timelineResolver) Blog(ctx context.Context, obj *model.Timeline) (*model.Blog, error) {
+	bs := service.NewBlogService(r.Q)
+	// parse to int32
+	if obj.RelatedBlogID == nil {
+		return nil, nil
+	}
+	intId, err := strconv.ParseInt(*obj.RelatedBlogID, 10, 32)
+	if err != nil {
+		return nil, err
+	}
+	b, err := bs.GetBlogById(int32(intId))
+	if err != nil {
+		return nil, err
+	}
+	if b.PublishedAt == nil {
+		return nil, nil
+	}
+
+	return model.NewBlogFromEntity(b), nil
+}
+
 // Blog returns BlogResolver implementation.
 func (r *Resolver) Blog() BlogResolver { return &blogResolver{r} }
 
@@ -230,6 +263,10 @@ func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
+// Timeline returns TimelineResolver implementation.
+func (r *Resolver) Timeline() TimelineResolver { return &timelineResolver{r} }
+
 type blogResolver struct{ *Resolver }
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+type timelineResolver struct{ *Resolver }

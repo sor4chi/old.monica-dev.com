@@ -16,8 +16,7 @@ import (
 )
 
 var (
-	WD                     = util.GetEnv("PWD", ".")
-	BLOG_FIXTURE_PATH      = filepath.Join(WD, "db/seed/fixtures/blogs.json")
+	BLOG_FIXTURE_PATH      = filepath.Join(util.GetEnv("PWD", "."), "db/seed/fixtures/blogs.json")
 	MAX_TAGS               = 3
 	ERROR_CREATE_BLOG      = "failed creating blog: %v"
 	ERROR_CONNECT_BLOG_TAG = "failed connecting blog and tag: %v"
@@ -28,7 +27,7 @@ var (
 	ERROR_RESET_BTT   = "failed reseting blog_tag: %v"
 )
 
-type Input struct {
+type BlogInput struct {
 	Title       string   `json:"title"`
 	Slug        string   `json:"slug"`
 	Description string   `json:"description"`
@@ -37,7 +36,7 @@ type Input struct {
 }
 
 func SeedBlog(ctx context.Context, q *sqlc.Queries) {
-	var dumies []Input
+	var dumies []BlogInput
 
 	if err := util.LoadJSON(BLOG_FIXTURE_PATH, &dumies); err != nil {
 		log.Fatalf(ERROR_LOAD_JSON, err)

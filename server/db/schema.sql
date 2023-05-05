@@ -150,6 +150,39 @@ ALTER SEQUENCE public.tags_id_seq OWNED BY public.tags.id;
 
 
 --
+-- Name: timelines; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.timelines (
+    id integer NOT NULL,
+    title text NOT NULL,
+    related_blog_id integer,
+    category integer NOT NULL,
+    date timestamp with time zone NOT NULL
+);
+
+
+--
+-- Name: timelines_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.timelines_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: timelines_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.timelines_id_seq OWNED BY public.timelines.id;
+
+
+--
 -- Name: blogs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -161,6 +194,13 @@ ALTER TABLE ONLY public.blogs ALTER COLUMN id SET DEFAULT nextval('public.blogs_
 --
 
 ALTER TABLE ONLY public.tags ALTER COLUMN id SET DEFAULT nextval('public.tags_id_seq'::regclass);
+
+
+--
+-- Name: timelines id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.timelines ALTER COLUMN id SET DEFAULT nextval('public.timelines_id_seq'::regclass);
 
 
 --
@@ -212,6 +252,14 @@ ALTER TABLE ONLY public.tags
 
 
 --
+-- Name: timelines timelines_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.timelines
+    ADD CONSTRAINT timelines_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: blog_id_tag_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -230,6 +278,13 @@ CREATE INDEX blogs_slug_published_at_index ON public.blogs USING btree (slug, pu
 --
 
 CREATE INDEX tags_slug_index ON public.tags USING btree (slug);
+
+
+--
+-- Name: timelines_category_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX timelines_category_idx ON public.timelines USING btree (category);
 
 
 --
@@ -275,6 +330,14 @@ CREATE TRIGGER refresh_tags_updated_at_step3 BEFORE UPDATE ON public.tags FOR EA
 
 
 --
+-- Name: blogs_tags blogs_tags_blog_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.blogs_tags
+    ADD CONSTRAINT blogs_tags_blog_id_fkey FOREIGN KEY (blog_id) REFERENCES public.blogs(id);
+
+
+--
 -- Name: blogs_tags fk_blogs_tags_blog_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -303,4 +366,5 @@ INSERT INTO public.schema_migrations (version) VALUES
     ('20230331001052'),
     ('20230331001102'),
     ('20230331001115'),
-    ('20230331001134');
+    ('20230331001134'),
+    ('20230422041306');
