@@ -92,7 +92,7 @@ export const timelineItemDate = style({
 export const timelineItemTitle = style({
   fontSize: '1rem',
   margin: 0,
-  fontWeight: 500,
+  fontWeight: 400,
   color: vars.color.text.primary,
 });
 

@@ -41,17 +41,17 @@ export const TimelineItem = ({ isLast, timelineItem }: Props) => {
   const { blog, category, date, title } = timelineItem;
   const isKnownCategory = TIMELINE_CATEGORIES.hasOwnProperty(category);
   const emoji = isKnownCategory ? TIMELINE_CATEGORIES[category].emoji : '';
-  const displayTitle = category === 'blog' ? blog?.title : title;
+  const displayHead = blog !== null ? 'Post a new Blog' : title;
   return (
     <div className={styles.timelineItem}>
       <h4 className={styles.timelineItemSubTitle}>
-        <span className={styles.timelineItemInlineTitle}>{displayTitle}</span>
+        <span className={styles.timelineItemInlineTitle}>{displayHead}</span>
         <span className={styles.timelineItemDate}>{formatDateToHowPastFromNow(date)}</span>
       </h4>
       {blog && (
         <Card padding="no">
           <Link className={styles.timelineItemInner} href={`/blog/${blog.slug}`} passHref>
-            <h3 className={styles.timelineItemTitle}>{displayTitle}</h3>
+            <h3 className={styles.timelineItemTitle}>{blog.title}</h3>
           </Link>
         </Card>
       )}
