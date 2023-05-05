@@ -9,13 +9,10 @@ export const tabContentWrapper = style({
 export const TAB_CONTENT_GAP = '1rem';
 
 export const tabContent = style({
-  display: 'flex',
-  gap: TAB_CONTENT_GAP,
-  transition: 'transform 0.3s cubic-bezier(1, 0, 0, 1)',
+  width: '100%',
 });
 
 export const tabContentItem = style({
   width: '100%',
   height: 'max-content',
-  transition: 'opacity 0.15s cubic-bezier(1, 0, 0, 1)',
 });

@@ -7,12 +7,13 @@ import type { TabItem } from './types';
 
 interface Props {
   tabs: TabItem[];
+  activeTab: string;
+  setActiveTab: (id: string) => void;
   name: string;
   onChange: (id: string) => void;
 }
 
-const _Tab = ({ name, onChange, tabs }: Props) => {
-  const [activeTab, setActiveTab] = useState(tabs[0].id);
+const _Tab = ({ name, activeTab,setActiveTab, onChange, tabs }: Props) => {
   const activeMarkerRef = useRef<HTMLDivElement>(null);
   const [activeMarker, setActiveMarker] = useState<{
     left: number;
@@ -51,6 +52,7 @@ const _Tab = ({ name, onChange, tabs }: Props) => {
         onMouseLeave={() => {
           hideActiveMarker();
         }}
+        role="tablist"
       >
         {tabs.map((tab) => (
           <label
@@ -61,6 +63,8 @@ const _Tab = ({ name, onChange, tabs }: Props) => {
                 setActiveMarkerByEl(e.currentTarget, activeMarker !== null);
               }
             }}
+            id={`${tab.id}-tab`}
+            aria-controls={`${tab.id}-panel`}
           >
             <input
               type="radio"

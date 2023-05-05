@@ -37,6 +37,12 @@ export const tabLabel = style({
   userSelect: 'none',
 });
 
+globalStyle(`${tabInput}:focus-visible + ${tabLabel}`, {
+  outline: '1px solid',
+  outlineColor: vars.color.accent.primary,
+  boxShadow: `0 0 0 2px ${vars.color.bg.primary}`,
+});
+
 globalStyle(`${tabInput}:checked + ${tabLabel}`, {
   color: vars.color.text.primary,
 });
