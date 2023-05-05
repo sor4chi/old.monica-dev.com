@@ -51,7 +51,7 @@ export const timelineItemInner = style({
   '@media': {
     '(hover: hover)': {
       ':hover': {
-        backgroundColor: vars.color.bg.tertiary,
+        backgroundColor: vars.color.bg.primary,
       },
     },
   },
