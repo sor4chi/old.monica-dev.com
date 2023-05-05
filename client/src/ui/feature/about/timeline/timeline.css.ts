@@ -15,7 +15,7 @@ export const sorter = style({
   justifyContent: 'center',
   gap: '0.5rem',
   flexWrap: 'wrap',
-  margin: '0.5rem 0',
+  padding: '0.5rem 0',
 });
 
 export const section = style({

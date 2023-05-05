@@ -35,26 +35,24 @@ export const Timeline = ({ timelines }: Props) => {
 
   return (
     <div className={styles.wrapper}>
-      <details>
-        <summary>Sort by category</summary>
-        <div className={styles.sorter}>
-          {categories.map((category) => (
-            <Checkbox
-              key={category}
-              label={TIMELINE_CATEGORIES[category] ? `${TIMELINE_CATEGORIES[category].emoji} ${category}` : category}
-              id={category}
-              checked={checkedCategories.includes(category)}
-              onChange={(e) => {
-                if (e.target.checked) {
-                  setCheckedCategories([...checkedCategories, category]);
-                } else {
-                  setCheckedCategories(checkedCategories.filter((checkedCategory) => checkedCategory !== category));
-                }
-              }}
-            />
-          ))}
-        </div>
-      </details>
+      <div className={styles.sorter}>
+        {categories.map((category) => (
+          <Checkbox
+            key={category}
+            label={TIMELINE_CATEGORIES[category] ? `${TIMELINE_CATEGORIES[category].emoji} ${category}` : category}
+            id={category}
+            checked={checkedCategories.includes(category)}
+            onChange={(e) => {
+              if (e.target.checked) {
+                setCheckedCategories([...checkedCategories, category]);
+              } else {
+                setCheckedCategories(checkedCategories.filter((checkedCategory) => checkedCategory !== category));
+              }
+            }}
+          />
+        ))}
+      </div>
+
       {sortedEntries.map(([year, timelines]) => (
         <section key={year} className={styles.section}>
           <h3 className={styles.year}>{year}</h3>
