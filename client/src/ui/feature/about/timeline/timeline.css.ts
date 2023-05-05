@@ -1,5 +1,7 @@
 import { style } from '@vanilla-extract/css';
 
+import { vars } from '@/style/theme.css';
+
 export const wrapper = style({
   maxWidth: '40rem',
   width: '100%',
@@ -25,4 +27,10 @@ export const section = style({
 export const year = style({
   margin: '0 0 .5rem',
   fontWeight: 500,
+});
+
+export const noItem = style({
+  margin: '1rem 0',
+  textAlign: 'center',
+  color: vars.color.text.tertiary,
 });

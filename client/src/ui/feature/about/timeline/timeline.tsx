@@ -32,6 +32,7 @@ export const Timeline = ({ timelines }: Props) => {
     return acc;
   }, {} as Record<string, any[]>);
   const sortedEntries = Object.entries(tabsSplitByYear).sort((a, b) => Number(b[0]) - Number(a[0]));
+  const sumOfSortedEntries = sortedEntries.reduce((acc, cur) => acc + cur[1].length, 0);
 
   return (
     <div className={styles.wrapper}>
@@ -59,6 +60,7 @@ export const Timeline = ({ timelines }: Props) => {
           <TimelineList timelines={timelines} />
         </section>
       ))}
+      {sumOfSortedEntries === 0 && <p className={styles.noItem}>No Timeline Item</p>}
     </div>
   );
 };
