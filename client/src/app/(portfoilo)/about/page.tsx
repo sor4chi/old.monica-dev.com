@@ -1,10 +1,14 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
 import * as styles from './about.css';
 
 import { clientEnv } from '@/env/client';
+import { client, gql } from '@/lib/graphql';
 import { AboutContent } from '@/ui/feature/about/content';
+import type { AboutContentFragmentResponse } from '@/ui/feature/about/content/query';
+import { AboutContentFragment } from '@/ui/feature/about/content/query';
 import { SocialList } from '@/ui/feature/account/socialList';
 import { getOgUrl } from '@/util/og';
 
@@ -35,7 +39,36 @@ export const metadata = {
   },
 } satisfies Metadata;
 
+const AboutPageQuery = gql`
+  ${AboutContentFragment}
+
+  query AboutQuery() {
+    timelines {
+      ...AboutContentFragment
+    }
+  }
+`;
+
+type AboutPageQueryResponse = {
+  timelines: AboutContentFragmentResponse;
+};
+
+async function getTimelines() {
+  try {
+    const data = await client.request<AboutPageQueryResponse>(AboutPageQuery);
+
+    return {
+      data,
+    };
+  } catch (e) {
+    console.error(e);
+    notFound();
+  }
+}
+
 export default async function About() {
+  const { data } = await getTimelines();
+
   return (
     <>
       <section className={styles.hero}>
@@ -54,7 +87,7 @@ export default async function About() {
           </div>
         </div>
       </section>
-      <AboutContent />
+      <AboutContent timelines={data.timelines} />
     </>
   );
 }

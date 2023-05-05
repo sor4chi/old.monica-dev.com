@@ -4,6 +4,7 @@ export const getSafelyDate = (date: Date | string) => {
     date = date.replace(/-/g, '/'); // replace - with /
     date = date.replace(/T/, ' '); // replace T with a space, T means time zone
     date = date.replace(/\..+/, ''); // delete the dot and everything after, dot means milliseconds
+    date = date.split(' ').slice(0, 2).join(' '); // delete the time zone
   }
   return new Date(date);
 };
@@ -84,7 +85,7 @@ export const formatDateToHowPastFromNow = (date: Date | string) => {
   const diffYear = diffMonth / 12;
 
   if (diffYear >= 1) {
-    return `${Math.floor(diffYear)} year${Math.floor(diffYear) > 1 ? 's' : ''} ago`;
+    return formatDateEn(date);
   }
   if (diffMonth >= 1) {
     return `${Math.floor(diffMonth)} month${Math.floor(diffMonth) > 1 ? 's' : ''} ago`;

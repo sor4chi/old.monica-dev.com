@@ -26,3 +26,8 @@ globalStyle('html', {
 globalStyle('a', {
   color: vars.color.accent.primary,
 });
+
+globalStyle('a:focus-visible', {
+  outline: '1px solid',
+  outlineColor: vars.color.accent.primary,
+});

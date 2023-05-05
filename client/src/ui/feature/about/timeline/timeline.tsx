@@ -1,124 +1,28 @@
+'use client';
 import { useState } from 'react';
 
 import * as styles from './timeline.css';
 
 import { TIMELINE_CATEGORIES } from '@/constant/timeline';
-import { gql } from '@/lib/graphql';
 import { Checkbox } from '@/ui/foundation/checkbox';
 import type { TimelineListFragmentResponse } from '@/ui/foundation/timeline';
-import { TimelineList, TimelineListFragment } from '@/ui/foundation/timeline';
+import { TimelineList } from '@/ui/foundation/timeline';
 import { getSafelyDate } from '@/util/date';
 
-export const AboutTimelineFragment = gql`
-  ${TimelineListFragment}
+interface Props {
+  timelines: TimelineListFragmentResponse;
+}
 
-  fragment AboutTimelineFragment on About {
-    timelines {
-      ...TimelineListFragment
-    }
-  }
-`;
-export type AboutTimelineFragmentResponse = {
-  timelines: TimelineListFragmentResponse[];
-};
-
-const TABS = [
-  {
-    blog: {
-      slug: 'blog-title',
-      title: 'これは技術ブログのタイトルです',
-    },
-    category: 'other',
-    date: '2021-01-01',
-    title: 'Timeline List Title',
-  },
-  {
-    category: 'award',
-    date: '2021-01-01',
-    title: 'Timeline List Title',
-  },
-  {
-    blog: {
-      slug: 'blog-title',
-      title: 'これは技術ブログのタイトルです',
-    },
-    category: 'blog',
-    date: '2021-01-01',
-    title: 'Timeline List Title',
-  },
-  {
-    category: 'education',
-    date: '2021-01-01',
-    title: 'Timeline List Title',
-  },
-  {
-    blog: {
-      slug: 'blog-title',
-      title: 'これは技術ブログのタイトルです',
-    },
-    category: 'product',
-    date: '2021-01-01',
-    title: 'Timeline List Title',
-  },
-  {
-    category: 'work',
-    date: '2021-01-01',
-    title: 'Timeline List Title',
-  },
-  {
-    blog: {
-      slug: 'blog-title',
-      title: 'これは技術ブログのタイトルです',
-    },
-    category: 'other',
-    date: '2022-01-01',
-    title: 'Timeline List Title',
-  },
-  {
-    category: 'award',
-    date: '2022-01-01',
-    title: 'Timeline List Title',
-  },
-  {
-    blog: {
-      slug: 'blog-title',
-      title: 'これは技術ブログのタイトルです',
-    },
-    category: 'blog',
-    date: '2022-01-01',
-    title: 'Timeline List Title',
-  },
-  {
-    category: 'education',
-    date: '2022-01-01',
-    title: 'Timeline List Title',
-  },
-  {
-    blog: {
-      slug: 'blog-title',
-      title: 'これは技術ブログのタイトルです',
-    },
-    category: 'product',
-    date: '2022-01-01',
-    title: 'Timeline List Title',
-  },
-  {
-    category: 'work',
-    date: '2022-01-01',
-    title: 'Timeline List Title',
-  },
-];
-
-export const Timeline = () => {
+export const Timeline = ({ timelines }: Props) => {
   // extract categories from TABS, but 'other' category must be the end of the array
-  const categories = TABS.reduce((acc, cur) => {
+  const categories = timelines.reduce((acc, cur) => {
     if (!acc.includes(cur.category)) {
       return cur.category === 'other' ? [...acc, cur.category] : [cur.category, ...acc];
     }
     return acc;
   }, [] as string[]);
   const [checkedCategories, setCheckedCategories] = useState(categories);
-  const filteredTabs = TABS.filter((tab) => checkedCategories.includes(tab.category));
+  const filteredTabs = timelines.filter((tab) => checkedCategories.includes(tab.category));
   const tabsSplitByYear = filteredTabs.reduce((acc, cur) => {
     const year = getSafelyDate(cur.date).getFullYear();
     if (!acc[year]) {

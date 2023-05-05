@@ -25,6 +25,7 @@ export const timelineItemPoint = style({
 export const timelineItemPointWithIcon = style({
   width: TIMELINE_POINT_WITH_ICON_SIZE,
   height: TIMELINE_POINT_WITH_ICON_SIZE,
+  fontSize: '1.25rem',
   transform: `translate(calc((${TIMELINE_COMMON_SPACE} - ${TIMELINE_POINT_WITH_ICON_SIZE}) / 2), calc((${TIMELINE_COMMON_SPACE} - ${TIMELINE_POINT_WITH_ICON_SIZE}) / 2))`,
   backgroundColor: vars.color.bg.primary,
 });
@@ -44,6 +45,16 @@ export const timelineItemInner = style({
   justifyContent: 'space-between',
   padding: '1rem',
   textDecoration: 'none',
+  transition: 'background-color 0.2s ease-in-out',
+  borderRadius: 'inherit',
+
+  '@media': {
+    '(hover: hover)': {
+      ':hover': {
+        backgroundColor: vars.color.bg.tertiary,
+      },
+    },
+  },
 });
 
 export const timelineItemSubTitle = style({
