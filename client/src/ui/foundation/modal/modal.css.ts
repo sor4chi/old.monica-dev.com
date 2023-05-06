@@ -19,6 +19,7 @@ export const modal = style({
   width: '100vw',
   height: '100vh',
   background: 'rgba(0, 0, 0, 0.5)',
+  backdropFilter: 'blur(2px)',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
