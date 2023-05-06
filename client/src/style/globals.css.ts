@@ -28,6 +28,10 @@ globalStyle('a', {
 });
 
 globalStyle('a:focus-visible', {
-  outline: '1px solid',
+  outline: `${vars.color.accent.primary} auto 2px`,
+});
+
+globalStyle('button:focus-visible', {
+  outline: '2px solid',
   outlineColor: vars.color.accent.primary,
 });
