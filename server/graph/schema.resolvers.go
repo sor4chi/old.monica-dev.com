@@ -166,6 +166,10 @@ func (r *mutationResolver) CreateTimeline(ctx context.Context, input model.Timel
 		return nil, err
 	}
 
+	if err := ts.RevalidateTimeline(); err != nil {
+		return nil, err
+	}
+
 	return model.NewTimelineFromEntity(timeline), nil
 }
 

@@ -3,10 +3,17 @@ package service
 import (
 	"context"
 	"database/sql"
+	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/sor4chi/portfolio-blog/server/entity"
 	"github.com/sor4chi/portfolio-blog/server/sqlc"
+	"github.com/sor4chi/portfolio-blog/server/util"
+)
+
+var (
+	ABOUT_REVALIDATE_URL = "/api/revalidate/about"
 )
 
 type TimelineService struct {
@@ -78,4 +85,15 @@ func (s *TimelineService) CreateTimeline(title string, relatedBlogID *int32, cat
 		return nil, err
 	}
 	return parseTimelineRowToEntity(row), nil
+}
+
+func (s *TimelineService) RevalidateTimeline() error {
+	clientUrl := util.GetEnv("CLIENT_URL", "http://localhost:3000")
+	url := fmt.Sprintf("%s%s?secret=%s", clientUrl, ABOUT_REVALIDATE_URL, util.GetEnvStrict("REVALIDATE_SECRET"))
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	return nil
 }
