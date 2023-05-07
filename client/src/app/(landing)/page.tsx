@@ -29,7 +29,7 @@ export default function Home() {
             <span>Sor4chi</span>
             <span>Monica</span>
           </span>
-          <span style={{ display: 'inline' }}>Portfolio</span>
+          {/* <span style={{ display: 'inline' }}>Portfolio</span> */}
         </h1>
         <p className={styles.subtitle}>Web App Developer</p>
         <SocialList />
