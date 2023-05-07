@@ -33,7 +33,6 @@ export const modalContent = style({
   width: '100%',
   maxWidth: '50rem',
   maxHeight: '80vh',
-  overflow: 'auto',
   border: `1px solid ${vars.color.bg.tertiary}`,
   boxShadow: vars.color.shadow.md,
   animation: `${fadeIn} 0.2s ease-in-out`,
