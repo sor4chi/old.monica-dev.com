@@ -118,7 +118,7 @@ export const timelineItemLine = style({
   left: 0,
   width: '2px',
   height: '100%',
-  backgroundColor: vars.color.text.tertiary,
+  backgroundColor: vars.color.bg.tertiary,
   transform: `translate(calc((${TIMELINE_COMMON_SPACE} - 2px) / 2), calc((${TIMELINE_COMMON_SPACE} - 2px) / 2))`,
   zIndex: -1,
 });
