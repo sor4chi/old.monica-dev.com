@@ -28,6 +28,7 @@ export const timelineItemPointWithIcon = style({
   fontSize: '1.25rem',
   transform: `translate(calc((${TIMELINE_COMMON_SPACE} - ${TIMELINE_POINT_WITH_ICON_SIZE}) / 2), calc((${TIMELINE_COMMON_SPACE} - ${TIMELINE_POINT_WITH_ICON_SIZE}) / 2))`,
   backgroundColor: vars.color.bg.primary,
+  transition: 'background-color 0.2s ease-in-out',
 });
 
 export const timelineItemPointWithoutIcon = style({
@@ -36,6 +37,7 @@ export const timelineItemPointWithoutIcon = style({
   width: TIMELINE_POINT_SIZE,
   height: TIMELINE_POINT_SIZE,
   transform: `translate(calc(${TIMELINE_COMMON_SPACE} / 2 - ${TIMELINE_POINT_SIZE}), calc(${TIMELINE_COMMON_SPACE} / 2 - ${TIMELINE_POINT_SIZE}))`,
+  transition: 'background-color 0.2s ease-in-out',
 });
 
 export const timelineItemInner = style({
@@ -121,4 +123,5 @@ export const timelineItemLine = style({
   backgroundColor: vars.color.bg.tertiary,
   transform: `translate(calc((${TIMELINE_COMMON_SPACE} - 2px) / 2), calc((${TIMELINE_COMMON_SPACE} - 2px) / 2))`,
   zIndex: -1,
+  transition: 'background-color 0.2s ease-in-out',
 });

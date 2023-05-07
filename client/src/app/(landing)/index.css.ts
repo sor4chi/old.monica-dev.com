@@ -146,6 +146,7 @@ export const title = style({
   marginTop: '2rem',
   overflow: 'hidden',
   textAlign: 'center',
+  transition: 'color .2s ease-in-out',
 
   '@media': {
     [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
@@ -212,6 +213,7 @@ export const divider = style({
   height: '20rem',
   border: 'none',
   background: vars.color.bg.secondary,
+  transition: 'background .2s ease-out',
 
   '@media': {
     [`screen and (max-width: ${vars.breakpoint.mobile})`]: {

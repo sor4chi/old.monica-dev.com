@@ -8,6 +8,7 @@ export const card = style({
   border: `1px solid ${vars.color.bg.tertiary}`,
   height: '100%',
   boxSizing: 'border-box',
+  transition: 'background-color 0.2s ease-in-out, border 0.2s ease-in-out',
 });
 
 export const cardPadding = styleVariants({
