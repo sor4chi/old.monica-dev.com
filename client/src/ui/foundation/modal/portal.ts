@@ -1,4 +1,6 @@
+'use client';
 import type { ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { MODAL_ID } from '@/constant/id';
@@ -8,8 +10,12 @@ interface Props {
 }
 
 export const ModalPortal = ({ children }: Props) => {
-  if (typeof document === 'undefined') return null;
-  const el = document.getElementById(MODAL_ID);
-  if (!el) return null;
-  return createPortal(children, el);
+  const [modalRef, setModalRef] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const modal = document.getElementById(MODAL_ID);
+    setModalRef(modal);
+  }, []);
+
+  return modalRef ? createPortal(children, modalRef) : null;
 };

@@ -6,7 +6,6 @@ export const card = style({
   background: vars.color.bg.secondary,
   borderRadius: '0.25rem',
   border: `1px solid ${vars.color.bg.tertiary}`,
-  width: '100%',
   height: '100%',
   boxSizing: 'border-box',
 });
@@ -23,5 +22,14 @@ export const cardPadding = styleVariants({
   },
   lg: {
     padding: '1.5rem',
+  },
+});
+
+export const cardFit = styleVariants({
+  fit: {
+    width: 'fit-content',
+  },
+  full: {
+    width: '100%',
   },
 });

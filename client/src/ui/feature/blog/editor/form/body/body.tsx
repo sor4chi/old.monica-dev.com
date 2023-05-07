@@ -81,7 +81,6 @@ export const BlogEditorFormBody = ({ onSubmit, tagsOptions }: Props) => {
 
   return (
     <form className={styles.form} id={BLOG_FORM_ID} onSubmit={handleSubmit(onSubmit)}>
-      {JSON.stringify(errors.tagIds)}
       <section className={styles.metaArea}>
         <TextInput
           label="Title"

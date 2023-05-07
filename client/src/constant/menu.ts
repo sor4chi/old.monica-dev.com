@@ -1,5 +1,14 @@
 /* eslint-disable sort/object-properties */
-import { MdEditNote, MdHome, MdMail, MdOutlineEditNote, MdOutlineHome, MdOutlineMail } from 'react-icons/md';
+import {
+  MdEditNote,
+  MdHome,
+  MdMail,
+  MdOutlineEditNote,
+  MdOutlineHome,
+  MdOutlineMail,
+  MdOutlineTimeline,
+  MdTimeline,
+} from 'react-icons/md';
 
 const MENU_ITEM = {
   Home: {
@@ -7,6 +16,12 @@ const MENU_ITEM = {
     isActive: (pathname: string) => pathname === '/dashboard',
     ActiveIcon: MdHome,
     DefaultIcon: MdOutlineHome,
+  },
+  Timeline: {
+    link: '/dashboard/timeline',
+    isActive: (pathname: string) => pathname === '/dashboard/timeline',
+    ActiveIcon: MdTimeline,
+    DefaultIcon: MdOutlineTimeline,
   },
   Blog: {
     link: '/dashboard/blog',

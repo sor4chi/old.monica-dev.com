@@ -10,6 +10,7 @@ export const details = style({
   backgroundColor: vars.color.bg.secondary,
   border: `1px solid ${vars.color.bg.tertiary}`,
   color: vars.color.text.primary,
+  overflow: 'hidden',
 });
 
 export const summary = style({
@@ -26,7 +27,7 @@ export const summary = style({
   '@media': {
     '(hover: hover)': {
       ':hover': {
-        backgroundColor: vars.color.bg.tertiary,
+        backgroundColor: vars.color.bg.primary,
       },
     },
   },

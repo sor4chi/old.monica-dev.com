@@ -16,13 +16,12 @@ export const button = style({
   alignItems: 'center',
   gap: '0.25rem',
   lineHeight: '1.5rem',
-  transition: 'all 0.2s ease-in-out',
+  transition: 'background-color 0.2s ease-in-out, scale 0.2s ease-in-out',
 
   '@media': {
     '(hover: hover)': {
       ':hover': {
-        backgroundColor: vars.color.bg.secondary,
-        color: vars.color.text.primary,
+        backgroundColor: vars.color.bg.tertiary,
         scale: 1.1,
       },
     },

@@ -138,6 +138,37 @@ func (r *mutationResolver) CreateTag(ctx context.Context, input model.TagInput) 
 	return model.NewTagFromEntity(tag), nil
 }
 
+// CreateTimeline is the resolver for the createTimeline field.
+func (r *mutationResolver) CreateTimeline(ctx context.Context, input model.TimelineInput) (*model.Timeline, error) {
+	ts := service.NewTimelineService(r.Q)
+
+	// if relatedBlogID is nil, set it to nil
+	var relatedBlogID *int32
+
+	if input.RelatedBlogID != nil {
+		intId, err := strconv.ParseInt(*input.RelatedBlogID, 10, 32)
+		if err != nil {
+			return nil, err
+		}
+		tmpId := int32(intId)
+		relatedBlogID = &tmpId
+	} else {
+		relatedBlogID = nil
+	}
+
+	timeline, err := ts.CreateTimeline(
+		input.Title,
+		relatedBlogID,
+		input.Category,
+		input.Date,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return model.NewTimelineFromEntity(timeline), nil
+}
+
 // Blogs is the resolver for the blogs field.
 func (r *queryResolver) Blogs(ctx context.Context, input model.BlogListInput) (*model.BlogList, error) {
 	bs := service.NewBlogService(r.Q)

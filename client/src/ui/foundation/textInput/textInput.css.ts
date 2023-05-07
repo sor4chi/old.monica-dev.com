@@ -12,13 +12,16 @@ export const label = style({
   display: 'inline-block',
 });
 
+const INPUT_HEIGHT = '1.5rem';
+const INPUT_VERTICAL_PADDING = '0.5rem';
+
 export const input = style({
   width: '100%',
   boxSizing: 'border-box',
-  padding: '0.5rem 1rem',
+  padding: `${INPUT_VERTICAL_PADDING} 1rem`,
   borderRadius: '0.25rem',
   fontSize: '1rem',
-  lineHeight: '1.5',
+  lineHeight: INPUT_HEIGHT,
   color: vars.color.text.primary,
   backgroundColor: vars.color.bg.secondary,
   backgroundClip: 'padding-box',
@@ -39,4 +42,21 @@ export const input = style({
 export const error = style({
   color: vars.color.error,
   margin: '0.5rem 0 0',
+});
+
+export const inputContainer = style({
+  position: 'relative',
+});
+
+export const icon = style({
+  pointerEvents: 'none',
+  position: 'absolute',
+  right: 0,
+  top: 0,
+  width: `calc(${INPUT_HEIGHT} + ${INPUT_VERTICAL_PADDING} * 2)`,
+  height: `calc(${INPUT_HEIGHT} + ${INPUT_VERTICAL_PADDING} * 2)`,
+  fill: vars.color.text.secondary,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 });
