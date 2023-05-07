@@ -2,6 +2,8 @@ package service
 
 import (
 	"context"
+	"database/sql"
+	"time"
 
 	"github.com/sor4chi/portfolio-blog/server/entity"
 	"github.com/sor4chi/portfolio-blog/server/sqlc"
@@ -54,4 +56,26 @@ func (s *TimelineService) GetTimelinesByCategories(categories []int32) ([]*entit
 		return nil, err
 	}
 	return parseTimelineRowsToEntity(rows), nil
+}
+
+func (s *TimelineService) CreateTimeline(title string, relatedBlogID *int32, category string, date string) (*entity.Timeline, error) {
+	ctx := context.Background()
+	intCategory := int32(entity.NewTimelineCategory(category))
+	dateTime, err := time.Parse("2006-01-02", date)
+	if err != nil {
+		return nil, err
+	}
+	row, err := s.q.CreateTimeline(ctx, sqlc.CreateTimelineParams{
+		Title: title,
+		RelatedBlogID: sql.NullInt32{
+			Int32: *relatedBlogID,
+			Valid: relatedBlogID != nil,
+		},
+		Category: intCategory,
+		Date:     dateTime,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return parseTimelineRowToEntity(row), nil
 }

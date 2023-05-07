@@ -55,3 +55,10 @@ type Timeline struct {
 	Category      string  `json:"category"`
 	Date          string  `json:"date"`
 }
+
+type TimelineInput struct {
+	Title         string  `json:"title"`
+	RelatedBlogID *string `json:"relatedBlogId,omitempty"`
+	Category      string  `json:"category"`
+	Date          string  `json:"date"`
+}

@@ -66,10 +66,11 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		CreateBlog func(childComplexity int, input model.BlogInput) int
-		CreateTag  func(childComplexity int, input model.TagInput) int
-		DeleteBlog func(childComplexity int, id string) int
-		UpdateBlog func(childComplexity int, id string, input model.BlogInput) int
+		CreateBlog     func(childComplexity int, input model.BlogInput) int
+		CreateTag      func(childComplexity int, input model.TagInput) int
+		CreateTimeline func(childComplexity int, input model.TimelineInput) int
+		DeleteBlog     func(childComplexity int, id string) int
+		UpdateBlog     func(childComplexity int, id string, input model.BlogInput) int
 	}
 
 	Query struct {
@@ -107,6 +108,7 @@ type MutationResolver interface {
 	UpdateBlog(ctx context.Context, id string, input model.BlogInput) (*model.Blog, error)
 	DeleteBlog(ctx context.Context, id string) (*model.Blog, error)
 	CreateTag(ctx context.Context, input model.TagInput) (*model.Tag, error)
+	CreateTimeline(ctx context.Context, input model.TimelineInput) (*model.Timeline, error)
 }
 type QueryResolver interface {
 	Blogs(ctx context.Context, input model.BlogListInput) (*model.BlogList, error)
@@ -235,6 +237,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateTag(childComplexity, args["input"].(model.TagInput)), true
+
+	case "Mutation.createTimeline":
+		if e.complexity.Mutation.CreateTimeline == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createTimeline_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateTimeline(childComplexity, args["input"].(model.TimelineInput)), true
 
 	case "Mutation.deleteBlog":
 		if e.complexity.Mutation.DeleteBlog == nil {
@@ -410,6 +424,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputBlogInput,
 		ec.unmarshalInputBlogListInput,
 		ec.unmarshalInputTagInput,
+		ec.unmarshalInputTimelineInput,
 	)
 	first := true
 
@@ -511,6 +526,21 @@ func (ec *executionContext) field_Mutation_createTag_args(ctx context.Context, r
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 		arg0, err = ec.unmarshalNTagInput2githubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐTagInput(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_createTimeline_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.TimelineInput
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNTimelineInput2githubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐTimelineInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1550,6 +1580,95 @@ func (ec *executionContext) fieldContext_Mutation_createTag(ctx context.Context,
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_createTag_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_createTimeline(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_createTimeline(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Mutation().CreateTimeline(rctx, fc.Args["input"].(model.TimelineInput))
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Auth == nil {
+				return nil, errors.New("directive auth is not implemented")
+			}
+			return ec.directives.Auth(ctx, nil, directive0)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*model.Timeline); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sor4chi/portfolio-blog/server/graph/model.Timeline`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Timeline)
+	fc.Result = res
+	return ec.marshalNTimeline2ᚖgithubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐTimeline(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_createTimeline(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Timeline_id(ctx, field)
+			case "title":
+				return ec.fieldContext_Timeline_title(ctx, field)
+			case "relatedBlogId":
+				return ec.fieldContext_Timeline_relatedBlogId(ctx, field)
+			case "blog":
+				return ec.fieldContext_Timeline_blog(ctx, field)
+			case "category":
+				return ec.fieldContext_Timeline_category(ctx, field)
+			case "date":
+				return ec.fieldContext_Timeline_date(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Timeline", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_createTimeline_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return
 	}
@@ -4530,6 +4649,58 @@ func (ec *executionContext) unmarshalInputTagInput(ctx context.Context, obj inte
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputTimelineInput(ctx context.Context, obj interface{}) (model.TimelineInput, error) {
+	var it model.TimelineInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"title", "relatedBlogId", "category", "date"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "title":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("title"))
+			it.Title, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "relatedBlogId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("relatedBlogId"))
+			it.RelatedBlogID, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "category":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("category"))
+			it.Category, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "date":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("date"))
+			it.Date, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 // endregion **************************** input.gotpl *****************************
 
 // region    ************************** interface.gotpl ***************************
@@ -4717,6 +4888,15 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_createTag(ctx, field)
+			})
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "createTimeline":
+
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_createTimeline(ctx, field)
 			})
 
 			if out.Values[i] == graphql.Null {
@@ -5594,6 +5774,10 @@ func (ec *executionContext) unmarshalNTagInput2githubᚗcomᚋsor4chiᚋportfoli
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) marshalNTimeline2githubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐTimeline(ctx context.Context, sel ast.SelectionSet, v model.Timeline) graphql.Marshaler {
+	return ec._Timeline(ctx, sel, &v)
+}
+
 func (ec *executionContext) marshalNTimeline2ᚕᚖgithubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐTimelineᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Timeline) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
@@ -5646,6 +5830,11 @@ func (ec *executionContext) marshalNTimeline2ᚖgithubᚗcomᚋsor4chiᚋportfol
 		return graphql.Null
 	}
 	return ec._Timeline(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNTimelineInput2githubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐTimelineInput(ctx context.Context, v interface{}) (model.TimelineInput, error) {
+	res, err := ec.unmarshalInputTimelineInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalN__Directive2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐDirective(ctx context.Context, sel ast.SelectionSet, v introspection.Directive) graphql.Marshaler {

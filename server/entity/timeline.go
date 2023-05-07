@@ -39,3 +39,20 @@ func (c TimelineCategory) String() string {
 		return "other"
 	}
 }
+
+func NewTimelineCategory(s string) TimelineCategory {
+	switch s {
+	case "work":
+		return TimelineCategoryWork
+	case "education":
+		return TimelineCategoryEducation
+	case "award":
+		return TimelineCategoryAward
+	case "product":
+		return TimelineCategoryProduct
+	case "blog":
+		return TimelineCategoryBlog
+	default:
+		return TimelineCategoryOther
+	}
+}

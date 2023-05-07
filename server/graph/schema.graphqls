@@ -67,9 +67,17 @@ input TagInput {
   slug: String!
 }
 
+input TimelineInput {
+  title: String!
+  relatedBlogId: ID
+  category: String!
+  date: String!
+}
+
 type Mutation {
   createBlog(input: BlogInput!): Blog! @auth
   updateBlog(id: ID!, input: BlogInput!): Blog! @auth
   deleteBlog(id: ID!): Blog! @auth
   createTag(input: TagInput!): Tag! @auth
+  createTimeline(input: TimelineInput!): Timeline! @auth
 }
