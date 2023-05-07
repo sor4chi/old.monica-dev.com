@@ -13,11 +13,6 @@ globalStyle('body', {
   accentColor: vars.color.accent.primary,
 });
 
-globalStyle('*::selection', {
-  backgroundColor: vars.color.accent.primary,
-  color: vars.color.text.primary,
-});
-
 globalStyle('html', {
   scrollPaddingTop: '5rem',
   scrollBehavior: 'smooth',
@@ -37,24 +32,17 @@ globalStyle('button:focus-visible', {
 });
 
 globalStyle('::-webkit-scrollbar', {
-  overflow: 'hidden',
-  width: 4,
-  backgroundColor: 'transparent',
-  borderRadius: 4,
+  width: 10,
 });
 
 globalStyle('::-webkit-scrollbar-thumb', {
-  backgroundColor: vars.color.accent.primary,
-  borderRadius: 4,
+  borderRadius: 6,
+  border: `2px solid transparent`,
+  boxShadow: `inset 0 0 0 10px ${vars.color.accent.primary}`,
 });
 
 globalStyle('::-webkit-scrollbar-track', {
   backgroundColor: 'transparent',
-  borderRadius: 4,
-});
-
-globalStyle('::-webkit-scrollbar-corner', {
-  backgroundColor: vars.color.bg.secondary,
 });
 
 globalStyle('::selection', {
