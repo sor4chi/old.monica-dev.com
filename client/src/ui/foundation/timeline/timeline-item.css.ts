@@ -31,7 +31,7 @@ export const timelineItemPointWithIcon = style({
 });
 
 export const timelineItemPointWithoutIcon = style({
-  backgroundColor: vars.color.text.tertiary,
+  backgroundColor: vars.color.bg.tertiary,
   border: `0.25rem solid ${vars.color.bg.primary}`,
   width: TIMELINE_POINT_SIZE,
   height: TIMELINE_POINT_SIZE,
