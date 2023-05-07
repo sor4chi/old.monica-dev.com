@@ -41,7 +41,8 @@ export const TimelineItem = ({ isLast, timelineItem }: Props) => {
   const { blog, category, date, title } = timelineItem;
   const isKnownCategory = TIMELINE_CATEGORIES.hasOwnProperty(category);
   const emoji = isKnownCategory ? TIMELINE_CATEGORIES[category].emoji : '';
-  const displayHead = blog !== null ? 'Post a new Blog' : title;
+  const displayHead = category === 'blog' ? 'published a new blog post' : title;
+
   return (
     <div className={styles.timelineItem}>
       <h4 className={styles.timelineItemSubTitle}>
