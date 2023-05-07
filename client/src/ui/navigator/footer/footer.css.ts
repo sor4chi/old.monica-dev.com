@@ -5,7 +5,7 @@ import { vars } from '@/style/theme.css';
 export const container = style({
   background: 'transparent',
   boxSizing: 'border-box',
-  width: '100vw',
+  width: '100%',
 });
 
 export const divider = style({
@@ -14,7 +14,7 @@ export const divider = style({
   height: 1,
   margin: 0,
   opacity: 0.2,
-  width: '100vw',
+  width: '100%',
 });
 
 export const copywrite = style({
