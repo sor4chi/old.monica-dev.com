@@ -35,3 +35,29 @@ globalStyle('button:focus-visible', {
   outline: '2px solid',
   outlineColor: vars.color.accent.primary,
 });
+
+globalStyle('::-webkit-scrollbar', {
+  overflow: 'hidden',
+  width: 4,
+  backgroundColor: 'transparent',
+  borderRadius: 4,
+});
+
+globalStyle('::-webkit-scrollbar-thumb', {
+  backgroundColor: vars.color.accent.primary,
+  borderRadius: 4,
+});
+
+globalStyle('::-webkit-scrollbar-track', {
+  backgroundColor: 'transparent',
+  borderRadius: 4,
+});
+
+globalStyle('::-webkit-scrollbar-corner', {
+  backgroundColor: vars.color.bg.secondary,
+});
+
+globalStyle('::selection', {
+  backgroundColor: vars.color.accent.secondary,
+  color: vars.color.text.primary,
+});
