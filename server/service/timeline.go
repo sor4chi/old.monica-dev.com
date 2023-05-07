@@ -72,14 +72,17 @@ func (s *TimelineService) CreateTimeline(title string, relatedBlogID *int32, cat
 	if err != nil {
 		return nil, err
 	}
+	insertRelatedBlogID := sql.NullInt32{
+		Valid: relatedBlogID != nil,
+	}
+	if relatedBlogID != nil {
+		insertRelatedBlogID.Int32 = *relatedBlogID
+	}
 	row, err := s.q.CreateTimeline(ctx, sqlc.CreateTimelineParams{
-		Title: title,
-		RelatedBlogID: sql.NullInt32{
-			Int32: *relatedBlogID,
-			Valid: relatedBlogID != nil,
-		},
-		Category: intCategory,
-		Date:     dateTime,
+		Title:         title,
+		RelatedBlogID: insertRelatedBlogID,
+		Category:      intCategory,
+		Date:          dateTime,
 	})
 	if err != nil {
 		return nil, err
