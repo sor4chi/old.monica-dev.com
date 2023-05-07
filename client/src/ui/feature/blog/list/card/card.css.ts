@@ -30,7 +30,7 @@ for (let i = 0; i < SITE_CONFIG.BLOG_LENGTH_PER_PAGE; i++) {
 
 export const title = style({
   fontSize: '1.5rem',
-  fontWeight: 700,
+  fontWeight: 400,
   marginTop: '1rem',
   marginBottom: '0.5rem',
   color: vars.color.text.primary,
@@ -66,5 +66,5 @@ export const date = style({
   display: 'block',
   fontSize: '1rem',
   margin: 0,
-  color: vars.color.text.secondary,
+  color: vars.color.text.tertiary,
 });

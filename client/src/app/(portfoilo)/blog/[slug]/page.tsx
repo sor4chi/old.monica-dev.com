@@ -177,7 +177,6 @@ export default async function BlogDetail({ params }: Props) {
         </aside>
       </section>
       <Divider />
-      <h2>Recommend Blogs</h2>
       <BlogsRecommend id={blog.meta.id} recommends={blog.recommends} />
       <Breadcrumb />
     </>

@@ -67,10 +67,14 @@ export const content = style({
 
 export const title = style({
   fontSize: '1.25rem',
-  fontWeight: 'bold',
+  fontWeight: 400,
   margin: 0,
   marginBottom: '0.5rem',
   color: vars.color.text.primary,
+  display: '-webkit-box',
+  WebkitLineClamp: 1,
+  WebkitBoxOrient: 'vertical',
+  overflow: 'hidden',
 });
 
 export const description = style({
