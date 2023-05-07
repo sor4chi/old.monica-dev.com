@@ -31,29 +31,29 @@ const WEEKDAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as cons
 
 const isSameDate = (date1: Date, date2: Date) => {
   return (
-    date1.getFullYear() === date2.getFullYear() &&
-    date1.getMonth() === date2.getMonth() &&
-    date1.getDate() === date2.getDate()
+    date1.getUTCFullYear() === date2.getUTCFullYear() &&
+    date1.getUTCMonth() === date2.getUTCMonth() &&
+    date1.getUTCDate() === date2.getUTCDate()
   );
 };
 
 const isToday = (date: Date) => {
-  return isSameDate(date, new Date());
+  return isSameDate(new Date(), date);
 };
 
 const getCalendarDates = (date: Date): CalenderDate[] => {
-  const targetYear = date.getFullYear();
-  const targetMonth = date.getMonth();
-  const firstDate = new Date(targetYear, targetMonth, 1);
-  const lastDate = new Date(targetYear, targetMonth + 1, 0);
-  const firstDay = firstDate.getDay();
-  const lastDay = lastDate.getDay();
+  const targetYear = date.getUTCFullYear();
+  const targetMonth = date.getUTCMonth();
+  const firstDate = new Date(Date.UTC(targetYear, targetMonth, 1));
+  const lastDate = new Date(Date.UTC(targetYear, targetMonth + 1, 0));
+  const firstDay = firstDate.getUTCDay();
+  const lastDay = lastDate.getUTCDay();
   const dates = [];
   for (let i = 0; i < firstDay; i++) {
     dates.push({ date: null, key: `${targetYear}-${targetMonth}_before_${i}` });
   }
-  for (let i = 1; i <= lastDate.getDate(); i++) {
-    const date = new Date(firstDate.getFullYear(), firstDate.getMonth(), i);
+  for (let i = 1; i <= lastDate.getUTCDate(); i++) {
+    const date = new Date(Date.UTC(firstDate.getUTCFullYear(), firstDate.getUTCMonth(), i));
     dates.push({
       date: {
         isToday: isToday(date),
@@ -73,10 +73,10 @@ const _Calendar = ({ error, label, selectedDate, setSelectedDate }: Props) => {
   const [date, setDate] = useState(new Date());
   const dates = useMemo(() => getCalendarDates(date), [date]);
   const handlePrevMonth = useCallback(() => {
-    setDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
+    setDate((prevDate) => new Date(Date.UTC(prevDate.getUTCFullYear(), prevDate.getUTCMonth() - 1, 1)));
   }, []);
   const handleNextMonth = useCallback(() => {
-    setDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
+    setDate((prevDate) => new Date(Date.UTC(prevDate.getUTCFullYear(), prevDate.getUTCMonth() + 1, 1)));
   }, []);
   const handleDateClick = useCallback(
     (date: Date) => () => {
@@ -103,7 +103,7 @@ const _Calendar = ({ error, label, selectedDate, setSelectedDate }: Props) => {
               <IoIosArrowBack color={vars.color.text.secondary} />
             </IconButton>
             <div className={styles.calendarHeaderTitle}>
-              {date.getFullYear()} - {date.getMonth() + 1}
+              {date.getUTCFullYear()} - {date.getUTCMonth() + 1}
             </div>
             <IconButton onClick={handleNextMonth} label="Next month" type="button">
               <IoIosArrowForward color={vars.color.text.secondary} />
