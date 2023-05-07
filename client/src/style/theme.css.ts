@@ -29,12 +29,12 @@ createGlobalTheme('.light', colorVars, {
 createGlobalTheme('.dark', colorVars, {
   bg: {
     primary: '#1F262D',
-    secondary: '#2F3A45',
-    tertiary: '#3F5267',
+    secondary: '#2e343b',
+    tertiary: '#4f5b67',
   },
   text: {
-    primary: '#EDF2F7',
-    secondary: '#cad1df',
+    primary: '#ffffff',
+    secondary: '#EDF2F7',
     tertiary: '#b2b9c6',
   },
   accent: {

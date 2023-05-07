@@ -10,7 +10,7 @@ export const wrapper = style({
 });
 
 export const main = style({
-  width: `min(${vars.breakpoint.pc}, calc(100vw - 2rem))`,
+  width: `min(${vars.breakpoint.pc}, calc(100% - 2rem))`,
   margin: '0 auto',
   marginTop: '4rem',
   padding: '0 1rem',

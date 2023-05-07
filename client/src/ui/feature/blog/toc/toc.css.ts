@@ -37,7 +37,7 @@ export const tocItem = style({
 });
 
 export const tocItemLink = style({
-  color: vars.color.text.secondary,
+  color: vars.color.text.tertiary,
   textDecoration: 'none',
 
   '@media': {
@@ -50,6 +50,8 @@ export const tocItemLink = style({
 });
 
 export const tocActive = style({
+  color: `${vars.color.text.secondary} !important`,
+
   ':before': {
     content: '""',
     position: 'absolute',
@@ -61,7 +63,5 @@ export const tocActive = style({
     width: '0.5rem',
     height: '0.5rem',
     clipPath: 'polygon(0 0, 100% 50%, 0 100%)',
-    // width: '2px',
-    // height: '100%',
   },
 });

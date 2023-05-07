@@ -33,6 +33,7 @@ globalStyle('button:focus-visible', {
 
 globalStyle('::-webkit-scrollbar', {
   width: 10,
+  height: 10,
 });
 
 globalStyle('::-webkit-scrollbar-thumb', {
@@ -42,6 +43,10 @@ globalStyle('::-webkit-scrollbar-thumb', {
 });
 
 globalStyle('::-webkit-scrollbar-track', {
+  backgroundColor: 'transparent',
+});
+
+globalStyle('::-webkit-scrollbar-corner', {
   backgroundColor: 'transparent',
 });
 

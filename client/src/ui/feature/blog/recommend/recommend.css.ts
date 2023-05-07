@@ -58,6 +58,7 @@ export const arrow = style({
   width: '1.5rem',
   height: '1.5rem',
   flexShrink: 0,
+  color: vars.color.text.tertiary,
 });
 
 export const content = style({
