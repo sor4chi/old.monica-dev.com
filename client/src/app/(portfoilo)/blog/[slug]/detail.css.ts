@@ -8,7 +8,7 @@ export const detail = style({
 });
 
 export const sidebar = style({
-  width: '15rem',
+  width: '18rem',
   flexShrink: 0,
   display: 'flex',
   gap: '1rem',
