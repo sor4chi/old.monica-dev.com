@@ -2,7 +2,12 @@ import { style } from '@vanilla-extract/css';
 
 import { vars } from '@/style/theme.css';
 
-const TIMELINE_COMMON_SPACE = '3rem';
+const _TIMELINE_SUB_TITLE_LINE_HEIGHT = 1.5;
+const TIMELINE_SUB_TITLE_LINE_HEIGHT = `${_TIMELINE_SUB_TITLE_LINE_HEIGHT}rem`;
+const _TIMELINE_SUB_TITLE_VERTICAL_PADDING = 0.75;
+const TIMELINE_SUB_TITLE_VERTICAL_PADDING = `${_TIMELINE_SUB_TITLE_VERTICAL_PADDING}rem`;
+const _TIMELINE_COMMON_SPACE = _TIMELINE_SUB_TITLE_LINE_HEIGHT + _TIMELINE_SUB_TITLE_VERTICAL_PADDING * 2;
+const TIMELINE_COMMON_SPACE = `${_TIMELINE_COMMON_SPACE}rem`;
 const TIMELINE_POINT_SIZE = '.5rem';
 const TIMELINE_POINT_WITH_ICON_SIZE = '2rem';
 
@@ -61,7 +66,8 @@ export const timelineItemInner = style({
 
 export const timelineItemSubTitle = style({
   fontSize: '.9rem',
-  lineHeight: TIMELINE_COMMON_SPACE,
+  lineHeight: TIMELINE_SUB_TITLE_LINE_HEIGHT,
+  padding: `${TIMELINE_SUB_TITLE_VERTICAL_PADDING} 0`,
   margin: 0,
   fontWeight: 400,
   wordSpacing: '0.1em',
@@ -88,6 +94,7 @@ export const timelineItemHighlightLink = style({
 });
 
 export const timelineItemDate = style({
+  display: 'inline-block',
   color: vars.color.text.tertiary,
 });
 
