@@ -178,3 +178,7 @@ globalStyle(`${content} .twemoji`, {
 globalStyle(`${content} .math`, {
   color: vars.color.text.secondary,
 });
+
+globalStyle(`${content} .math .katex`, {
+  overflowX: 'auto',
+});
