@@ -174,3 +174,7 @@ globalStyle(`${content} .twemoji`, {
   display: 'inline-block',
   verticalAlign: 'middle',
 });
+
+globalStyle(`${content} .math`, {
+  color: vars.color.text.secondary,
+});

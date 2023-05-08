@@ -160,7 +160,6 @@ globalStyle(`${content} .remark-code-title`, {
   borderRadius: '0.25rem 0.25rem 0 0',
   width: 'fit-content',
   position: 'relative',
-  fontWeight: 700,
 });
 
 globalStyle(`${content} .remark-code-title:after`, {
