@@ -25,7 +25,7 @@ export const toggle = style({
   borderRadius: '1rem',
   padding: TOGGLE_PADDING,
   position: 'relative',
-  backgroundColor: vars.color.bg.secondary,
+  backgroundColor: vars.color.bg.tertiary,
   transition: 'background-color 0.2s ease-in-out',
 });
 
