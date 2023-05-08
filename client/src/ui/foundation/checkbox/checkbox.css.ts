@@ -16,6 +16,7 @@ export const wrapper = style({
   lineHeight: 1.5,
   boxSizing: 'border-box',
   transition: 'background-color 0.2s ease-in-out, border-color 0.2s ease-in-out',
+  boxShadow: `0 0 0 0 ${vars.color.bg.tertiary}`,
 });
 
 export const checkbox = style({
@@ -28,7 +29,6 @@ export const checkbox = style({
 
 globalStyle(`${wrapper}:has(${checkbox}:checked)`, {
   backgroundColor: vars.color.bg.secondary,
-  borderColor: vars.color.text.tertiary,
 });
 
 globalStyle(`${wrapper}:has(${checkbox}:focus-visible)`, {
