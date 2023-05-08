@@ -6,7 +6,6 @@ export const wrapper = style({
   maxWidth: '40rem',
   width: '100%',
   margin: '0 auto',
-  padding: '0 1rem',
   boxSizing: 'border-box',
 });
 
