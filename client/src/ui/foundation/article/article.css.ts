@@ -164,7 +164,7 @@ globalStyle(`${content} :not(pre) > code`, {
   backgroundColor: vars.color.bg.secondary,
   color: vars.color.text.secondary,
   borderRadius: '0.25rem',
-  margin: '0.25rem',
+  margin: '0 0.25rem',
   display: 'inline-block',
   transition: 'background-color .2s ease-in-out',
 });
