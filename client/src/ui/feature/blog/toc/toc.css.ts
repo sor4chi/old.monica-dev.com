@@ -50,7 +50,7 @@ export const tocItemLink = style({
 });
 
 export const tocActive = style({
-  color: `${vars.color.text.secondary} !important`,
+  color: `${vars.color.text.primary} !important`,
 
   ':before': {
     content: '""',
