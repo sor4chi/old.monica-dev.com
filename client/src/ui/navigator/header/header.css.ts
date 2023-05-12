@@ -6,7 +6,7 @@ export const header = style({
   left: 0,
   position: 'fixed',
   top: 0,
-  zIndex: 999,
+  zIndex: 99,
 });
 
 export const container = style({

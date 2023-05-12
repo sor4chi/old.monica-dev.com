@@ -5,6 +5,7 @@ import { vars } from '@/style/theme.css';
 export const content = style({
   width: '100%',
   minWidth: 0,
+  lineHeight: 1.9,
 });
 
 globalStyle(`${content} > *:first-child`, {
