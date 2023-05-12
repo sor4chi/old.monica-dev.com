@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { ComponentProps } from 'react';
+import { MdOpenInNew } from 'react-icons/md';
 
 type Props = ComponentProps<typeof Link> & {
   href: string;
@@ -24,7 +25,8 @@ export const Anchor = ({ children, href, ...rest }: Props) => {
 
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" {...rest}>
-      {children}
+      <span>{children}</span>
+      <MdOpenInNew />
     </a>
   );
 };

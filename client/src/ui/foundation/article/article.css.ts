@@ -111,17 +111,32 @@ globalStyle(`${content} td`, {
 });
 
 globalStyle(`${content} a`, {
-  color: vars.color.accent.primary,
-  textDecoration: 'none',
+  color: vars.color.text.tertiary,
   fontWeight: 500,
-  margin: '0 0.25rem',
+  margin: 0,
   wordBreak: 'break-word',
+  position: 'relative',
+  textDecoration: 'none',
+  padding: '0 0.25rem',
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '0.25rem',
+});
+
+globalStyle(`${content} a:before`, {
+  content: '""',
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  bottom: 0,
+  height: '2px',
+  backgroundColor: vars.color.bg.tertiary,
 });
 
 globalStyle(`${content} a:hover`, {
   '@media': {
     'screen and (hover: hover)': {
-      textDecoration: 'underline',
+      backgroundColor: vars.color.bg.secondary,
     },
   },
 });
