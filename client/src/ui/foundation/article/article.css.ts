@@ -116,21 +116,12 @@ globalStyle(`${content} a`, {
   margin: 0,
   wordBreak: 'break-word',
   position: 'relative',
-  textDecoration: 'none',
-  padding: '0 0.25rem',
-  display: 'inline-flex',
+  textDecoration: 'underline',
+  textDecorationColor: vars.color.bg.tertiary,
+  textDecorationThickness: '0.125rem',
+  textUnderlineOffset: '0.25rem',
+  padding: '0.125rem 0.25rem',
   alignItems: 'center',
-  gap: '0.25rem',
-});
-
-globalStyle(`${content} a:before`, {
-  content: '""',
-  position: 'absolute',
-  left: 0,
-  right: 0,
-  bottom: 0,
-  height: '2px',
-  backgroundColor: vars.color.bg.tertiary,
 });
 
 globalStyle(`${content} a:hover`, {
@@ -139,6 +130,11 @@ globalStyle(`${content} a:hover`, {
       backgroundColor: vars.color.bg.secondary,
     },
   },
+});
+
+globalStyle(`${content} a:focus-visible`, {
+  outline: 'none',
+  boxShadow: `0 0 0 0.125rem ${vars.color.accent.primary}`,
 });
 
 globalStyle(`${content} strong`, {
