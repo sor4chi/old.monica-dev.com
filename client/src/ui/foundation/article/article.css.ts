@@ -159,7 +159,7 @@ globalStyle(`${content} .twitter-tweet`, {
 });
 
 globalStyle(`${content} :not(pre) > code`, {
-  padding: '0.25rem 0.5rem',
+  padding: '0 0.5rem',
   fontSize: '0.875rem',
   backgroundColor: vars.color.bg.secondary,
   color: vars.color.text.secondary,
