@@ -11,9 +11,10 @@ import { getSafelyDate } from '@/util/date';
 
 interface Props {
   timelines: TimelineListFragmentResponse;
+  onClick?: (id: number, mode: 'edit' | 'delete') => void;
 }
 
-export const Timeline = ({ timelines }: Props) => {
+export const Timeline = ({ onClick, timelines }: Props) => {
   const getCategories = (timelines: TimelineListFragmentResponse) =>
     timelines.reduce((acc, cur) => {
       if (!acc.includes(cur.category)) {
@@ -69,7 +70,7 @@ export const Timeline = ({ timelines }: Props) => {
       {sortedEntries.map(([year, timelines]) => (
         <section key={year} className={styles.section}>
           <h3 className={styles.year}>{year}</h3>
-          <TimelineList timelines={timelines} />
+          <TimelineList timelines={timelines} onClick={onClick} />
         </section>
       ))}
       {sumOfSortedEntries === 0 && <p className={styles.noItem}>No Timeline Item</p>}

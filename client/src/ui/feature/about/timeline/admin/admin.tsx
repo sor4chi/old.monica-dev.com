@@ -66,7 +66,7 @@ export const TimelineAdmin = () => {
 
   return (
     <TimelineEditorProvider>
-      <Timeline timelines={timelines} />
+      <Timeline timelines={timelines} onClick={(id, mode) => console.log(id, mode)} />
       <TimelineEditor blogs={blogs} appendTimeline={appendTimeline} />
     </TimelineEditorProvider>
   );

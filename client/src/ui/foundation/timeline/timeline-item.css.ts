@@ -132,3 +132,34 @@ export const timelineItemLine = style({
   zIndex: -1,
   transition: 'background-color 0.2s ease-in-out',
 });
+
+export const timelineItemOverlay = style({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  backdropFilter: 'blur(0)',
+  borderRadius: '0.25rem',
+  cursor: 'pointer',
+  zIndex: 99,
+  opacity: 0,
+  transition: 'backdrop-filter 0.2s ease-in-out',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '2rem',
+
+  ':hover': {
+    backdropFilter: 'blur(1rem)',
+    opacity: 1,
+    transition: 'backdrop-filter 0.2s ease-in-out',
+  },
+});
+
+export const timelineItemOverlayActions = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '1rem',
+});
