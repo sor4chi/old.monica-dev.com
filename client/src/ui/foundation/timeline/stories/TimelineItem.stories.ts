@@ -24,6 +24,7 @@ const baseArgs = {
     title: 'これは技術ブログのタイトルです',
   },
   date: '2021-01-01',
+  id: 1,
   title: 'Timeline Item Title',
 };
 
