@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 import NextImage from 'next/image';
 import type { ComponentProps } from 'react';
 import { useEffect, useState } from 'react';
@@ -10,8 +12,9 @@ import { Button } from '@/ui/foundation/button';
 
 type Props = ComponentProps<'img'>;
 
+const TWEMOJI_SRC = 'https://twemoji.maxcdn.com';
+
 export const Image = (props: Props) => {
-  const { alt, src } = props;
   const [isExpanded, setIsExpanded] = useState(false);
 
   const ref = useClickOutside(() => {
@@ -25,6 +28,12 @@ export const Image = (props: Props) => {
       document.body.style.overflow = 'auto';
     }
   }, [isExpanded]);
+
+  if (props.src?.startsWith(TWEMOJI_SRC)) {
+    return <img {...props} />;
+  }
+
+  const { alt, src } = props;
 
   const img = (
     <span className={styles.imageContainer}>

@@ -2,6 +2,12 @@ import { style } from '@vanilla-extract/css';
 
 import { vars } from '@/style/theme.css';
 
+export const twemoji = style({
+  display: 'inline-block',
+  width: '1.5rem',
+  height: '1.5rem',
+});
+
 export const imageContainer = style({
   position: 'relative',
   width: '100%',
