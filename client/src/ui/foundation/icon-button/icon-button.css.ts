@@ -8,7 +8,6 @@ export const button = style({
   fontSize: '1rem',
   color: vars.color.text.primary,
   border: 'none',
-  backgroundColor: 'transparent',
   cursor: 'pointer',
   width: 'fit-content',
   whiteSpace: 'nowrap',
@@ -16,13 +15,38 @@ export const button = style({
   alignItems: 'center',
   gap: '0.25rem',
   lineHeight: '1.5rem',
-  transition: 'background-color 0.2s ease-in-out, scale 0.2s ease-in-out',
+  transition: 'background-color 0.2s ease-in-out, color 0.2s ease-in-out, scale 0.2s ease-in-out',
+
+  '@media': {
+    '(hover: hover)': {
+      ':hover': {
+        scale: 1.1,
+      },
+    },
+  },
+});
+
+export const buttonAction = style({
+  backgroundColor: 'transparent',
 
   '@media': {
     '(hover: hover)': {
       ':hover': {
         backgroundColor: vars.color.bg.tertiary,
-        scale: 1.1,
+        color: vars.color.text.primary,
+      },
+    },
+  },
+});
+
+export const buttonDanger = style({
+  backgroundColor: 'transparent',
+
+  '@media': {
+    '(hover: hover)': {
+      ':hover': {
+        backgroundColor: vars.color.error,
+        color: '#ffffff',
       },
     },
   },

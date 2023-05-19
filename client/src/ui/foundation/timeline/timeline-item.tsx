@@ -1,7 +1,9 @@
 import { clsx } from 'clsx';
 import Link from 'next/link';
+import { MdDelete, MdEdit } from 'react-icons/md';
 
 import { Card } from '../card';
+import { IconButton } from '../icon-button';
 
 import * as styles from './timeline-item.css';
 
@@ -12,6 +14,7 @@ import { formatDateToHowPastFromNow } from '@/util/date';
 
 export const TimelineItemFragment = gql`
   fragment TimelineItemFragment on Timeline {
+    id
     date
     title
     category
@@ -23,6 +26,7 @@ export const TimelineItemFragment = gql`
 `;
 
 export type TimelineItemFragmentResponse = {
+  id: number;
   date: string;
   title: string;
   category: string;
@@ -35,16 +39,17 @@ export type TimelineItemFragmentResponse = {
 interface Props {
   isLast: boolean;
   timelineItem: TimelineItemFragmentResponse;
+  onClick?: (id: number, mode: 'edit' | 'delete') => void;
 }
 
-export const TimelineItem = ({ isLast, timelineItem }: Props) => {
+export const TimelineItem = ({ isLast, onClick, timelineItem }: Props) => {
   const { blog, category, date, title } = timelineItem;
   const isKnownCategory = TIMELINE_CATEGORIES.hasOwnProperty(category);
   const emoji = isKnownCategory ? TIMELINE_CATEGORIES[category].emoji : '';
   const displayHead = category === 'blog' ? 'published a new blog' : title;
 
   return (
-    <div className={styles.timelineItem}>
+    <div className={clsx(styles.timelineItem)}>
       <h4 className={styles.timelineItemSubTitle}>
         <span className={styles.timelineItemInlineTitle}>{displayHead}</span>
         <span className={styles.timelineItemDate}>{formatDateToHowPastFromNow(date)}</span>
@@ -66,6 +71,19 @@ export const TimelineItem = ({ isLast, timelineItem }: Props) => {
         }}
       ></span>
       {!isLast && <span className={styles.timelineItemLine}></span>}
+      {onClick && (
+        <div className={styles.timelineItemOverlay}>
+          <p>{title}</p>
+          <div className={styles.timelineItemOverlayActions}>
+            <IconButton label="edit" onClick={() => onClick?.(timelineItem.id, 'edit')}>
+              <MdEdit size={24} />
+            </IconButton>
+            <IconButton label="delete" variant="danger" onClick={() => onClick?.(timelineItem.id, 'delete')}>
+              <MdDelete size={24} />
+            </IconButton>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

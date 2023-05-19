@@ -17,13 +17,14 @@ export type TimelineListFragmentResponse = TimelineItemFragmentResponse[];
 
 interface Props {
   timelines: TimelineListFragmentResponse;
+  onClick?: (id: number, mode: "edit" | "delete") => void;
 }
 
-export const TimelineList = ({ timelines }: Props) => {
+export const TimelineList = ({ onClick, timelines }: Props) => {
   return (
     <div className={styles.timelineList}>
       {timelines.map((timeline, index) => (
-        <TimelineItem key={index} timelineItem={timeline} isLast={index === timelines.length - 1} />
+        <TimelineItem key={index} timelineItem={timeline} isLast={index === timelines.length - 1} onClick={onClick} />
       ))}
     </div>
   );
