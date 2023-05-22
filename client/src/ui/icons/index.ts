@@ -1,0 +1,12 @@
+export { default as ArrowTrendingUp } from './ArrowTrendingUp';
+export { default as ChatBubbleOvalLeftEllipsis } from './ChatBubbleOvalLeftEllipsis';
+export { default as ChatBubbleOvalLeftEllipsisFill } from './ChatBubbleOvalLeftEllipsisFill';
+export { default as ChevronDown } from './ChevronDown';
+export { default as ChevronLeft } from './ChevronLeft';
+export { default as ChevronRight } from './ChevronRight';
+export { default as Github } from './Github';
+export { default as Home } from './Home';
+export { default as HomeFill } from './HomeFill';
+export { default as PencilSquare } from './PencilSquare';
+export { default as PencilSquareFill } from './PencilSquareFill';
+export { default as Twitter } from './Twitter';
