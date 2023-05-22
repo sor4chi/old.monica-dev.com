@@ -7,6 +7,7 @@ export const header = style({
   position: 'fixed',
   top: 0,
   zIndex: 99,
+  width: '100%',
 });
 
 export const container = style({
@@ -28,7 +29,7 @@ export const divider = style({
   height: '1px',
   margin: 0,
   opacity: 0.2,
-  width: '100vw',
+  width: '100%',
 });
 
 export const navigationList = style({
