@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
-import { IoIosAdd } from 'react-icons/io';
 
 import * as styles from './editor.css';
 import type { TimelineFormSchema } from './use-timeline-editor';
@@ -16,6 +15,7 @@ import { Modal, ModalPortal } from '@/ui/foundation/modal';
 import { Selectbox } from '@/ui/foundation/selectbox';
 import { TextInput } from '@/ui/foundation/textInput';
 import type { TimelineItemFragmentResponse } from '@/ui/foundation/timeline';
+import { Plus } from '@/ui/icons';
 
 interface Props {
   blogs: {
@@ -38,7 +38,9 @@ export const TimelineEditor = ({ appendTimeline, blogs }: Props) => {
 
   useEffect(() => {
     setDashboardHeaderContent(
-      <Button icon={<IoIosAdd size={24} />} onClick={() => setIsTimelineEditorOpen(true)}>
+      <Button icon={<Plus
+          className={styles.addIcon}
+       />} onClick={() => setIsTimelineEditorOpen(true)}>
         Add
       </Button>,
     );

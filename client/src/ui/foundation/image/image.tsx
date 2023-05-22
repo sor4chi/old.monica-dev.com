@@ -3,12 +3,12 @@
 import NextImage from 'next/image';
 import type { ComponentProps } from 'react';
 import { useEffect, useState } from 'react';
-import { IoIosClose } from 'react-icons/io';
 
 import * as styles from './image.css';
 
 import { useClickOutside } from '@/hooks';
 import { Button } from '@/ui/foundation/button';
+import { XMark } from '@/ui/icons';
 
 type Props = ComponentProps<'img'>;
 
@@ -54,7 +54,12 @@ export const Image = (props: Props) => {
           <img src={src} alt={alt} className={styles.expandedImage} />
         </span>
         <span className={styles.close}>
-          <Button variant="secondary" size="sm" icon={<IoIosClose size={24} />} onClick={() => setIsExpanded(false)}>
+          <Button
+            variant="secondary"
+            size="sm"
+            icon={<XMark className={styles.closeIcon} />}
+            onClick={() => setIsExpanded(false)}
+          >
             Close
           </Button>
         </span>

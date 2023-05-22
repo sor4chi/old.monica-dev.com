@@ -10,5 +10,7 @@ export { default as HomeFill } from './HomeFill';
 export { default as Moon } from './Moon';
 export { default as PencilSquare } from './PencilSquare';
 export { default as PencilSquareFill } from './PencilSquareFill';
+export { default as Plus } from './Plus';
 export { default as Sun } from './Sun';
 export { default as Twitter } from './Twitter';
+export { default as XMark } from './XMark';

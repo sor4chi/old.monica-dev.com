@@ -1,9 +1,10 @@
 'use client';
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
-import { IoIosClose } from 'react-icons/io';
 
 import * as styles from './modal.css';
+
+import { XMark } from '@/ui/icons';
 
 interface Props {
   children: ReactNode;
@@ -55,7 +56,7 @@ export const Modal = ({ children, footer, isOpen, onClose, title }: Props) => {
             )}
           </div>
           <button className={styles.modalClose} onClick={onClose} aria-label="Close this modal">
-            <IoIosClose size={24} />
+            <XMark className={styles.modalCloseIcon} />
           </button>
         </div>
         <div className={styles.modalBody}>{children}</div>

@@ -28,3 +28,8 @@ export const label = style({
   color: vars.color.text.secondary,
   width: '100%',
 });
+
+export const addIcon = style({
+  width: '1.5rem',
+  height: '1.5rem',
+});

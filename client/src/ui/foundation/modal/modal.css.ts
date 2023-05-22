@@ -86,3 +86,8 @@ export const modalTitle = style({
   fontWeight: 700,
   margin: 0,
 });
+
+export const modalCloseIcon = style({
+  width: '1.5rem',
+  height: '1.5rem',
+});

@@ -15,3 +15,8 @@ export const formLeft = style({
 export const formRight = style({
   width: 'fit-content',
 });
+
+export const addIcon = style({
+  width: '1.5rem',
+  height: '1.5rem',
+});

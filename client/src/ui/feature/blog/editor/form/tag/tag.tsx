@@ -1,5 +1,4 @@
 import { lazy, useEffect, useState } from 'react';
-import { IoIosAdd } from 'react-icons/io';
 
 import { useBlogEditor } from '../../use-blog-editor';
 
@@ -9,6 +8,7 @@ import * as styles from './tag.css';
 import { gql } from '@/lib/graphql';
 import { Button } from '@/ui/foundation/button';
 import { Checkbox } from '@/ui/foundation/checkbox';
+import { Plus } from '@/ui/icons';
 
 export const BlogEditorFormTagFragment = gql`
   fragment BlogEditorFormTagFragment on Tag {
@@ -70,7 +70,7 @@ export const BlogEditorFormTag = ({ tagsOptions }: Props) => {
       <Button
         // not to submit the form
         type="button"
-        icon={<IoIosAdd size={24} />}
+        icon={<Plus className={styles.addIcon} />}
         onClick={() => setIsCreateNew(true)}
         variant="secondary"
         size="sm"

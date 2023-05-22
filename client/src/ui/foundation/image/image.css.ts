@@ -52,6 +52,11 @@ export const close = style({
   fontSize: '1.5rem',
 });
 
+export const closeIcon = style({
+  width: '1.5rem',
+  height: '1.5rem',
+});
+
 export const expandedImageContainer = style({
   width: '100%',
   margin: '1rem',
