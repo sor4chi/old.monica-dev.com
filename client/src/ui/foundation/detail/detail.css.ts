@@ -39,7 +39,8 @@ globalStyle(`${summary}:focus-visible`, {
 });
 
 export const summaryIcon = style({
-  fontSize: '1rem',
+  width: '1rem',
+  height: '1rem',
   transition: 'transform 0.3s ease-in-out',
 });
 

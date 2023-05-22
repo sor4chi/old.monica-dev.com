@@ -1,11 +1,12 @@
 'use client';
 import { clsx } from 'clsx';
 import { memo, useMemo, useRef, useState } from 'react';
-import { IoIosArrowForward } from 'react-icons/io';
 
 import { TextInput } from '../textInput';
 
 import * as styles from './selectbox.css';
+
+import { ChevronRight } from '@/ui/icons';
 
 type Option = {
   label: string;
@@ -68,7 +69,7 @@ const _Selectbox = ({ error, id, label, mode = 'search', onChange, options, plac
         onFocus={() => handleFocus()}
         onBlur={(e) => handleBlur(e)}
         error={error}
-        icon={<IoIosArrowForward className={clsx(styles.openIcon, isFocused && styles.openIconActive)} />}
+        icon={<ChevronRight className={clsx(styles.openIcon, isFocused && styles.openIconActive)} />}
         autoComplete="off"
       />
       {isFocused && !!filteredOptions.length && (

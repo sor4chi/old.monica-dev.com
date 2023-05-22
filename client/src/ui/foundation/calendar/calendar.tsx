@@ -2,14 +2,13 @@
 
 import { clsx } from 'clsx';
 import { memo, useCallback, useMemo, useState } from 'react';
-import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 import { Card } from '../card';
 import { IconButton } from '../icon-button';
 
 import * as styles from './calendar.css';
 
-import { vars } from '@/style/theme.css';
+import { ChevronLeft, ChevronRight } from '@/ui/icons';
 
 interface Props {
   selectedDate: Date | null;
@@ -100,13 +99,13 @@ const _Calendar = ({ error, label, selectedDate, setSelectedDate }: Props) => {
         <div className={styles.calendar}>
           <div className={styles.calendarHeader}>
             <IconButton onClick={handlePrevMonth} label="Previous month" type="button">
-              <IoIosArrowBack color={vars.color.text.secondary} />
+              <ChevronLeft className={styles.arrowIcon} />
             </IconButton>
             <div className={styles.calendarHeaderTitle}>
               {date.getUTCFullYear()} - {date.getUTCMonth() + 1}
             </div>
             <IconButton onClick={handleNextMonth} label="Next month" type="button">
-              <IoIosArrowForward color={vars.color.text.secondary} />
+              <ChevronRight className={styles.arrowIcon} />
             </IconButton>
           </div>
           <table className={styles.calendarBody}>

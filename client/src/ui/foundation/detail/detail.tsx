@@ -1,9 +1,10 @@
 'use client';
 import type { ReactNode } from 'react';
 import { useRef, useState } from 'react';
-import { IoIosArrowForward } from 'react-icons/io';
 
 import * as styles from './detail.css';
+
+import { ChevronRight } from '@/ui/icons';
 
 interface Props {
   summary: string;
@@ -75,7 +76,7 @@ export const Detail = ({ children, summary }: Props) => {
   return (
     <details className={styles.details} ref={detailsRef}>
       <summary className={styles.summary} onClick={onClick}>
-        <IoIosArrowForward
+        <ChevronRight
           className={styles.summaryIcon}
           style={{ transform: rotateIcon ? 'rotate(90deg)' : 'rotate(0deg)' }}
         />

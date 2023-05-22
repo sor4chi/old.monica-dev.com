@@ -48,7 +48,7 @@ export const openIcon = style({
   width: '1.5rem',
   height: '2rem',
   transition: 'transform 0.2s ease-in-out',
-  fill: vars.color.text.secondary,
+  color: vars.color.text.secondary,
 });
 
 export const openIconActive = style({

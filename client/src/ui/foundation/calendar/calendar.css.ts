@@ -88,3 +88,9 @@ export const error = style({
   color: vars.color.error,
   margin: '0.5rem 0 0',
 });
+
+export const arrowIcon = style({
+  width: '1rem',
+  height: '1rem',
+  color: vars.color.text.secondary,
+});
