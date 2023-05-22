@@ -7,6 +7,8 @@ export { default as ChevronRight } from './ChevronRight';
 export { default as Github } from './Github';
 export { default as Home } from './Home';
 export { default as HomeFill } from './HomeFill';
+export { default as Moon } from './Moon';
 export { default as PencilSquare } from './PencilSquare';
 export { default as PencilSquareFill } from './PencilSquareFill';
+export { default as Sun } from './Sun';
 export { default as Twitter } from './Twitter';

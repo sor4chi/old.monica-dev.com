@@ -1,6 +1,6 @@
-import { FaMoon, FaSun } from 'react-icons/fa';
-
 import * as styles from './themeSwitch.css';
+
+import { Moon, Sun } from '@/ui/icons';
 
 type Theme = 'light' | 'dark';
 
@@ -50,8 +50,8 @@ export const ThemeSwitch = () => {
       id="theme-switch-button"
       aria-label="theme switch button"
     >
-      <FaMoon className={styles.moon} />
-      <FaSun className={styles.sun} />
+      <Moon className={styles.moon} />
+      <Sun className={styles.sun} />
     </button>
   );
 };
