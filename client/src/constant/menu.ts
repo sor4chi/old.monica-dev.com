@@ -1,39 +1,39 @@
 /* eslint-disable sort/object-properties */
+
 import {
-  MdEditNote,
-  MdHome,
-  MdMail,
-  MdOutlineEditNote,
-  MdOutlineHome,
-  MdOutlineMail,
-  MdOutlineTimeline,
-  MdTimeline,
-} from 'react-icons/md';
+  ArrowTrendingUp,
+  ChatBubbleOvalLeftEllipsis,
+  ChatBubbleOvalLeftEllipsisFill,
+  Home,
+  HomeFill,
+  PencilSquare,
+  PencilSquareFill,
+} from '@/ui/icons';
 
 const MENU_ITEM = {
   Home: {
     link: '/dashboard',
     isActive: (pathname: string) => pathname === '/dashboard',
-    ActiveIcon: MdHome,
-    DefaultIcon: MdOutlineHome,
+    ActiveIcon: HomeFill,
+    DefaultIcon: Home,
   },
   Timeline: {
     link: '/dashboard/timeline',
     isActive: (pathname: string) => pathname === '/dashboard/timeline',
-    ActiveIcon: MdTimeline,
-    DefaultIcon: MdOutlineTimeline,
+    ActiveIcon: ArrowTrendingUp,
+    DefaultIcon: ArrowTrendingUp,
   },
   Blog: {
     link: '/dashboard/blog',
     isActive: (pathname: string) => pathname.startsWith('/dashboard/blog'),
-    ActiveIcon: MdEditNote,
-    DefaultIcon: MdOutlineEditNote,
+    ActiveIcon: PencilSquareFill,
+    DefaultIcon: PencilSquare,
   },
   Contact: {
     link: '/dashboard/contact',
     isActive: (pathname: string) => pathname === '/dashboard/contact',
-    ActiveIcon: MdMail,
-    DefaultIcon: MdOutlineMail,
+    ActiveIcon: ChatBubbleOvalLeftEllipsisFill,
+    DefaultIcon: ChatBubbleOvalLeftEllipsis,
   },
 } as const;
 

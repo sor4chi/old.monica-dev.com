@@ -72,6 +72,11 @@ export const menuItem = styleVariants({
   ],
 });
 
+export const icon = style({
+  width: '1.5rem',
+  height: '1.5rem',
+});
+
 export const footer = style({
   position: 'absolute',
   bottom: '2rem',

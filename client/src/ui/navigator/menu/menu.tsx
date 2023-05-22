@@ -37,7 +37,7 @@ export const Menu = () => {
         <div className={styles.menu}>
           {MENU_ITEM_ENTRY.map(([label, { ActiveIcon, DefaultIcon, isActive, link }]) => (
             <Link className={styles.menuItem[isActive(pathname) ? 'active' : 'default']} key={label} href={link}>
-              {isActive(pathname) ? <ActiveIcon /> : <DefaultIcon />}
+              <span className={styles.icon}>{isActive(pathname) ? <ActiveIcon /> : <DefaultIcon />}</span>
               <span>{label}</span>
             </Link>
           ))}

@@ -21,6 +21,8 @@ export const socialIcon = style({
   color: 'inherit',
   cursor: 'pointer',
   verticalAlign: 'middle',
+  width: '1.5em',
+  height: '1.5em',
 });
 
 export const social = styleVariants({
