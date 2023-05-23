@@ -77,9 +77,9 @@ input TimelineInput {
 type Mutation {
   createBlog(input: BlogInput!): Blog! @auth
   updateBlog(id: ID!, input: BlogInput!): Blog! @auth
-  deleteBlog(id: ID!): Blog! @auth
+  deleteBlog(id: ID!): Boolean! @auth
   createTag(input: TagInput!): Tag! @auth
   createTimeline(input: TimelineInput!): Timeline! @auth
   updateTimeline(id: ID!, input: TimelineInput!): Timeline! @auth
-  deleteTimeline(id: ID!): Timeline! @auth
+  deleteTimeline(id: ID!): Boolean! @auth
 }

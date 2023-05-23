@@ -108,11 +108,11 @@ type BlogResolver interface {
 type MutationResolver interface {
 	CreateBlog(ctx context.Context, input model.BlogInput) (*model.Blog, error)
 	UpdateBlog(ctx context.Context, id string, input model.BlogInput) (*model.Blog, error)
-	DeleteBlog(ctx context.Context, id string) (*model.Blog, error)
+	DeleteBlog(ctx context.Context, id string) (bool, error)
 	CreateTag(ctx context.Context, input model.TagInput) (*model.Tag, error)
 	CreateTimeline(ctx context.Context, input model.TimelineInput) (*model.Timeline, error)
 	UpdateTimeline(ctx context.Context, id string, input model.TimelineInput) (*model.Timeline, error)
-	DeleteTimeline(ctx context.Context, id string) (*model.Timeline, error)
+	DeleteTimeline(ctx context.Context, id string) (bool, error)
 }
 type QueryResolver interface {
 	Blogs(ctx context.Context, input model.BlogListInput) (*model.BlogList, error)
@@ -1502,10 +1502,10 @@ func (ec *executionContext) _Mutation_deleteBlog(ctx context.Context, field grap
 		if tmp == nil {
 			return nil, nil
 		}
-		if data, ok := tmp.(*model.Blog); ok {
+		if data, ok := tmp.(bool); ok {
 			return data, nil
 		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sor4chi/portfolio-blog/server/graph/model.Blog`, tmp)
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be bool`, tmp)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1517,9 +1517,9 @@ func (ec *executionContext) _Mutation_deleteBlog(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.Blog)
+	res := resTmp.(bool)
 	fc.Result = res
-	return ec.marshalNBlog2ᚖgithubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐBlog(ctx, field.Selections, res)
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_deleteBlog(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1529,27 +1529,7 @@ func (ec *executionContext) fieldContext_Mutation_deleteBlog(ctx context.Context
 		IsMethod:   true,
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Blog_id(ctx, field)
-			case "title":
-				return ec.fieldContext_Blog_title(ctx, field)
-			case "slug":
-				return ec.fieldContext_Blog_slug(ctx, field)
-			case "description":
-				return ec.fieldContext_Blog_description(ctx, field)
-			case "content":
-				return ec.fieldContext_Blog_content(ctx, field)
-			case "tags":
-				return ec.fieldContext_Blog_tags(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_Blog_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_Blog_updatedAt(ctx, field)
-			case "publishedAt":
-				return ec.fieldContext_Blog_publishedAt(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Blog", field.Name)
+			return nil, errors.New("field of type Boolean does not have child fields")
 		},
 	}
 	defer func() {
@@ -1862,10 +1842,10 @@ func (ec *executionContext) _Mutation_deleteTimeline(ctx context.Context, field 
 		if tmp == nil {
 			return nil, nil
 		}
-		if data, ok := tmp.(*model.Timeline); ok {
+		if data, ok := tmp.(bool); ok {
 			return data, nil
 		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/sor4chi/portfolio-blog/server/graph/model.Timeline`, tmp)
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be bool`, tmp)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1877,9 +1857,9 @@ func (ec *executionContext) _Mutation_deleteTimeline(ctx context.Context, field 
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.Timeline)
+	res := resTmp.(bool)
 	fc.Result = res
-	return ec.marshalNTimeline2ᚖgithubᚗcomᚋsor4chiᚋportfolioᚑblogᚋserverᚋgraphᚋmodelᚐTimeline(ctx, field.Selections, res)
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_deleteTimeline(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1889,21 +1869,7 @@ func (ec *executionContext) fieldContext_Mutation_deleteTimeline(ctx context.Con
 		IsMethod:   true,
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Timeline_id(ctx, field)
-			case "title":
-				return ec.fieldContext_Timeline_title(ctx, field)
-			case "relatedBlogId":
-				return ec.fieldContext_Timeline_relatedBlogId(ctx, field)
-			case "blog":
-				return ec.fieldContext_Timeline_blog(ctx, field)
-			case "category":
-				return ec.fieldContext_Timeline_category(ctx, field)
-			case "date":
-				return ec.fieldContext_Timeline_date(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Timeline", field.Name)
+			return nil, errors.New("field of type Boolean does not have child fields")
 		},
 	}
 	defer func() {
