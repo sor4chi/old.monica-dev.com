@@ -90,6 +90,41 @@ func (s *TimelineService) CreateTimeline(title string, relatedBlogID *int32, cat
 	return parseTimelineRowToEntity(row), nil
 }
 
+func (s *TimelineService) UpdateTimeline(id int32, title string, relatedBlogID *int32, category string, date string) (*entity.Timeline, error) {
+	ctx := context.Background()
+	intCategory := int32(entity.NewTimelineCategory(category))
+	dateTime, err := time.Parse("2006-01-02", date)
+	if err != nil {
+		return nil, err
+	}
+	insertRelatedBlogID := sql.NullInt32{
+		Valid: relatedBlogID != nil,
+	}
+	if relatedBlogID != nil {
+		insertRelatedBlogID.Int32 = *relatedBlogID
+	}
+	row, err := s.q.UpdateTimeline(ctx, sqlc.UpdateTimelineParams{
+		ID:            id,
+		Title:         title,
+		RelatedBlogID: insertRelatedBlogID,
+		Category:      intCategory,
+		Date:          dateTime,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return parseTimelineRowToEntity(row), nil
+}
+
+func (s *TimelineService) DeleteTimeline(id int32) error {
+	ctx := context.Background()
+	err := s.q.DeleteTimeline(ctx, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *TimelineService) RevalidateTimeline() error {
 	clientUrl := util.GetEnv("CLIENT_URL", "http://localhost:3000")
 	url := fmt.Sprintf("%s%s?secret=%s", clientUrl, ABOUT_REVALIDATE_URL, util.GetEnvStrict("REVALIDATE_SECRET"))

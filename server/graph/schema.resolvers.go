@@ -6,7 +6,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	"strconv"
 
 	"github.com/sor4chi/portfolio-blog/server/entity"
@@ -120,7 +119,7 @@ func (r *mutationResolver) UpdateBlog(ctx context.Context, id string, input mode
 }
 
 // DeleteBlog is the resolver for the deleteBlog field.
-func (r *mutationResolver) DeleteBlog(ctx context.Context, id string) (*model.Blog, error) {
+func (r *mutationResolver) DeleteBlog(ctx context.Context, id string) (bool, error) {
 	panic("DeleteBlog is not implemented")
 }
 
@@ -176,12 +175,65 @@ func (r *mutationResolver) CreateTimeline(ctx context.Context, input model.Timel
 
 // UpdateTimeline is the resolver for the updateTimeline field.
 func (r *mutationResolver) UpdateTimeline(ctx context.Context, id string, input model.TimelineInput) (*model.Timeline, error) {
-	panic(fmt.Errorf("not implemented: UpdateTimeline - updateTimeline"))
+	ts := service.NewTimelineService(r.Q)
+
+	// if relatedBlogID is nil, set it to nil
+	var relatedBlogID *int32
+
+	if input.RelatedBlogID != nil {
+		intId, err := strconv.ParseInt(*input.RelatedBlogID, 10, 32)
+		if err != nil {
+			return nil, err
+		}
+		tmpId := int32(intId)
+		relatedBlogID = &tmpId
+	} else {
+		relatedBlogID = nil
+	}
+
+	intId, err := strconv.ParseInt(id, 10, 32)
+	if err != nil {
+		return nil, err
+	}
+
+	timeline, err := ts.UpdateTimeline(
+		int32(intId),
+		input.Title,
+		relatedBlogID,
+		input.Category,
+		input.Date,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err := ts.RevalidateTimeline(); err != nil {
+		return nil, err
+	}
+
+	return model.NewTimelineFromEntity(timeline), nil
 }
 
 // DeleteTimeline is the resolver for the deleteTimeline field.
-func (r *mutationResolver) DeleteTimeline(ctx context.Context, id string) (*model.Timeline, error) {
-	panic(fmt.Errorf("not implemented: DeleteTimeline - deleteTimeline"))
+func (r *mutationResolver) DeleteTimeline(ctx context.Context, id string) (bool, error) {
+	ts := service.NewTimelineService(r.Q)
+
+	intId, err := strconv.ParseInt(id, 10, 32)
+	if err != nil {
+		return false, err
+	}
+
+	err = ts.DeleteTimeline(int32(intId))
+	if err != nil {
+		return false, err
+	}
+
+	if err := ts.RevalidateTimeline(); err != nil {
+		return false, err
+	}
+
+	return true, nil
 }
 
 // Blogs is the resolver for the blogs field.
