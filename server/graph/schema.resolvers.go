@@ -6,6 +6,7 @@ package graph
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 
 	"github.com/sor4chi/portfolio-blog/server/entity"
@@ -171,6 +172,16 @@ func (r *mutationResolver) CreateTimeline(ctx context.Context, input model.Timel
 	}
 
 	return model.NewTimelineFromEntity(timeline), nil
+}
+
+// UpdateTimeline is the resolver for the updateTimeline field.
+func (r *mutationResolver) UpdateTimeline(ctx context.Context, id string, input model.TimelineInput) (*model.Timeline, error) {
+	panic(fmt.Errorf("not implemented: UpdateTimeline - updateTimeline"))
+}
+
+// DeleteTimeline is the resolver for the deleteTimeline field.
+func (r *mutationResolver) DeleteTimeline(ctx context.Context, id string) (*model.Timeline, error) {
+	panic(fmt.Errorf("not implemented: DeleteTimeline - deleteTimeline"))
 }
 
 // Blogs is the resolver for the blogs field.

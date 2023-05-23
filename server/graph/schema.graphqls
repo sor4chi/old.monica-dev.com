@@ -80,4 +80,6 @@ type Mutation {
   deleteBlog(id: ID!): Blog! @auth
   createTag(input: TagInput!): Tag! @auth
   createTimeline(input: TimelineInput!): Timeline! @auth
+  updateTimeline(id: ID!, input: TimelineInput!): Timeline! @auth
+  deleteTimeline(id: ID!): Timeline! @auth
 }
