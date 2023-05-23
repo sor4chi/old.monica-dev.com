@@ -1,7 +1,6 @@
 import type { WebSite, WithContext } from 'schema-dts';
 
 import { SITE_CONFIG } from '@/constant/site';
-import { VanillaLayout } from '@/ui/app/layout/vanilla';
 import { getOgUrl } from '@/util/og';
 
 const jsonLd = {
@@ -22,7 +21,8 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <VanillaLayout>{children}</VanillaLayout>
+      {/* VE-CSSをLayoutに適用すると反映されなくなることが判明したので、Layout ComponentはPage Componentに適用することにした */}
+      {children}
     </>
   );
 }
