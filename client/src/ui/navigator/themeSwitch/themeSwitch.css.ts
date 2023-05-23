@@ -15,6 +15,8 @@ export const themeSwitch = style({
   height: '2rem',
   width: '2rem',
 
+  padding: 0,
+
   '@media': {
     '(hover: hover)': {
       ':hover': {
@@ -31,6 +33,8 @@ export const sun = style({
   selectors: {
     '.dark &': {
       display: 'block',
+      width: '1.25rem',
+      height: '1.25rem',
     },
   },
 });
@@ -42,6 +46,8 @@ export const moon = style({
   selectors: {
     '.light &': {
       display: 'block',
+      width: '1.25rem',
+      height: '1.25rem',
     },
   },
 });
