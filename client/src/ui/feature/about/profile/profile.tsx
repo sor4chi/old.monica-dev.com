@@ -1,7 +1,3 @@
-import { FaAws, FaDocker, FaHtml5, FaJs, FaLaravel, FaReact, FaVuejs } from 'react-icons/fa';
-import { SiDjango, SiMysql, SiNginx, SiRubyonrails } from 'react-icons/si';
-import { TbBrandGolang } from 'react-icons/tb';
-
 import * as styles from './profile.css';
 
 import { parseTwemoji } from '@/lib/twemoji';
@@ -38,61 +34,61 @@ export const Profile = () => (
     <strong dangerouslySetInnerHTML={{ __html: parseTwemoji('🎨FrontEnd') }} />
     <div className={styles.skills}>
       <span className={styles.skill}>
-        <FaHtml5 />
+        {/* <FaHtml5 /> */}
         <span>HTML / CSS</span>
       </span>
       <span className={styles.skill}>
-        <FaVuejs />
+        {/* <FaVuejs /> */}
         <span>Vue.js / Nuxt.js</span>
       </span>
       <span className={styles.skill}>
-        <FaReact />
+        {/* <FaReact /> */}
         <span>React / Next.js</span>
       </span>
       <span className={styles.skill}>
-        <FaJs />
+        {/* <FaJs /> */}
         <span>JavaScript / TypeScript</span>
       </span>
     </div>
     <strong dangerouslySetInnerHTML={{ __html: parseTwemoji('🖥️Backend') }} />
     <div className={styles.skills}>
       <span className={styles.skill}>
-        <FaJs />
+        {/* <FaJs /> */}
         <span>Express.js / Nest.js</span>
       </span>
       <span className={styles.skill}>
-        <SiDjango />
+        {/* <SiDjango /> */}
         <span>Django</span>
       </span>
       <span className={styles.skill}>
-        <FaLaravel />
+        {/* <FaLaravel /> */}
         <span>Laravel</span>
       </span>
       <span className={styles.skill}>
-        <SiRubyonrails />
+        {/* <SiRubyonrails /> */}
         <span>Rails</span>
       </span>
       <span className={styles.skill}>
-        <TbBrandGolang />
+        {/* <TbBrandGolang /> */}
         <span>Go</span>
       </span>
     </div>
     <strong dangerouslySetInnerHTML={{ __html: parseTwemoji('🌀Other') }} />
     <div className={styles.skills}>
       <span className={styles.skill}>
-        <FaAws />
+        {/* <FaAws /> */}
         <span>AWS</span>
       </span>
       <span className={styles.skill}>
-        <FaDocker />
+        {/* <FaDocker /> */}
         <span>Docker</span>
       </span>
       <span className={styles.skill}>
-        <SiNginx />
+        {/* <SiNginx /> */}
         <span>Nginx</span>
       </span>
       <span className={styles.skill}>
-        <SiMysql />
+        {/* <SiMysql /> */}
         <span>Mysql</span>
       </span>
     </div>
