@@ -15,4 +15,6 @@ export const link = style({
 export const linkIcon = style({
   verticalAlign: 'middle',
   paddingLeft: '0.5rem',
+  width: '1rem',
+  height: '1rem',
 });

@@ -80,11 +80,6 @@ export const navigationLink = style({
   },
 });
 
-export const navigationLinkIcon = style({
-  verticalAlign: 'middle',
-  marginRight: '0.25rem',
-});
-
 export const left = style({
   alignItems: 'center',
   display: 'flex',

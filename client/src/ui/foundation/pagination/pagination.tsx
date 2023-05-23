@@ -1,8 +1,8 @@
-import { MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md';
-
 import { Button } from '../button';
 
 import * as styles from './pagination.css';
+
+import { ChevronLeft, ChevronRight } from '@/ui/icons';
 
 interface Props {
   page: number;
@@ -17,7 +17,12 @@ export const Pagination = ({ loadAfter, loadBefore, maxPage, page }: Props) => {
   return (
     <div className={styles.pagination}>
       {page > 1 && (
-        <Button onClick={loadBefore} variant="secondary" icon={<MdArrowBackIos />} iconPosition="left">
+        <Button
+          onClick={loadBefore}
+          variant="secondary"
+          icon={<ChevronLeft className={styles.paginationIcon} />}
+          iconPosition="left"
+        >
           Prev
         </Button>
       )}
@@ -27,7 +32,12 @@ export const Pagination = ({ loadAfter, loadBefore, maxPage, page }: Props) => {
         </span>
       )}
       {page < maxPage && (
-        <Button onClick={loadAfter} variant="secondary" icon={<MdArrowForwardIos />} iconPosition="right">
+        <Button
+          onClick={loadAfter}
+          variant="secondary"
+          icon={<ChevronRight className={styles.paginationIcon} />}
+          iconPosition="right"
+        >
           Next
         </Button>
       )}

@@ -1,6 +1,5 @@
 import { clsx } from 'clsx';
 import Link from 'next/link';
-import { MdDelete, MdEdit } from 'react-icons/md';
 
 import { Card } from '../card';
 import { IconButton } from '../icon-button';
@@ -10,6 +9,7 @@ import * as styles from './timeline-item.css';
 import { TIMELINE_CATEGORIES } from '@/constant/timeline';
 import { gql } from '@/lib/graphql';
 import { parseTwemoji } from '@/lib/twemoji';
+import { PencilSquare, Trash } from '@/ui/icons';
 import { formatDateToHowPastFromNow } from '@/util/date';
 
 export const TimelineItemFragment = gql`
@@ -76,10 +76,10 @@ export const TimelineItem = ({ isLast, onClick, timelineItem }: Props) => {
           <p>{title}</p>
           <div className={styles.timelineItemOverlayActions}>
             <IconButton label="edit" onClick={() => onClick?.(timelineItem.id, 'edit')}>
-              <MdEdit size={24} />
+              <PencilSquare className={styles.timelineItemOverlayActionIcon} />
             </IconButton>
             <IconButton label="delete" variant="danger" onClick={() => onClick?.(timelineItem.id, 'delete')}>
-              <MdDelete size={24} />
+              <Trash className={styles.timelineItemOverlayActionIcon} />
             </IconButton>
           </div>
         </div>

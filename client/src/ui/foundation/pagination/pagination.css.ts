@@ -14,3 +14,8 @@ export const page = style({
   margin: 0,
   color: vars.color.text.tertiary,
 });
+
+export const paginationIcon = style({
+  width: '1rem',
+  height: '1rem',
+});

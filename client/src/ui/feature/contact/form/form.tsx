@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaTwitter } from 'react-icons/fa';
 import twemoji from 'twemoji';
 import { z } from 'zod';
 
@@ -13,6 +12,7 @@ import { Button } from '@/ui/foundation/button';
 import { Text } from '@/ui/foundation/text';
 import { TextInput } from '@/ui/foundation/textInput';
 import { Textarea } from '@/ui/foundation/textarea';
+import { Twitter } from '@/ui/icons';
 import { customFetch } from '@/util/fetcher';
 
 const scheme = z.object({
@@ -86,7 +86,7 @@ export const ContactForm = () => {
           <Text value={'またTwitterのDMもお待ちしております'} />
           <br />
           <a href="https://twitter.com/monica18_pr" target="_blank" rel="noreferrer" className={styles.twitterLink}>
-            <FaTwitter color={vars.color.text.tertiary} />
+            <Twitter color={vars.color.text.tertiary} />
             <span>@monica18_pr</span>
           </a>
         </p>

@@ -163,3 +163,8 @@ export const timelineItemOverlayActions = style({
   justifyContent: 'center',
   gap: '1rem',
 });
+
+export const timelineItemOverlayActionIcon = style({
+  width: '1.5rem',
+  height: '1.5rem',
+});

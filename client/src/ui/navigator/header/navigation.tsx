@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import { MdDashboard } from 'react-icons/md';
 
 import * as styles from './header.css';
 
@@ -30,7 +29,6 @@ export const Navigation = () => {
         {authState === 'authenticated' && (
           <li className={styles.navigationListItem}>
             <Link href="/dashboard" passHref className={styles.navigationLink}>
-              <MdDashboard className={styles.navigationLinkIcon} />
               Dashboard
             </Link>
           </li>

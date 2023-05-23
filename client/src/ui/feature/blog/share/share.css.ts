@@ -52,3 +52,8 @@ export const editLink = style({
     },
   },
 });
+
+export const icon = style({
+  width: '1rem',
+  height: '1rem',
+});

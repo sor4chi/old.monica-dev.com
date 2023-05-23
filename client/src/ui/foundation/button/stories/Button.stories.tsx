@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { MdThumbUp } from 'react-icons/md';
 
 import { Button } from '..';
 
 import { Table } from './table';
+
+import { XMark } from '@/ui/icons';
 
 const meta = {
   argTypes: {
@@ -88,8 +89,19 @@ export const Icon = {
     const rows = [
       [
         'With SVG',
-        <Button {...args} icon={<MdThumbUp size={20} />} key="icon">
-          Submit
+        <Button
+          {...args}
+          icon={
+            <XMark
+              style={{
+                height: '1.25rem',
+                width: '1.25rem',
+              }}
+            />
+          }
+          key="icon"
+        >
+          Close
         </Button>,
       ],
       [

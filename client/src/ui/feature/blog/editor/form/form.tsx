@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 import { useWatch } from 'react-hook-form';
-import { MdOpenInNew } from 'react-icons/md';
 
 import type { BlogFormSchema } from '../use-blog-editor';
 import { BLOG_FORM_ID, useBlogEditor } from '../use-blog-editor';
@@ -17,6 +16,7 @@ import { useDashboardHeader, useSnackbar } from '@/hooks';
 import { clientInBrowser, gql } from '@/lib/graphql';
 import { Button } from '@/ui/foundation/button';
 import { Toggle } from '@/ui/foundation/toggle';
+import { ArrowTopRightOnSquare } from '@/ui/icons';
 
 const BlogCreateMutation = gql`
   ${BlogEditorFormFragment}
@@ -173,7 +173,7 @@ export const BlogEditorForm = ({ blog, setBlog, tagsOptions }: Props) => {
         {blog?.publishedAt && (
           <Link href={`/blog/${blog.slug}`} passHref className={styles.link} target="_blank">
             View
-            <MdOpenInNew className={styles.linkIcon} />
+            <ArrowTopRightOnSquare className={styles.linkIcon} />
           </Link>
         )}
         <Toggle label="Publish" id="toggle-publish" {...register('isPublished')} />
