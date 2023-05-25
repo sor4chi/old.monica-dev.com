@@ -60,3 +60,9 @@ export const twitterLink = style({
 globalStyle(`${twitterLink} > *`, {
   verticalAlign: 'middle',
 });
+
+export const twitterIcon = style({
+  width: '1.5rem',
+  height: '1.5rem',
+  marginRight: '0.5rem',
+});

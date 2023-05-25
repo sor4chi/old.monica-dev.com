@@ -86,7 +86,7 @@ export const ContactForm = () => {
           <Text value={'またTwitterのDMもお待ちしております'} />
           <br />
           <a href="https://twitter.com/monica18_pr" target="_blank" rel="noreferrer" className={styles.twitterLink}>
-            <Twitter color={vars.color.text.tertiary} />
+            <Twitter color={vars.color.text.tertiary} className={styles.twitterIcon} />
             <span>@monica18_pr</span>
           </a>
         </p>
