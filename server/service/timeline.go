@@ -126,6 +126,9 @@ func (s *TimelineService) DeleteTimeline(id int32) error {
 }
 
 func (s *TimelineService) RevalidateTimeline() error {
+	if util.GetEnv("ENV", "production") == "development" {
+		return nil
+	}
 	clientUrl := util.GetEnv("CLIENT_URL", "http://localhost:3000")
 	url := fmt.Sprintf("%s%s?secret=%s", clientUrl, ABOUT_REVALIDATE_URL, util.GetEnvStrict("REVALIDATE_SECRET"))
 	resp, err := http.Get(url)
