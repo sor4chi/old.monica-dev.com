@@ -19,6 +19,7 @@ export const TimelineItemFragment = gql`
     title
     category
     blog {
+      id
       title
       slug
     }
@@ -31,6 +32,7 @@ export type TimelineItemFragmentResponse = {
   title: string;
   category: string;
   blog: {
+    id?: number;
     title: string;
     slug: string;
   } | null;
