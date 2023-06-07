@@ -14,7 +14,6 @@ import { Calendar } from '@/ui/foundation/calendar';
 import { Modal, ModalPortal } from '@/ui/foundation/modal';
 import { Selectbox } from '@/ui/foundation/selectbox';
 import { TextInput } from '@/ui/foundation/textInput';
-import type { TimelineItemFragmentResponse } from '@/ui/foundation/timeline';
 import { Plus } from '@/ui/icons';
 
 interface Props {
@@ -22,11 +21,13 @@ interface Props {
     id: number;
     title: string;
   }[];
-  appendTimeline: (timeline: TimelineItemFragmentResponse) => void;
+  submitTimeline: (timeline: { category: string; date: Date; title: string; relatedBlogId?: number }) => Promise<void>;
+  mode: 'edit' | 'create';
+  onClose: () => void;
 }
 
-export const TimelineEditor = ({ appendTimeline, blogs }: Props) => {
-  const { form, isTimelineEditorOpen, postTimeline, setIsTimelineEditorOpen } = useTimelineEditor();
+export const TimelineEditor = ({ blogs, mode, onClose, submitTimeline }: Props) => {
+  const { form, isTimelineEditorOpen, setIsTimelineEditorOpen } = useTimelineEditor();
   const { setDashboardHeaderContent } = useDashboardHeader();
   const {
     control,
@@ -38,22 +39,25 @@ export const TimelineEditor = ({ appendTimeline, blogs }: Props) => {
 
   useEffect(() => {
     setDashboardHeaderContent(
-      <Button icon={<Plus
-          className={styles.addIcon}
-       />} onClick={() => setIsTimelineEditorOpen(true)}>
+      <Button icon={<Plus className={styles.addIcon} />} onClick={() => setIsTimelineEditorOpen(true)}>
         Add
       </Button>,
     );
   }, []);
 
   const cancel = () => {
-    reset();
+    reset({
+      category: '',
+      date: new Date(),
+      relatedBlogId: undefined,
+      title: '',
+    });
     setIsTimelineEditorOpen(false);
+    onClose();
   };
 
   const onSubmit = async (data: TimelineFormSchema) => {
-    const timeline = await postTimeline(data);
-    appendTimeline(timeline);
+    await submitTimeline(data);
     cancel();
   };
 
@@ -62,7 +66,7 @@ export const TimelineEditor = ({ appendTimeline, blogs }: Props) => {
       <Modal
         isOpen={isTimelineEditorOpen}
         onClose={cancel}
-        title="New Timeline"
+        title={mode === 'edit' ? 'Edit Timeline' : 'Create Timeline'}
         footer={
           <>
             <Button variant="tertiary" onClick={cancel}>
@@ -103,6 +107,7 @@ export const TimelineEditor = ({ appendTimeline, blogs }: Props) => {
                   ]}
                   placeholder="Select Category"
                   onChange={onChange}
+                  value={form.watch('category')}
                   mode="input"
                   error={errors.category?.message}
                 />
@@ -122,6 +127,7 @@ export const TimelineEditor = ({ appendTimeline, blogs }: Props) => {
                   }))}
                   placeholder="Connect Blog"
                   onChange={onChange}
+                  value={`${form.watch('relatedBlogId')}`}
                   error={errors.relatedBlogId?.message}
                 />
               )}
