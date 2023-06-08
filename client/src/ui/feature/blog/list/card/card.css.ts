@@ -31,16 +31,16 @@ for (let i = 0; i < SITE_CONFIG.BLOG_LENGTH_PER_PAGE; i++) {
 export const title = style({
   fontSize: '1.5rem',
   fontWeight: 400,
-  marginTop: '1rem',
-  marginBottom: '0.5rem',
+  margin: 0,
   color: vars.color.text.primary,
   textDecoration: 'inherit',
 });
 
 export const description = style({
   fontSize: '1rem',
-  margin: '0.5rem 0',
-  color: vars.color.text.secondary,
+  margin: 0,
+  marginTop: '0.5rem',
+  color: vars.color.text.tertiary,
   overflow: 'hidden',
   display: '-webkit-box',
   WebkitLineClamp: 3,
@@ -49,15 +49,36 @@ export const description = style({
 
 export const link = style({
   fontSize: '1rem',
-  margin: 0,
   textDecoration: 'none',
+  display: 'block',
+  boxSizing: 'border-box',
+  padding: '0.5rem 0',
+  margin: '0.5rem 0',
+  position: 'relative',
+});
 
+const HOVER_ITEM_HORIZONTAL_PADDING = '0.5rem';
+
+globalStyle(`${link}:before`, {
+  content: '""',
+  display: 'block',
+  position: 'absolute',
+  top: 0,
+  left: `-${HOVER_ITEM_HORIZONTAL_PADDING}`,
+  width: '100%',
+  height: '100%',
+  padding: `0 ${HOVER_ITEM_HORIZONTAL_PADDING}`,
+  opacity: 0,
+  zIndex: -1,
+  transition: 'opacity 0.2s ease-in-out',
+  borderRadius: '0.5rem',
+  backgroundColor: vars.color.bg.secondary,
+});
+
+globalStyle(`${link}:hover:before`, {
   '@media': {
     '(hover: hover)': {
-      ':hover': {
-        textDecoration: 'underline',
-        textDecorationColor: vars.color.accent.primary,
-      },
+      opacity: 1,
     },
   },
 });
