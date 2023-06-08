@@ -151,7 +151,9 @@ export const timelineItemOverlay = style({
   gap: '2rem',
 
   ':hover': {
-    backdropFilter: 'blur(1rem)',
+    backdropFilter: 'blur(0.15rem)',
+    border: `1px solid ${vars.color.text.tertiary}`,
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
     opacity: 1,
     transition: 'backdrop-filter 0.2s ease-in-out',
   },
