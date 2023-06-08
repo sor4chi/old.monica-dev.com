@@ -1,6 +1,6 @@
 'use client';
 import { clsx } from 'clsx';
-import { memo, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import { TextInput } from '../textInput';
 
@@ -23,9 +23,10 @@ interface Props {
   onChange?: (value: string) => void;
   mode?: Mode;
   error?: string;
+  value?: string;
 }
 
-const _Selectbox = ({ error, id, label, mode = 'search', onChange, options, placeholder }: Props) => {
+const _Selectbox = ({ error, id, label, mode = 'search', onChange, options, placeholder, value }: Props) => {
   const [input, setInput] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null);
@@ -35,6 +36,10 @@ const _Selectbox = ({ error, id, label, mode = 'search', onChange, options, plac
     const lowerCasedSearch = input.toLowerCase();
     return options.filter((option) => option.label.toLowerCase().includes(lowerCasedSearch));
   }, [input, options, mode]);
+
+  useEffect(() => {
+    setInput(options.find((option) => option.value === value)?.label ?? '');
+  }, [value, options]);
 
   const handleFocus = () => {
     setIsFocused(true);

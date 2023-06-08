@@ -47,13 +47,22 @@ func (q *Queries) CreateTimeline(ctx context.Context, arg CreateTimelineParams) 
 }
 
 const deleteAllTimelines = `-- name: DeleteAllTimelines :exec
-
 DELETE FROM timelines
 `
 
-// -- DELETORS -- --
 func (q *Queries) DeleteAllTimelines(ctx context.Context) error {
 	_, err := q.db.ExecContext(ctx, deleteAllTimelines)
+	return err
+}
+
+const deleteTimeline = `-- name: DeleteTimeline :exec
+
+DELETE FROM timelines WHERE id = $1
+`
+
+// -- DELETORS -- --
+func (q *Queries) DeleteTimeline(ctx context.Context, id int32) error {
+	_, err := q.db.ExecContext(ctx, deleteTimeline, id)
 	return err
 }
 
@@ -123,4 +132,40 @@ func (q *Queries) GetTimelinesByCategories(ctx context.Context, categories []int
 		return nil, err
 	}
 	return items, nil
+}
+
+const updateTimeline = `-- name: UpdateTimeline :one
+
+UPDATE timelines
+SET title = $1, related_blog_id = $2, category = $3, date = $4
+WHERE id = $5
+RETURNING id, title, related_blog_id, category, date
+`
+
+type UpdateTimelineParams struct {
+	Title         string
+	RelatedBlogID sql.NullInt32
+	Category      int32
+	Date          time.Time
+	ID            int32
+}
+
+// -- UPDATERS -- --
+func (q *Queries) UpdateTimeline(ctx context.Context, arg UpdateTimelineParams) (Timeline, error) {
+	row := q.db.QueryRowContext(ctx, updateTimeline,
+		arg.Title,
+		arg.RelatedBlogID,
+		arg.Category,
+		arg.Date,
+		arg.ID,
+	)
+	var i Timeline
+	err := row.Scan(
+		&i.ID,
+		&i.Title,
+		&i.RelatedBlogID,
+		&i.Category,
+		&i.Date,
+	)
+	return i, err
 }
