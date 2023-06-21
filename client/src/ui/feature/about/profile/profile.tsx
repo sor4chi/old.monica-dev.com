@@ -1,11 +1,10 @@
 import * as styles from './profile.css';
 
-import { parseTwemoji } from '@/lib/twemoji';
 import { content as contentStyle } from '@/ui/foundation/article/article.css';
 
 export const Profile = () => (
   <article className={contentStyle}>
-    <h2 dangerouslySetInnerHTML={{ __html: parseTwemoji('🧩About Me') }} />
+    <h2>About Me</h2>
     <p>
       2003年生まれ・20歳・北海道出身。
       <br />
@@ -29,68 +28,29 @@ export const Profile = () => (
       <br />
       新規事業のアプリケーションのフロントエンドを担当しています。
     </p>
-    <h2 dangerouslySetInnerHTML={{ __html: parseTwemoji('🥷Skills') }} />
+    <h2>Skills</h2>
     <p>触ったことある程度も含んでるので信頼度は薄めです、Github見てもらったほうがいいかもしれない...</p>
-    <strong dangerouslySetInnerHTML={{ __html: parseTwemoji('🎨FrontEnd') }} />
-    <div className={styles.skills}>
-      <span className={styles.skill}>
-        {/* <FaHtml5 /> */}
-        <span>HTML / CSS</span>
-      </span>
-      <span className={styles.skill}>
-        {/* <FaVuejs /> */}
-        <span>Vue.js / Nuxt.js</span>
-      </span>
-      <span className={styles.skill}>
-        {/* <FaReact /> */}
-        <span>React / Next.js</span>
-      </span>
-      <span className={styles.skill}>
-        {/* <FaJs /> */}
-        <span>JavaScript / TypeScript</span>
-      </span>
-    </div>
-    <strong dangerouslySetInnerHTML={{ __html: parseTwemoji('🖥️Backend') }} />
-    <div className={styles.skills}>
-      <span className={styles.skill}>
-        {/* <FaJs /> */}
-        <span>Express.js / Nest.js</span>
-      </span>
-      <span className={styles.skill}>
-        {/* <SiDjango /> */}
-        <span>Django</span>
-      </span>
-      <span className={styles.skill}>
-        {/* <FaLaravel /> */}
-        <span>Laravel</span>
-      </span>
-      <span className={styles.skill}>
-        {/* <SiRubyonrails /> */}
-        <span>Rails</span>
-      </span>
-      <span className={styles.skill}>
-        {/* <TbBrandGolang /> */}
-        <span>Go</span>
-      </span>
-    </div>
-    <strong dangerouslySetInnerHTML={{ __html: parseTwemoji('🌀Other') }} />
-    <div className={styles.skills}>
-      <span className={styles.skill}>
-        {/* <FaAws /> */}
-        <span>AWS</span>
-      </span>
-      <span className={styles.skill}>
-        {/* <FaDocker /> */}
-        <span>Docker</span>
-      </span>
-      <span className={styles.skill}>
-        {/* <SiNginx /> */}
-        <span>Nginx</span>
-      </span>
-      <span className={styles.skill}>
-        {/* <SiMysql /> */}
-        <span>Mysql</span>
-      </span>
-    </div>
+    <strong>Frontend</strong>
+    <h4 className={styles.skills}>
+      <span className={styles.skill}>HTML / CSS</span>
+      <span className={styles.skill}>Vue.js / Nuxt.js</span>
+      <span className={styles.skill}>React / Next.js</span>
+      <span className={styles.skill}>JavaScript / TypeScript</span>
+    </h4>
+    <strong>Backend</strong>
+    <h4 className={styles.skills}>
+      <span className={styles.skill}>Express.js / Nest.js</span>
+      <span className={styles.skill}>Django</span>
+      <span className={styles.skill}>Laravel</span>
+      <span className={styles.skill}>Rails</span>
+      <span className={styles.skill}>Go</span>
+    </h4>
+    <strong>Other</strong>
+    <h4 className={styles.skills}>
+      <span className={styles.skill}>AWS</span>
+      <span className={styles.skill}>Docker</span>
+      <span className={styles.skill}>Nginx</span>
+      <span className={styles.skill}>Mysql</span>
+    </h4>
   </article>
 );
