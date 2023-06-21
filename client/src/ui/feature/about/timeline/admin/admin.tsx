@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-import { Timeline } from '..';
+import Timeline from '..';
 import type { AboutTimelineFragmentResponse } from '../query';
 
 import { TimelineEditor } from './editor';

@@ -1,3 +1,4 @@
+'use client';
 import { memo, useRef, useState } from 'react';
 
 import { Divider } from '../divider';
@@ -13,7 +14,7 @@ interface Props {
   onChange: (id: string) => void;
 }
 
-const _Tab = ({ name, activeTab,setActiveTab, onChange, tabs }: Props) => {
+const _Tab = ({ activeTab, name, onChange, setActiveTab, tabs }: Props) => {
   const activeMarkerRef = useRef<HTMLDivElement>(null);
   const [activeMarker, setActiveMarker] = useState<{
     left: number;

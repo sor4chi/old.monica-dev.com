@@ -1,3 +1,4 @@
+'use client';
 import * as styles from './tab-content.css';
 import type { TabItem } from './types';
 

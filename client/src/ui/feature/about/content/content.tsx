@@ -1,8 +1,6 @@
 'use client';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
-
-import { Profile } from '../profile';
-import { Timeline } from '../timeline';
 
 import type { AboutContentFragmentResponse } from './query';
 
@@ -11,6 +9,9 @@ import { Tab, TabContent } from '@/ui/foundation/tab';
 interface Props {
   timelines: AboutContentFragmentResponse;
 }
+
+const Profile = dynamic(() => import('../profile'));
+const Timeline = dynamic(() => import('../timeline'));
 
 export const AboutContent = ({ timelines }: Props) => {
   const TABS = [
