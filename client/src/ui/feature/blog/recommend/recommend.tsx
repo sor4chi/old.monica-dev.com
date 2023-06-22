@@ -1,9 +1,9 @@
+import clsx from 'clsx';
 import { gql } from 'graphql-request';
 import Link from 'next/link';
 
 import * as styles from './recommend.css';
 
-import { Card } from '@/ui/foundation/card';
 import { ChevronLeft, ChevronRight } from '@/ui/icons';
 
 export const BlogsRecommendQuery = gql`
@@ -13,7 +13,6 @@ export const BlogsRecommendQuery = gql`
         id
         title
         slug
-        description
       }
     }
   }
@@ -25,7 +24,6 @@ export type BlogsRecommendQueryResponse = {
       id: number;
       title: string;
       slug: string;
-      description: string;
     }[];
   };
 };
@@ -46,16 +44,20 @@ export const BlogsRecommend = ({ id, recommends }: Props) => {
       {recommendBlogs.length === 0 && <p className={styles.empty}>No recommend blogs</p>}
       {recommendBlogs.map((blog, i) => (
         <div key={blog.id} className={styles.item}>
-          <Card padding="no">
-            <Link href={`/blog/${blog.slug}`} passHref className={styles.link}>
-              {i % 2 === 0 && <ChevronLeft className={styles.arrow} />}
-              <div className={styles.content}>
-                <h3 className={styles.title}>{blog.title}</h3>
-                <p className={styles.description}>{blog.description}</p>
-              </div>
-              {i % 2 === 1 && <ChevronRight className={styles.arrow} />}
-            </Link>
-          </Card>
+          <Link
+            href={`/blog/${blog.slug}`}
+            passHref
+            className={clsx(styles.link, styles[i % 2 === 0 ? 'left' : 'right'])}
+          >
+            {i % 2 === 0 && <ChevronLeft className={styles.arrow} />}
+            <span className={styles.content}>
+              <span className={styles.label[
+                i % 2 === 0 ? 'left' : 'right'
+              ]}>{i % 2 === 0 ? 'Prev' : 'Next'}</span>
+              <span className={styles.title}>{blog.title}</span>
+            </span>
+            {i % 2 === 1 && <ChevronRight className={styles.arrow} />}
+          </Link>
         </div>
       ))}
     </div>

@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { style, styleVariants } from '@vanilla-extract/css';
 
 import { vars } from '@/style/theme.css';
 
@@ -41,17 +41,26 @@ export const link = style({
   display: 'flex',
   alignItems: 'center',
   gap: '1rem',
-  justifyContent: 'space-between',
   height: '100%',
   boxSizing: 'border-box',
+  transition: 'background-color 0.2s ease-in-out',
+  borderRadius: '0.5rem',
 
   '@media': {
     '(hover: hover)': {
       ':hover': {
-        textDecoration: 'underline',
+        backgroundColor: vars.color.bg.secondary,
       },
     },
   },
+});
+
+export const left = style({
+  justifyContent: 'flex-start',
+});
+
+export const right = style({
+  justifyContent: 'flex-end',
 });
 
 export const arrow = style({
@@ -62,27 +71,41 @@ export const arrow = style({
 });
 
 export const content = style({
-  width: '100%',
+  width: 'fit-content',
 });
 
 export const title = style({
+  width: 'fit-content',
   fontSize: '1.25rem',
   fontWeight: 400,
   margin: 0,
   marginBottom: '0.5rem',
   color: vars.color.text.primary,
   display: '-webkit-box',
-  WebkitLineClamp: 1,
+  WebkitLineClamp: 2,
   WebkitBoxOrient: 'vertical',
   overflow: 'hidden',
 });
 
-export const description = style({
+const baseLabel = style({
+  width: '100%',
   fontSize: '1rem',
   margin: 0,
-  color: vars.color.text.secondary,
-  display: '-webkit-box',
-  WebkitLineClamp: 2,
-  WebkitBoxOrient: 'vertical',
-  overflow: 'hidden',
+  color: vars.color.text.tertiary,
+  display: 'block',
+});
+
+export const label = styleVariants({
+  left: [
+    baseLabel,
+    {
+      textAlign: 'left',
+    },
+  ],
+  right: [
+    baseLabel,
+    {
+      textAlign: 'right',
+    },
+  ],
 });
