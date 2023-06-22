@@ -145,6 +145,7 @@ async function getBlog(slug: string) {
         description: blog.description,
         id: blog.id,
         publishedAt: blog.publishedAt,
+        slug: blog.slug,
         tags: blog.tags,
         title: blog.title,
         updatedAt: blog.updatedAt,
@@ -172,7 +173,7 @@ export default async function BlogDetail({ params }: Props) {
           </div>
           <div className={styles.itemContainer}>
             <Toc toc={blog.body.toc} />
-            <BlogShare id={blog.meta.id} title={blog.meta.title} />
+            <BlogShare id={blog.meta.id} title={blog.meta.title} slug={blog.meta.slug} />
           </div>
         </aside>
       </section>

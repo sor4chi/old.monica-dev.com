@@ -21,7 +21,7 @@ const facebookShareUrl = (url: string) => {
 
 type Props = BlogShareFragmentResponse;
 
-export const BlogShare = ({ id, title }: Props) => {
+export const BlogShare = ({ id, slug, title }: Props) => {
   const state = useSession();
   const router = useRouter();
 
@@ -31,14 +31,19 @@ export const BlogShare = ({ id, title }: Props) => {
         <ArrowUp color={vars.color.text.tertiary} className={styles.icon} />
       </a>
       <Link
-        href={twitterShareUrl(SITE_CONFIG.URL, title)}
+        href={twitterShareUrl(SITE_CONFIG.URL + ROUTES.BLOG_ARTICLE(slug), title + ' | ' + SITE_CONFIG.TITLE + '\n')}
         aria-label="Share on Twitter"
         passHref
         className={styles.social}
       >
         <Twitter color={vars.color.social.twitter} className={styles.icon} />
       </Link>
-      <Link href={facebookShareUrl(SITE_CONFIG.URL)} aria-label="Share on Facebook" passHref className={styles.social}>
+      <Link
+        href={facebookShareUrl(SITE_CONFIG.URL + ROUTES.BLOG_ARTICLE(slug))}
+        aria-label="Share on Facebook"
+        passHref
+        className={styles.social}
+      >
         <Facebook className={styles.icon} />
       </Link>
       {state === 'authenticated' && (
