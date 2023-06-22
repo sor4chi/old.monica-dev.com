@@ -5,7 +5,6 @@ import { SITE_CONFIG } from '@/constant/site';
 import { vars } from '@/style/theme.css';
 import { Modifier } from '@/ui/app/modifier';
 import { Provider } from '@/ui/app/provider';
-import { GlobalStyle } from '@/util/globalStyle';
 import { getOgUrl } from '@/util/og';
 
 import '@/style/globals.css';
@@ -76,13 +75,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <script src="/theme.js" />
       </head>
       <html lang="ja">
-        <GlobalStyle>
-          <body>
-            <Provider>
-              <Modifier>{children}</Modifier>
-            </Provider>
-          </body>
-        </GlobalStyle>
+        <body>
+          <Provider>
+            <Modifier>{children}</Modifier>
+          </Provider>
+        </body>
         <Script src="https://platform.twitter.com/widgets.js" strategy="lazyOnload" />
       </html>
     </>
