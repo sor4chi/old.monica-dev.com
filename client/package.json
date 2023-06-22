@@ -5,6 +5,7 @@
   "scripts": {
     "build": "next build",
     "build-storybook": "storybook build",
+    "build:analyze": "ANALYZE=true npm run build",
     "build:dev": "dotenv -e .env.development -- next build",
     "clear:icon": "rm -rf src/ui/icons",
     "dev": "next dev",
@@ -58,6 +59,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^13.4.7",
     "@storybook/addon-essentials": "^7.0.9",
     "@storybook/addon-interactions": "^7.0.9",
     "@storybook/addon-links": "^7.0.9",
