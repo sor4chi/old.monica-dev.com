@@ -1,4 +1,6 @@
-import { createElement, Fragment } from 'react';
+'use server';
+import 'server-only';
+
 import refractorC from 'refractor/lang/c';
 import refractorCpp from 'refractor/lang/cpp';
 import refractorDiff from 'refractor/lang/diff';
@@ -11,9 +13,7 @@ import refractorRust from 'refractor/lang/rust';
 import refractorTypescript from 'refractor/lang/typescript';
 import { refractor } from 'refractor/lib/core.js';
 import rehypeKatex from 'rehype-katex';
-import rehypeParse from 'rehype-parse';
 import rehypePrismGenerator from 'rehype-prism-plus/generator';
-import rehypeReact from 'rehype-react';
 import rehypeStringify from 'rehype-stringify';
 import remarkDirective from 'remark-directive';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -21,6 +21,7 @@ import remarkDirective from 'remark-directive';
 import remarkExtractToc from 'remark-extract-toc';
 import remarkCodeTitle from 'remark-flexible-code-titles';
 import remarkGfm from 'remark-gfm';
+import remarkImageSize from 'remark-image-size';
 import remarkMath from 'remark-math';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
@@ -28,9 +29,6 @@ import remarkSlug from 'remark-slug';
 import { unified } from 'unified';
 
 import remarkCustomDirectives from './rehype/directive';
-
-import { Anchor } from '@/ui/foundation/anchor';
-import { Image } from '@/ui/foundation/image';
 
 refractor.register(refractorRust);
 refractor.register(refractorTypescript);
@@ -66,6 +64,7 @@ const mdHtmlProcessor = unified()
   .use(remarkDirective) // [mdast -> mdast] directiveブロックを変換
   .use(remarkCustomDirectives) // [mdast -> mdast] directiveブロックを拡張
   .use(remarkCodeTitle) // [mdast -> mdast] codeブロックへタイトル等の構文拡張
+  .use(remarkImageSize) // [hast  -> hast ] img要素にwidth/height属性を追加
   .use(remarkRehype) // [mdast -> hast ] mdast(Markdown抽象構文木)をhast(HTML抽象構文木)に変換
   .use(rehypeKatex) // [mdast -> hast ] mathブロックをkatex.jsに対応
   .use(rehypePrism, {
@@ -80,27 +79,14 @@ const tocProcessor = unified()
     keys: ['data'],
   });
 
-export const parseMarkdownToHTML = (mdContent: string) => {
-  return {
-    content: mdHtmlProcessor.processSync(mdContent).toString(),
-    toc: tocProcessor.runSync(tocProcessor.parse(mdContent)) as unknown as TocItem[],
-  };
-};
+export const parseMarkdownToHTML = async (mdContent: string) => {
+  const [content, toc] = await Promise.all([
+    mdHtmlProcessor.process(mdContent),
+    tocProcessor.run(tocProcessor.parse(mdContent)),
+  ]);
 
-export const parseHTMLToReactJSX = (htmlContent: string) => {
-  const processor = unified()
-    .use(rehypeParse, {
-      fragment: true,
-    }) // [html -> hast] HTMLをhast(HTML抽象構文木)に変換
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    .use(rehypeReact, {
-      components: {
-        a: Anchor,
-        img: Image,
-      },
-      createElement,
-      Fragment,
-    }); // [hast -> jsx] hast(HTML抽象構文木)を一部ReactJSXに変換
-  return processor.processSync(htmlContent).result;
+  return {
+    content: content.toString(),
+    toc: toc as unknown as TocItem[],
+  };
 };

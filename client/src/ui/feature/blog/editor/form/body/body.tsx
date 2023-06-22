@@ -11,7 +11,7 @@ import * as styles from './body.css';
 
 import { clientEnv } from '@/env/client';
 import { gql } from '@/lib/graphql';
-import { parseMarkdownToHTML } from '@/lib/markdown';
+import { parseMarkdownToHTML } from '@/lib/markdown-server';
 import { Article } from '@/ui/foundation/article';
 import { TextInput } from '@/ui/foundation/textInput';
 import { Textarea } from '@/ui/foundation/textarea';
@@ -156,8 +156,9 @@ const BlogContentPreview = ({ control }: { control: Control<BlogFormSchema> }) =
   const [parsedContent, setParsedContent] = useState('');
 
   useMemo(() => {
-    const debounced = debounce(() => {
-      setParsedContent(parseMarkdownToHTML(content).content);
+    const debounced = debounce(async () => {
+      const parsed = await parseMarkdownToHTML(content);
+      setParsedContent(parsed.content);
     }, 500);
     debounced();
     return () => debounced.cancel();

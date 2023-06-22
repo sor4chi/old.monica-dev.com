@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import * as styles from './article.css';
 
-import { parseHTMLToReactJSX } from '@/lib/markdown';
+import { parseHTMLToReactJSX } from '@/lib/markdown-client';
 import { parseTwemoji } from '@/lib/twemoji';
 
 import './prism.css';

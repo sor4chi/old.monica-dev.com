@@ -33,12 +33,18 @@ export const Image = (props: Props) => {
     return <img {...props} />;
   }
 
-  const { alt, src } = props;
+  // remark-image-sizeでwidthとheightが設定される
+  const { alt, height, src, width } = props;
 
   const img = (
-    <span className={styles.imageContainer}>
-      <NextImage alt={alt || ''} src={src || ''} fill className={styles.image} onClick={() => setIsExpanded(true)} />
-    </span>
+    <NextImage
+      alt={alt || ''}
+      src={src || ''}
+      className={styles.image}
+      onClick={() => setIsExpanded(true)}
+      width={Number(width) || 0}
+      height={Number(height) || 0}
+    />
   );
 
   if (!isExpanded) {

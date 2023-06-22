@@ -17,12 +17,13 @@ export const imageContainer = style({
 });
 
 export const image = style({
-  objectFit: 'contain',
   borderRadius: '0.5rem',
   overflow: 'hidden',
   boxSizing: 'border-box',
   cursor: 'pointer',
   filter: `drop-shadow(${vars.color.shadow.sm})`,
+  width: '100%',
+  height: '100%',
 });
 
 export const expanded = style({
