@@ -46,6 +46,7 @@ export const title = style({
   WebkitLineClamp: 2,
   WebkitBoxOrient: 'vertical',
   overflow: 'hidden',
+  wordBreak: 'break-all',
 });
 
 export const description = style({
@@ -56,6 +57,7 @@ export const description = style({
   WebkitLineClamp: 1,
   WebkitBoxOrient: 'vertical',
   overflow: 'hidden',
+  wordBreak: 'break-all',
 
   '@media': {
     [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
@@ -69,6 +71,7 @@ export const domain = style({
   alignItems: 'center',
   gap: '0.5rem',
   color: vars.color.text.tertiary,
+  wordBreak: 'break-all',
 });
 
 export const icon = style({
