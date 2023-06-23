@@ -21,6 +21,9 @@ export const container = style({
         backgroundColor: vars.color.bg.primary,
       },
     },
+    [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
+      height: '7rem',
+    },
   },
 });
 
@@ -53,6 +56,12 @@ export const description = style({
   WebkitLineClamp: 1,
   WebkitBoxOrient: 'vertical',
   overflow: 'hidden',
+
+  '@media': {
+    [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
+      display: 'none',
+    },
+  },
 });
 
 export const domain = style({
@@ -68,4 +77,11 @@ export const thumbnail = style({
   width: 'auto',
   aspectRatio: '1200 / 630',
   objectFit: 'cover',
+  objectPosition: 'center',
+
+  '@media': {
+    [`screen and (max-width: ${vars.breakpoint.mobile})`]: {
+      aspectRatio: '1 / 1',
+    },
+  },
 });

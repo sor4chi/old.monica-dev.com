@@ -152,7 +152,7 @@ const BlogContentPreview = ({ control }: { control: Control<BlogFormSchema> }) =
     control,
     name: 'content',
   });
-  const debouncedContent = useDebounce(content, 3000);
+  const debouncedContent = useDebounce(content, 1000);
   const [parsedContent, setParsedContent] = useState('');
 
   useEffect(() => {
