@@ -39,7 +39,7 @@ globalStyle('::-webkit-scrollbar', {
 globalStyle('::-webkit-scrollbar-thumb', {
   borderRadius: 6,
   border: `2px solid transparent`,
-  boxShadow: `inset 0 0 0 10px ${vars.color.accent.primary}`,
+  boxShadow: `inset 0 0 0 10px ${vars.color.bg.tertiary}`,
 });
 
 globalStyle('::-webkit-scrollbar-track', {
@@ -51,6 +51,6 @@ globalStyle('::-webkit-scrollbar-corner', {
 });
 
 globalStyle('::selection', {
-  backgroundColor: vars.color.accent.secondary,
+  backgroundColor: vars.color.bg.tertiary,
   color: vars.color.text.primary,
 });
