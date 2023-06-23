@@ -3,6 +3,8 @@ import type { LinkMeta } from 'remark-link-meta/dist/types';
 
 import { LinkCard } from './card';
 
+import { Anchor } from '@/ui/foundation/anchor';
+
 type Props = ComponentPropsWithoutRef<'a'> & {
   href: string;
   title?: LinkMeta['title'];
@@ -12,7 +14,7 @@ type Props = ComponentPropsWithoutRef<'a'> & {
 };
 
 export const Link = (props: Props) => {
-  if (!props.title) return;
+  if (!props.title) return <Anchor {...props} />;
 
   return (
     <LinkCard
