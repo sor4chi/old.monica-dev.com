@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import Script from 'next/script';
 
@@ -85,6 +86,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Provider>
             <Modifier>{children}</Modifier>
           </Provider>
+          <Analytics />
         </body>
         <Script src="https://platform.twitter.com/widgets.js" strategy="lazyOnload" />
       </html>
