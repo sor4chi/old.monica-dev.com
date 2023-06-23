@@ -24,6 +24,7 @@ export const image = style({
   filter: `drop-shadow(${vars.color.shadow.sm})`,
   width: '100%',
   height: '100%',
+  margin: '1rem 0',
 });
 
 export const expanded = style({
