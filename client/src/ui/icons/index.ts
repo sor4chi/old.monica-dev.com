@@ -14,6 +14,7 @@ export { default as Moon } from './Moon';
 export { default as PencilSquare } from './PencilSquare';
 export { default as PencilSquareFill } from './PencilSquareFill';
 export { default as Plus } from './Plus';
+export { default as RssFeed } from './RssFeed';
 export { default as Sun } from './Sun';
 export { default as Trash } from './Trash';
 export { default as Twitter } from './Twitter';

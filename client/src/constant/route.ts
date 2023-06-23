@@ -13,6 +13,7 @@ const PORTFOLIO_ROUTES = {
 };
 
 export const ROUTES = {
+  FEED: '/feed.xml',
   LANDING: '/',
   ...DASHBOARD_ROUTES,
   ...PORTFOLIO_ROUTES,

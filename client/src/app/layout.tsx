@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
 
+import { ROUTES } from '@/constant/route';
 import { SITE_CONFIG } from '@/constant/site';
 import { vars } from '@/style/theme.css';
 import { Modifier } from '@/ui/app/modifier';
@@ -10,6 +11,11 @@ import { getOgUrl } from '@/util/og';
 import '@/style/globals.css';
 
 export const metadata = {
+  alternates: {
+    types: {
+      'application/rss+xml': [{ title: `${SITE_CONFIG.TITLE} - Blog RSS Feed`, url: SITE_CONFIG.URL + ROUTES.FEED }],
+    },
+  },
   description: SITE_CONFIG.DESCRIPTION,
   icons: {
     apple: [

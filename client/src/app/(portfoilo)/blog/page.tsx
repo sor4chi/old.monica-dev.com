@@ -1,13 +1,16 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import * as styles from './blog.css';
 
+import { ROUTES } from '@/constant/route';
 import { SITE_CONFIG } from '@/constant/site';
 import { client, gql } from '@/lib/graphql';
 import { BlogList } from '@/ui/feature/blog/list';
 import type { BlogListFragmentResponse } from '@/ui/feature/blog/list/query';
 import { BlogListFragment } from '@/ui/feature/blog/list/query';
+import { RssFeed } from '@/ui/icons';
 
 interface Props {
   searchParams: {
@@ -74,6 +77,11 @@ export default async function Blog({ searchParams }: Props) {
   return (
     <>
       <h1 className={styles.title}>Blog</h1>
+      <div className={styles.infomations}>
+        <Link area-label="RSS Feed" href={ROUTES.FEED} passHref>
+          <RssFeed className={styles.rss} />
+        </Link>
+      </div>
       <BlogList blogsInfo={blogs.data.blogs} filterTags={tags} />
     </>
   );
