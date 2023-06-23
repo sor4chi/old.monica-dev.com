@@ -13,7 +13,6 @@ const nextConfig = {
   experimental: {
     appDir: true,
     serverActions: true,
-    serverComponentsExternalPackages: ['shiki'],
   },
   // 自分しか投稿しないのでimage domainはなんでもいい
   images: {

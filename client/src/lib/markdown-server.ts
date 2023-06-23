@@ -1,14 +1,25 @@
 'use server';
 import 'server-only';
 
-
+import refractorC from 'refractor/lang/c';
+import refractorCpp from 'refractor/lang/cpp';
+import refractorDiff from 'refractor/lang/diff';
+import refractorGo from 'refractor/lang/go';
+import refractorJava from 'refractor/lang/java';
+import refractorJavascript from 'refractor/lang/javascript';
+import refractorJson from 'refractor/lang/json';
+import refractorPython from 'refractor/lang/python';
+import refractorRust from 'refractor/lang/rust';
+import refractorTypescript from 'refractor/lang/typescript';
+import { refractor } from 'refractor/lib/core.js';
 import rehypeKatex from 'rehype-katex';
-import rehypePrettyCode from 'rehype-pretty-code';
+import rehypePrismGenerator from 'rehype-prism-plus/generator';
 import rehypeStringify from 'rehype-stringify';
 import remarkDirective from 'remark-directive';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore remark-extract-tocの型定義がないので一旦無視
 import remarkExtractToc from 'remark-extract-toc';
+import remarkCodeTitle from 'remark-flexible-code-titles';
 import remarkGfm from 'remark-gfm';
 import remarkImageSize from 'remark-image-size';
 import remarkLinkMeta from 'remark-link-meta';
@@ -19,8 +30,19 @@ import remarkSlug from 'remark-slug';
 import { unified } from 'unified';
 
 import remarkCustomDirectives from './rehype/directive';
-import nordTheme from './shiki/themes/nord.json';
 
+refractor.register(refractorRust);
+refractor.register(refractorTypescript);
+refractor.register(refractorJavascript);
+refractor.register(refractorPython);
+refractor.register(refractorJava);
+refractor.register(refractorC);
+refractor.register(refractorCpp);
+refractor.register(refractorGo);
+refractor.register(refractorDiff);
+refractor.register(refractorJson);
+
+const rehypePrism = rehypePrismGenerator(refractor);
 
 interface TocItem {
   /** ヘッダーのレベル */
@@ -42,19 +64,13 @@ const mdHtmlProcessor = unified()
   .use(remarkMath) // [mdast -> mdast] mathブロックを変換
   .use(remarkDirective) // [mdast -> mdast] directiveブロックを変換
   .use(remarkCustomDirectives) // [mdast -> mdast] directiveブロックを拡張
+  .use(remarkCodeTitle) // [mdast -> mdast] codeブロックへタイトル等の構文拡張
   .use(remarkImageSize) // [hast  -> hast ] img要素にwidth/height属性を追加
   .use(remarkLinkMeta) // [hast  -> hast ] link要素にogなどのメタデータを追加
   .use(remarkRehype) // [mdast -> hast ] mdast(Markdown抽象構文木)をhast(HTML抽象構文木)に変換
   .use(rehypeKatex) // [mdast -> hast ] mathブロックをkatex.jsに対応
-  .use(rehypePrettyCode, {
-    keepBackground: true,
-    onVisitHighlightedLine(element) {
-      element.properties.className?.push('line--highlighted');
-    },
-    onVisitHighlightedWord(element) {
-      element.properties.className = ['word'];
-    },
-    theme: JSON.parse(JSON.stringify(nordTheme)),
+  .use(rehypePrism, {
+    ignoreMissing: true,
   })
   .use(rehypeStringify); // [hast  -> html ] hast(HTML抽象構文木)をHTMLに変換
 

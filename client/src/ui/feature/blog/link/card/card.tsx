@@ -38,22 +38,15 @@ export const LinkCard = ({ description, href, iconurl, thumbnailurl, title }: Pr
         <span className={styles.title}>{title}</span>
         <span className={styles.description}>{description}</span>
         <span className={styles.domain}>
-          {isIconLoadSuccess && iconurl && (
-            <Image
-              src={iconurl}
-              alt={title}
-              width={16}
-              height={16}
-              onError={() => setIsIconLoadSuccess(false)}
-              className={styles.icon}
-            />
+          {isIconLoadSuccess && (
+            <Image src={iconurl || ''} alt={title} width={16} height={16} onError={() => setIsIconLoadSuccess(false)} className={styles.icon} />
           )}
           {getDomain(href)}
         </span>
       </span>
-      {isThumbnailLoadSuccess && thumbnailurl && (
+      {isThumbnailLoadSuccess && (
         <Image
-          src={thumbnailurl}
+          src={thumbnailurl || ''}
           alt={title}
           width={240}
           height={126}

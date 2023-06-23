@@ -5,7 +5,7 @@ import * as styles from './article.css';
 import { parseHTMLToReactJSX } from '@/lib/markdown-client';
 import { parseTwemoji } from '@/lib/twemoji';
 
-import './codeblock.css';
+import './prism.css';
 import 'katex/dist/katex.min.css';
 
 interface Props {
