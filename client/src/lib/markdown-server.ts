@@ -79,7 +79,7 @@ const tocProcessor = unified()
     keys: ['data'],
   });
 
-export const parseMarkdownToHTML = async (mdContent: string) => {
+export const parseMarkdown = async (mdContent: string) => {
   const [content, toc] = await Promise.all([
     mdHtmlProcessor.process(mdContent),
     tocProcessor.run(tocProcessor.parse(mdContent)),

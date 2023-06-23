@@ -5,7 +5,7 @@ import * as styles from './detail.css';
 
 import { serverEnv } from '@/env/server';
 import { client, gql } from '@/lib/graphql';
-import { parseMarkdownToHTML } from '@/lib/markdown-server';
+import { parseMarkdown } from '@/lib/markdown-server';
 import type { BlogHeroFragmentResponse } from '@/ui/feature/blog/hero';
 import { BlogHero, BlogHeroFragment } from '@/ui/feature/blog/hero';
 import type { BlogsRecommendQueryResponse, BlogsRecommendQueryVariables } from '@/ui/feature/blog/recommend';
@@ -136,7 +136,7 @@ async function getBlog(slug: string) {
       },
     );
 
-    const body = await parseMarkdownToHTML(blog?.content || '');
+    const body = await parseMarkdown(blog?.content || '');
 
     return {
       body: {

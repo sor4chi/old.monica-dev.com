@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Control } from 'react-hook-form';
 import { useWatch } from 'react-hook-form';
 
@@ -10,13 +10,13 @@ import { BlogEditorFormTag } from '../tag';
 import * as styles from './body.css';
 
 import { clientEnv } from '@/env/client';
+import { useDebounce } from '@/hooks';
 import { gql } from '@/lib/graphql';
-import { parseMarkdownToHTML } from '@/lib/markdown-server';
+import { parseMarkdown } from '@/lib/markdown-server';
 import { Article } from '@/ui/foundation/article';
 import { TextInput } from '@/ui/foundation/textInput';
 import { Textarea } from '@/ui/foundation/textarea';
 import { Toggle } from '@/ui/foundation/toggle';
-import { debounce } from '@/util/debounce';
 
 export const BlogEditorFormFragment = gql`
   fragment BlogEditorFormFragment on Blog {
@@ -152,17 +152,14 @@ const BlogContentPreview = ({ control }: { control: Control<BlogFormSchema> }) =
     control,
     name: 'content',
   });
-
+  const debouncedContent = useDebounce(content, 3000);
   const [parsedContent, setParsedContent] = useState('');
 
-  useMemo(() => {
-    const debounced = debounce(async () => {
-      const parsed = await parseMarkdownToHTML(content);
-      setParsedContent(parsed.content);
-    }, 500);
-    debounced();
-    return () => debounced.cancel();
-  }, [content]);
+  useEffect(() => {
+    parseMarkdown(debouncedContent).then((md) => {
+      setParsedContent(md.content);
+    });
+  }, [debouncedContent]);
 
   return <Article content={parsedContent} />;
 };
