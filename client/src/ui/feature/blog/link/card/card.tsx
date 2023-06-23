@@ -39,7 +39,7 @@ export const LinkCard = ({ description, href, iconurl, thumbnailurl, title }: Pr
         <span className={styles.description}>{description}</span>
         <span className={styles.domain}>
           {isIconLoadSuccess && (
-            <Image src={iconurl || ''} alt={title} width={16} height={16} onError={() => setIsIconLoadSuccess(false)} />
+            <Image src={iconurl || ''} alt={title} width={16} height={16} onError={() => setIsIconLoadSuccess(false)} className={styles.icon} />
           )}
           {getDomain(href)}
         </span>

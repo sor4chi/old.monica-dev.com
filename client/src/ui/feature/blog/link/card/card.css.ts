@@ -71,6 +71,12 @@ export const domain = style({
   color: vars.color.text.tertiary,
 });
 
+export const icon = style({
+  background: 'white',
+  padding: '2px',
+  borderRadius: '2px',
+});
+
 export const thumbnail = style({
   flexShrink: 0,
   height: '100%',
