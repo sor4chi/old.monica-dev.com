@@ -1,5 +1,6 @@
 import * as styles from './profile.css';
 
+import { Anchor } from '@/ui/foundation/anchor';
 import { content as contentStyle } from '@/ui/foundation/article/article.css';
 
 export const Profile = () => (
@@ -12,18 +13,18 @@ export const Profile = () => (
     </p>
     <p>高校三年生の時に他の人と違うことがしたいというモチベーションでプログラミングを始めました。</p>
     <p>
-      以降<a href="https://twitter.com/SERPENT_4">SERPENT</a>のメンバーと一緒にプログラミングを続け、現在は
+      以降<Anchor href="https://twitter.com/SERPENT_4">SERPENT</Anchor>のメンバーと一緒にプログラミングを続け、現在は
       <strong>Sor4chi</strong>(Github名)や<strong>Monica</strong>(Twitter名)という名前で活動しています。
     </p>
     <p>
-      2022年2月からスカウトをいただいて<a href="https://wizleap.co.jp/">Wizleap Inc.</a>
+      2022年2月からスカウトをいただいて<Anchor href="https://wizleap.co.jp/">Wizleap Inc.</Anchor>
       にてフルスタックエンジニアとしてインターンに参加、現在も継続中。
       <br />
       テックリードとしてのポジションや、ライブラリ化、アーキテクチャなどDXに関する様々なことに取り組んでいます。
       裁量権の大きいスタートアップ企業での開発経験はとても刺激的で技術面だけでなくビジネス面や人間関係面でも大きな成長をさせていただきました。
     </p>
     <p>
-      2023年2月からスカウトをいただいて<a href="https://fiah.ai/">Fiah Inc.</a>
+      2023年2月からスカウトをいただいて<Anchor href="https://fiah.ai/">Fiah Inc.</Anchor>
       にてフルスタックエンジニアとしてインターンに参加、現在も継続中。
       <br />
       新規事業のアプリケーションのフロントエンドを担当しています。
