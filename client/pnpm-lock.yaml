@@ -81,8 +81,8 @@ dependencies:
     specifier: ^0.1.3
     version: 0.1.3(sharp@0.31.3)
   remark-link-meta:
-    specifier: ^0.0.3
-    version: 0.0.3
+    specifier: ^0.0.5
+    version: 0.0.5
   remark-math:
     specifier: ^5.1.1
     version: 5.1.1
@@ -11174,8 +11174,8 @@ packages:
       - sharp
     dev: false
 
-  /remark-link-meta@0.0.3:
-    resolution: {integrity: sha512-8N75RNmDp7b4AMAa5IjQjxGf/N6RIQqBDLR2Y+pZAmQ4EjvsDADaK3X5MAwUvBMhJ1IykH4CK68EMhEthHd9Fg==}
+  /remark-link-meta@0.0.5:
+    resolution: {integrity: sha512-GRfVsAc5Vs291qZoPtRXmzIh5FDkj+JMIDHMK1v2JcJOetzcP5kzzyaYuS0Y1FUK5WGOOtPuAESMEfzsEJIK1g==}
     dependencies:
       mdast: 3.0.0
       node-fetch: 3.3.1
