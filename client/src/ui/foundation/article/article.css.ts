@@ -110,33 +110,6 @@ globalStyle(`${content} td`, {
   color: vars.color.text.secondary,
 });
 
-globalStyle(`${content} a`, {
-  color: vars.color.text.tertiary,
-  fontWeight: 500,
-  margin: 0,
-  wordBreak: 'break-word',
-  position: 'relative',
-  textDecoration: 'underline',
-  textDecorationColor: vars.color.bg.tertiary,
-  textDecorationThickness: '0.125rem',
-  textUnderlineOffset: '0.25rem',
-  padding: '0.125rem 0.25rem',
-  alignItems: 'center',
-});
-
-globalStyle(`${content} a:hover`, {
-  '@media': {
-    'screen and (hover: hover)': {
-      backgroundColor: vars.color.bg.secondary,
-    },
-  },
-});
-
-globalStyle(`${content} a:focus-visible`, {
-  outline: 'none',
-  boxShadow: `0 0 0 0.125rem ${vars.color.accent.primary}`,
-});
-
 globalStyle(`${content} strong`, {
   fontWeight: 500,
   color: vars.color.text.primary,

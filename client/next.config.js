@@ -14,11 +14,13 @@ const nextConfig = {
     appDir: true,
     serverActions: true,
   },
+  // 自分しか投稿しないのでimage domainはなんでもいい
   images: {
-    domains: [
-      'images.unsplash.com',
-      'monica-log-dev.s3.ap-northeast-1.amazonaws.com',
-      'monica-log.s3.ap-northeast-1.amazonaws.com',
+    remotePatterns: [
+      {
+        hostname: '**',
+        protocol: 'https',
+      },
     ],
   },
   redirects: async () => [

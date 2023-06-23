@@ -5,7 +5,7 @@ import rehypeReact from 'rehype-react';
 // @ts-ignore remark-extract-tocの型定義がないので一旦無視
 import { unified } from 'unified';
 
-import { Anchor } from '@/ui/foundation/anchor';
+import { Link } from '@/ui/feature/blog/link';
 import { Image } from '@/ui/foundation/image';
 
 export const parseHTMLToReactJSX = (htmlContent: string) => {
@@ -17,7 +17,7 @@ export const parseHTMLToReactJSX = (htmlContent: string) => {
     // @ts-ignore
     .use(rehypeReact, {
       components: {
-        a: Anchor,
+        a: Link,
         img: Image,
       },
       createElement,
