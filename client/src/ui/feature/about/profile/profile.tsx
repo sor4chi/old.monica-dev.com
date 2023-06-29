@@ -31,27 +31,31 @@ export const Profile = () => (
     </p>
     <h2>Skills</h2>
     <p>触ったことある程度も含んでるので信頼度は薄めです、Github見てもらったほうがいいかもしれない...</p>
+    <strong>Certification</strong>
+    <p className={styles.skills}>
+      <span className={styles.skill}>応用情報技術者試験 (2023/06)</span>
+    </p>
     <strong>Frontend</strong>
-    <h4 className={styles.skills}>
+    <p className={styles.skills}>
       <span className={styles.skill}>HTML / CSS</span>
       <span className={styles.skill}>Vue.js / Nuxt.js</span>
       <span className={styles.skill}>React / Next.js</span>
       <span className={styles.skill}>JavaScript / TypeScript</span>
-    </h4>
+    </p>
     <strong>Backend</strong>
-    <h4 className={styles.skills}>
+    <p className={styles.skills}>
       <span className={styles.skill}>Express.js / Nest.js</span>
       <span className={styles.skill}>Django</span>
       <span className={styles.skill}>Laravel</span>
       <span className={styles.skill}>Rails</span>
       <span className={styles.skill}>Go</span>
-    </h4>
+    </p>
     <strong>Other</strong>
-    <h4 className={styles.skills}>
+    <p className={styles.skills}>
       <span className={styles.skill}>AWS</span>
       <span className={styles.skill}>Docker</span>
       <span className={styles.skill}>Nginx</span>
       <span className={styles.skill}>Mysql</span>
-    </h4>
+    </p>
   </article>
 );
