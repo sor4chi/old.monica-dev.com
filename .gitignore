@@ -2,4 +2,6 @@
 .env.production
 
 .vscode
+.next
+
 node_modules
