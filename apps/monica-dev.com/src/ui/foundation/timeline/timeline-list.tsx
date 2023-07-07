@@ -17,7 +17,7 @@ export type TimelineListFragmentResponse = TimelineItemFragmentResponse[];
 
 interface Props {
   timelines: TimelineListFragmentResponse;
-  onClick?: (id: number, mode: "edit" | "delete") => void;
+  onClick?: (id: number, mode: 'edit' | 'delete') => void;
 }
 
 export const TimelineList = ({ onClick, timelines }: Props) => {

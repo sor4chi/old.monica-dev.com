@@ -1,2 +1,2 @@
 'use client';
-export * from "./login"
+export * from './login';

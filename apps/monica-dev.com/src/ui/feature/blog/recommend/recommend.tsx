@@ -51,9 +51,7 @@ export const BlogsRecommend = ({ id, recommends }: Props) => {
           >
             {i % 2 === 0 && <ChevronLeft className={styles.arrow} />}
             <span className={styles.content}>
-              <span className={styles.label[
-                i % 2 === 0 ? 'left' : 'right'
-              ]}>{i % 2 === 0 ? 'Prev' : 'Next'}</span>
+              <span className={styles.label[i % 2 === 0 ? 'left' : 'right']}>{i % 2 === 0 ? 'Prev' : 'Next'}</span>
               <span className={styles.title}>{blog.title}</span>
             </span>
             {i % 2 === 1 && <ChevronRight className={styles.arrow} />}

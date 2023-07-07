@@ -14,4 +14,4 @@ export const TIMELINE_CATEGORIES: Record<string, { emoji: string }> = {
   work: {
     emoji: '💼',
   },
-} 
+};
