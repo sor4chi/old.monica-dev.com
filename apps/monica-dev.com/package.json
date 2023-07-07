@@ -1,5 +1,5 @@
 {
-  "name": "portfolio-neo",
+  "name": "monica-dev.com",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -54,6 +54,7 @@
     "remark-slug": "^7.0.1",
     "rss": "^1.2.2",
     "server-only": "^0.0.1",
+    "shared-ui": "workspace:*",
     "sharp": "^0.31.3",
     "twemoji": "^14.0.2",
     "typescript": "4.9.5",
