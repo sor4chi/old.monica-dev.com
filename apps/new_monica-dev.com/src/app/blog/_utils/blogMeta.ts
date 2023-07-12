@@ -8,6 +8,7 @@ export const generateMetaData = ({
   title: string;
   description: string;
   publishedAt: Date;
+  thumbnail: string;
 }): Metadata => {
   return {
     description,

@@ -1,10 +1,10 @@
 import { BlogWrapper } from '@/app/blog/_components/BlogWrapper';
 import { generateMetaData } from '@/app/blog/_utils/blogMeta';
 
-const TITLE = 'This is a Hi';
-const DESCRIPTION = 'Hi component, how are you? I am fine, thank you.';
+const TITLE = 'This is a Yo Blog';
+const DESCRIPTION = 'Yo Blog component! Do you like it?';
 const PUBLISHED_AT = new Date('2021-10-10');
-const THUMBNAIL = '/thumbnails/dish.avif';
+const THUMBNAIL = '/thumbnails/glass.avif';
 
 export const metadata = generateMetaData({
   description: DESCRIPTION,

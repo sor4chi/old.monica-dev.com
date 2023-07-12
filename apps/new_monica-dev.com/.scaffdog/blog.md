@@ -24,16 +24,18 @@ import { generateMetaData } from '@/app/blog/_utils/blogMeta';
 const TITLE = '{{ inputs.title }}';
 const DESCRIPTION = '{{ inputs.description }}';
 const PUBLISHED_AT = new Date('{{ date }}');
+const THUMBNAIL = '';
 
 export const metadata = generateMetaData({
   description: DESCRIPTION,
   publishedAt: PUBLISHED_AT,
   title: TITLE,
+  thumbnail: THUMBNAIL,
 });
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <BlogWrapper title={TITLE} description={DESCRIPTION} date={PUBLISHED_AT.toLocaleDateString('ja-JP')}>
+    <BlogWrapper title={TITLE} description={DESCRIPTION} date={PUBLISHED_AT.toLocaleDateString('ja-JP')} thumbnail={THUMBNAIL}>
       {children}
     </BlogWrapper>
   );
