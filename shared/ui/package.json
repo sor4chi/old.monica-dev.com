@@ -4,6 +4,7 @@
   "main": "./src/index.ts",
   "scripts": {},
   "dependencies": {
+    "@vanilla-extract/css": "^1.9.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

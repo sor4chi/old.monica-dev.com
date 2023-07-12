@@ -2,7 +2,7 @@ import type { StorybookConfig } from '@storybook/nextjs';
 import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
 
 const config: StorybookConfig = {
-  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: ['../src/**/*.stories.@(js|jsx|ts|tsx|mdx)'],
   addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions'],
   webpackFinal: async (config) => {
     config.plugins && config.plugins.push(new VanillaExtractPlugin());
