@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from 'shared-ui';
 
 import * as styles from './index.css';
 
@@ -11,7 +10,6 @@ import { Logo } from '@/ui/navigator/logo';
 export default function Home() {
   return (
     <VanillaLayout>
-      <Button />
       <div className={styles.container}>
         <div className={styles.profile}>
           <Image

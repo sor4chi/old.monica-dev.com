@@ -1,6 +1,5 @@
 import { globalStyle } from '@vanilla-extract/css';
 
-import './theme.css';
 import { colorVars } from './contract.css';
 
 globalStyle('body', {

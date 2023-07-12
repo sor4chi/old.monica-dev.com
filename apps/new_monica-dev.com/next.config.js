@@ -7,11 +7,18 @@ const withVanillaExtract = createVanillaExtractPlugin();
 const withBundleAnalyzer = createBundleAnalyzerPlugin({
   enabled: process.env.ANALYZE === 'true',
 });
-const withMdx = require('@next/mdx')();
+
+const withMdx = require('@next/mdx')({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+  },
+});
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  pageExtensions: ['tsx', 'mdx'],
+  pageExtensions: ['tsx', 'md', 'mdx'],
   experimental: {
     appDir: true,
     serverActions: true,

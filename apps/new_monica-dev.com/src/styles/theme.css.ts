@@ -35,3 +35,41 @@ createGlobalTheme('.dark', colorVars, {
     12: 'hsl(0 0% 93.0%)',
   },
 });
+
+const fontVars = createGlobalTheme(':root', {
+  size: {
+    xs: '0.75rem',
+    sm: '0.875rem',
+    base: '1rem',
+    lg: '1.125rem',
+    xl: '1.25rem',
+    '2xl': '1.5rem',
+  },
+});
+
+const spacingVars = createGlobalTheme(':root', {
+  absolute: {
+    0: '0',
+    1: '0.25rem',
+    2: '0.5rem',
+    4: '1rem',
+    6: '1.5rem',
+    10: '2.5rem',
+    16: '4rem',
+  },
+  relative: {
+    0: '0',
+    1: '0.25em',
+    2: '0.5em',
+    4: '1em',
+    6: '1.5em',
+    10: '2.5em',
+    16: '4em',
+  },
+});
+
+export const vars = {
+  color: colorVars,
+  font: fontVars,
+  spacing: spacingVars,
+};

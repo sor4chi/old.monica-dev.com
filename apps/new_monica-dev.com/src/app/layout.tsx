@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import 'shared-ui/global.css';
+import '@/styles/global.css';
 
 export const metadata = {} satisfies Metadata;
 
