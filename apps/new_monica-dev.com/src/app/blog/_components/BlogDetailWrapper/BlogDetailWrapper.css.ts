@@ -23,12 +23,12 @@ export const styles = {
     color: vars.color.gray[12],
     fontSize: vars.font.size.lg,
     fontWeight: 500,
-    margin: vars.spacing.absolute[0],
+    margin: vars.spacing[0],
   }),
   date: style({
     color: vars.color.gray[11],
     fontSize: vars.font.size.sm,
-    margin: vars.spacing.absolute[0],
+    margin: vars.spacing[0],
   }),
   thumbnail: style({
     width: '100%',

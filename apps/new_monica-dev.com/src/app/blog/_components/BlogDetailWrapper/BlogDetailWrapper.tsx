@@ -1,12 +1,12 @@
 import Image from 'next/image';
-import NextLink from 'next/link';
 import { ArrowLeft } from 'react-feather';
 
-import { styles } from './BlogWrapper.css';
+import { styles } from './BlogDetailWrapper.css';
 
-import { Link } from '@/ui/Link';
+import { TransitionLink } from '@/components/logical/TransitionLink';
+import { Link } from '@/components/ui/Link';
 
-export const BlogWrapper = ({
+export const BlogDetailWrapper = ({
   children,
   date,
   thumbnail,
@@ -21,8 +21,8 @@ export const BlogWrapper = ({
   return (
     <>
       <div className={styles.nav}>
-        <Link tag={NextLink} href="/blog">
-          <ArrowLeft strokeWidth={1.5} size={16} />
+        <Link tag={TransitionLink} href="/blog">
+          <ArrowLeft strokeWidth={1.5} size="1em" />
           Back
         </Link>
       </div>
