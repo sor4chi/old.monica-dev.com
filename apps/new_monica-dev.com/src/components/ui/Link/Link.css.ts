@@ -6,7 +6,7 @@ export const styles = {
   link: style({
     display: 'inline-flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     gap: vars.spacing.relative[2],
     textDecoration: 'none',
 
@@ -15,12 +15,17 @@ export const styles = {
     border: 'none',
     borderRadius: vars.spacing.relative[2],
     padding: `${vars.spacing.relative[2]} ${vars.spacing.relative[2]}`,
+    boxSizing: 'border-box',
     cursor: 'pointer',
+
+    transition: 'background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+
     ':hover': {
       backgroundColor: vars.color.gray[2],
     },
     ':focus-visible': {
-      outline: `2px solid ${vars.color.blue[8]}`,
+      outline: 'none',
+      boxShadow: `0 0 0 2px ${vars.color.blue[8]}`,
     },
   }),
 };
