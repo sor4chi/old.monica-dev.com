@@ -51,7 +51,7 @@ export const BlogList = ({ blogs }: { blogs: (InternalBlog | ExternalBlog)[] }) 
     return acc;
   }, {});
 
-  const sortedSplitByYear = Object.entries(splitByYear).sort((a, b) => Number(b[0]) - Number(a[0]));
+  const sortedByYear = Object.entries(splitByYear).sort((a, b) => Number(b[0]) - Number(a[0]));
 
   return (
     <>
@@ -62,7 +62,7 @@ export const BlogList = ({ blogs }: { blogs: (InternalBlog | ExternalBlog)[] }) 
         </Link>
       </div>
       <div className={styles.content}>
-        {sortedSplitByYear.map(([year, blogs]) => (
+        {sortedByYear.map(([year, blogs]) => (
           <section key={year} className={styles.yearSection}>
             <h2 className={styles.year}>{year}</h2>
             <ul className={styles.list}>
