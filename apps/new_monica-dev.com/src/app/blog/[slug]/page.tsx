@@ -11,6 +11,8 @@ interface Props {
   };
 }
 
+export const dynamic = 'force-static';
+
 const BLOG_DIR = path.join(process.cwd(), 'blogs');
 const THUMBNAIL_DIR = path.join(process.cwd(), 'public/images/blog-thumbnails');
 
