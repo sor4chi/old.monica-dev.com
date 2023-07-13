@@ -76,19 +76,21 @@ const fontVars = createGlobalTheme(':root', {
 });
 
 const spacingVars = createGlobalTheme(':root', {
+  0: '0',
+  full: '100%',
   absolute: {
-    0: '0',
     1: '0.25rem',
     2: '0.5rem',
+    3: '0.75rem',
     4: '1rem',
     6: '1.5rem',
     10: '2.5rem',
     16: '4rem',
   },
   relative: {
-    0: '0',
     1: '0.25em',
     2: '0.5em',
+    3: '0.75em',
     4: '1em',
     6: '1.5em',
     10: '2.5em',
