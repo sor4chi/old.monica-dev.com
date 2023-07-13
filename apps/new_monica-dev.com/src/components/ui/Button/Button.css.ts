@@ -11,7 +11,7 @@ export const styles = {
     padding: `${vars.spacing.relative[2]} ${vars.spacing.relative[4]}`,
     cursor: 'pointer',
     ':hover': {
-      backgroundColor: vars.color.gray[2],
+      backgroundColor: vars.color.gray[3],
     },
     ':focus': {
       outline: 'none',

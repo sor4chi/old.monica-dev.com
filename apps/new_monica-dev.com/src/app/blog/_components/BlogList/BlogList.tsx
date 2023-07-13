@@ -1,13 +1,12 @@
 import Image from 'next/image';
 import NextLink from 'next/link';
-import { ArrowLeft, ArrowUpRight } from 'react-feather';
+import { ArrowUpRight } from 'react-feather';
 
 import { styles } from './BlogList.css';
 
 import QiitaIcon from '@/assets/third-parties/qiita.png';
 import ZennIcon from '@/assets/third-parties/zenn.png';
 import { TransitionLink } from '@/components/logical/TransitionLink';
-import { Link } from '@/components/ui/Link';
 import { getEnMonthDay } from '@/utils/date';
 
 const BLOG_PROVIDER = [
@@ -54,30 +53,22 @@ export const BlogList = ({ blogs }: { blogs: (InternalBlog | ExternalBlog)[] }) 
   const sortedByYear = Object.entries(splitByYear).sort((a, b) => Number(b[0]) - Number(a[0]));
 
   return (
-    <>
-      <div className={styles.nav}>
-        <Link tag={TransitionLink} href="/">
-          <ArrowLeft strokeWidth={1.5} size="1em" />
-          Back
-        </Link>
-      </div>
-      <div className={styles.content}>
-        {sortedByYear.map(([year, blogs]) => (
-          <section key={year} className={styles.yearSection}>
-            <h2 className={styles.year}>{year}</h2>
-            <ul className={styles.list}>
-              {blogs.map((blog) =>
-                blog.type === 'internal' ? (
-                  <InternalBlogItem key={blog.slug} blog={blog} />
-                ) : (
-                  <ExternalBlogItem key={blog.href} blog={blog} />
-                ),
-              )}
-            </ul>
-          </section>
-        ))}
-      </div>
-    </>
+    <div className={styles.content}>
+      {sortedByYear.map(([year, blogs]) => (
+        <section key={year} className={styles.yearSection}>
+          <h2 className={styles.year}>{year}</h2>
+          <ul className={styles.list}>
+            {blogs.map((blog) =>
+              blog.type === 'internal' ? (
+                <InternalBlogItem key={blog.slug} blog={blog} />
+              ) : (
+                <ExternalBlogItem key={blog.href} blog={blog} />
+              ),
+            )}
+          </ul>
+        </section>
+      ))}
+    </div>
   );
 };
 

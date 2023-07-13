@@ -27,11 +27,11 @@ export const BlogDetailWrapper = ({
           Back
         </Link>
       </div>
-      <div className={styles.hero}>
-        <h1 className={styles.title}>{title}</h1>
-        <p className={styles.date}>{getEnYearMonthDay(new Date(date))}</p>
-      </div>
       <div className={styles.content}>
+        <div className={styles.hero}>
+          <h1 className={styles.title}>{title}</h1>
+          <p className={styles.date}>{getEnYearMonthDay(new Date(date))}</p>
+        </div>
         {thumbnail && (
           <Image
             className={styles.thumbnail}

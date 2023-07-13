@@ -6,17 +6,18 @@ export const styles = {
   nav: style({
     gridColumn: '2 / 3',
     gridRow: '2 / 3',
+    position: 'sticky',
+    top: vars.spacing.relative[4],
+    height: 'fit-content',
   }),
   content: style({
     gridColumn: '3 / 4',
     gridRow: '2 / 3',
   }),
   hero: style({
-    gridColumn: '3 / 4',
-    gridRow: '1 / 2',
-    marginTop: 'auto',
     display: 'flex',
     flexDirection: 'column',
+    marginBottom: vars.spacing.absolute[4],
     gap: vars.spacing.absolute[2],
   }),
   title: style({

@@ -48,10 +48,10 @@ export const styles = {
 
     position: 'relative',
 
-    transition: 'background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+    transition: 'background-color 0.1s ease-in-out, box-shadow  ease-in-out',
 
     ':hover': {
-      backgroundColor: vars.color.gray[2],
+      backgroundColor: vars.color.gray[3],
     },
     ':focus-visible': {
       outline: 'none',
@@ -78,7 +78,7 @@ export const styles = {
     color: vars.color.gray[11],
 
     opacity: 0,
-    transition: 'opacity 0.2s ease-in-out',
+    transition: 'opacity  ease-in-out',
   }),
   linkIcon: style({
     borderRadius: vars.spacing.relative[1],
