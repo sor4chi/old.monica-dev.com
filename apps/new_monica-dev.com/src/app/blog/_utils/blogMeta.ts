@@ -1,20 +1,20 @@
 import type { Metadata } from 'next';
 
-export const generateMetaData = ({
+export const generateBlogMetadata = ({
   description,
   publishedAt,
   title,
 }: {
   title: string;
   description: string;
-  publishedAt: Date;
+  publishedAt: string;
   thumbnail: string;
 }): Metadata => {
   return {
     description,
     openGraph: {
       description,
-      publishedTime: publishedAt.toISOString(),
+      publishedTime: new Date(publishedAt).toISOString(),
       title,
       type: 'article',
     },
