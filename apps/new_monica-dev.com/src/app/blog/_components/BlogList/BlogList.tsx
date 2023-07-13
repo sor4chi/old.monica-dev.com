@@ -8,7 +8,7 @@ import QiitaIcon from '@/assets/third-parties/qiita.png';
 import ZennIcon from '@/assets/third-parties/zenn.png';
 import { TransitionLink } from '@/components/logical/TransitionLink';
 import { Link } from '@/components/ui/Link';
-import { getMonthDay } from '@/utils/date';
+import { getEnMonthDay } from '@/utils/date';
 
 const BLOG_PROVIDER = [
   {
@@ -89,7 +89,7 @@ const InternalBlogItem = ({ blog }: { blog: InternalBlog }) => {
           {blog.title}
           {blog.publishedAt && (
             <time dateTime={blog.publishedAt} className={styles.publishedAt}>
-              {getMonthDay(new Date(blog.publishedAt))}
+              {getEnMonthDay(new Date(blog.publishedAt))}
             </time>
           )}
         </span>
@@ -106,7 +106,7 @@ const ExternalBlogItem = ({ blog }: { blog: ExternalBlog }) => {
         <span>
           {blog.title}
           <time dateTime={blog.publishedAt} className={styles.publishedAt}>
-            {getMonthDay(new Date(blog.publishedAt))}
+            {getEnMonthDay(new Date(blog.publishedAt))}
           </time>
         </span>
 

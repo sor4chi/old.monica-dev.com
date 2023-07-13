@@ -5,6 +5,7 @@ import { styles } from './BlogDetailWrapper.css';
 
 import { TransitionLink } from '@/components/logical/TransitionLink';
 import { Link } from '@/components/ui/Link';
+import { getEnYearMonthDay } from '@/utils/date';
 
 export const BlogDetailWrapper = ({
   children,
@@ -28,7 +29,7 @@ export const BlogDetailWrapper = ({
       </div>
       <div className={styles.hero}>
         <h1 className={styles.title}>{title}</h1>
-        <p className={styles.date}>{date}</p>
+        <p className={styles.date}>{getEnYearMonthDay(new Date(date))}</p>
       </div>
       <div className={styles.content}>
         {thumbnail && (
