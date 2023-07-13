@@ -22,37 +22,29 @@ const BLOG_PROVIDER = [
 ];
 
 type InternalBlog = {
-  publishedAt: string | undefined;
-  description: string | undefined;
+  type: 'internal';
+  publishedAt: string;
+  description: string;
   slug: string;
-  thumbnail: string | undefined;
-  title: string | undefined;
+  title: string;
 };
 
 type ExternalBlog = {
+  type: 'external';
   publishedAt: string;
   href: string;
   title: string;
   provider: string;
 };
 
-export const BlogList = ({
-  externalBlogs,
-  internalBlogs,
-}: {
-  internalBlogs: InternalBlog[];
-  externalBlogs: ExternalBlog[];
-}) => {
-  const mergedBlogs = [
-    ...internalBlogs.map((blog) => ({ ...blog, type: 'internal' as const })),
-    ...externalBlogs.map((blog) => ({ ...blog, type: 'external' as const })),
-  ].sort((a, b) => {
+export const BlogList = ({ blogs }: { blogs: (InternalBlog | ExternalBlog)[] }) => {
+  blogs.sort((a, b) => {
     if (a.publishedAt === undefined) return 1;
     if (b.publishedAt === undefined) return -1;
     return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
   });
 
-  const splitByYear = mergedBlogs.reduce<{ [key: string]: typeof mergedBlogs }>((acc, blog) => {
+  const splitByYear = blogs.reduce<{ [key: string]: typeof blogs }>((acc, blog) => {
     const year = blog.publishedAt ? new Date(blog.publishedAt).getFullYear() : new Date().getFullYear();
     if (acc[year] === undefined) acc[year] = [];
     acc[year].push(blog);

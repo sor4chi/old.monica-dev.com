@@ -3,39 +3,66 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { BlogList } from './_components/BlogList';
-import externalBlogs from './_externalBlogs.json';
 
-async function getInternalBlogs() {
-  const THIS_DIR = path.join(process.cwd(), 'src', 'app', 'blog');
-  // find all path in this directory
-  const dirOrFiles = await fs.promises.readdir(THIS_DIR);
-  // filter out _* dirs and files
-  const blogDirs = dirOrFiles
-    .filter((dirOrFile) => !dirOrFile.startsWith('_'))
-    .filter((dirOrFile) => path.extname(dirOrFile) === '');
-  // dynamic import TITLE, DESCRIPTION, DATE, THUMBNAIL
+import { mdxCompiler, ymlCompiler } from '@/lib/mdx';
+import { getDirFiles } from '@/utils/file';
+
+const BLOG_DIR = path.join(process.cwd(), 'blogs');
+
+async function getBlogs() {
+  const dirs = fs.readdirSync(BLOG_DIR);
+
   const blogs = await Promise.all(
-    blogDirs.map(async (dir) => {
-      const text = fs.readFileSync(path.join(THIS_DIR, dir, 'layout.tsx'), 'utf-8');
-      const TITLE = text.match(/const TITLE = '(.*)';/)?.[1];
-      const DESCRIPTION = text.match(/const DESCRIPTION = '(.*)';/)?.[1];
-      const PUBLISHED_AT = text.match(/const PUBLISHED_AT = '(.*)';/)?.[1];
-      const THUMBNAIL = text.match(/const THUMBNAIL = '(.*)';/)?.[1];
-      return {
-        description: DESCRIPTION,
-        publishedAt: PUBLISHED_AT,
-        slug: dir,
-        thumbnail: THUMBNAIL,
-        title: TITLE,
-      };
+    dirs.map(async (dir) => {
+      const fullPath = path.join(BLOG_DIR, dir);
+
+      const [mdxFiles, ymlFiles] = await Promise.all([getDirFiles(fullPath, '.mdx'), getDirFiles(fullPath, '.yml')]);
+
+      const mdxBlogs = await Promise.all(
+        mdxFiles.map(async (file) => {
+          const fileContents = fs.readFileSync(path.join(fullPath, file), 'utf8');
+
+          // Compile mdx
+          const { content, frontmatter } = await mdxCompiler(fileContents);
+
+          // Check is there a thumbnail for this blog
+          const thumbnails = fs.readdirSync(path.join(process.cwd(), 'public/images/blog-thumbnails'));
+          const thumbnail = thumbnails.find((thumbnail) => thumbnail.startsWith(dir));
+
+          return {
+            content,
+            slug: path.basename(file, '.mdx'),
+            thumbnail: thumbnail ? `/images/blog-thumbnails/${thumbnail}` : undefined,
+            type: 'internal' as const,
+            ...frontmatter,
+          };
+        }),
+      );
+
+      const ymlBlogs = await Promise.all(
+        ymlFiles.map(async (file) => {
+          const fileContents = fs.readFileSync(path.join(fullPath, file), 'utf8');
+
+          // Compile mdx
+          const { frontmatter } = await ymlCompiler(fileContents);
+
+          return {
+            provider: dir,
+            type: 'external' as const,
+            ...frontmatter,
+          };
+        }),
+      );
+
+      return [...mdxBlogs, ...ymlBlogs];
     }),
   );
 
-  return blogs;
+  return blogs.flat();
 }
 
 export default async function BlogListPage() {
-  const blogs = await getInternalBlogs();
+  const blogs = await getBlogs();
 
-  return <BlogList internalBlogs={blogs} externalBlogs={externalBlogs} />;
+  return <BlogList blogs={blogs} />;
 }
