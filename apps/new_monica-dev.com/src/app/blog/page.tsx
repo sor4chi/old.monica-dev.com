@@ -4,7 +4,8 @@ import path from 'node:path';
 
 import { BlogList } from './_components/BlogList';
 
-import { mdxCompiler, ymlCompiler } from '@/lib/mdx';
+import { mdxCompiler } from '@/lib/mdx';
+import { ymlCompiler } from '@/lib/yml';
 import { getDirFiles } from '@/utils/file';
 
 const BLOG_DIR = path.join(process.cwd(), 'blogs');
@@ -44,12 +45,12 @@ async function getBlogs() {
           const fileContents = fs.readFileSync(path.join(fullPath, file), 'utf8');
 
           // Compile mdx
-          const { frontmatter } = await ymlCompiler(fileContents);
+          const { meta } = await ymlCompiler(fileContents);
 
           return {
             provider: dir,
             type: 'external' as const,
-            ...frontmatter,
+            ...meta,
           };
         }),
       );
