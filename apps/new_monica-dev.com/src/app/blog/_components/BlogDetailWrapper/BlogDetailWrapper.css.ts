@@ -32,7 +32,7 @@ export const styles = {
   }),
   thumbnail: style({
     width: '100%',
-    aspectRatio: '1280 / 720',
+    aspectRatio: '640 / 360',
     height: 'auto',
     borderRadius: vars.spacing.relative[2],
     objectFit: 'cover',

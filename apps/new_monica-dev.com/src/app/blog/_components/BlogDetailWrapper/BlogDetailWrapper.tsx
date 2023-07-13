@@ -36,8 +36,8 @@ export const BlogDetailWrapper = ({
             className={styles.thumbnail}
             src={thumbnail}
             alt={title}
-            width={1280}
-            height={720}
+            width={640}
+            height={360}
             priority
             loading="eager"
           />
