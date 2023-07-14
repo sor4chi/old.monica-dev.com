@@ -4,6 +4,7 @@ import path from 'path';
 import { BlogDetailWrapper } from '../_components/BlogDetailWrapper';
 
 import { mdxCompiler } from '@/lib/mdx';
+import { getDirFiles } from '@/utils/file';
 
 interface Props {
   params: {
@@ -33,6 +34,16 @@ async function getBlog(slug: string) {
     thumbnail: thumbnail ? `/images/blog-thumbnails/${thumbnail}` : undefined,
     ...frontmatter,
   };
+}
+
+export async function generateStaticParams() {
+  const fullPath = path.join(BLOG_DIR, 'original');
+
+  const files = await getDirFiles(fullPath, '.mdx');
+
+  const slugs = files.map((file) => path.basename(file, '.mdx'));
+
+  return slugs.map((slug) => ({ slug }));
 }
 
 export default async function BlogDetail({ params }: Props) {
