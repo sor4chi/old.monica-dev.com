@@ -7,10 +7,6 @@ export const styles = {
     gridColumn: '2 / 3',
     gridRow: '2 / 3',
   }),
-  content: style({
-    gridColumn: '3 / 4',
-    gridRow: '2 / 3',
-  }),
   yearSection: style({}),
   year: style({
     fontWeight: 500,

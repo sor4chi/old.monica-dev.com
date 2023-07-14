@@ -4,7 +4,7 @@ import remarkGFM from 'remark-gfm';
 import type { PluginTuple } from 'unified';
 import { z } from 'zod';
 
-import { Button } from '@/components/ui/Button';
+import { replacingMDXComponents } from '@/components/mdx';
 
 const frontmatterSchema = z.object({
   description: z.string(),
@@ -19,9 +19,7 @@ const withOptions = <T extends (...args: any[]) => any>(fn: T, ...options: Param
 
 export const mdxCompiler = async (source: string) => {
   const { content, frontmatter } = await compileMDX({
-    components: {
-      Button,
-    },
+    components: replacingMDXComponents,
     options: {
       mdxOptions: {
         rehypePlugins: [

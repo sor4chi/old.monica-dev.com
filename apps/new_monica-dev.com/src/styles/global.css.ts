@@ -1,7 +1,7 @@
 import { globalStyle } from '@vanilla-extract/css';
 
 import { colorVars } from './contract.css';
-import { vars } from './theme.css';
+import { constants, vars } from './theme.css';
 
 globalStyle('body', {
   backgroundColor: colorVars.gray[1],
@@ -18,4 +18,16 @@ globalStyle('body', {
   gap: vars.spacing.absolute[4],
   minHeight: '100vh',
   height: '100%',
+
+  '@media': {
+    [constants.breakpoint.lg]: {
+      gridTemplateColumns: '1fr 15rem 40rem 1fr',
+    },
+    [constants.breakpoint.md]: {
+      gridTemplateColumns: '1fr 40rem 1fr',
+    },
+    [constants.breakpoint.sm]: {
+      gridTemplateColumns: '1fr',
+    },
+  },
 });

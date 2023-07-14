@@ -3,6 +3,7 @@ import { ArrowLeft } from 'react-feather';
 
 import { styles } from './BlogDetailWrapper.css';
 
+import { Main } from '@/components/layout/Main';
 import { TransitionLink } from '@/components/logical/TransitionLink';
 import { Link } from '@/components/ui/Link';
 import { getEnYearMonthDay } from '@/utils/date';
@@ -27,7 +28,7 @@ export const BlogDetailWrapper = ({
           Back
         </Link>
       </div>
-      <div className={styles.content}>
+      <Main side>
         <div className={styles.hero}>
           <h1 className={styles.title}>{title}</h1>
           <p className={styles.date}>{getEnYearMonthDay(new Date(date))}</p>
@@ -44,7 +45,7 @@ export const BlogDetailWrapper = ({
           />
         )}
         <article className={styles.article}>{children}</article>
-      </div>
+      </Main>
     </>
   );
 };

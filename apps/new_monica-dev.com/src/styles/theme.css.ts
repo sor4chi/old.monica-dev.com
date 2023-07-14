@@ -1,6 +1,7 @@
 import { createGlobalTheme } from '@vanilla-extract/css';
 
 import { colorVars } from './contract.css';
+import { staticallySumRems } from './util';
 
 createGlobalTheme('.light', colorVars, {
   gray: {
@@ -102,8 +103,28 @@ const spacingVars = createGlobalTheme(':root', {
   },
 });
 
+const sizeConstants = {
+  sideWidth: '15rem',
+  contentWidth: '40rem',
+} as const;
+
+const breakpointConstants = {
+  sm: `screen and (max-width: ${sizeConstants.sideWidth})`,
+  md: `screen and (max-width: ${staticallySumRems(sizeConstants.sideWidth, sizeConstants.contentWidth)})`,
+  lg: `screen and (max-width: ${staticallySumRems(
+    sizeConstants.sideWidth,
+    sizeConstants.contentWidth,
+    sizeConstants.sideWidth,
+  )})`,
+} as const;
+
 export const vars = {
   color: colorVars,
   font: fontVars,
   spacing: spacingVars,
+};
+
+export const constants = {
+  size: sizeConstants,
+  breakpoint: breakpointConstants,
 };

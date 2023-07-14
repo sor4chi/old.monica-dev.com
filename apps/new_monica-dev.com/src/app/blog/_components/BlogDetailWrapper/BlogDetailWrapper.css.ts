@@ -38,11 +38,12 @@ export const styles = {
     borderRadius: vars.spacing.relative[2],
     objectFit: 'cover',
     overflow: 'hidden',
+    marginBottom: vars.spacing.absolute[4],
   }),
   article: style({
     display: 'flex',
     flexDirection: 'column',
-    gap: vars.spacing.absolute[2],
+    gap: vars.spacing.absolute[4],
     lineHeight: 1.8,
   }),
 };
@@ -67,7 +68,7 @@ globalStyle(`${styles.article} p`, {
   margin: 0,
 });
 
-globalStyle(`${styles.article} ul`, {
+globalStyle(`${styles.article} ul, ${styles.article} ol`, {
   margin: 0,
   paddingLeft: vars.spacing.relative[4],
 });
@@ -112,41 +113,26 @@ globalStyle(`${styles.article} hr`, {
   margin: `${vars.spacing.relative[4]} 0`,
 });
 
+globalStyle(`${styles.article} blockquote`, {
+  borderLeft: `4px solid ${vars.color.gray[4]}`,
+  paddingLeft: vars.spacing.relative[4],
+  margin: `${vars.spacing.relative[4]} 0`,
+});
+
+globalStyle(`${styles.article} .contains-task-list`, {
+  padding: 0,
+});
+
+globalStyle(`${styles.article} .contains-task-list .contains-task-list`, {
+  paddingLeft: vars.spacing.relative[6],
+});
+
+globalStyle(`${styles.article} .task-list-item::before`, {
+  display: 'none',
+});
+
 globalStyle(`${styles.article} :not(pre) > code`, {
   backgroundColor: vars.color.gray[4],
   padding: vars.spacing.relative[1],
   borderRadius: vars.spacing.relative[1],
-});
-
-globalStyle(`.dark ${styles.article} pre[data-theme='light'], code[data-theme='light']`, {
-  display: 'none',
-});
-
-globalStyle(`.light ${styles.article} pre[data-theme='dark'], code[data-theme='dark']`, {
-  display: 'none',
-});
-
-globalStyle(`${styles.article} pre > code`, {
-  display: 'grid',
-});
-
-globalStyle(`${styles.article} pre`, {
-  borderRadius: vars.spacing.relative[1],
-  border: `1px solid ${vars.color.gray[4]}`,
-  padding: `${vars.spacing.relative[3]} 0`,
-  fontSize: vars.font.size.base,
-  overflow: 'auto',
-});
-
-globalStyle(`${styles.article} [data-line]`, {
-  borderLeftWidth: '2px',
-  borderLeftColor: 'transparent',
-  borderLeftStyle: 'solid',
-  paddingLeft: vars.spacing.relative[4],
-  paddingRight: vars.spacing.relative[4],
-});
-
-globalStyle(`${styles.article} [data-highlighted-line]`, {
-  background: vars.color.gray[2],
-  borderLeftColor: vars.color.blue[10],
 });
