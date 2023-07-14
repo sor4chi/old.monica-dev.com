@@ -43,7 +43,7 @@ export const BlogDetailWrapper = ({
             loading="eager"
           />
         )}
-        {children}
+        <article className={styles.article}>{children}</article>
       </div>
     </>
   );

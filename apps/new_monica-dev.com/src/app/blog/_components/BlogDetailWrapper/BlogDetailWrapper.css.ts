@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 import { vars } from '@/styles/theme.css';
 
@@ -39,4 +39,114 @@ export const styles = {
     objectFit: 'cover',
     overflow: 'hidden',
   }),
+  article: style({
+    display: 'flex',
+    flexDirection: 'column',
+    gap: vars.spacing.absolute[2],
+    lineHeight: 1.8,
+  }),
 };
+
+globalStyle(`${styles.article} h2`, {
+  fontSize: vars.font.size.lg,
+  fontWeight: 500,
+  color: vars.color.gray[12],
+  margin: 0,
+});
+
+globalStyle(`${styles.article} h3`, {
+  fontSize: vars.font.size.base,
+  fontWeight: 500,
+  color: vars.color.gray[12],
+  margin: 0,
+});
+
+globalStyle(`${styles.article} p`, {
+  fontSize: vars.font.size.base,
+  color: vars.color.gray[12],
+  margin: 0,
+});
+
+globalStyle(`${styles.article} ul`, {
+  margin: 0,
+  paddingLeft: vars.spacing.relative[4],
+});
+
+globalStyle(`${styles.article} ul li`, {
+  listStyle: 'none',
+  position: 'relative',
+});
+
+globalStyle(`${styles.article} ul li::before`, {
+  content: '"-"',
+  position: 'absolute',
+  left: `calc(-1 * ${vars.spacing.relative[4]})`,
+  color: vars.color.gray[12],
+});
+
+globalStyle(`${styles.article} table`, {
+  width: '100%',
+  borderCollapse: 'collapse',
+});
+
+globalStyle(`${styles.article} table th`, {
+  backgroundColor: vars.color.gray[1],
+  padding: vars.spacing.relative[1],
+  fontWeight: 500,
+  color: vars.color.gray[12],
+  borderBottom: `1px solid ${vars.color.gray[4]}`,
+});
+
+globalStyle(`${styles.article} table tr + tr > td`, {
+  borderTop: `1px solid ${vars.color.gray[4]}`,
+});
+
+globalStyle(`${styles.article} table td`, {
+  padding: vars.spacing.relative[1],
+});
+
+globalStyle(`${styles.article} hr`, {
+  border: 'none',
+  height: '1px',
+  backgroundColor: vars.color.gray[4],
+  margin: `${vars.spacing.relative[4]} 0`,
+});
+
+globalStyle(`${styles.article} :not(pre) > code`, {
+  backgroundColor: vars.color.gray[4],
+  padding: vars.spacing.relative[1],
+  borderRadius: vars.spacing.relative[1],
+});
+
+globalStyle(`.dark ${styles.article} pre[data-theme='light'], code[data-theme='light']`, {
+  display: 'none',
+});
+
+globalStyle(`.light ${styles.article} pre[data-theme='dark'], code[data-theme='dark']`, {
+  display: 'none',
+});
+
+globalStyle(`${styles.article} pre > code`, {
+  display: 'grid',
+});
+
+globalStyle(`${styles.article} pre`, {
+  borderRadius: vars.spacing.relative[1],
+  border: `1px solid ${vars.color.gray[4]}`,
+  padding: `${vars.spacing.relative[3]} 0`,
+  fontSize: vars.font.size.base,
+  overflow: 'auto',
+});
+
+globalStyle(`${styles.article} [data-line]`, {
+  borderLeftWidth: '2px',
+  borderLeftColor: 'transparent',
+  borderLeftStyle: 'solid',
+  paddingLeft: vars.spacing.relative[4],
+  paddingRight: vars.spacing.relative[4],
+});
+
+globalStyle(`${styles.article} [data-highlighted-line]`, {
+  background: vars.color.gray[2],
+  borderLeftColor: vars.color.blue[10],
+});

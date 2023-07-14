@@ -84,7 +84,9 @@ const spacingVars = createGlobalTheme(':root', {
     3: '0.75rem',
     4: '1rem',
     6: '1.5rem',
+    8: '2rem',
     10: '2.5rem',
+    12: '3rem',
     16: '4rem',
   },
   relative: {
@@ -93,7 +95,9 @@ const spacingVars = createGlobalTheme(':root', {
     3: '0.75em',
     4: '1em',
     6: '1.5em',
+    8: '2em',
     10: '2.5em',
+    12: '3em',
     16: '4em',
   },
 });

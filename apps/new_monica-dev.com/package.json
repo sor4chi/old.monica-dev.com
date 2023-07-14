@@ -21,6 +21,9 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-feather": "^2.0.10",
+    "rehype-pretty-code": "^0.10.0",
+    "remark-gfm": "^3.0.1",
+    "shiki": "^0.14.3",
     "typescript": "5.1.6",
     "zod": "^3.21.4"
   },
@@ -31,6 +34,7 @@
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
     "eslint-config-next": "13.4.9",
-    "scaffdog": "^2.5.1"
+    "scaffdog": "^2.5.1",
+    "unified": "^10.1.2"
   }
 }
