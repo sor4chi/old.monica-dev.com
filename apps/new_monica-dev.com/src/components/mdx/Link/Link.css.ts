@@ -7,6 +7,7 @@ export const styles = {
   link: style([
     focusInteraction,
     {
+      transition: 'box-shadow 0.2s ease-in-out',
       textDecoration: 'none',
       cursor: 'pointer',
       display: 'inline-block',

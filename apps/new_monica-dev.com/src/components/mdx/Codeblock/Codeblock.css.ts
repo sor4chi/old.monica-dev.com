@@ -50,7 +50,7 @@ export const styles = {
       alignItems: 'center',
       opacity: 0,
 
-      transition: 'background 0.2s ease-in-out, opacity 0.2s ease-in-out',
+      transition: 'background 0.2s ease-in-out, opacity 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
 
       ':hover': {
         background: vars.color.gray[4],
