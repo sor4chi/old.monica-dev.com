@@ -3,7 +3,7 @@ import { globalStyle, keyframes, style } from '@vanilla-extract/css';
 import { focusInteraction } from '@/styles/common.css';
 import { vars } from '@/styles/theme.css';
 
-export const COPY_COOLDOWN = 1000;
+export const COPY_COOLDOWN = 750;
 
 const outlineGlowKeyframes = keyframes({
   '0%': {
