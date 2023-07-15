@@ -3,7 +3,7 @@ import { style } from '@vanilla-extract/css';
 import { vars } from './theme.css';
 
 export const focusInteraction = style({
-  transition: 'box-shadow  ease-in-out',
+  transition: 'box-shadow 0.2s ease-in-out',
 
   ':focus-visible': {
     outline: 'none',

@@ -1,5 +1,6 @@
 import { globalStyle, style } from '@vanilla-extract/css';
 
+import { focusInteraction } from '@/styles/common.css';
 import { vars } from '@/styles/theme.css';
 
 export const styles = {
@@ -22,38 +23,37 @@ export const styles = {
   item: style({
     listStyle: 'none',
   }),
-  link: style({
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: vars.spacing.relative[3],
-    textDecoration: 'none',
+  link: style([
+    focusInteraction,
+    {
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: vars.spacing.relative[3],
+      textDecoration: 'none',
 
-    backgroundColor: vars.color.gray[1],
-    border: 'none',
-    borderRadius: vars.spacing.relative[2],
-    boxSizing: 'border-box',
-    cursor: 'pointer',
-    width: vars.spacing.full,
-    color: vars.color.gray[12],
-    fontWeight: 500,
-    fontSize: vars.font.size.sm,
-    padding: `${vars.spacing.relative[3]} ${vars.spacing.relative[3]}`,
+      backgroundColor: vars.color.gray[1],
+      border: 'none',
+      borderRadius: vars.spacing.relative[2],
+      boxSizing: 'border-box',
+      cursor: 'pointer',
+      width: vars.spacing.full,
+      color: vars.color.gray[12],
+      fontWeight: 500,
+      fontSize: vars.font.size.sm,
+      padding: `${vars.spacing.relative[3]} ${vars.spacing.relative[3]}`,
 
-    verticalAlign: 'baseline',
+      verticalAlign: 'baseline',
 
-    position: 'relative',
+      position: 'relative',
 
-    transition: 'background-color 0.1s ease-in-out, box-shadow  ease-in-out',
+      transition: 'background-color 0.2s ease-in-out, opacity 0.2s ease-in-out',
 
-    ':hover': {
-      backgroundColor: vars.color.gray[3],
+      ':hover': {
+        backgroundColor: vars.color.gray[3],
+      },
     },
-    ':focus-visible': {
-      outline: 'none',
-      boxShadow: `0 0 0 2px ${vars.color.blue[8]}`,
-    },
-  }),
+  ]),
   publishedAt: style({
     color: vars.color.gray[11],
     fontSize: vars.font.size.xs,
@@ -74,7 +74,7 @@ export const styles = {
     color: vars.color.gray[11],
 
     opacity: 0,
-    transition: 'opacity  ease-in-out',
+    transition: 'opacity 0.2s ease-in-out',
   }),
   linkIcon: style({
     borderRadius: vars.spacing.relative[1],
