@@ -106,16 +106,20 @@ const spacingVars = createGlobalTheme(':root', {
 const sizeConstants = {
   sideWidth: '15rem',
   contentWidth: '40rem',
+  gridXGap: '1rem',
+  xGutter: '1rem',
 } as const;
 
 const breakpointConstants = {
-  sm: `screen and (max-width: ${sizeConstants.sideWidth})`,
-  md: `screen and (max-width: ${staticallySumRems(sizeConstants.sideWidth, sizeConstants.contentWidth)})`,
-  lg: `screen and (max-width: ${staticallySumRems(
+  sm: staticallySumRems(sizeConstants.contentWidth),
+  md: staticallySumRems(sizeConstants.sideWidth, sizeConstants.gridXGap, sizeConstants.contentWidth),
+  lg: staticallySumRems(
     sizeConstants.sideWidth,
+    sizeConstants.gridXGap,
     sizeConstants.contentWidth,
+    sizeConstants.gridXGap,
     sizeConstants.sideWidth,
-  )})`,
+  ),
 } as const;
 
 export const vars = {

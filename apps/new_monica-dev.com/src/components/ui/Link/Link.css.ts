@@ -21,7 +21,7 @@ export const styles = {
       boxSizing: 'border-box',
       cursor: 'pointer',
 
-      transition: 'background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+      transition: 'box-shadow 0.2s ease-in-out',
 
       ':hover': {
         backgroundColor: vars.color.gray[3],

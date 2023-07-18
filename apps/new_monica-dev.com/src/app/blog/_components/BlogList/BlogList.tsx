@@ -6,7 +6,6 @@ import { styles } from './BlogList.css';
 
 import QiitaIcon from '@/assets/third-parties/qiita.png';
 import ZennIcon from '@/assets/third-parties/zenn.png';
-import { Main } from '@/components/layout/Main';
 import { TransitionLink } from '@/components/logical/TransitionLink';
 import { getEnMonthDay } from '@/utils/date';
 
@@ -54,7 +53,7 @@ export const BlogList = ({ blogs }: { blogs: (InternalBlog | ExternalBlog)[] }) 
   const sortedByYear = Object.entries(splitByYear).sort((a, b) => Number(b[0]) - Number(a[0]));
 
   return (
-    <Main>
+    <div className={styles.container}>
       {sortedByYear.map(([year, blogs]) => (
         <section key={year} className={styles.yearSection}>
           <h2 className={styles.year}>{year}</h2>
@@ -69,7 +68,7 @@ export const BlogList = ({ blogs }: { blogs: (InternalBlog | ExternalBlog)[] }) 
           </ul>
         </section>
       ))}
-    </Main>
+    </div>
   );
 };
 

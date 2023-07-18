@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import '@/styles/global.css';
+import { Main } from '@/components/layout/Main';
 
 export const metadata = {} satisfies Metadata;
 
@@ -12,7 +13,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <script src="/theme.js" />
       </head>
       <html lang="ja">
-        <body>{children}</body>
+        <body>
+          <Main>{children}</Main>
+        </body>
       </html>
     </>
   );

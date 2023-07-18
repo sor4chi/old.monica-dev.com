@@ -26,6 +26,16 @@ export const mdxCompiler = async (source: string) => {
           withOptions(rehypePrettyCode, {
             grid: true,
             keepBackground: false,
+            onVisitTitle: (element) => {
+              element.children.unshift({
+                children: [],
+                properties: {
+                  'data-icon': 'file',
+                },
+                tagName: 'i',
+                type: 'element',
+              });
+            },
             theme: {
               dark: 'github-dark-dimmed',
               light: 'github-light',

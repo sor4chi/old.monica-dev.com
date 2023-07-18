@@ -27,6 +27,7 @@ export const styles = {
     padding: `${vars.spacing.relative[3]} 0`,
     fontSize: vars.font.size.base,
     overflow: 'auto',
+    lineHeight: 1.7,
   }),
   rightTopFloatArea: style({
     position: 'absolute',
@@ -41,7 +42,6 @@ export const styles = {
       background: 'transparent',
       color: vars.color.gray[11],
       fontSize: vars.font.size.sm,
-      fontWeight: 500,
       border: 'none',
       width: vars.spacing.relative[10],
       height: vars.spacing.relative[10],
@@ -50,14 +50,15 @@ export const styles = {
       alignItems: 'center',
       opacity: 0,
 
-      transition: 'background 0.2s ease-in-out, opacity 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+      transition: 'opacity 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
 
       ':hover': {
-        background: vars.color.gray[4],
+        background: vars.color.gray[3],
       },
 
       ':focus-visible': {
         opacity: 1,
+        background: vars.color.gray[3],
       },
     },
   ]),
@@ -70,11 +71,25 @@ globalStyle(`${styles.div}:hover ${styles.copyButton}`, {
   opacity: 1,
 });
 
-globalStyle(".dark pre[data-theme='light'], code[data-theme='light']", {
+globalStyle('div[data-rehype-pretty-code-fragment]', {
+  marginTop: vars.spacing.relative[8],
+});
+
+globalStyle('div[data-rehype-pretty-code-title]', {
+  display: 'inline-flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: vars.spacing.full,
+  gap: vars.spacing.relative[2],
+  color: vars.color.gray[11],
+  marginBottom: vars.spacing.relative[2],
+});
+
+globalStyle(".dark pre[data-theme='light'], .dark code[data-theme='light'], .dark div[data-theme='light']", {
   display: 'none',
 });
 
-globalStyle("light pre[data-theme='dark'], code[data-theme='dark']", {
+globalStyle(".light pre[data-theme='dark'], .light code[data-theme='dark'], .light div[data-theme='dark']", {
   display: 'none',
 });
 

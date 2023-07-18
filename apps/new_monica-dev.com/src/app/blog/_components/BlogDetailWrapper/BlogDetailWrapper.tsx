@@ -3,7 +3,6 @@ import { ArrowLeft } from 'react-feather';
 
 import { styles } from './BlogDetailWrapper.css';
 
-import { Main } from '@/components/layout/Main';
 import { TransitionLink } from '@/components/logical/TransitionLink';
 import { Link } from '@/components/ui/Link';
 import { getEnYearMonthDay } from '@/utils/date';
@@ -21,17 +20,21 @@ export const BlogDetailWrapper = ({
   thumbnail?: string;
 }) => {
   return (
-    <>
-      <div className={styles.nav}>
+    <div className={styles.container}>
+      <aside className={styles.asideLeft}>
         <Link tag={TransitionLink} href="/blog">
           <ArrowLeft strokeWidth={1.5} size="1em" />
           Back
         </Link>
-      </div>
-      <Main side>
+      </aside>
+      <div className={styles.content}>
         <div className={styles.hero}>
-          <h1 className={styles.title}>{title}</h1>
-          <p className={styles.date}>{getEnYearMonthDay(new Date(date))}</p>
+          <h1 className={styles.heroTitle}>{title}</h1>
+          <span className={styles.heroDate}>
+            <time className={styles.heroDate} dateTime={date}>
+              {getEnYearMonthDay(new Date(date))}
+            </time>
+          </span>
         </div>
         {thumbnail && (
           <Image
@@ -45,7 +48,8 @@ export const BlogDetailWrapper = ({
           />
         )}
         <article className={styles.article}>{children}</article>
-      </Main>
-    </>
+      </div>
+      <aside className={styles.asideRight}></aside>
+    </div>
   );
 };

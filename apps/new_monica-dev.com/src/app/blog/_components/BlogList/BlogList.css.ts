@@ -1,17 +1,21 @@
 import { globalStyle, style } from '@vanilla-extract/css';
 
 import { focusInteraction } from '@/styles/common.css';
-import { vars } from '@/styles/theme.css';
+import { constants, vars } from '@/styles/theme.css';
 
 export const styles = {
-  nav: style({
-    gridColumn: '2 / 3',
-    gridRow: '2 / 3',
+  container: style({
+    width: vars.spacing.full,
+    maxWidth: constants.size.contentWidth,
+    margin: '0 auto',
   }),
-  yearSection: style({}),
+  yearSection: style({
+    marginBottom: vars.spacing.absolute[10],
+  }),
   year: style({
-    fontWeight: 500,
+    fontWeight: 700,
     fontSize: vars.font.size.lg,
+    marginBottom: vars.spacing.absolute[2],
   }),
   list: style({
     padding: vars.spacing[0],
@@ -47,7 +51,7 @@ export const styles = {
 
       position: 'relative',
 
-      transition: 'background-color 0.2s ease-in-out, opacity 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+      transition: 'opacity 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
 
       ':hover': {
         backgroundColor: vars.color.gray[3],
@@ -75,6 +79,12 @@ export const styles = {
 
     opacity: 0,
     transition: 'opacity 0.2s ease-in-out',
+
+    '@media': {
+      'screen and (max-width: 56rem)': {
+        display: 'none',
+      },
+    },
   }),
   linkIcon: style({
     borderRadius: vars.spacing.relative[1],
@@ -90,8 +100,4 @@ globalStyle(`${styles.link}:hover ${styles.linkDetail}`, {
 
 globalStyle(`${styles.link}:focus-visible ${styles.linkDetail}`, {
   opacity: 1,
-});
-
-globalStyle(`${styles.yearSection} + ${styles.yearSection}`, {
-  marginTop: vars.spacing.absolute[10],
 });

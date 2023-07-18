@@ -9,5 +9,6 @@ export const styles = {
     aspectRatio: '640 / 360',
     height: 'auto',
     borderRadius: vars.spacing.absolute[2],
+    display: 'block',
   }),
 };

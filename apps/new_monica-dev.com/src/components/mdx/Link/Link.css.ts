@@ -17,7 +17,6 @@ export const styles = {
   linkText: style({
     borderBottom: `calc(${vars.spacing.relative[1]} / 2) solid ${vars.color.gray[8]}`,
     padding: vars.spacing.relative[1],
-    transition: 'background-color 0.2s ease-in-out, border-bottom 0.2s ease-in-out',
     color: vars.color.gray[12],
   }),
   externalLinkIcon: style({
@@ -29,4 +28,8 @@ export const styles = {
 globalStyle(`${styles.link}:hover > ${styles.linkText}`, {
   borderBottom: `calc(${vars.spacing.relative[1]} / 2) solid ${vars.color.gray[12]}`,
   backgroundColor: vars.color.gray[4],
+});
+
+globalStyle(`sup > ${styles.link} > ${styles.linkText}`, {
+  border: 'none !important',
 });

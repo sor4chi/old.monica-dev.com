@@ -39,52 +39,34 @@ This is a horizontal rule
 
 ---
 
-This is a code block
-
-```jsx title="This is a code block" {2,10-13}
+```jsx title="main.js" {1,6-11}
 import React from 'react';
-import { z } from 'zod';
-
-const schema = z.object({
-  name: z.string(),
-  age: z.number().positive(),
-});
 
 const Component = () => {
-  const [state, setState] = React.useState({
-    name: '',
-    age: 0,
-  });
-
-  const handleChange = (e) => {
-    setState({
-      ...state,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const result = schema.safeParse(state);
-
-    if (result.success) {
-      console.log(result.data);
-    } else {
-      console.log(result.error);
-    }
-  };
+  const [isDark, toggleIsDark] = React.useReducer((isDark) => !isDark, false);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" name="name" value={state.name} onChange={handleChange} />
-      <input type="number" name="age" value={state.age} onChange={handleChange} />
-      <button type="submit">Submit</button>
-    </form>
+    <div>
+      <button onClick={toggleIsDark}>Toggle dark mode</button>
+      <div className={isDark ? 'dark' : 'light'}>Hello world</div>
+    </div>
   );
 };
+```
 
-export default Component;
+```tsx title="main.ts" {1,6-11}
+import React from 'react';
+
+const Component = () => {
+  const [isDark, toggleIsDark] = React.useReducer((isDark) => !isDark, false);
+
+  return (
+    <div>
+      <button onClick={toggleIsDark}>Toggle dark mode</button>
+      <div className={isDark ? 'dark' : 'light'}>Hello world</div>
+    </div>
+  );
+};
 ```
 
 This is a task list

@@ -1,10 +1,15 @@
 import { styles } from './Main.css';
+import { ThemeSwitch } from './Switch';
 
 interface Props {
   children: React.ReactNode;
-  side?: boolean;
 }
 
-export const Main = ({ children, side }: Props) => (
-  <main className={side ? styles.sideMain : styles.fullMain}>{children}</main>
-);
+export const Main = ({ children }: Props) => {
+  return (
+    <>
+      <ThemeSwitch />
+      <main className={styles.main}>{children}</main>
+    </>
+  );
+};
