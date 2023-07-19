@@ -23,16 +23,20 @@
     "react-feather": "^2.0.10",
     "rehype-pretty-code": "^0.10.0",
     "remark-gfm": "^3.0.1",
+    "remark-slug": "^7.0.1",
     "shiki": "^0.14.3",
     "typescript": "5.1.6",
+    "unist-util-visit": "^4.1.2",
     "zod": "^3.21.4"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.4.9",
     "@types/js-yaml": "^4.0.5",
+    "@types/mdast": "^3.0.11",
     "@types/mdx": "^2.0.5",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
+    "@types/unist": "^2.0.6",
     "eslint-config-next": "13.4.9",
     "scaffdog": "^2.5.1",
     "unified": "^10.1.2"

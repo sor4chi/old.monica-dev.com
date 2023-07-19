@@ -13,7 +13,6 @@ export const styles = {
       gap: vars.spacing.relative[2],
       textDecoration: 'none',
 
-      backgroundColor: vars.color.gray[1],
       color: vars.color.gray[11],
       border: 'none',
       borderRadius: vars.spacing.relative[2],
@@ -28,4 +27,7 @@ export const styles = {
       },
     },
   ]),
+  linkExpand: style({
+    width: vars.spacing.full,
+  }),
 };

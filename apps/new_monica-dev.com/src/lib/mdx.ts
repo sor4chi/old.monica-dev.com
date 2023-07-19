@@ -1,8 +1,12 @@
 import { compileMDX } from 'next-mdx-remote/rsc';
 import rehypePrettyCode from 'rehype-pretty-code';
 import remarkGFM from 'remark-gfm';
+import remarkSlug from 'remark-slug';
 import type { PluginTuple } from 'unified';
 import { z } from 'zod';
+
+import type { Toc } from './remarkExtractToc';
+import { remarkExtractToc } from './remarkExtractToc';
 
 import { replacingMDXComponents } from '@/components/mdx';
 
@@ -18,6 +22,8 @@ const withOptions = <T extends (...args: any[]) => any>(fn: T, ...options: Param
 ];
 
 export const mdxCompiler = async (source: string) => {
+  const toc: Toc = [];
+
   const { content, frontmatter } = await compileMDX({
     components: replacingMDXComponents,
     options: {
@@ -42,7 +48,15 @@ export const mdxCompiler = async (source: string) => {
             },
           }),
         ],
-        remarkPlugins: [remarkGFM],
+        remarkPlugins: [
+          remarkGFM,
+          remarkSlug,
+          withOptions(remarkExtractToc, {
+            cb: (_toc) => toc.push(..._toc),
+            maxDepth: 4,
+            minDepth: 2,
+          }),
+        ],
       },
       parseFrontmatter: true,
     },
@@ -51,5 +65,5 @@ export const mdxCompiler = async (source: string) => {
 
   const validatedFrontmatter = frontmatterSchema.parse(frontmatter);
 
-  return { content, frontmatter: validatedFrontmatter };
+  return { content, frontmatter: validatedFrontmatter, toc };
 };

@@ -22,7 +22,7 @@ async function getBlog(slug: string) {
   const fileContents = fs.readFileSync(fullPath, 'utf8');
 
   // Compile mdx
-  const { content, frontmatter } = await mdxCompiler(fileContents);
+  const { content, frontmatter,toc } = await mdxCompiler(fileContents);
 
   // Check is there a thumbnail for this blog
   const thumbnails = fs.readdirSync(THUMBNAIL_DIR);
@@ -31,6 +31,7 @@ async function getBlog(slug: string) {
   return {
     content,
     slug,
+    toc,
     thumbnail: thumbnail ? `/images/blog-thumbnails/${thumbnail}` : undefined,
     ...frontmatter,
   };
@@ -55,6 +56,7 @@ export default async function BlogDetail({ params }: Props) {
       description={blog.description}
       date={blog.publishedAt}
       thumbnail={blog.thumbnail}
+      toc={blog.toc}
     >
       {blog.content}
     </BlogDetailWrapper>

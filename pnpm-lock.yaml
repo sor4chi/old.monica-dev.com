@@ -273,12 +273,18 @@ importers:
       remark-gfm:
         specifier: ^3.0.1
         version: 3.0.1
+      remark-slug:
+        specifier: ^7.0.1
+        version: 7.0.1
       shiki:
         specifier: ^0.14.3
         version: 0.14.3
       typescript:
         specifier: 5.1.6
         version: 5.1.6
+      unist-util-visit:
+        specifier: ^4.1.2
+        version: 4.1.2
       zod:
         specifier: ^3.21.4
         version: 3.21.4
@@ -289,6 +295,9 @@ importers:
       '@types/js-yaml':
         specifier: ^4.0.5
         version: 4.0.5
+      '@types/mdast':
+        specifier: ^3.0.11
+        version: 3.0.11
       '@types/mdx':
         specifier: ^2.0.5
         version: 2.0.5
@@ -298,6 +307,9 @@ importers:
       '@types/react-dom':
         specifier: 18.2.6
         version: 18.2.6
+      '@types/unist':
+        specifier: ^2.0.6
+        version: 2.0.6
       eslint-config-next:
         specifier: 13.4.9
         version: 13.4.9(eslint@8.35.0)(typescript@5.1.6)
@@ -5391,7 +5403,7 @@ packages:
   /@types/hast@2.3.4:
     resolution: {integrity: sha512-wLEm0QvaoawEDoTRwzTXp4b4jpwiJDvR5KMnFnVodm3scufTlBOWRD6N1OBf9TZMhjlNsSfcO5V+7AF4+Vy+9g==}
     dependencies:
-      '@types/unist': 3.0.0
+      '@types/unist': 2.0.6
     dev: false
 
   /@types/html-minifier-terser@6.1.0:

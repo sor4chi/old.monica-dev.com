@@ -27,6 +27,29 @@ export const styles = {
     height: 'fit-content',
     width: constants.size.sideWidth,
     flexShrink: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: vars.spacing.absolute[8],
+  }),
+  toc: style({
+    display: 'flex',
+    flexDirection: 'column',
+    gap: vars.spacing.absolute[2],
+    fontSize: vars.font.size.sm,
+    paddingLeft: vars.spacing.relative[4],
+    width: vars.spacing.full,
+    boxSizing: 'border-box',
+    marginTop: vars.spacing.relative[2],
+
+    '@container': {
+      [`(max-width: ${constants.breakpoint.sm})`]: {
+        display: 'none',
+      },
+    },
+  }),
+  tocItem: style({
+    listStyle: 'none',
   }),
   asideRight: style({
     position: 'sticky',
@@ -42,7 +65,7 @@ export const styles = {
     },
   }),
   content: style({
-    width: constants.size.contentWidth,
+    width: vars.spacing.full,
     minWidth: 0,
   }),
   hero: style({
@@ -80,12 +103,21 @@ globalStyle(`${styles.article} h2`, {
   fontSize: vars.font.size.lg,
   fontWeight: 700,
   color: vars.color.gray[12],
+  marginTop: vars.spacing.relative[8],
 });
 
 globalStyle(`${styles.article} h3`, {
   fontSize: vars.font.size.base,
   fontWeight: 700,
   color: vars.color.gray[12],
+  marginTop: vars.spacing.relative[6],
+});
+
+globalStyle(`${styles.article} h4`, {
+  fontSize: vars.font.size.sm,
+  fontWeight: 700,
+  color: vars.color.gray[12],
+  marginTop: vars.spacing.relative[4],
 });
 
 globalStyle(`${styles.article} p`, {

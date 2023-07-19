@@ -7,7 +7,7 @@ export const styles = {
   button: style([
     focusInteraction,
     {
-      backgroundColor: vars.color.gray[1],
+      backgroundColor:'transparent',
       color: vars.color.gray[12],
       border: 'none',
       borderRadius: vars.spacing.relative[1],

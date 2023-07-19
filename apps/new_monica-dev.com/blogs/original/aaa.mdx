@@ -1,13 +1,234 @@
 ---
-title: 'This is how to write markdown'
+title: 'エンジニアでもデザインがしたい！'
 publishedAt: 2020/07/28
-description: 'This is a description'
+description: 'どのサービスもどれだけ機能が良くても、デザインが良くなければ離脱率が高くなってしまいます。そこで、今回は楽してエンジニアでもデザインをする方法を紹介します。'
 ---
 
-Design can feel like there's no science to it — only feel and intuition. Even researchers have trouble grounding interaction design practices in science, inherently treating them as a mysterious black box. While from my own experience that's partly true, I have been trying to deconstruct and dig out the why behind great displays of interaction design.
 
-Searching the Internet for depth on interaction design yields a plethora of recycled content obsessing over user personas, storyboards, and Venn diagrams labeled with "UI" and "UX". Besides a few exceptional talks, actual substance and insight reveal themselves to those willing to fanatically dig for them. Either through studying obscure, long-winded research papers or by maniacally replaying hundreds of slow motion screen recordings.
+ICPCお疲れ様でした。
 
-Sitting down and just thinking hard does not magically produce valuable discoveries either. The essence of the word "interaction" implies a relationship between a human and an environment. In my experience, great revelations surface from making something — filling your headspace with a problem — and then going for a synthesising daydreaming walk to stir the pot.
+今回話す内容は**Web**に焦点を絞っているため、デザインとは言っても、**Webデザイン**の話になります。
+※ ただのWebエンジニアとしての視点で書いているため、デザインの専門家の方から見ると、間違ったことを書いているかもしれません。あくまで参考程度にしてください。
 
-This essay is not a tutorial nor a collection of guidelines. But rather an observation on the invisible details of a few interactions that I use often but rarely think about. Besides recreating interfaces, I found this exercise in reflection to be another great way to build a stronger design intuition and vocabulary.
+## UIについて
+
+UIとは、**User Interface**の略で、ユーザーがサービスを利用する際に触れる「接点（インタフェース）」のことを指します。
+いわゆる「見た目」です。
+例えば、スマホのアプリのボタンの配置や、Webサイトのメニューの配置、文字の大きさや色などがそれにあたります。
+
+これは実体を持つものだと思ってください。
+
+## UXについて
+
+UXとは、**User Experience**の略で、ユーザーがサービスを利用する際に感じる体験のことを指します。
+いわゆる「使いやすさ」を指します。
+つまりWebページ上にあるボタンやリンク、メニューなどのUIをどのように配置するか、どのように見せるかということを指すのがUXです。
+
+こちらは逆に、経験や体験を指すので、実体を持たないものだと思ってください。
+
+いいサービスを作るためには、UIをうまく配置することで、UXを向上させる必要があります。
+
+## 楽してデザインするには
+
+楽してデザインをするには「法則」を作ることがおすすめです。
+例えば「青」基調にする、ボタンは「丸」にする、などです。
+
+これらの法則を「デザインシステム」と呼びます。
+デザインシステムを作ることで、デザインの統一性を保つことができます。
+とういう感があれば、デザイン性は高くなくとも、使いやすさや見やすさを保つことができます。
+
+## 有名なデザインシステム
+
+### Material Design
+
+Material DesignはGoogleが公開しているデザインシステムです。
+https://material.io/design
+
+今現在、Material DesignはVersion 3が最新となっており、これまで3度、大きなデザイン変更をしています。
+
+GoogleのサービスはほとんどMaterial Designに沿ってデザインされています。
+わかりやすいのがGmailです。
+
+V1 と V2の違いに関しては比較のいいサイトがあったので、こちらを見てください。
+https://www.creative-tim.com/blog/web-development/material-design-comparison/
+
+V3では、V2にさらにプラスして全体的に丸みが増え、より清潔感が増したというか、モダンなUIになっています。
+
+### Fluent Design
+
+Fluent DesignはMicrosoftが公開しているデザインシステムです。
+https://www.microsoft.com/design/fluent/#/
+
+MicrosoftのサービスはほとんどFluent Designに沿ってデザインされています。
+
+### Human Interface Guidelines (HIG)
+
+Human Interface Guidelines (HIG)はAppleが公開しているデザインシステムです。
+
+最近、Vision OSというMR/VR用のOSを発表しましたが、3次元空間でのデザインシステムも同様に公開され、話題になりました。
+
+https://developer.apple.com/design/human-interface-guidelines/
+
+大手の会社では、製品を見たときにどの会社のものか印象付けるために、それぞれ独自のデザインシステムを作っています。
+
+このような感じで、いろいろなデザインシステムの組み方がありますが、根本は変わりません。
+デザインするときにあらかじめ「法則」を決めておくことで、デザインの統一性を保つことができます。
+
+## ツールを使おう
+
+デザインを作るには、デザインツールを使います。
+今回は**Figma**というデザインツール（無料）を使います。
+Webデザインやモバイルデザイン、パンフレットなどのカンプを作ることができます。
+
+もしWeb版を使いたい方がいればこちらからアカウント登録をしてください。
+https://www.figma.com/
+
+もしデスクトップ版を使いたい方がいればこちらからダウンロードしてください。
+https://www.figma.com/ja/downloads/
+
+デスクトップ版の方が何かと便利なのでこちらをおすすめします。
+
+Figmaを開いてアカウントでサインインしたら、新規プロジェクトを作成します。
+適当な名前で大丈夫ですので、プロジェクトを作成してください。
+
+## デザインシステムの作り方
+
+最低限運用していけるだけのデザインシステムを作っていきましょう。
+必要なのは「色」「フォント」「サイズ」「アイコン」です。
+（デザインシステムを本当にがっつり組むとなったら、本職のデザイナーさんにお願いするのが一番です。）
+
+### 色
+
+色は、サービスのイメージを決める上で重要な要素です。
+例えば、Twitter、Facebookは青基調、LINEは緑基調、PayPayは朱基調、などです。
+サイトデザインにおいては大抵の場合、「プライマリカラー」を決めます。
+プライマリカラーは「購入」や「送信」といった、サービスの中心となるアクションなど、重要な部分に使います。
+オプションとして、セカンダリカラーを決めることもあります。
+一セカンダリカラーは、プライマリカラーにアクセントをつけるために使います。例えば「購入」のほかに「カートに入れる」など別の区別するアクションがある場合に使います。
+それ以外には「白」や「黒」などの「モノクロカラー」を使って、色の統一性を保ちます。
+
+こちらはGoogleが公開しているカラーパレットツールです。
+https://m2.material.io/design/color/the-color-system.html#tools-for-picking-colors
+
+右側にある「Primary Color」のテキストインプットに好きな色を入力すると、それに合わせた色を生成してくれます。
+
+カラーパレットは大体50~900の10段階で作ります。
+この10色を使ってサービスのデザインをすると、統一感が出るといった感じです。
+
+### フォント
+
+フォントは、サービスのイメージを決める上で重要な要素です。
+
+Googleが公開しているフォントカタログがあるので、これを参考にしてみてください。
+
+https://fonts.google.com/
+
+といっても、日本語自体とても難しい言語でフォントを実装するのにかかるコストが高いので、英語フォントほど選択肢はなく、「Noto Sans JP」や「Noto Serif JP」を使うことが多いです。
+
+### サイズ
+
+サイズはそこまで難しくありません。
+
+文字サイズは、大体「12px」「14px」「16px」「18px」「20px」「24px」「32px」くらいから選ぶといいです。（例外がある場合はさらに8か16の倍数で選ぶといいです。）
+基本の文字サイズは「16px」です。
+
+一方、スペースのサイズは、大体「4px」「8px」「12px」「16px」「24px」「32px」「48px」「64px」「96px」「128px」の10段階で作ります。
+スペースサイズは本当に簡単で、基本的には「4px」の倍数で作ります。こうすることで余白に統一感が出て、より構成が把握しやすいデザインになります。
+
+### アイコン
+
+アイコンは、ユーザーにより少ないデザインで情報を伝えるために使います。
+アイコンがあることで視認性が上がり、初見でもサービスの使い方がわかりやすくなります。
+
+便利なのは、Google Material Iconsです。
+https://fonts.google.com/icons
+
+iconもfontとして見ることができるので、Google Fontsの一部として提供されていたりします。
+
+他にも、Font AwesomeやFeather Iconsなどがあります。
+いろいろなフォントが無料で使えるので、ぜひ使ってみてください。
+
+一点注意点としては、「商用利用の場合は不可」とか「コード内にライセンス表記が必要」といった制限がある場合があるので、利用する際はライセンスを確認してください。
+Google Material IconsはApache License 2.0なので、特に問題なく使えます。
+
+## デザインをしてみよう
+
+それでは、実際にデザインをしてみましょう。
+
+### デザインシステムを作る
+
+まずは、デザインシステムを作ります。今回は先日Figmaのアップデートで導入された「Figma Variables」を使ってみます。
+
+まずは色・使うフォント・文字サイズ・スペースサイズを決めます。
+
+### サイトをデザインする
+
+今回はMaxitter V2をデザインしてみましょう。
+
+要件は以下の通り
+
+- ヘッダー
+  - ロゴ
+  - ナビゲーション
+    - ホーム
+    - 検索
+    - プロフィール
+    - ログイン（ログアウト時のみ）
+    - ログアウト（ログイン時のみ）
+
+- メイン
+  - ツイートを投稿する部分（フォーム）
+  - 投稿が表示される部分（タイムライン）
+
+でいきましょう。
+
+**演習タイム**
+
+まあここまで、自分でデザインを考えて組み立てるという話をしてきたわけですが、大変だったと思います。
+実際の現場などでは、デザイナーがデザインを考えて、それをもとにエンジニアがコーディングをするという流れになります。
+もちろんデザイナーもFigmaやAdobe XDなどデザインカンプツールを使うことがほとんどですので、使えるようになっている必要はあります。
+さらに最近だと、フローチャートやドメイン図など、バックエンドエンジニアでもFigmaを使ったりするので、使えるようになっておくといいです。
+
+ただ、そこまでデザインに時間かけられないよという方もいると思います。
+
+## UIライブラリ
+
+そこで、UIライブラリを使うという手もあります。
+UIライブラリとは、デザインシステムや、それを反映したコンポーネントを提供してくれるものです。
+他人が作ってくれたUIを自分のサービスに組み込むことで、デザインを簡単にすることができます。
+これを使うと、いちいちCSSを書かなくても割と簡単にデザインを組み立てることができます。
+
+デメリットとして、他の同じUIライブラリを使っているサービスと似たようなデザインになってしまうという点がありますので、そこは注意が必要です。
+
+また注意として、中身がCSSですので外から上書きすることができるのですが、それをしてしまうとUIライブラリのデザインシステムが破綻したりしますので、必ずUIライブラリの提供する範囲内で使うようにしましょう。
+
+### Bootstrap
+
+Bootstrapはつい最近まで世界で一番使われていたUIライブラリでした。
+（最近はTailwind CSSに抜かれました。）
+使い方がとても簡単で、CSSを書かなくてもデザインを組み立てることができます。
+
+https://getbootstrap.jp/
+
+### Tailwind CSS
+
+Tailwind CSSは、CSSを書かずにデザインを組み立てることができるUIライブラリです。
+こちらはCSSは書かずとも、ほぼCSSを知ってないといけないような書き方をするので、初学者には少し難しいかもしれないです。
+
+https://tailwindcss.com/
+
+#### Material UI (MUI)
+
+Material UIは、Google Material Designを**React**で実装したUIライブラリです。
+カスタマイズ性が高く、その柔軟性が人気のUIライブラリです。
+
+https://mui.com/
+
+#### Chakra UI (Chakra)
+
+Chakra UIもReactで実装されたUIライブラリです。
+Material UIと比べると、カスタマイズ性は低いですが、その分簡単に使うことができます。
+
+https://chakra-ui.com/
+
+次回以降のフルスタックアプリケーション開発（実践編）では、一番簡単に使えるChakra UIを使っていきます。

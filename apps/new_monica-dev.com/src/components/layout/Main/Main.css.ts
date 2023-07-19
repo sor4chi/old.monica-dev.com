@@ -6,6 +6,12 @@ export const styles = {
   main: style({
     padding: `10rem ${constants.size.xGutter} ${constants.size.xGutter} ${constants.size.xGutter}`,
     containerType: 'inline-size',
+
+    '@media': {
+      [`screen and (max-width: ${constants.breakpoint.sm})`]: {
+        padding: constants.size.xGutter,
+      },
+    },
   }),
 };
 

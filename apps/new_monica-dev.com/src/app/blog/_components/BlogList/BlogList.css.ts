@@ -15,7 +15,7 @@ export const styles = {
   year: style({
     fontWeight: 700,
     fontSize: vars.font.size.lg,
-    marginBottom: vars.spacing.absolute[2],
+    marginBottom: vars.spacing.absolute[4],
   }),
   list: style({
     padding: vars.spacing[0],
@@ -81,7 +81,7 @@ export const styles = {
     transition: 'opacity 0.2s ease-in-out',
 
     '@media': {
-      'screen and (max-width: 56rem)': {
+      [`screen and (max-width: ${constants.breakpoint.md})`]: {
         display: 'none',
       },
     },
