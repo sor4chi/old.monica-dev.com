@@ -1,22 +1,24 @@
 import type { Metadata } from 'next';
 
 import '@/styles/global.css';
+import { Providers } from './providers';
+
 import { Main } from '@/components/layout/Main';
 
 export const metadata = {} satisfies Metadata;
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <html lang="ja" suppressHydrationWarning>
       <head>
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script src="/theme.js" />
       </head>
-      <html lang="ja">
-        <body>
+      <body>
+        <Providers>
           <Main>{children}</Main>
-        </body>
-      </html>
-    </>
+        </Providers>
+      </body>
+    </html>
   );
 }

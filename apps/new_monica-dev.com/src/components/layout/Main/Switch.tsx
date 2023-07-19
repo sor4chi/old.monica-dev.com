@@ -1,36 +1,17 @@
 'use client';
+import { useTheme } from 'next-themes';
 import { Moon, Sun } from 'react-feather';
 
 import { styles } from './SwitchTheme.css';
 
 import { Button } from '@/components/ui/Button';
-import { useViewTransition } from '@/hooks/use-view-transition';
-
-const judgeTheme = () => {
-  if (typeof window === 'undefined') {
-    return 'light';
-  }
-  if (localStorage.getItem('theme') === 'dark') {
-    return 'dark';
-  }
-  return 'light';
-};
 
 export const ThemeSwitch = () => {
-  const { startViewTransition: switchTheme } = useViewTransition(() => {
-    const before = judgeTheme();
+  const { setTheme, theme } = useTheme();
 
-    if (before === 'light') {
-      localStorage.setItem('theme', 'dark');
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-    }
-    if (before === 'dark') {
-      localStorage.setItem('theme', 'light');
-      document.documentElement.classList.add('light');
-      document.documentElement.classList.remove('dark');
-    }
-  });
+  const switchTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
 
   return (
     <span className={styles.rightTopArea}>
