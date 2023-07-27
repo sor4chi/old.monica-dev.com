@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 
 import '@/styles/global.css';
-import { Providers } from './providers';
 
 import { Main } from '@/components/layout/Main';
 
@@ -15,9 +14,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <script src="/theme.js" />
       </head>
       <body>
-        <Providers>
-          <Main>{children}</Main>
-        </Providers>
+        {/* <Providers> */}
+        <Main>{children}</Main>
+        {/* </Providers> */}
       </body>
     </html>
   );

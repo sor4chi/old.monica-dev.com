@@ -1,18 +1,34 @@
 'use client';
-import { useTheme } from 'next-themes';
 import { Moon, Sun } from 'react-feather';
 
 import { styles } from './SwitchTheme.css';
 
 import { Button } from '@/components/ui/Button';
 
+const judgeTheme = () => {
+  if (typeof window === 'undefined') {
+    return 'light';
+  }
+  if (localStorage.getItem('theme') === 'dark') {
+    return 'dark';
+  }
+  return 'light';
+};
+
 export const ThemeSwitch = () => {
-  const { setTheme, theme } = useTheme();
-
   const switchTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
+    const before = judgeTheme();
+    if (before === 'light') {
+      localStorage.setItem('theme', 'dark');
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+    }
+    if (before === 'dark') {
+      localStorage.setItem('theme', 'light');
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+    }
   };
-
   return (
     <span className={styles.rightTopArea}>
       <Button onClick={switchTheme} variant="icon">

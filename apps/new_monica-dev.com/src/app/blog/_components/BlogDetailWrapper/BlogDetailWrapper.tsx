@@ -4,7 +4,7 @@ import { ArrowLeft } from 'react-feather';
 
 import { styles } from './BlogDetailWrapper.css';
 
-import { TransitionLink } from '@/components/logical/TransitionLink';
+import { TransitionLink } from '@/components/logic/TransitionLink';
 import { Link } from '@/components/ui/Link';
 import { Toc } from '@/lib/remarkExtractToc';
 import { getEnYearMonthDay } from '@/utils/date';
@@ -26,7 +26,7 @@ export const BlogDetailWrapper = ({
   return (
     <div className={styles.container}>
       <aside className={styles.asideLeft}>
-        <Link tag={TransitionLink} href="/blog">
+        <Link tag={TransitionLink} animation="backward" href="/blog">
           <ArrowLeft strokeWidth={1.5} size="1em" />
           Back
         </Link>

@@ -2,7 +2,6 @@ export const useViewTransition = <T extends (...args: any[]) => void>(callback: 
   const startViewTransition = (...args: Parameters<T>) => {
     if (!(document as any).startViewTransition) {
       callback(...args);
-      alert('updated with no transition');
       return;
     }
 

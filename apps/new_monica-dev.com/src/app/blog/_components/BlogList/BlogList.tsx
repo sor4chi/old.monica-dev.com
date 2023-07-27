@@ -6,7 +6,7 @@ import { styles } from './BlogList.css';
 
 import QiitaIcon from '@/assets/third-parties/qiita.png';
 import ZennIcon from '@/assets/third-parties/zenn.png';
-import { TransitionLink } from '@/components/logical/TransitionLink';
+import { TransitionLink } from '@/components/logic/TransitionLink';
 import { getEnMonthDay } from '@/utils/date';
 
 const BLOG_PROVIDER = [
@@ -75,7 +75,7 @@ export const BlogList = ({ blogs }: { blogs: (InternalBlog | ExternalBlog)[] }) 
 const InternalBlogItem = ({ blog }: { blog: InternalBlog }) => {
   return (
     <li className={styles.item}>
-      <TransitionLink href={`/blog/${blog.slug}`} className={styles.link}>
+      <TransitionLink href={`/blog/${blog.slug}`} animation="forward" className={styles.link}>
         <span>
           {blog.title}
           {blog.publishedAt && (

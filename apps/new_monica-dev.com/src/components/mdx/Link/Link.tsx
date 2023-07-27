@@ -5,7 +5,7 @@ import { ArrowUpRight } from 'react-feather';
 
 import { styles } from './Link.css';
 
-import { TransitionLink } from '@/components/logical/TransitionLink';
+import { TransitionLink } from '@/components/logic/TransitionLink';
 
 export const Link = ({ children, className, href, ...props }: ComponentPropsWithoutRef<'a'>) => {
   const isExternal = href?.startsWith('http');

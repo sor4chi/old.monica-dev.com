@@ -1,9 +1,9 @@
-import { createGlobalTheme, createTheme } from '@vanilla-extract/css';
+import { createGlobalTheme } from '@vanilla-extract/css';
 
 import { colorVars } from './contract.css';
 import { staticallySumRems } from './util';
 
-export const lightClass = createTheme(colorVars, {
+createGlobalTheme('.light', colorVars, {
   gray: {
     1: 'hsl(0 0% 99.0%)',
     2: 'hsl(0 0% 97.3%)',
@@ -34,7 +34,7 @@ export const lightClass = createTheme(colorVars, {
   },
 });
 
-export const darkClass = createTheme(colorVars, {
+createGlobalTheme('.dark', colorVars, {
   gray: {
     1: 'hsl(0 0% 8.5%)',
     2: 'hsl(0 0% 11.0%)',
