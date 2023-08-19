@@ -2,6 +2,7 @@ import type { Heading, Parent } from 'mdast';
 import type { Plugin, Transformer } from 'unified';
 import type { Node } from 'unist';
 import { visit } from 'unist-util-visit';
+import { z } from 'zod';
 
 interface RawTocItem {
   id: string;
@@ -9,7 +10,7 @@ interface RawTocItem {
   depth: number;
 }
 
-interface TocItem {
+export interface TocItem {
   id: string;
   text: string;
   depth: number;
@@ -25,7 +26,6 @@ interface Option {
 }
 
 const buildToc = (rawToc: RawTocItem[]): Toc => {
-  // parse rawToc to toc
   const toc: Toc = [];
   const stack: TocItem[] = [];
   rawToc.forEach((item) => {
@@ -61,22 +61,30 @@ const buildToc = (rawToc: RawTocItem[]): Toc => {
   return toc;
 };
 
-export const remarkExtractToc: Plugin<[Option?]> = (option = {}): Transformer => {
+const schema = z.object({
+  id: z.string(),
+});
+
+const remarkExtractToc: Plugin<[Option?]> = (option = {}): Transformer => {
   const { cb, maxDepth = 3, minDepth = 1 } = option;
   const toc: RawTocItem[] = [];
   return async (tree: Node) => {
     const visitor = (node: Heading, _index: number, parent?: Parent) => {
       if (!parent) return;
 
-      const { children, depth } = node;
+      const { children, data, depth } = node;
 
       if (depth < minDepth) return;
       if (depth > maxDepth) return;
 
+      // remarkExtractTocによって全てのheadingにidが付与されているので、
+      // ここではidが付与されていないheadingは無視する
+      const validatedData = schema.safeParse(data);
+      if (!validatedData.success) return;
+      const { id } = validatedData.data;
+
       children.forEach((child) => {
         if (child.type === 'text') {
-          const id = child.value;
-
           toc.push({
             depth,
             id,
@@ -89,3 +97,5 @@ export const remarkExtractToc: Plugin<[Option?]> = (option = {}): Transformer =>
     cb?.(buildToc(toc));
   };
 };
+
+export default remarkExtractToc;

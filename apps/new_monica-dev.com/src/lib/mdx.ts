@@ -8,7 +8,7 @@ import type { PluginTuple } from 'unified';
 import { z } from 'zod';
 
 import type { Toc } from './remarkExtractToc';
-import { remarkExtractToc } from './remarkExtractToc';
+import remarkExtractToc from './remarkExtractToc';
 
 import { replacingMDXComponents } from '@/components/mdx';
 
