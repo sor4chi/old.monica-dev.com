@@ -6,6 +6,8 @@ import { BlogDetailWrapper } from '../_components/BlogDetailWrapper';
 import { mdxCompiler } from '@/lib/mdx';
 import { getDirFiles } from '@/utils/file';
 
+import 'katex/dist/katex.css';
+
 interface Props {
   params: {
     slug: string;
@@ -31,8 +33,8 @@ async function getBlog(slug: string) {
   return {
     content,
     slug,
-    toc,
     thumbnail: thumbnail ? `/images/blog-thumbnails/${thumbnail}` : undefined,
+    toc,
     ...frontmatter,
   };
 }

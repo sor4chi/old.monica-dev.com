@@ -1,6 +1,8 @@
 import { compileMDX } from 'next-mdx-remote/rsc';
+import rehypeKatex from 'rehype-katex';
 import rehypePrettyCode from 'rehype-pretty-code';
 import remarkGFM from 'remark-gfm';
+import remarkMath from 'remark-math';
 import remarkSlug from 'remark-slug';
 import type { PluginTuple } from 'unified';
 import { z } from 'zod';
@@ -29,6 +31,7 @@ export const mdxCompiler = async (source: string) => {
     options: {
       mdxOptions: {
         rehypePlugins: [
+          rehypeKatex,
           withOptions(rehypePrettyCode, {
             grid: true,
             keepBackground: false,
@@ -51,6 +54,7 @@ export const mdxCompiler = async (source: string) => {
         remarkPlugins: [
           remarkGFM,
           remarkSlug,
+          remarkMath,
           withOptions(remarkExtractToc, {
             cb: (_toc) => toc.push(..._toc),
             maxDepth: 4,
