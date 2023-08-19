@@ -202,6 +202,22 @@ globalStyle(`${styles.article} :not(pre) > code`, {
 });
 
 globalStyle(`${styles.article} .math-display`, {
-  overflowX: 'auto',
-  width: '100%',
+  width: 'fit-content',
+  position: 'relative',
+  transform: 'translateX(-50%)',
+  padding: `${vars.spacing.relative[4]} ${vars.spacing.relative[8]}`,
+  left: '50%',
+  zIndex: 1,
+
+  '@media': {
+    [`screen and (max-width: ${constants.breakpoint.lg})`]: {
+      overflowX: 'auto',
+      width: '100%',
+    },
+  },
+});
+
+globalStyle(`${styles.article} .katex-display`, {
+  background: vars.color.gray[1],
+  boxShadow: `0 0 1rem 2rem ${vars.color.gray[1]}`,
 });
