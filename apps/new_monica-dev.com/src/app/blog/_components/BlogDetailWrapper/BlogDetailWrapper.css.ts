@@ -200,3 +200,8 @@ globalStyle(`${styles.article} :not(pre) > code`, {
   padding: vars.spacing.relative[1],
   borderRadius: vars.spacing.relative[1],
 });
+
+globalStyle(`${styles.article} .math-display`, {
+  overflowX: 'auto',
+  width: '100%',
+});
