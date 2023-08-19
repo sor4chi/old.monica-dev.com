@@ -6,7 +6,7 @@ import { styles } from './BlogDetailWrapper.css';
 
 import { TransitionLink } from '@/components/logic/TransitionLink';
 import { Link } from '@/components/ui/Link';
-import { Toc } from '@/lib/remarkExtractToc';
+import { Toc } from '@/lib/remark/extractToc';
 import { getEnYearMonthDay } from '@/utils/date';
 
 export const BlogDetailWrapper = ({

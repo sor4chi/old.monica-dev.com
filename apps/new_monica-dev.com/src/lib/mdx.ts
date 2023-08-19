@@ -7,8 +7,8 @@ import remarkSlug from 'remark-slug';
 import type { PluginTuple } from 'unified';
 import { z } from 'zod';
 
-import type { Toc } from './remarkExtractToc';
-import remarkExtractToc from './remarkExtractToc';
+import type { Toc } from './remark/extractToc';
+import remarkExtractToc from './remark/extractToc';
 
 import { replacingMDXComponents } from '@/components/mdx';
 
