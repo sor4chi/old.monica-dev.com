@@ -1,7 +1,7 @@
 'use client';
 import { Moon, Sun } from 'react-feather';
 
-import { styles } from './SwitchTheme.css';
+import { styles } from './Switch.css';
 
 import { Button } from '@/components/ui/Button';
 
