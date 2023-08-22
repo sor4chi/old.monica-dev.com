@@ -66,7 +66,7 @@ export default async function BlogListPage() {
   const blogs = await getBlogs();
 
   return (
-    <div className="backward">
+    <div>
       <BlogList blogs={blogs} />
     </div>
   );

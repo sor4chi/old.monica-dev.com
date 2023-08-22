@@ -53,7 +53,7 @@ export default async function BlogDetail({ params }: Props) {
   const blog = await getBlog(params.slug);
 
   return (
-    <div className="forward">
+    <div>
       <BlogDetailWrapper
         title={blog.title}
         description={blog.description}
